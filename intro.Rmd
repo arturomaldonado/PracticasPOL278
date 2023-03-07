@@ -46,4 +46,4 @@ Una vez seleccionado un directorio nuevo o ya existente, todos los archivos que 
 # Recursos
 
 1.  Google es la principal fuente para resolver cualquier problema que tenga en R. Recuerde que en R se pueden obtener los mismos resultados de diferentes formas.
-2.  [Stackoverflow](https://stackoverflow.com) es un foro especializado donde seguramente encontrará una entrada de alguien que se ha hecho la misma pregunta que usted y que ha sido respondida por muchas personas. Tome en cuenta que en R pueden haber muchas respuestas para la misma pregunta, es decir, muchas maneras de realizar una misma operación. La mayoría de entradas está en inglés.
+2.  [Stackoverflow](https://stackoverflow.com) es un foro especializado donde seguramente encontrará una entrada de alguien que se ha hecho la misma pregunta que usted y que ha sido respondida por muchas personas. Tome en cuenta que en R pueden haber muchas respuestas para la misma pregunta, es decir, muchas maneras de realizar una misma operación. La mayoría de entradas está en inglés. Trate de encontrar la respuesta más simple y adapte el código a sus necesidades.
