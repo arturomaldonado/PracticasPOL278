@@ -31,7 +31,3 @@ El curso de Estadística para el Análisis Político 1 introduce al estudiant
 -   Aplicar técnicas estadísticas a fenómenos políticos.
 
 -   Comprender las técnicas estadísticas aplicadas en el trabajo académico y profesional.
-
-
-
-
