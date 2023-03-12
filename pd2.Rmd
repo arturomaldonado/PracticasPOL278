@@ -21,6 +21,7 @@ usethis::create_github_token()
 
 ```{r}
 gitcreds::gitcreds_set()
+git config — global user.email “lizette.cf@pucp.pe”
 ```
 
 
