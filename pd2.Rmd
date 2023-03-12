@@ -15,14 +15,7 @@ output:
 
 En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
 
-```{r}
-usethis::create_github_token()
-```
 
-```{r}
-gitcreds::gitcreds_set()
-git config — global user.email “lizette.cf@pucp.pe”
-```
 
 
 
