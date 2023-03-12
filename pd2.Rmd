@@ -11,11 +11,6 @@ output:
     highlight: textmate
 ---
 
-#Práctica dirigida 2
+# Práctica dirigida 2
 
 En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
-
-
-
-
-
