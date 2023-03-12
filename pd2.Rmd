@@ -14,3 +14,14 @@ output:
 #Práctica dirigida 2
 
 En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
+
+```{r}
+usethis::create_github_token()
+```
+
+```{r}
+gitcreds::gitcreds_set()
+```
+
+
+
