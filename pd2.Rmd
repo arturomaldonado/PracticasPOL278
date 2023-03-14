@@ -1,5 +1,5 @@
 ---
-title: "pd1"
+title: "pd2"
 output:
   html_document:
     toc: true
@@ -11,13 +11,6 @@ output:
     highlight: textmate
 ---
 
-# Práctica dirigida 1
+# Práctica dirigida 2
 
 En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
-
-```{r}
-
-```
-
-esto es una prueba
-
