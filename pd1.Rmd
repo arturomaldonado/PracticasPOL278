@@ -14,3 +14,10 @@ output:
 #Práctica dirigida 1
 
 En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
+
+```{r}
+
+```
+
+esto es una prueba
+
