@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 1</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,7 +35,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/vembedr-0.1.5.9000/css/vembedr.css" rel="stylesheet" />
+<link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -147,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -180,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -189,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -428,7 +425,7 @@ class="section level2">
 <p><a id='part1'></a></p>
 </div>
 <div id="qué-es-r" class="section level2">
-<h2>1. ¿Qué es R?</h2>
+<h2><strong>1. ¿Qué es R?</strong></h2>
 <p>R es un lenguaje de programación y un entorno de software libre y de
 código abierto utilizado para análisis estadístico y visualización de
 datos. Fue desarrollado por Ross Ihaka y Robert Gentleman en la
@@ -450,7 +447,7 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <p><a id='part2'></a></p>
 </div>
 <div id="qué-podemos-hacer-con-r" class="section level2">
-<h2>2. ¿Qué podemos hacer con R?</h2>
+<h2>** 2. ¿Qué podemos hacer con R? **</h2>
 <p><img src="QphacerR1.png" /></p>
 <p><img src="QphacerR2.png" /></p>
 <p><img src="QphacerR3.png" /></p>
@@ -459,23 +456,194 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <p><a id='part3'></a></p>
 </div>
 <div id="conceptos-básicos-para-programar-en-r" class="section level2">
-<h2>3. Conceptos básicos para programar en R</h2>
+<h2>** 3. Conceptos básicos para programar en R **</h2>
 <p>Instalar <a href="http://www.r-project.org">R</a></p>
 <p>Instalar <a href="https://posit.co/downloads/">RStudio</a></p>
 </div>
 <div id="usando-r" class="section level2">
 <h2>Usando R</h2>
 <p><img src="PrograR.png" /></p>
+<div id="configurar-el-directorio-de-trabajo" class="section level3">
+<h3><strong>3.1. Configurar el directorio de trabajo</strong></h3>
+<p>R funciona como un entorno temporal de trabajo, esto quiere decir que
+el usuario va agregando datos y objetos, pero si los análisis no son
+guardados se deberán repetir las instrucciones para obtener otra vez el
+resultado. Por esta razón, es preciso configurar una carpeta
+predeterminada en nuestro ordenador, donde el programa buscará los
+archivos a ejecutar y guardará los archivos a conservar con cambios.</p>
+<p>Para ver nuestro lugar de trabajo actual escribimos el siguiente
+comando (escriba el código en la consola, ya que si lo ejecuta desde
+este Rmd, obtendrá el lugar donde se encuentra este archivo):</p>
+<pre class="r"><code>getwd() </code></pre>
+<pre><code>## [1] &quot;/Users/lizettecrispinflorez/PracticasPOL278&quot;</code></pre>
+<p>Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú
+“Session” &gt; “Set Working Directory” &gt; “Choose Directory”. Esto
+abrirá una ventana emergente, donde buscaremos la carpeta en la cual
+vamos a trabajar, la ubicamos y seleccionamos “Open”. Para verificar el
+cambio volvemos a digitar la función <strong>“getwd()”</strong> en la
+consola.</p>
 </div>
-<div id="sintaxis-en-r" class="section level2">
-<h2>Sintaxis en R</h2>
+<div id="sintaxis-y-objetos-en-r" class="section level3">
+<h3><strong>3.2. Sintaxis y objetos en R</strong></h3>
+<p>El uso de R es bastante intuitivo y sigue un patrón lógico. Está
+compuesto de códigos y la combinación de estos códigos genera una
+sintaxis. Asimismo, R guarda la información de nuestras observaciones y
+variables a través de objetos.</p>
+<p>En un sentido global, la estructura general de una sintaxis puede
+resumirse como sigue: a un objeto dado se le asigna el resultado de una
+función, que a su vez se ejecuta sobre un conjunto de datos
+especificado, con una serie de configuraciones particulares. Veamos el
+siguiente ejemplo ficticio.</p>
 <p><img src="Sintax.png" /></p>
+<p>Si se lee de izquierda a derecha, la línea de comando puede
+explicarse como sigue:</p>
+<ul>
+<li><p>Primero se indica un objeto a crear, con el nombre que ustedes
+definan.</p></li>
+<li><p>Luego se indica el asignador, que expresa que todo lo que esté a
+la derecha de la flecha se guardará en el objeto creado a la izquierda.
+El asignador puede ser “&lt;-” o también “=”, para motivos del curso
+usaremos este último.</p></li>
+<li><p>Luego viene la función que en este caso permite leer archivos
+tipo Microsoft Excel. R trabaja con funciones que están dentro de
+“paquetes” que la comunidad va desarrollando. Podemos hacer nuestras
+operaciones con diversas funciones, y no hay una sola forma de hacerlo.
+Si se trata de funciones que no están predeterminadas en R, debemos
+instalar el paquete que las contiene con el comando
+“install.packages()”, y antes de ejecutarla debemos abrir la libreria
+con el comando “library()”</p></li>
+<li><p>Luego de la función, se abre un paréntesis que contiene los
+argumentos: instrucciones que especifican ciertos detalles de lo que
+queramos que la función realice. Los argumentos pueden escribirse de
+distintas maneras y va a depender de lo que queramos hacer. En nuestro
+ejemplo: El primer argumento indica la información a leer, en este caso
+indica un archivo de tipo Excel (extensión xlsx). El segundo argumento
+indica la hoja del archivo a leer. El tercer argumento indica qué
+columnas se leerán de forma específica (en este caso, las primeras
+diez).</p></li>
+</ul>
+<p><strong>Hagamos un ejemplo:</strong></p>
+<p>Vamos a abrir un archivo en R, utilizando la función “import” del
+paquete “rio”, el cual es un paquete versátil que nos permite importar
+datos de diversas extensiones (dta, sav, csv, xls, etc.)</p>
+<p>Antes que todo, debemos instalar el paquete escribiendo en la
+consola: install.packages(“rio”)</p>
+<pre class="r"><code>library(rio) #Convocamos el paquete   
+data=import(&quot;Mosteller.csv&quot;) #Utilizamos la función import que creará un objeto en R que contenga la base de datos del archivo &quot;Mosteller.csv&quot; que hemos descargado. Podemos verificar la creación en el environment
+class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función &quot;class&quot; y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un &quot;data frame&quot;, es el tipo de objeto en R para las bases de datos.</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>¿Qué otro tipo de objetos existen?</p>
+</div>
+</div>
+<div id="tipos-de-objetos-en-r" class="section level2">
+<h2><strong>1.3. Tipos de objetos en R</strong></h2>
+<p>Una parte clave para iniciar el manejo del programa es identificar
+los diversos objetos que podemos crear, manipular y utilizar. Para la
+definición de objetos en R será necesario previamente tener claridad
+teórica sobre lo que es una variable categórica nominal, categórica
+ordinal, numérica discreta y numérica continua.</p>
+<p>Para los fines de este curso se contemplarán las siguientes
+objetos:</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Vector numérico</strong></td>
+<td>Vector conformado por la concatenación de números, puede representar
+variables numéricas continuas o discretas. Ej: 1.5 , 2.7 , 3.1</td>
+</tr>
+<tr class="even">
+<td><strong>Vector de factores</strong></td>
+<td><p>Vector que sirve para representar variables categóricas.</p>
+<p>Pudiendo ser factores nominales u ordinales. Ej: “costa”, “sierra”,
+“selva”</p></td>
+</tr>
+<tr class="odd">
+<td><strong>Data frames</strong></td>
+<td><p>Son hojas de datos, estructuras similares a una matriz; sin
+embargo, a diferencia de estas pueden almacenar objetos de distintos
+tipo.</p>
+<p><strong>Generalmente nuestras bases de datos son de este
+tipo</strong> (como una hoja de Excel que tiene variables numéricas,
+categóricas, etc).</p></td>
+</tr>
+</tbody>
+</table>
+<p>Los <strong>vectores numéricos</strong> se crean a través de la
+función <strong>concatenar “c()”</strong>. Vamos a crear un vector que
+contenga los montos en millones de soles del presupuesto del Estado
+asignado a las 5 prioridades para el 2021</p>
+<pre class="r"><code>Presupuesto_millones=c(9879, 33132, 20991, 690, 5392) #creamos el vector (verifiquemos en el environment)
+Presupuesto_millones #invocamos el vector para visualizar su contenido</code></pre>
+<pre><code>## [1]  9879 33132 20991   690  5392</code></pre>
+<p>Un <strong>factor</strong> nos permite representar una variable
+categórica. Se crean a través de la función <strong>“factor()”</strong>,
+pero antes se crea como vector pues almacena las categorías en la forma
+de un vector con números discretos integrales (1,2,3,4,etc.), que son
+códigos de los valores de la variable y otro vector de caracteres
+interno que contiene las etiquetas de esos códigos. Creemos un factor
+con los nombres de las prioridades del presupuesto para el 2021:</p>
+<pre class="r"><code>Prioridad = c(1,2,3,4,5) #primero creamos un vector
+Prioridad = factor(Prioridad, levels = c(1:5), labels = c(&quot;reactivación&quot;, &quot;educación&quot;,&quot;salud&quot;,&quot;mujer&quot;,&quot;pobreza&quot;)) #Lo convertimos en factor. Ojo con los argumentos.
+Prioridad #visualizamos su contenido</code></pre>
+<pre><code>## [1] reactivación educación    salud        mujer        pobreza     
+## Levels: reactivación educación salud mujer pobreza</code></pre>
+<p>También podemos crear un <strong>factor ordenado</strong> para
+almacenar información de una variable categórica ordinal. Es casi la
+misma ruta, solo que añadiremos una función más para convertir el factor
+en ordinal. Creemos un factor ordinal ficticio que contenga el nivel de
+ejecución que el Estado ha mostrado en las categorías presupuestales
+correspondientes a las prioridades, donde 1=Mala, 2=Intermedia y 3=
+Buena.</p>
+<pre class="r"><code>Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
+Ejecucion=factor(Ejecucion) #Lo convertimos en factor
+levels(Ejecucion)=c(&quot;Mala&quot;,&quot;Intermedia&quot;,&quot;Buena&quot;) #asignamos los niveles al factor
+Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal
+Ejecucion #Visualizamos</code></pre>
+<pre><code>## [1] Buena      Intermedia Intermedia Mala       Intermedia
+## Levels: Mala &lt; Intermedia &lt; Buena</code></pre>
+<p>Finalmente, los <strong>data frames</strong> nos permite almacenar un
+conjunto de datos, es decir una base de datos (bbdd) que tiene filas y
+columnas. Creemos la base de datos “PP2021” que contenga todos los
+objetos que hemos creado:</p>
+<pre class="r"><code>PP2021 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
+PP2021 # Visualice la base de datos</code></pre>
+<pre><code>##      Prioridad Presupuesto_millones  Ejecucion
+## 1 reactivación                 9879      Buena
+## 2    educación                33132 Intermedia
+## 3        salud                20991 Intermedia
+## 4        mujer                  690       Mala
+## 5      pobreza                 5392 Intermedia</code></pre>
+<pre class="r"><code>str(PP2021) # Visualice la estructura de la bbdd</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5 obs. of  3 variables:
+##  $ Prioridad           : Factor w/ 5 levels &quot;reactivación&quot;,..: 1 2 3 4 5
+##  $ Presupuesto_millones: num  9879 33132 20991 690 5392
+##  $ Ejecucion           : Ord.factor w/ 3 levels &quot;Mala&quot;&lt;&quot;Intermedia&quot;&lt;..: 3 2 2 1 2</code></pre>
+<pre class="r"><code>names(PP2021) #Visualice los nombres de las variables de la bbdd</code></pre>
+<pre><code>## [1] &quot;Prioridad&quot;            &quot;Presupuesto_millones&quot; &quot;Ejecucion&quot;</code></pre>
+<p>Cuando queramos invocar una variable específica de una base de datos
+utilizaremos <strong>“$”</strong>, entre la base de datos y la variable
+que queremos invocar.</p>
+<pre class="r"><code>PP2021$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
+<pre><code>## [1] reactivación educación    salud        mujer        pobreza     
+## Levels: reactivación educación salud mujer pobreza</code></pre>
+<pre class="r"><code>class(PP2021$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
+<pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
 <hr />
 <hr />
-<p><a id='part3'></a></p>
+<p><a id='part4'></a></p>
 </div>
 <div id="análisis-descriptivo-en-r" class="section level2">
-<h2>3. Análisis descriptivo en R</h2>
+<h2>4. Análisis descriptivo en R</h2>
 <pre class="r"><code>library(rio)    
 data=import(&quot;Mosteller.csv&quot;) </code></pre>
 <p>Esta base de datos pertenece al siguiente paper <a
