@@ -14,7 +14,7 @@ output:
 
 # Sumilla
 
-PROBANDOPUSH Introducción al análisis cuantitativo en ciencia política. Definición de variables, indicadores y escalas de medición. Uso de bases de datos para el estudio de casos en ciencia política. Herramientas de estadística descriptiva para la exploración de casos: métodos tabulares y gráficos; estadísticos descriptivos univariables. De la descripción al planteamiento y comprobación de hipótesis. Estrategias para analizar la relación entre dos variables: construcción y lecturas de tablas de contingencia, y coeficientes de asociación. Pruebas de significancia estadística. Análisis de tres variables. Correlación e introducción al análisis de regresión.
+Introducción al análisis cuantitativo en ciencia política. Definición de variables, indicadores y escalas de medición. Uso de bases de datos para el estudio de casos en ciencia política. Herramientas de estadística descriptiva para la exploración de casos: métodos tabulares y gráficos; estadísticos descriptivos univariables. De la descripción al planteamiento y comprobación de hipótesis. Estrategias para analizar la relación entre dos variables: construcción y lecturas de tablas de contingencia, y coeficientes de asociación. Pruebas de significancia estadística. Análisis de tres variables. Correlación e introducción al análisis de regresión.
 
 # Presentación
 
