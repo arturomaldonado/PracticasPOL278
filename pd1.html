@@ -410,20 +410,10 @@ class="section level2">
 <div id="introducción-a-r" class="section level2">
 <h2><strong>Introducción a R</strong></h2>
 <p><a id='beginning'></a></p>
-<p>Vamos a hablar de tres estructuras de datos en R:</p>
-<ol style="list-style-type: decimal">
-<li><a href="#part1">¿Qué es R?</a></li>
-<li><a href="#part2">¿Qué podemos hacer con R?</a></li>
-<li><a href="#part3">Conceptos básicos para programar en R</a></li>
-<li><a href="#part4">Vectores</a></li>
-<li><a href="#part5">Data Frames</a></li>
-<li><a href="#part6">Descriptivos</a></li>
-</ol>
-<hr />
 <p><a id='part1'></a></p>
 </div>
-<div id="qué-es-r" class="section level2">
-<h2><strong>1. ¿Qué es R?</strong></h2>
+<div id="qué-es-r" class="section level1">
+<h1><strong>1. ¿Qué es R?</strong></h1>
 <p>R es un lenguaje de programación y un entorno de software libre y de
 código abierto utilizado para análisis estadístico y visualización de
 datos. Fue desarrollado por Ross Ihaka y Robert Gentleman en la
@@ -444,8 +434,8 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <hr />
 <p><a id='part2'></a></p>
 </div>
-<div id="qué-podemos-hacer-con-r" class="section level2">
-<h2><strong>2. ¿Qué podemos hacer con R?</strong></h2>
+<div id="qué-podemos-hacer-con-r" class="section level1">
+<h1><strong>2. ¿Qué podemos hacer con R?</strong></h1>
 <p><img src="QphacerR1.png" /></p>
 <p><img src="QphacerR2.png" /></p>
 <p><img src="QphacerR3.png" /></p>
@@ -453,16 +443,15 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <hr />
 <p><a id='part3'></a></p>
 </div>
-<div id="conceptos-básicos-para-programar-en-r" class="section level2">
-<h2><strong>3. Conceptos básicos para programar en R</strong></h2>
+<div id="conceptos-básicos-para-programar-en-r" class="section level1">
+<h1><strong>3. Conceptos básicos para programar en R</strong></h1>
 <p>Instalar <a href="http://www.r-project.org">R</a></p>
 <p>Instalar <a href="https://posit.co/downloads/">RStudio</a></p>
-</div>
-<div id="usando-r" class="section level2">
-<h2>Usando R</h2>
+<div id="usando-r" class="section level3">
+<h3>Usando R</h3>
 <p><img src="PrograR.png" /></p>
-<div id="configurar-el-directorio-de-trabajo" class="section level3">
-<h3><strong>3.1. Configurar el directorio de trabajo</strong></h3>
+<div id="configurar-el-directorio-de-trabajo" class="section level4">
+<h4><strong>3.1. Configurar el directorio de trabajo</strong></h4>
 <p>R funciona como un entorno temporal de trabajo, esto quiere decir que
 el usuario va agregando datos y objetos, pero si los análisis no son
 guardados se deberán repetir las instrucciones para obtener otra vez el
@@ -481,8 +470,8 @@ vamos a trabajar, la ubicamos y seleccionamos “Open”. Para verificar el
 cambio volvemos a digitar la función <strong>“getwd()”</strong> en la
 consola.</p>
 </div>
-<div id="sintaxis-y-objetos-en-r" class="section level3">
-<h3><strong>3.2. Sintaxis y objetos en R</strong></h3>
+<div id="sintaxis-y-objetos-en-r" class="section level4">
+<h4><strong>3.2. Sintaxis y objetos en R</strong></h4>
 <p>El uso de R es bastante intuitivo y sigue un patrón lógico. Está
 compuesto de códigos y la combinación de estos códigos genera una
 sintaxis. Asimismo, R guarda la información de nuestras observaciones y
@@ -533,9 +522,8 @@ class(data) #si quieren saber que clase de objeto es el que has creado, utilizam
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <p>¿Qué otro tipo de objetos existen?</p>
 </div>
-</div>
-<div id="tipos-de-objetos-en-r" class="section level2">
-<h2><strong>3.3. Tipos de objetos en R</strong></h2>
+<div id="tipos-de-objetos-en-r" class="section level4">
+<h4><strong>3.3. Tipos de objetos en R</strong></h4>
 <p>Una parte clave para iniciar el manejo del programa es identificar
 los diversos objetos que podemos crear, manipular y utilizar. Para la
 definición de objetos en R será necesario previamente tener claridad
@@ -614,34 +602,36 @@ Ejecucion #Visualizamos</code></pre>
 conjunto de datos, es decir una base de datos (bbdd) que tiene filas y
 columnas. Creemos la base de datos “PP2021” que contenga todos los
 objetos que hemos creado:</p>
-<pre class="r"><code>PP2021 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
-PP2021 # Visualice la base de datos</code></pre>
+<pre class="r"><code>PP2023 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
+PP2023 # Visualice la base de datos</code></pre>
 <pre><code>##      Prioridad Presupuesto_millones  Ejecucion
 ## 1 reactivación                 9879      Buena
 ## 2    educación                33132 Intermedia
 ## 3        salud                20991 Intermedia
 ## 4        mujer                  690       Mala
 ## 5      pobreza                 5392 Intermedia</code></pre>
-<pre class="r"><code>str(PP2021) # Visualice la estructura de la bbdd</code></pre>
+<pre class="r"><code>str(PP2023) # Visualice la estructura de la bbdd</code></pre>
 <pre><code>## &#39;data.frame&#39;:    5 obs. of  3 variables:
 ##  $ Prioridad           : Factor w/ 5 levels &quot;reactivación&quot;,..: 1 2 3 4 5
 ##  $ Presupuesto_millones: num  9879 33132 20991 690 5392
 ##  $ Ejecucion           : Ord.factor w/ 3 levels &quot;Mala&quot;&lt;&quot;Intermedia&quot;&lt;..: 3 2 2 1 2</code></pre>
-<pre class="r"><code>names(PP2021) #Visualice los nombres de las variables de la bbdd</code></pre>
+<pre class="r"><code>names(PP2023) #Visualice los nombres de las variables de la bbdd</code></pre>
 <pre><code>## [1] &quot;Prioridad&quot;            &quot;Presupuesto_millones&quot; &quot;Ejecucion&quot;</code></pre>
 <p>Cuando queramos invocar una variable específica de una base de datos
 utilizaremos <strong>“$”</strong>, entre la base de datos y la variable
 que queremos invocar.</p>
-<pre class="r"><code>PP2021$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
+<pre class="r"><code>PP2023$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
 <pre><code>## [1] reactivación educación    salud        mujer        pobreza     
 ## Levels: reactivación educación salud mujer pobreza</code></pre>
-<pre class="r"><code>class(PP2021$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
+<pre class="r"><code>class(PP2023$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
 <hr />
 <p><a id='part4'></a></p>
 </div>
-<div id="análisis-descriptivo-en-r" class="section level2">
-<h2>4. Análisis descriptivo en R</h2>
+</div>
+</div>
+<div id="análisis-descriptivo-en-r" class="section level1">
+<h1><strong>4. Análisis descriptivo en R</strong></h1>
 <pre class="r"><code>library(rio)    
 data=import(&quot;Mosteller.csv&quot;) </code></pre>
 <p>Esta base de datos pertenece al siguiente paper <a
@@ -684,9 +674,8 @@ parte de su base de datos para el análisis descriptivo.</p>
 <p>El contenido de cada variable lo podemos ver en la siguiente
 tabla:</p>
 <p><img src="diccionario.png" width="40%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="configuración-de-las-variables" class="section level2">
-<h2>3.1. Configuración de las variables</h2>
+<div id="configuración-de-las-variables" class="section level4">
+<h4><strong>4.1. Configuración de las variables</strong></h4>
 <p>Siempre antes de comenzar a realizar nuestro análisis, debemos
 identificar la estructura de las variables y verificar que estén bien
 “configuradas”. Es decir que la escala de la variable coincida con el
@@ -739,20 +728,17 @@ table(data$hsgrad) </code></pre>
 numéricas y están configuradas como vectores numéricos de números
 enteros (integer) por lo cual lo dejamos así.</p>
 </div>
-<div id="media-y-mediana" class="section level2">
-<h2>Media y mediana</h2>
+<div id="media-y-mediana" class="section level4">
+<h4>4.2 Media y mediana</h4>
 <p>Entonces, una vez configurados adecuadamente nuestros
 <strong>objetos</strong>, pidamos los estadísticos de tendencia central
 para nuestras variables.</p>
 <p>Antes instalamos algunos paquetes que utilizaremos</p>
 <ul>
-<li><p><strong>install.packages(“DescTools”)</strong> para pedir los
-estadísticos de tendencia central</p></li>
-<li><p><strong>install.packages(“e1071”)</strong> para asimetría y
-curtosis</p></li>
+<li><strong>install.packages(“DescTools”)</strong> para pedir los
+estadísticos de tendencia central</li>
 </ul>
 <p>Las variables solicitadas son classtype y hsgrad</p>
-<pre><code></code></pre>
 <p><strong>Para “g4math” podemos:</strong></p>
 <pre class="r"><code>library(DescTools)
 mean(data$g4math) #este comando nos permitirá calcular la media</code></pre>
@@ -763,6 +749,7 @@ median(data$g4math) #este comando nos permitirá calcular la mediana</code></pre
 <pre><code>## [1] 712</code></pre>
 <hr />
 <p><br></br> <a href="#beginning">Go to page beginning</a></p>
+</div>
 </div>
 
 

@@ -2,13 +2,17 @@
 title: "Práctica dirigida 1"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
     toc_depth: 1
     theme: cosmo
     highlight: textmate
+    always_allow_html: true
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 <center><img src=" " width="200"/></center>
@@ -27,20 +31,9 @@ knitr::include_graphics("logoPUCP.png")
 
 <a id='beginning'></a>
 
-Vamos a hablar de tres estructuras de datos en R:
-
-1.  [¿Qué es R?](#part1)
-2.  [¿Qué podemos hacer con R?](#part2)
-3.  [Conceptos básicos para programar en R](#part3)
-4.  [Vectores](#part4)
-5.  [Data Frames](#part5)
-6.  [Descriptivos](#part6)
-
-------------------------------------------------------------------------
-
 <a id='part1'></a>
 
-## **1. ¿Qué es R?**
+# **1. ¿Qué es R?**
 
 R es un lenguaje de programación y un entorno de software libre y de código abierto utilizado para análisis estadístico y visualización de datos. Fue desarrollado por Ross Ihaka y Robert Gentleman en la Universidad de Auckland, Nueva Zelanda, en 1993. Desde entonces, ha sido ampliamente adoptado por la comunidad científica y empresarial como una herramienta esencial para el análisis y la visualización de datos.
 
@@ -56,7 +49,7 @@ embed_youtube("ZCQHm63xc4s")
 
 <a id='part2'></a>
 
-## **2. ¿Qué podemos hacer con R?**
+# **2. ¿Qué podemos hacer con R?**
 
 ![](QphacerR1.png)
 
@@ -70,17 +63,17 @@ embed_youtube("ZCQHm63xc4s")
 
 <a id='part3'></a>
 
-## **3. Conceptos básicos para programar en R**
+# **3. Conceptos básicos para programar en R**
 
 Instalar [R](http://www.r-project.org)
 
 Instalar [RStudio](https://posit.co/downloads/)
 
-## Usando R
+### Usando R
 
 ![](PrograR.png)
 
-### **3.1. Configurar el directorio de trabajo**
+#### **3.1. Configurar el directorio de trabajo**
 
 R funciona como un entorno temporal de trabajo, esto quiere decir que el usuario va agregando datos y objetos, pero si los análisis no son guardados se deberán repetir las instrucciones para obtener otra vez el resultado. Por esta razón, es preciso configurar una carpeta predeterminada en nuestro ordenador, donde el programa buscará los archivos a ejecutar y guardará los archivos a conservar con cambios.
 
@@ -92,7 +85,7 @@ getwd()
 
 Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú "Session" \> "Set Working Directory" \> "Choose Directory". Esto abrirá una ventana emergente, donde buscaremos la carpeta en la cual vamos a trabajar, la ubicamos y seleccionamos "Open". Para verificar el cambio volvemos a digitar la función **"getwd()"** en la consola.
 
-### **3.2. Sintaxis y objetos en R**
+#### **3.2. Sintaxis y objetos en R**
 
 El uso de R es bastante intuitivo y sigue un patrón lógico. Está compuesto de códigos y la combinación de estos códigos genera una sintaxis. Asimismo, R guarda la información de nuestras observaciones y variables a través de objetos.
 
@@ -125,7 +118,7 @@ class(data) #si quieren saber que clase de objeto es el que has creado, utilizam
 
 ¿Qué otro tipo de objetos existen?
 
-## **3.3. Tipos de objetos en R**
+#### **3.3. Tipos de objetos en R**
 
 Una parte clave para iniciar el manejo del programa es identificar los diversos objetos que podemos crear, manipular y utilizar. Para la definición de objetos en R será necesario previamente tener claridad teórica sobre lo que es una variable categórica nominal, categórica ordinal, numérica discreta y numérica continua.
 
@@ -173,24 +166,24 @@ Ejecucion #Visualizamos
 Finalmente, los **data frames** nos permite almacenar un conjunto de datos, es decir una base de datos (bbdd) que tiene filas y columnas. Creemos la base de datos "PP2021" que contenga todos los objetos que hemos creado:
 
 ```{r}
-PP2021 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
-PP2021 # Visualice la base de datos
-str(PP2021) # Visualice la estructura de la bbdd
-names(PP2021) #Visualice los nombres de las variables de la bbdd
+PP2023 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
+PP2023 # Visualice la base de datos
+str(PP2023) # Visualice la estructura de la bbdd
+names(PP2023) #Visualice los nombres de las variables de la bbdd
 ```
 
 Cuando queramos invocar una variable específica de una base de datos utilizaremos **"\$"**, entre la base de datos y la variable que queremos invocar.
 
 ```{r}
-PP2021$Prioridad #invocamos la variable prioridad de la base de datos
-class(PP2021$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd
+PP2023$Prioridad #invocamos la variable prioridad de la base de datos
+class(PP2023$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd
 ```
 
 ------------------------------------------------------------------------
 
 <a id='part4'></a>
 
-## 4. Análisis descriptivo en R
+# **4. Análisis descriptivo en R**
 
 ```{r, results="hide"}
 library(rio)    
@@ -218,7 +211,7 @@ El contenido de cada variable lo podemos ver en la siguiente tabla:
 knitr::include_graphics("diccionario.png")
 ```
 
-## 3.1. Configuración de las variables
+#### **4.1. Configuración de las variables**
 
 Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la estructura de las variables y verificar que estén bien "configuradas". Es decir que la escala de la variable coincida con el objeto en R.
 
@@ -254,7 +247,7 @@ str(data$hsgrad)
 
 **"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer) por lo cual lo dejamos así.
 
-## Media y mediana
+#### 4.2 Media y mediana
 
 Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables.
 
@@ -262,12 +255,7 @@ Antes instalamos algunos paquetes que utilizaremos
 
 -   **install.packages("DescTools")** para pedir los estadísticos de tendencia central
 
--   **install.packages("e1071")** para asimetría y curtosis
-
 Las variables solicitadas son classtype y hsgrad
-
-```{}
-```
 
 **Para "g4math" podemos:**
 
