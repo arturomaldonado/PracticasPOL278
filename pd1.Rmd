@@ -11,9 +11,7 @@ output:
     highlight: textmate
 ---
 
-<br>
 
-<<<<<<< HEAD
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -59,7 +57,7 @@ embed_youtube("ZCQHm63xc4s")
 
 <a id='part2'></a>
 
-## ** 2. ¿Qué podemos hacer con R? **
+## **2. ¿Qué podemos hacer con R?**
 
 ![](QphacerR1.png)
 
@@ -73,7 +71,7 @@ embed_youtube("ZCQHm63xc4s")
 
 <a id='part3'></a>
 
-## ** 3. Conceptos básicos para programar en R **
+## **3. Conceptos básicos para programar en R**
 
 Instalar [R](http://www.r-project.org)
 
@@ -125,6 +123,7 @@ Antes que todo, debemos instalar el paquete escribiendo en la consola: install.p
 ```{r}
 library(rio) #Convocamos el paquete   
 data=import("Mosteller.csv") #Utilizamos la función import que creará un objeto en R que contenga la base de datos del archivo "Mosteller.csv" que hemos descargado. Podemos verificar la creación en el environment
+
 class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función "class" y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un "data frame", es el tipo de objeto en R para las bases de datos.
 ```
 
@@ -196,7 +195,6 @@ class(PP2021$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd
 
 ------------------------------------------------------------------------
 
-------------------------------------------------------------------------
 
 <a id='part4'></a>
 
@@ -571,13 +569,4 @@ Pueden conocer más sobre cómo editar y personalizar sus gráficos en el siguie
 -   Seleccione dos variables y realice un boxplot. Justifique su elección de variables y analice los resultados.
 
 <br></br> [Go to page beginning](#beginning) [Go to page beginning](#beginning)
-=======
-En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
 
-```{r}
-
-```
-
-esto es una prueba
-
->>>>>>> a7737d46809a6eb45532c7202e0bc0478153aef0
