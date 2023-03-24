@@ -445,7 +445,7 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <p><a id='part2'></a></p>
 </div>
 <div id="qué-podemos-hacer-con-r" class="section level2">
-<h2>** 2. ¿Qué podemos hacer con R? **</h2>
+<h2><strong>2. ¿Qué podemos hacer con R?</strong></h2>
 <p><img src="QphacerR1.png" /></p>
 <p><img src="QphacerR2.png" /></p>
 <p><img src="QphacerR3.png" /></p>
@@ -454,7 +454,7 @@ programación, lo cual ha significado su uso en diversos rubros.</p>
 <p><a id='part3'></a></p>
 </div>
 <div id="conceptos-básicos-para-programar-en-r" class="section level2">
-<h2>** 3. Conceptos básicos para programar en R **</h2>
+<h2><strong>3. Conceptos básicos para programar en R</strong></h2>
 <p>Instalar <a href="http://www.r-project.org">R</a></p>
 <p>Instalar <a href="https://posit.co/downloads/">RStudio</a></p>
 </div>
@@ -528,13 +528,14 @@ datos de diversas extensiones (dta, sav, csv, xls, etc.)</p>
 consola: install.packages(“rio”)</p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
 data=import(&quot;Mosteller.csv&quot;) #Utilizamos la función import que creará un objeto en R que contenga la base de datos del archivo &quot;Mosteller.csv&quot; que hemos descargado. Podemos verificar la creación en el environment
+
 class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función &quot;class&quot; y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un &quot;data frame&quot;, es el tipo de objeto en R para las bases de datos.</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <p>¿Qué otro tipo de objetos existen?</p>
 </div>
 </div>
 <div id="tipos-de-objetos-en-r" class="section level2">
-<h2><strong>1.3. Tipos de objetos en R</strong></h2>
+<h2><strong>3.3. Tipos de objetos en R</strong></h2>
 <p>Una parte clave para iniciar el manejo del programa es identificar
 los diversos objetos que podemos crear, manipular y utilizar. Para la
 definición de objetos en R será necesario previamente tener claridad
@@ -750,9 +751,8 @@ estadísticos de tendencia central</p></li>
 <li><p><strong>install.packages(“e1071”)</strong> para asimetría y
 curtosis</p></li>
 </ul>
-<p>Las variables solicitadas son race, classtype y hsgrad</p>
-<p><strong>Para “race” podemos:</strong></p>
-<pre class="r"><code>#AÑADIR EJEMPLO</code></pre>
+<p>Las variables solicitadas son classtype y hsgrad</p>
+<pre><code></code></pre>
 <p><strong>Para “g4math” podemos:</strong></p>
 <pre class="r"><code>library(DescTools)
 mean(data$g4math) #este comando nos permitirá calcular la media</code></pre>
@@ -762,295 +762,7 @@ mean(data$g4math) #este comando nos permitirá calcular la media</code></pre>
 median(data$g4math) #este comando nos permitirá calcular la mediana</code></pre>
 <pre><code>## [1] 712</code></pre>
 <hr />
-<p>En la sesión anterior, revisamos la lógica de la sintaxis en R, así
-como algunos conceptos importantes para entender la manera en que
-funciona este lenguaje de programación estadístico: listas, vectores y
-data frames.</p>
-<p>En esta sesión reforzaremos todo lo relacionado con el análisis
-descriptivo univariado de datos en R, junto con algunos ejercicios
-gráficos e introducción al lenguaje del paquete
-<strong>ggplot2</strong>, una librería muy usada para visualización de
-datos en este programa. ¡Empezamos!</p>
-</div>
-<div id="recordando-la-sesión-pasada" class="section level2">
-<h2>Recordando la sesión pasada:</h2>
-<p>En las sesiones previas hemos visto que hay este tipo de
-variables:</p>
-<table>
-<colgroup>
-<col width="8%" />
-<col width="91%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Tipo</th>
-<th>Descripción</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Variables nominales</strong></td>
-<td><p>Género (Hombre=1, Mujer=2). Religión (Católico=1, Evangélico=2,
-Otro=3). Región (Lima=1, Arequipa=2, La Libertad =3).</p>
-<p>Partido del presidente (Perú Libre=1, APP=2, PPC=3)</p></td>
-</tr>
-<tr class="even">
-<td><strong>Variables ordinales</strong></td>
-<td>Educación (Analf=0, Prim=1, Sec=2, Tec=3, Univ=4, Post=5).
-Importancia de religión en su vida (Nada importante=1, Poco
-importante=2, Algo importante=3, Muy importante=4). Nivel de
-satisfacción con la democracia (Muy instafisfecho=1, Insatisfecho=2,
-Satisfecho=3, Muy satisfecho=4).</td>
-</tr>
-<tr class="odd">
-<td><strong>Variables continuas</strong></td>
-<td>Estatura, peso, ingreso mensual,extensión, PBI per cápita, % de
-participación electoral.</td>
-</tr>
-<tr class="even">
-<td><strong>Variables discretas</strong></td>
-<td>Número de hijos, edad, número de revocatorias, número de postas
-médicas, población.</td>
-</tr>
-</tbody>
-</table>
-<p>En R, las variables nominales se denominan <strong>factores</strong>,
-las variables ordinales como <strong>factores ordinale</strong>s y las
-variables continuas y discretas como <strong>num</strong>. En algunos
-casos, se puede encontrar lectura de variables como <strong>int</strong>
-(<em>interger</em>), que también son variables numéricas.</p>
-<p>De forma similar, tenemos algunas medidas de tendencia central, de
-dispersión y de distribución de datos según el tipo de variable que nos
-encontramos analizando:</p>
-<p><img src="medidas.png" width="60%" style="display: block; margin: auto;" /></p>
-<p>En línea con ello, también tenemos algunos gráficos según el tipo de
-variable de interés:</p>
-<p><img src="graphs.png" width="70%" style="display: block; margin: auto;" /></p>
-<p>Hay una infinidad de gráficos a los que se puede recurrir dependiendo
-del interés de la investigadora o el investigador. Aquí hay algunos
-ejemplos útiles: <a href="https://www.data-to-viz.com/"
-class="uri">https://www.data-to-viz.com/</a></p>
-<p>¿Por qué es importante la visualización de datos? Graficar data ayuda
-a contar historias y, sobre todo, <strong>dar un sentido</strong> a los
-cientos, miles, o incluso millones de filas de datos que con las que
-podríamos eventualmente trabajar, facilitando la comprensión de la
-información.</p>
-<p>En tanto la finalidad de la visualización de datos es ayudar a una
-mejor comprensión de la información, hay que tener cuidado con algunos
-gráficos como, por ejemplo, el gráfico de sectores o <strong>pie
-chart</strong>. A pesar de que la variable que estamos analizando
-permita utilizar este gráfico, hay buenas razones para no usarlo, y por
-qué es muchas veces mejor un gráfico de barras: <a
-href="https://www.data-to-viz.com/caveat/pie.html"
-class="uri">https://www.data-to-viz.com/caveat/pie.html</a></p>
-</div>
-<div id="análisis-descriptivo-y-gráficos-según-tipo-de-variables"
-class="section level2">
-<h2>Análisis descriptivo y gráficos según tipo de variables:</h2>
-<p>Vamos a empezar con los análisis. Carguemos la data
-<em>fsi_democracy-index.xlsx</em>, del proyecto <strong>Fragile State
-Index</strong>. Esta base de datos se compone de doce indicadores de
-riesgo, que permiten medir la condición de diferentes Estados en un
-momento determinado del tiempo. Esto es de suma importancia, ya que de
-su fortaleza depende en gran medida el efectivo desarrollo de políticas
-públicas orientadas a la ciudadanía.</p>
-<p>Más sobre la base y los indicadores por acá: <a
-href="https://fragilestatesindex.org/indicators/"
-class="uri">https://fragilestatesindex.org/indicators/</a></p>
-<pre class="r"><code>library(rio) #Convocamos el paquete   
-data=import(&quot;fsi_democracy-index.xlsx&quot;) 
-str(data)</code></pre>
-<ol style="list-style-type: decimal">
-<li>Análisis de variables nominales:</li>
-</ol>
-<p>A esta base de datos, sin embargo, se le ha incluido el índice de
-democracia, un indicador que da cuenta de las características del
-régimen político de cada país. Exploremos esta variable:</p>
-<pre class="r"><code>#Esto debemos modificarlo:
-class(data$Type)
-table(data$Type)</code></pre>
-<p>¿Cómo está medida la variable?</p>
-<p>Tal vez eso no es lo más recomendable para el análisis. Démosle el
-formato debido:</p>
-<pre class="r"><code>data$Type = factor(data$Type, levels = c(&quot;Authoritarian regime&quot;, &quot;Hybrid regime&quot;, &quot;Flawed democracy&quot;, &quot;Full democracy&quot;))
-str(data$Type)</code></pre>
-<p>Exploremos las frecuencias. Una forma de obtener las frecuencias de
-cada categoría, así como las frecuencias relativas porcentuales es con
-la función <strong>table</strong> :</p>
-<pre class="r"><code>table(data$Type) #hacemos una tabla de frecuencia
-prop.table(table(data$Type))*100</code></pre>
-<p>¡Hora de graficar! La comunidad de R ha creado muchos paquetes o
-librerías para visualizar datos de una forma más didáctica y atractiva.
-Un ejemplo de ello es <strong>ggplot2</strong>, una librería muy
-utilizada para visualizar datos. <strong>ggplot2</strong> tiene un
-lenguaje propio, y los códigos pueden resultar algo largos, pero es muy
-intuitivo y permite manipular mucho los resultados.</p>
-<p>Más información sobre el lenguaje de <strong>ggplot2</strong>: <a
-href="https://www.rstudio.com/wp-content/uploads/2015/04/ggplot2-spanish.pdf"
-class="uri">https://www.rstudio.com/wp-content/uploads/2015/04/ggplot2-spanish.pdf</a></p>
-<p>Llamemos la librería y veamos qué opciones tiene para analizar
-nuestra variable:</p>
-<pre class="r"><code>grafico1 &lt;- table(data$Type) #creamos un objeto que contenga la tabla de frecuencias dela variable
-
-#Volvamos nuestro objeto un dataframe:
-grafico1 = as.data.frame(grafico1)
-
-#Para cambiar los nombres de las columnas: es un código frecuente para dar mayor orden a una base de datos
-colnames(grafico1) = c(&quot;Reg&quot;,&quot;Freq&quot;)</code></pre>
-<pre class="r"><code>library(ggplot2) #llamamos a ggplot2
-ggplot(grafico1, aes(x=&quot;&quot;, y=Freq, fill=Reg)) + #Seleccionamos las variables
-  geom_bar(stat=&quot;identity&quot;, width=1)+ #Agregando capas
-  coord_polar(&quot;y&quot;, start=0) #Coordenadas cartesianas</code></pre>
-<pre class="r"><code>#Para eliminar elementos innecesarios del gráfico:
-
-ggplot(grafico1, aes(x=&quot;&quot;, y=Freq, fill=Reg)) +
-  ggtitle(&quot;Índice de democracia&quot;) + #Agregamos el título
-  geom_bar(stat=&quot;identity&quot;, width=1, color=&quot;white&quot;) +
-  coord_polar(&quot;y&quot;, start=0) +
-    theme_void() #Con esto quitamos los elementos no requeridos</code></pre>
-<pre class="r"><code>#Podemos escoger los colores que consideramos:
-
-pc=ggplot(grafico1, aes(x=&quot;&quot;, y=Freq, fill=Reg)) +
-  ggtitle(&quot;Índice de democracia&quot;) + #Agregamos el título
-  geom_bar(stat=&quot;identity&quot;, width=1, color=&quot;white&quot;) +
-  coord_polar(&quot;y&quot;, start=0) +
-  guides(fill=guide_legend(title=&quot;Régimen&quot;))+ #añadimos título a la leyenda
-  theme_void() #Con esto quitamos los elementos no requeridos
-
-pc + scale_fill_manual(values=c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#00FF7F&quot;, &quot;#008B8B&quot;,&quot;#D8BFD8&quot;)) #Pintamos y seleccionamos los colores manualmente</code></pre>
-<pre class="r"><code>#Escogiendo una paleta en específico: aquí ya no escogemos los colores
-pc + scale_fill_brewer(palette=&quot;Dark2&quot;)</code></pre>
-<div id="más-sobre-personalizar-nuestros-gráficos"
-class="section level3">
-<h3>Más sobre personalizar nuestros gráficos</h3>
-<p>La ventaja de que R sea un software libre es que permite a la
-comunidad hacer cosas muy interesantes e innovadoras, hasta una paleta
-con colores de los albums de Taylor Swift para pintar nuestros
-gráficos!</p>
-<p>Instalamos esto en R y llamamos a la librería “taylor”</p>
-<p>remotes::install_github(“wjakethompson/taylor”)</p>
-<p>Más información sobre esta librería por aquí: <a
-href="https://taylor.wjakethompson.com/index.html"
-class="uri">https://taylor.wjakethompson.com/index.html</a></p>
-<pre class="r"><code>library(taylor)
-pc + scale_fill_taylor_d(album=&quot;red&quot;) </code></pre>
-<p>Pero, de nuevo, mejor no usar pie charts. Veamos cómo trabajar con
-esta librería para hacer un gráfico de barras:</p>
-<pre class="r"><code>ggplot(grafico1, aes(x=Reg, y=Freq)) + 
-  geom_bar(stat = &quot;identity&quot;)</code></pre>
-<p>Demos formato a algunas cosas:</p>
-<pre class="r"><code>ggplot(grafico1, aes(x=reorder(Reg,Freq), y=Freq, fill=Reg)) + #Para ordenar el gráfico
-  geom_bar(stat = &quot;identity&quot;) +
-    coord_flip() #Para voltearlo</code></pre>
-<pre class="r"><code>ggplot(grafico1, aes(x=reorder(Reg,Freq), y=Freq, fill=Reg)) + #Para ordenar el gráfico
-  geom_bar(stat = &quot;identity&quot;) +
-    coord_flip() + #Para voltear las barras
-    labs(title=&quot;Índice de democracia&quot;, y=&quot;Frecuencias&quot;, x=&quot;Categorías&quot;)</code></pre>
-<pre class="r"><code>ggplot(grafico1, aes(x=reorder(Reg,Freq), y=Freq, fill=Reg)) + #Para ordenar el gráfico
-  geom_bar(stat = &quot;identity&quot;) +
-    coord_flip() + 
-    labs(title=&quot;Índice de democracia&quot;, y=&quot;Frecuencias&quot;, x=&quot;Categorías&quot;)+
-    theme(plot.title = element_text(hjust = 1)) + #Posición del título
-    theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))  #Fondo y contorno blanco</code></pre>
-<pre class="r"><code>bp = ggplot(grafico1, aes(x=reorder(Reg,Freq), y=Freq, fill=Reg)) + 
-  geom_bar(stat = &quot;identity&quot;) +
-    coord_flip() + 
-    labs(title=&quot;Índice de democracia&quot;, y=&quot;Frecuencias&quot;, x=&quot;Categorías&quot;)+
-    theme(plot.title = element_text(hjust = 1)) + 
-    theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) + 
-    geom_text(aes(label=Freq), vjust=0.5, color=&quot;gray&quot;, size=5) #Frecuencias en las barras
-   
-
-bp + scale_fill_taylor_d(album=&quot;Lover&quot;) #Paleta de colores. Lover es un gran álbum!</code></pre>
-<p>En conclusión, la democracia plena no es algo que abunde en el mundo.
-Esta variable es de naturaleza ordinal. Las variables numéricas se
-tratan de la misma manera, pero no es necesario especificar los levels
-al momento de convertir la variable a factor.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Análisis de variables numéricas</li>
-</ol>
-<p>Ahora, veamos algunas medidas de tendencia central, distribución y
-dispersión para el caso de variables numéricas. Trabajemos con la
-variable <em>state legitimacy</em>, indicador que evalúa la
-representatividad y apertura del gobierno, y la manera como interactúa
-con la ciudadanía. Se toman en cuenta los niveles de confianza en las
-instituciones, demostraciones de desobediencia civil e insurgencias
-armadas.</p>
-<p>Más información del indicador por acá: <a
-href="https://fragilestatesindex.org/indicators/p1/"
-class="uri">https://fragilestatesindex.org/indicators/p1/</a></p>
-<p>Primero cambiemos los nombres de las variables. R funciona mejor
-así</p>
-<pre class="r"><code>names(data) #Para ver los nombres
-
-colnames(data) = c(&quot;Country&quot;,&quot;Year&quot;,&quot;Rank&quot;,&quot;Score_Frag_States&quot;,&quot;Security&quot;,&quot;Elites&quot;,&quot;G_Grivance&quot;,&quot;Economy&quot;,&quot;Inequality&quot;,&quot;B_Drain&quot;,&quot;State_Legit&quot;,&quot;P_Services&quot;,&quot;Hum_Rights&quot;,&quot;Demo_Press&quot;,&quot;Refugees&quot;,&quot;Interven&quot;,&quot;Democracy_Score&quot;,&quot;Type&quot;)
-
-class(data$State_Legit) #Esta bien medida!</code></pre>
-<p>Exploremos la variable. Veamos medidas de tendencia central. Ojo con
-cómo está medido: 10 es un Estado que posee un alto grado de
-ilegitimidad (o presión). 0 un Estado con poca presión o alta
-legitimidad desde la ciudadanía.</p>
-<pre class="r"><code>summary(data$State_Legit) #Ojo con los casos perdidos:
-sd(data$State_Legit) 
-var(data$State_Legit) #veamos la varianza
-rango=max(data$State_Legit)-min(data$State_Legit)
-rango</code></pre>
-<p>Veamos qué nos dicen los gráficos. Veamos qué cosas trae
-<strong>ggplot2</strong>. ¿Encontraremos diferentes según las
-características del régimen político? ¿Qué conclusiones podríamos sacar
-de estos gráficos?:</p>
-<pre class="r"><code>ggplot(data, aes(x=&quot;&quot;, y=State_Legit)) +  geom_boxplot()</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=Type, y=State_Legit)) +  geom_boxplot()</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=Type, y=State_Legit)) + 
-  geom_boxplot() + coord_flip() #Volteamos el gráfico</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + #Damos color
-  geom_boxplot() + coord_flip() #Volteamos el gráfico</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + 
-  geom_boxplot() + coord_flip() + #Volteamos el gráfico
-  theme(legend.position = &quot;top&quot;)</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + 
-  geom_boxplot() + coord_flip() + #Volteamos el gráfico
- 
-   theme(legend.position = &quot;top&quot;, axis.text.y = element_blank(), 
-        panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) + #Quitamos categorías
-  
-  geom_jitter(shape=16, position=position_jitter(0.2)) + #Agregamos los casos como puntos
-  
-  labs(title = &quot;Legitimidad estatal según el tipo de régimen político&quot;, x=&quot;&quot;, y=&quot;Index&quot;)</code></pre>
-<p>Finalmente, también podemos sacar un histograma para visualizar estos
-datos. Utilicemos <strong>ggplot2</strong> para agregar más detalles al
-gráfico como en los casos previos:</p>
-<pre class="r"><code>ggplot(data, aes(x=State_Legit)) + 
-  geom_histogram()</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=State_Legit)) + 
-  geom_histogram() + 
-    labs(title=&quot;Legitimidad estatal&quot;, y=&quot;Conteo&quot;, x=&quot;Score&quot;)+
-    theme(plot.title = element_text(hjust = 0.5)) + 
-    theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) +
-    geom_vline(aes(xintercept=mean(State_Legit, na.rm = T)),
-            color=&quot;blue&quot;, linetype=&quot;dashed&quot;, size=1)</code></pre>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre class="r"><code>ggplot(data, aes(x=State_Legit, color = Type)) + 
-  geom_histogram(fill=&quot;white&quot;,alpha=0.5, position=&quot;identity&quot;) + 
-    labs(title=&quot;Legitimidad estatal&quot;, y=&quot;Conteo&quot;, x=&quot;IMC&quot;)+
-    theme(plot.title = element_text(hjust = 0.5)) + 
-    theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<pre class="r"><code>  #scale_color_brewer(palette=&quot;Pastel2&quot;)</code></pre>
-<p>Pueden conocer más sobre cómo editar y personalizar sus gráficos en
-el siguiente enlace: <a href="https://r-charts.com/es/ggplot2/"
-class="uri">https://r-charts.com/es/ggplot2/</a></p>
-<p><strong><em>Ejercicios</em></strong></p>
-<ul>
-<li>Seleccione dos variables y realice un boxplot. Justifique su
-elección de variables y analice los resultados.</li>
-</ul>
-<p><br></br> <a href="#beginning">Go to page beginning</a> <a
-href="#beginning">Go to page beginning</a></p>
-</div>
+<p><br></br> <a href="#beginning">Go to page beginning</a></p>
 </div>
 
 
