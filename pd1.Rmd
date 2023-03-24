@@ -13,6 +13,7 @@ output:
 
 <br>
 
+<<<<<<< HEAD
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -463,3 +464,13 @@ Pueden conocer más sobre cómo editar y personalizar sus gráficos en el siguie
 -   Seleccione dos variables y realice un boxplot. Justifique su elección de variables y analice los resultados.
 
 <br></br> [Go to page beginning](#beginning) [Go to page beginning](#beginning)
+=======
+En este documento veremos los códigos pertenecientes a la primera semana práctica del curso de Estadística I
+
+```{r}
+
+```
+
+esto es una prueba
+
+>>>>>>> a7737d46809a6eb45532c7202e0bc0478153aef0
