@@ -262,16 +262,20 @@ Las variables solicitadas son classtype y hsgrad
 
 ```{r}
 library(DescTools)
-mean(data$g4math) #este comando nos permitirá calcular la media
+library(tidyverse)
+
+data %>% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media
 ```
 
 **Para "g4math" podemos:**
 
 ```{r}
 library(DescTools)
-median(data$g4math) #este comando nos permitirá calcular la mediana
+data %>% summarise(mediana = median(g4math)) #este comando nos permitirá calcular la mediana
 ```
 
 ------------------------------------------------------------------------
+
+### Ejercicio: Calculemos la media y la mediana de la variable "g4reading"
 
 <br></br> [Go to page beginning](#beginning)
