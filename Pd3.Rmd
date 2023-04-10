@@ -177,8 +177,8 @@ ggplot(ic_grupo, aes(x= p04_1, y =ABros4.mean)) +
 
 ## Ejercicio
 
-Crea un indicador aditivo con las variables p03_1, p03_2 y p03_4 sobre el nivel de acuerdo con que el salir de la pobreza depende de uno mismo. El indicador debe de ir de 0 a 100, donde 0 es *muy en desacuerdo* y 10 es *muy de acuerdo.*
+Trabajemos con la variable p03_1: nivel de acuerdo con la frase "En el Perú todos tienen iguales oportunidades para salir de la pobreza", va del 1 (muy en desacuerdo) al 10 (muy de acuerdo)
 
--   ¿Cuál es el intervalo de confianza de la media del indicador?
+-   ¿Cuál es el intervalo de confianza de la media de la variable?
 
 -   ¿ Cuál es la diferencia del intervalo de confianza de la media según región natural? (variable region)
