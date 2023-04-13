@@ -21,6 +21,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 knitr::include_graphics("logoPUCP.png") 
 ```
 
+
+
 FACULTAD DE CIENCIAS SOCIALES - PUCP<br>
 
 Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1 <br>
