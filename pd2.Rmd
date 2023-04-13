@@ -2,13 +2,18 @@
 title: "Práctica dirigida 2"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
     toc_depth: 1
     theme: cosmo
     highlight: textmate
+    always_allow_html: true
+    output: pdf_document
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 <center><img src=" " width="200"/></center>
@@ -80,7 +85,9 @@ str(data)
 ```{r}
 names(data) #revisamos los nombres
 ```
+
 Renombramos las variables
+
 ```{r}
 colnames(data) = c("Country","Year","Rank","Score_Frag_States","Security","Elites","G_Grivance","Economy","Inequality","B_Drain","State_Legit","P_Services","Hum_Rights","Demo_Press","Refugees","Interven","Democracy_Score","Type")
 ```
@@ -138,13 +145,13 @@ tablaFreq
 ```{r}
 filter(data, Country =="PERU") 
 ```
+
 Revisamos más detalle sobre qué otros paises acompañan a Perú en su régimen.
+
 ```{r}
 FlawDemo=filter(data, Type =="Flawed democracy") 
 FlawDemo
 ```
-
-
 
 Grafiquemos los resultados con *ggplot2*
 
@@ -180,8 +187,6 @@ ggplot(graf1, aes(x=reorder(Type,Freq), y=Freq, fill=Type)) +
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajemos con la variable *state legitimacy*, indicador que evalúa la representatividad y apertura del gobierno, y la manera como interactúa con la ciudadanía. Se toman en cuenta los niveles de confianza en las instituciones, demostraciones de desobediencia civil e insurgencias armadas.
 
 Más información del indicador por acá: <https://fragilestatesindex.org/indicators/p1/>
-
-
 
 ```{r}
 class(data$State_Legit)
