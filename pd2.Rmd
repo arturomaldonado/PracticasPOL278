@@ -2,13 +2,15 @@
 title: "Práctica dirigida 2"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
     toc_depth: 1
     theme: cosmo
     highlight: textmate
+    always_allow_html: true
+    output: pdf_document
 ---
 
 

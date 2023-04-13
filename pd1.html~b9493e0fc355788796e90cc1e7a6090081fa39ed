@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 1</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 1</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
+<div
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2023---1"
+class="section level2">
+<h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2023 - 1 <br></h2>
+<hr />
+</div>
+<div id="introducción-a-r" class="section level2">
+<h2><strong>Introducción a R</strong></h2>
+<p><a id='beginning'></a></p>
+<p><a id='part1'></a></p>
+</div>
+<div id="qué-es-r" class="section level1">
+<h1><strong>1. ¿Qué es R?</strong></h1>
+<p>R es un lenguaje de programación y un entorno de software libre y de
+código abierto utilizado para análisis estadístico y visualización de
+datos. Fue desarrollado por Ross Ihaka y Robert Gentleman en la
+Universidad de Auckland, Nueva Zelanda, en 1993. Desde entonces, ha sido
+ampliamente adoptado por la comunidad científica y empresarial como una
+herramienta esencial para el análisis y la visualización de datos.</p>
+<p>R cuenta con una amplia variedad de paquetes y bibliotecas que
+permiten el análisis estadístico, la minería de datos, el aprendizaje
+automático, la visualización de datos y la generación de informes.
+Además, su sintaxis es relativamente sencilla, lo que facilita su
+aprendizaje y uso para personas con distintos niveles de experiencia en
+programación, lo cual ha significado su uso en diversos rubros.</p>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/ZCQHm63xc4s" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+<hr />
+<p><a id='part2'></a></p>
+</div>
+<div id="qué-podemos-hacer-con-r" class="section level1">
+<h1><strong>2. ¿Qué podemos hacer con R?</strong></h1>
+<p><img src="QphacerR1.png" /></p>
+<p><img src="QphacerR2.png" /></p>
+<p><img src="QphacerR3.png" /></p>
+<p><img src="QphacerR4.png" /></p>
+<hr />
+<p><a id='part3'></a></p>
+</div>
+<div id="conceptos-básicos-para-programar-en-r" class="section level1">
+<h1><strong>3. Conceptos básicos para programar en R</strong></h1>
+<p>Instalar <a href="http://www.r-project.org">R</a></p>
+<p>Instalar <a href="https://posit.co/downloads/">RStudio</a></p>
+<div id="usando-r" class="section level3">
+<h3>Usando R</h3>
+<p><img src="PrograR.png" /></p>
+<div id="configurar-el-directorio-de-trabajo" class="section level4">
+<h4><strong>3.1. Configurar el directorio de trabajo</strong></h4>
+<p>R funciona como un entorno temporal de trabajo, esto quiere decir que
+el usuario va agregando datos y objetos, pero si los análisis no son
+guardados se deberán repetir las instrucciones para obtener otra vez el
+resultado. Por esta razón, es preciso configurar una carpeta
+predeterminada en nuestro ordenador, donde el programa buscará los
+archivos a ejecutar y guardará los archivos a conservar con cambios.</p>
+<p>Para ver nuestro lugar de trabajo actual escribimos el siguiente
+comando (escriba el código en la consola, ya que si lo ejecuta desde
+este Rmd, obtendrá el lugar donde se encuentra este archivo):</p>
+<pre class="r"><code>getwd() </code></pre>
+<pre><code>## [1] &quot;/Users/Arturo/Documents/GitHub/PracticasPOL278&quot;</code></pre>
+<p>Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú
+“Session” &gt; “Set Working Directory” &gt; “Choose Directory”. Esto
+abrirá una ventana emergente, donde buscaremos la carpeta en la cual
+vamos a trabajar, la ubicamos y seleccionamos “Open”. Para verificar el
+cambio volvemos a digitar la función <strong>“getwd()”</strong> en la
+consola.</p>
+</div>
+<div id="sintaxis-y-objetos-en-r" class="section level4">
+<h4><strong>3.2. Sintaxis y objetos en R</strong></h4>
+<p>El uso de R es bastante intuitivo y sigue un patrón lógico. Está
+compuesto de códigos y la combinación de estos códigos genera una
+sintaxis. Asimismo, R guarda la información de nuestras observaciones y
+variables a través de objetos.</p>
+<p>En un sentido global, la estructura general de una sintaxis puede
+resumirse como sigue: a un objeto dado se le asigna el resultado de una
+función, que a su vez se ejecuta sobre un conjunto de datos
+especificado, con una serie de configuraciones particulares. Veamos el
+siguiente ejemplo ficticio.</p>
+<p><img src="Sintax.png" /></p>
+<p>Si se lee de izquierda a derecha, la línea de comando puede
+explicarse como sigue:</p>
+<ul>
+<li><p>Primero se indica un objeto a crear, con el nombre que ustedes
+definan.</p></li>
+<li><p>Luego se indica el asignador, que expresa que todo lo que esté a
+la derecha de la flecha se guardará en el objeto creado a la izquierda.
+El asignador puede ser “&lt;-” o también “=”, para motivos del curso
+usaremos este último.</p></li>
+<li><p>Luego viene la función que en este caso permite leer archivos
+tipo Microsoft Excel. R trabaja con funciones que están dentro de
+“paquetes” que la comunidad va desarrollando. Podemos hacer nuestras
+operaciones con diversas funciones, y no hay una sola forma de hacerlo.
+Si se trata de funciones que no están predeterminadas en R, debemos
+instalar el paquete que las contiene con el comando
+“install.packages()”, y antes de ejecutarla debemos abrir la libreria
+con el comando “library()”</p></li>
+<li><p>Luego de la función, se abre un paréntesis que contiene los
+argumentos: instrucciones que especifican ciertos detalles de lo que
+queramos que la función realice. Los argumentos pueden escribirse de
+distintas maneras y va a depender de lo que queramos hacer. En nuestro
+ejemplo: El primer argumento indica la información a leer, en este caso
+indica un archivo de tipo Excel (extensión xlsx). El segundo argumento
+indica la hoja del archivo a leer. El tercer argumento indica qué
+columnas se leerán de forma específica (en este caso, las primeras
+diez).</p></li>
+</ul>
+<p><strong>Hagamos un ejemplo:</strong></p>
+<p>Vamos a abrir un archivo en R, utilizando la función “import” del
+paquete “rio”, el cual es un paquete versátil que nos permite importar
+datos de diversas extensiones (dta, sav, csv, xls, etc.)</p>
+<p>Antes que todo, debemos instalar el paquete escribiendo en la
+consola: install.packages(“rio”)</p>
+<pre class="r"><code>library(rio) #Convocamos el paquete   
+data=import(&quot;Mosteller.csv&quot;) #Utilizamos la función import que creará un objeto en R que contenga la base de datos del archivo &quot;Mosteller.csv&quot; que hemos descargado. Podemos verificar la creación en el environment
+
+class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función &quot;class&quot; y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un &quot;data frame&quot;, es el tipo de objeto en R para las bases de datos.</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<p>¿Qué otro tipo de objetos existen?</p>
+</div>
+<div id="tipos-de-objetos-en-r" class="section level4">
+<h4><strong>3.3. Tipos de objetos en R</strong></h4>
+<p>Una parte clave para iniciar el manejo del programa es identificar
+los diversos objetos que podemos crear, manipular y utilizar. Para la
+definición de objetos en R será necesario previamente tener claridad
+teórica sobre lo que es una variable categórica nominal, categórica
+ordinal, numérica discreta y numérica continua.</p>
+<p>Para los fines de este curso se contemplarán las siguientes
+objetos:</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Vector numérico</strong></td>
+<td>Vector conformado por la concatenación de números, puede representar
+variables numéricas continuas o discretas. Ej: 1.5 , 2.7 , 3.1</td>
+</tr>
+<tr class="even">
+<td><strong>Vector de factores</strong></td>
+<td><p>Vector que sirve para representar variables categóricas.</p>
+<p>Pudiendo ser factores nominales u ordinales. Ej: “costa”, “sierra”,
+“selva”</p></td>
+</tr>
+<tr class="odd">
+<td><strong>Data frames</strong></td>
+<td><p>Son hojas de datos, estructuras similares a una matriz; sin
+embargo, a diferencia de estas pueden almacenar objetos de distintos
+tipo.</p>
+<p><strong>Generalmente nuestras bases de datos son de este
+tipo</strong> (como una hoja de Excel que tiene variables numéricas,
+categóricas, etc).</p></td>
+</tr>
+</tbody>
+</table>
+<p>Los <strong>vectores numéricos</strong> se crean a través de la
+función <strong>concatenar “c()”</strong>. Vamos a crear un vector que
+contenga los montos en millones de soles del presupuesto del Estado
+asignado a las 5 prioridades para el 2021</p>
+<pre class="r"><code>Presupuesto_millones=c(9879, 33132, 20991, 690, 5392) #creamos el vector (verifiquemos en el environment)
+Presupuesto_millones #invocamos el vector para visualizar su contenido</code></pre>
+<pre><code>## [1]  9879 33132 20991   690  5392</code></pre>
+<p>Un <strong>factor</strong> nos permite representar una variable
+categórica. Se crean a través de la función <strong>“factor()”</strong>,
+pero antes se crea como vector pues almacena las categorías en la forma
+de un vector con números discretos integrales (1,2,3,4,etc.), que son
+códigos de los valores de la variable y otro vector de caracteres
+interno que contiene las etiquetas de esos códigos. Creemos un factor
+con los nombres de las prioridades del presupuesto para el 2021:</p>
+<pre class="r"><code>Prioridad = c(1,2,3,4,5) #primero creamos un vector
+Prioridad = factor(Prioridad, levels = c(1:5), labels = c(&quot;reactivación&quot;, &quot;educación&quot;,&quot;salud&quot;,&quot;mujer&quot;,&quot;pobreza&quot;)) #Lo convertimos en factor. Ojo con los argumentos.
+Prioridad #visualizamos su contenido</code></pre>
+<pre><code>## [1] reactivación educación    salud        mujer        pobreza     
+## Levels: reactivación educación salud mujer pobreza</code></pre>
+<p>También podemos crear un <strong>factor ordenado</strong> para
+almacenar información de una variable categórica ordinal. Es casi la
+misma ruta, solo que añadiremos una función más para convertir el factor
+en ordinal. Creemos un factor ordinal ficticio que contenga el nivel de
+ejecución que el Estado ha mostrado en las categorías presupuestales
+correspondientes a las prioridades, donde 1=Mala, 2=Intermedia y 3=
+Buena.</p>
+<pre class="r"><code>Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
+Ejecucion=factor(Ejecucion) #Lo convertimos en factor
+levels(Ejecucion)=c(&quot;Mala&quot;,&quot;Intermedia&quot;,&quot;Buena&quot;) #asignamos los niveles al factor
+Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal
+Ejecucion #Visualizamos</code></pre>
+<pre><code>## [1] Buena      Intermedia Intermedia Mala       Intermedia
+## Levels: Mala &lt; Intermedia &lt; Buena</code></pre>
+<p>Finalmente, los <strong>data frames</strong> nos permite almacenar un
+conjunto de datos, es decir una base de datos (bbdd) que tiene filas y
+columnas. Creemos la base de datos “PP2021” que contenga todos los
+objetos que hemos creado:</p>
+<pre class="r"><code>PP2023 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
+PP2023 # Visualice la base de datos</code></pre>
+<pre><code>##      Prioridad Presupuesto_millones  Ejecucion
+## 1 reactivación                 9879      Buena
+## 2    educación                33132 Intermedia
+## 3        salud                20991 Intermedia
+## 4        mujer                  690       Mala
+## 5      pobreza                 5392 Intermedia</code></pre>
+<pre class="r"><code>str(PP2023) # Visualice la estructura de la bbdd</code></pre>
+<pre><code>## &#39;data.frame&#39;:    5 obs. of  3 variables:
+##  $ Prioridad           : Factor w/ 5 levels &quot;reactivación&quot;,..: 1 2 3 4 5
+##  $ Presupuesto_millones: num  9879 33132 20991 690 5392
+##  $ Ejecucion           : Ord.factor w/ 3 levels &quot;Mala&quot;&lt;&quot;Intermedia&quot;&lt;..: 3 2 2 1 2</code></pre>
+<pre class="r"><code>names(PP2023) #Visualice los nombres de las variables de la bbdd</code></pre>
+<pre><code>## [1] &quot;Prioridad&quot;            &quot;Presupuesto_millones&quot; &quot;Ejecucion&quot;</code></pre>
+<p>Cuando queramos invocar una variable específica de una base de datos
+utilizaremos <strong>“$”</strong>, entre la base de datos y la variable
+que queremos invocar.</p>
+<pre class="r"><code>PP2023$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
+<pre><code>## [1] reactivación educación    salud        mujer        pobreza     
+## Levels: reactivación educación salud mujer pobreza</code></pre>
+<pre class="r"><code>class(PP2023$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
+<pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
+<hr />
+<p><a id='part4'></a></p>
+</div>
+</div>
+</div>
+<div id="análisis-descriptivo-en-r" class="section level1">
+<h1><strong>4. Análisis descriptivo en R</strong></h1>
+<pre class="r"><code>library(rio)    
+data=import(&quot;Mosteller.csv&quot;) </code></pre>
+<p>Esta base de datos pertenece al siguiente paper <a
+href="https://pubmed.ncbi.nlm.nih.gov/8528684/"
+class="uri">https://pubmed.ncbi.nlm.nih.gov/8528684/</a> Mosteller
+(1995) realizó un estudio longitudinal sobre el impacto del tamaño de la
+clase en los primeros grados escolares, sobre el desempeño estudiantil y
+el desarrollo personal. Un estudio longitudinal es aquel en el que se
+hace un seguimiento a participantes a lo largo del tiempo. Este estudio
+en concreto duró de 1985 a 1989 y en él participaron 11.601 estudiantes.
+Durante los cuatro años del estudio, los estudiantes fueron asignados
+aleatoriamente a clases pequeñas, a clases de tamaño normal o a clases
+de tamaño normal con ayuda. Aunque el programa se detuvo en 1989 después
+de que la primera clase de jardín de infancia del programa terminara el
+tercer grado, la recopilación de información (por ejemplo, el
+rendimiento en los exámenes de octavo grado, el promedio general de la
+escuela secundaria) continuó hasta el final de la asistencia de los
+participantes a la escuela secundaria.</p>
+<p>¿Por qué son importantes este tipo de estudios? Porque constituyen
+evidencia para los tomadores de decisión de política pública. Pensemos
+que esto puede contribuir a definir si la política educativa debe
+apostar por salones de clases con grupos pequeños o no, pensando en
+fortalecer las competencias de los estudiantes.</p>
+<p>No obstante, para esta sesión no vamos a examinar las hipótesis o
+resultados del trabajo de Mosteller (1995), pero sí vamos a utilizar
+parte de su base de datos para el análisis descriptivo.</p>
+<p>Exploramos las variables que tiene nuestra base de datos:</p>
+<p>chr, factor, ordered factor, num, int</p>
+<pre class="r"><code>names(data)</code></pre>
+<pre><code>## [1] &quot;race&quot;       &quot;classtype&quot;  &quot;yearssmall&quot; &quot;hsgrad&quot;     &quot;g4math&quot;    
+## [6] &quot;g4reading&quot;</code></pre>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1600 obs. of  6 variables:
+##  $ race      : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ classtype : int  3 1 2 1 1 1 2 3 2 3 ...
+##  $ yearssmall: int  0 4 0 4 4 4 0 0 0 0 ...
+##  $ hsgrad    : int  1 1 1 1 1 1 1 1 0 1 ...
+##  $ g4math    : int  711 709 698 740 771 709 698 673 744 731 ...
+##  $ g4reading : int  750 725 692 836 725 761 778 665 735 698 ...</code></pre>
+<p>El contenido de cada variable lo podemos ver en la siguiente
+tabla:</p>
+<p><img src="diccionario.png" width="40%" style="display: block; margin: auto;" /></p>
+<div id="configuración-de-las-variables" class="section level4">
+<h4><strong>4.1. Configuración de las variables</strong></h4>
+<p>Siempre antes de comenzar a realizar nuestro análisis, debemos
+identificar la estructura de las variables y verificar que estén bien
+“configuradas”. Es decir que la escala de la variable coincida con el
+objeto en R.</p>
+<p><strong>De “race”</strong></p>
+<pre class="r"><code>table(data$race) #Exploramos frecuencias</code></pre>
+<pre><code>## 
+##    1    2    3    6 
+## 1383  211    5    1</code></pre>
+<pre class="r"><code>class(data$race) #Exploramos el formato de la variable</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>data$race = factor(data$race, levels = c(1:6), labels = c(&quot;white&quot;,&quot;black&quot;,&quot;asian&quot;,&quot;hispanic&quot;,&quot;native american&quot;,&quot;others&quot;)) #Otorgamos formato
+table(data$race)</code></pre>
+<pre><code>## 
+##           white           black           asian        hispanic native american 
+##            1383             211               5               0               0 
+##          others 
+##               1</code></pre>
+<pre class="r"><code>class(data$race)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p><strong>De “classtype”:</strong></p>
+<pre class="r"><code>class(data$classtype) </code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>table(data$classtype)</code></pre>
+<pre><code>## 
+##   1   2   3 
+## 481 578 541</code></pre>
+<pre class="r"><code>data$classtype = factor(data$classtype, levels = c(1:3), labels = c(&quot;small&quot;,&quot;regular&quot;,&quot;regular with aid&quot;))
+str(data$classtype)</code></pre>
+<pre><code>##  Factor w/ 3 levels &quot;small&quot;,&quot;regular&quot;,..: 3 1 2 1 1 1 2 3 2 3 ...</code></pre>
+<pre class="r"><code>table(data$classtype)</code></pre>
+<pre><code>## 
+##            small          regular regular with aid 
+##              481              578              541</code></pre>
+<p><strong>De “hsgrad”</strong></p>
+<pre class="r"><code>class(data$hsgrad) </code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>table(data$hsgrad)</code></pre>
+<pre><code>## 
+##    0    1 
+##  158 1442</code></pre>
+<pre class="r"><code>data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c(&quot;did not graduate&quot;,&quot;did graduate&quot;)) #ojo con el orden
+table(data$hsgrad) </code></pre>
+<pre><code>## 
+## did not graduate     did graduate 
+##              158             1442</code></pre>
+<pre class="r"><code>str(data$hsgrad)</code></pre>
+<pre><code>##  Factor w/ 2 levels &quot;did not graduate&quot;,..: 2 2 2 2 2 2 2 2 1 2 ...</code></pre>
+<p><strong>“g4math”, “g4reading”, “yearssmall”</strong> son variables
+numéricas y están configuradas como vectores numéricos de números
+enteros (integer) por lo cual lo dejamos así.</p>
+</div>
+<div id="media-y-mediana" class="section level4">
+<h4>4.2 Media y mediana</h4>
+<p>Entonces, una vez configurados adecuadamente nuestros
+<strong>objetos</strong>, pidamos los estadísticos de tendencia central
+para nuestras variables.</p>
+<p>Antes instalamos algunos paquetes que utilizaremos</p>
+<ul>
+<li><strong>install.packages(“DescTools”)</strong> para pedir los
+estadísticos de tendencia central</li>
+</ul>
+<p>Las variables solicitadas son classtype y hsgrad</p>
+<p><strong>Para “g4math” podemos:</strong></p>
+<pre class="r"><code>library(DescTools)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ──── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ─────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>data %&gt;% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media</code></pre>
+<pre><code>##      media
+## 1 712.7094</code></pre>
+<p><strong>Para “g4math” podemos:</strong></p>
+<pre class="r"><code>library(DescTools)
+data %&gt;% summarise(mediana = median(g4math)) #este comando nos permitirá calcular la mediana</code></pre>
+<pre><code>##   mediana
+## 1     712</code></pre>
+<hr />
+</div>
+<div
+id="ejercicio-calculemos-la-media-y-la-mediana-de-la-variable-g4reading"
+class="section level3">
+<h3>Ejercicio: Calculemos la media y la mediana de la variable
+“g4reading”</h3>
+<p><br></br> <a href="#beginning">Go to page beginning</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

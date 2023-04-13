@@ -10,10 +10,6 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: true
-    output: pdf_document
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
 ---
 
 <center><img src=" " width="200"/></center>

@@ -2,13 +2,14 @@
 title: "Práctica dirigida 3"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
     toc_depth: 1
     theme: cosmo
     highlight: textmate
+    always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -20,8 +21,6 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```{r,echo=FALSE, out.width="30%"}
 knitr::include_graphics("logoPUCP.png") 
 ```
-
-
 
 FACULTAD DE CIENCIAS SOCIALES - PUCP<br>
 
@@ -76,7 +75,7 @@ knitr::include_graphics("ICmedia.png")
 
 *Hallemos el intervalo de confianza para la media de la variable "ABros4".*
 
-El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
+El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación"El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
 
 ```{r}
 class(data$ABros4) #Revisemos que nuestra variale esté bien clasificada
