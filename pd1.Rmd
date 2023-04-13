@@ -81,7 +81,7 @@ R funciona como un entorno temporal de trabajo, esto quiere decir que el usuario
 Para ver nuestro lugar de trabajo actual escribimos el siguiente comando (escriba el código en la consola, ya que si lo ejecuta desde este Rmd, obtendrá el lugar donde se encuentra este archivo):
 
 ```{r}
-getwd() 
+getwd()
 ```
 
 Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú "Session" \> "Set Working Directory" \> "Choose Directory". Esto abrirá una ventana emergente, donde buscaremos la carpeta en la cual vamos a trabajar, la ubicamos y seleccionamos "Open". Para verificar el cambio volvemos a digitar la función **"getwd()"** en la consola.

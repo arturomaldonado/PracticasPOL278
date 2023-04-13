@@ -11,6 +11,7 @@ output:
     highlight: textmate
 ---
 
+
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -80,7 +81,9 @@ str(data)
 ```{r}
 names(data) #revisamos los nombres
 ```
+
 Renombramos las variables
+
 ```{r}
 colnames(data) = c("Country","Year","Rank","Score_Frag_States","Security","Elites","G_Grivance","Economy","Inequality","B_Drain","State_Legit","P_Services","Hum_Rights","Demo_Press","Refugees","Interven","Democracy_Score","Type")
 ```
@@ -138,13 +141,13 @@ tablaFreq
 ```{r}
 filter(data, Country =="PERU") 
 ```
+
 Revisamos más detalle sobre qué otros paises acompañan a Perú en su régimen.
+
 ```{r}
 FlawDemo=filter(data, Type =="Flawed democracy") 
 FlawDemo
 ```
-
-
 
 Grafiquemos los resultados con *ggplot2*
 
@@ -158,6 +161,8 @@ graf1
 ```{r}
 library(ggplot2)
 library(taylor) #opcional (una ventaja de que R sea software libre)
+
+
 ggplot(graf1, aes(x=Type, y=Freq, fill=Type)) + 
 geom_bar(stat = "identity") 
 ```
@@ -170,8 +175,8 @@ ggplot(graf1, aes(x=reorder(Type,Freq), y=Freq, fill=Type)) +
   xlab("Régimen") + ylab("Frecuencia")+
   geom_text(aes(label=Freq), vjust=0.5, color="black", size=5)+
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
-  scale_fill_brewer(palette="Dark2")
-  #scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
+  #scale_fill_brewer(palette="Dark2")
+  scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
 
 ```
 
@@ -180,8 +185,6 @@ ggplot(graf1, aes(x=reorder(Type,Freq), y=Freq, fill=Type)) +
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajemos con la variable *state legitimacy*, indicador que evalúa la representatividad y apertura del gobierno, y la manera como interactúa con la ciudadanía. Se toman en cuenta los niveles de confianza en las instituciones, demostraciones de desobediencia civil e insurgencias armadas.
 
 Más información del indicador por acá: <https://fragilestatesindex.org/indicators/p1/>
-
-
 
 ```{r}
 class(data$State_Legit)
