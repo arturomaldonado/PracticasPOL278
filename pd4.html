@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 4</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 4</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<div id="recordando-lo-avanzado" class="section level2">
+<h2>Recordando lo avanzado</h2>
+<p>En la sesión anterior de teoría, nos adentramos al análisis
+inferencial bivariado, teniendo como base del tema el cálculo del
+Intervalo de Confianza (IC) para una media (variables numéricas) y para
+una proporción (variables categóricas). Recordemos que gracias al IC
+podemos determinar si la estimación es representativa de la población.
+La idea era calcular los intervalos de confianza para cada grupo y ver
+si los intervalos se interceptan o no. La regla era que si los
+intervalos de ambos grupos no se interceptaban, podíamos extrapolar que
+la diferencia muestral existe en la población al 95% de confianza.</p>
+<p>Para profundizar sobre estadística inferencial, evaluaremos las
+hipótesis mediante la introducción a la prueba t de diferencia de medias
+y desarrollaremos los cincos pasos de la inferencia estadística.
+Recordemos que el objetivo es corroborar que es posible extrapolar un
+resultado de la muestra a la población.</p>
+</div>
+<div id="qué-es-la-prueba-t-de-diferencia-de-medias"
+class="section level1">
+<h1>¿Qué es la prueba T de diferencia de medias?</h1>
+<p>Generalmente, cuando queremos comparar dos grupos centramos nuestra
+atención en el promedio de cada uno. Sin embargo, el hecho de que los
+promedios sean distintos no supone, necesariamente, que existe una
+diferencia estadísticamente significativa.</p>
+<p>Para saber si la diferencia observada entre las medias de dos grupos
+es o no significativa se emplean métodos paramétricos como el de
+Z-scores o la distribución T-student. Estas técnicas calculan los
+intervalos de confianza de cada grupo y concluyen si existe una
+diferencia real entre las medias.</p>
+<p>La prueba T compara la media de una variable numérica para dos grupos
+o categorías de una variable nominal u ordinal. Los grupos que forman la
+variable nominal/ordinal tienen que ser independientes. Es decir, cada
+observación debe pertenecer a un grupo o al otro, pero no a ambos.</p>
+</div>
+<div id="pruebas-t-para-muestras-independientes" class="section level1">
+<h1>Pruebas T para muestras independientes</h1>
+<div id="condiciones" class="section level2">
+<h2>Condiciones</h2>
+<ol style="list-style-type: decimal">
+<li><p>Independencia: Las muestras deben ser independientes. El muestreo
+debe ser aleatorio.</p></li>
+<li><p>Igualdad de varianza: La varianza de ambas poblaciones comparadas
+debe ser igual.</p></li>
+<li><p>La variable numérica se distribuye de manera normal.</p></li>
+</ol>
+<p><strong>IMPORTANTE</strong></p>
+<p>La condición de normalidad también es considerada si es que la
+muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n
+pequeño menor a 30 observaciones). A medida que el n se hace más grande,
+el supuesto de normalidad es menos importante pues con grandes n
+confiamos en el teorema del límite central que nos indica que la
+distribución muestral será siempre normal.</p>
+</div>
+<div id="pasos-para-realizar-la-prueba-t" class="section level2">
+<h2>Pasos para realizar la Prueba T</h2>
+<ol style="list-style-type: decimal">
+<li>Establecer hipótesis</li>
+<li>Calcular el estadístico (parámetro estimado) que se va a
+emplear</li>
+<li>Determinar el nivel de significancia α (alpha)</li>
+<li>Calcular el p-value y realizar la prueba prop.test</li>
+<li>Interpretar</li>
+</ol>
+<p><strong>Recuerda</strong> El H0 de la prueba T es la siguiente:</p>
+<p>Ho: No existe diferencia estadísticamente significativa entre las
+medias de los dos grupos comparados.</p>
+<p>H1: Sí existe diferencia estadísticamente significativa entre las
+medias de los dos grupos comparados.</p>
+<p>La H0 es <strong>generalmente</strong> la hipótesis de no efecto, de
+no diferencias.</p>
+</div>
+<div id="indicador-proxy" class="section level2">
+<h2>Indicador Proxy</h2>
+<p>También llamado indicador indirecto, se usa ante la imposibilidad de
+medir lo que efectivamente es de importancia. El indicador mide una
+variable distinta a la que nos interesa de manera específica, pero
+presenta una relación lo más directa posible con el fenómeno en
+estudio.</p>
+<p>Un indicador proxy es una medición o señal indirecto que aproxima o
+representa un fenómeno en la ausencia de una medición o señal
+directo.</p>
+<p>Por ejemplo, el número de miembros femeninos de una cámara de
+comercio podría ser un indicador proxy para el porcentaje de dueñas de
+negocios o ejecutivas.</p>
+</div>
+<div id="indicador-aditivo" class="section level2">
+<h2>Indicador Aditivo</h2>
+<div id="pasos-para-construir-un-indicador" class="section level3">
+<h3>Pasos para construir un indicador:</h3>
+<ol style="list-style-type: decimal">
+<li>Verificar que las variables que construyan el indicador correspondan
+al concepto que se desea medir. <em>Ejemplo: Si deseo mejor Satisfacción
+del Usuario, las preguntas deben ser sobre ello.</em></li>
+<li>Revisar el cuestionario e identificar el sentido de las categorías.
+<em>Ejemplo: El valor 5 es “Muy instafisfecho” y 1 “Muy
+satisfecho”</em></li>
+<li>Si las categorías de las variables están en el correcto sentido
+proceder a sumarlas, si no lo están, proceder a recodificarlas para
+luego sumar.</li>
+<li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
+<li>Restar a todos los valores el valor mínimo.</li>
+<li>Al resultado de lo anterior, dividir por el nuevo máximo, con ello,
+se va a obtener valores entre 0 y 1.</li>
+<li>Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se
+desea el índice de 0 a 10.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="apliquemos-lo-aprendido" class="section level1">
+<h1>Apliquemos lo aprendido</h1>
+<div id="carguemos-la-base-de-datos" class="section level2">
+<h2>Carguemos la base de datos</h2>
+<p><em>Descripción del Proyecto: Satisfacción de la ciudadanía con los
+servicios públicos transaccionales en regiones</em></p>
+<p>Este estudio fue realizado por la Secretaría de Gestión Pública de la
+Presidencia del Consejo de Ministros en el año 2021. El propósito del
+estudio consistió en identificar los conductores de calidad (variables
+explicativas) en la satisfacción de una persona con la realización de un
+servicio público transaccional (duplicado de DNI, pago en el Banco de la
+Nación, pasaporte, etc).</p>
+<p>Se identificó que los factores que impactan en las regiones respecto
+a la satisfacción sobre los servicios públicos son: i. el tiempo de
+desplazamiento hacia la sede de la entidad, ii. la calidad del trato,
+iii. la rapidez del trabajador, iv. el procedimiento de atención, v. el
+resultado de la gestión, y, vi. la confianza.</p>
+<p>Lo que buscaremos en este ejercicio es corroborar que los grupos de
+edad hasta 35 años y mayor a 35 años tienen diferencias estadísticas
+sobre el nivel de satisfacción.</p>
+<p>Más sobre el proyecto accediendo al siguiente enlace: <a
+href="https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados"
+class="uri">https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados</a></p>
+<pre class="r"><code>#No olvides cambiar el directorio de trabajo
+
+library(rio) 
+data=import(&quot;data.sav&quot;)</code></pre>
+<p>Exploramos las variables que tiene la base de datos:</p>
+<p>Utilizamor <em>str</em> para ver la estructura de la data.</p>
+<p>Utilizamor <em>colnames</em> para verificar los nombres de la
+data.</p>
+<pre class="r"><code>str(data[,1:10]) #Visualice la estructura de la bbdd</code></pre>
+<pre><code>## &#39;data.frame&#39;:    4142 obs. of  10 variables:
+##  $ SbjNum      : num  1.52e+08 1.52e+08 1.52e+08 1.52e+08 1.52e+08 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;SbjNum&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F10.0&quot;
+##  $ d3          : num  17 17 17 17 24 24 10 10 14 23 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3d.    ¿En qué departamento vives?&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:26] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:26] &quot;Amazonas&quot; &quot;Áncash&quot; &quot;Apurímac&quot; &quot;Arequipa&quot; ...
+##  $ PROVINCIA   : num  1701 1701 1701 1701 2401 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3p.    ¿En qué provincia vives?&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:196] 101 102 103 104 105 106 107 201 202 203 ...
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:196] &quot;Chachapoyas&quot; &quot;Bagua&quot; &quot;Bongará&quot; &quot;Condorcanqui&quot; ...
+##  $ DISTRITO    : num  170101 170101 170101 170101 240101 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3dd.    ¿En qué distrito vives?&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:1874] 10101 10102 10103 10104 10105 ...
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:1874] &quot;Chachapoyas&quot; &quot;Asunción&quot; &quot;Balsas&quot; &quot;Cheto&quot; ...
+##  $ ORGANIZACION: num  71 71 71 71 6 71 21 21 71 71 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;ORGANIZACION - ENTIDAD:&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:86] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:86] &quot;Gobierno Regional de Ancash&quot; &quot;Gobierno Regional de La Libertad&quot; &quot;Gobierno Regional de Lambayeque&quot; &quot;Gobierno Regional de Cajamarca&quot; ...
+##  $ A           : num  1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;A. ¿Acepta usted participar en este estudio? (Una respuesta)&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:2] 1 2
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Sí&quot; &quot;No&quot;
+##  $ B           : num  31 24 26 27 21 52 40 23 48 20 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;B. ¿Cuántos años tiene? (Una respuesta)&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##  $ D           : num  1 1 5 4 4 2 2 5 3 2 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;D. ¿Cuál es el principal motivo por la que acudió a esta entidad? (Una respuesta)&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:22] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:22] &quot;Solicitud de información, consulta&quot; &quot;Una gestión/trámites sin pago&quot; &quot;Una gestión/trámite con un pago correspondiente a esa gestió&quot; &quot;Reclamo&quot; ...
+##  $ E           : num  3 1 1 1 1 1 4 4 3 1 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;E. ¿La gestión que realizó fue personal o por encargo de terceros?  (Una respuesta)&quot;
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:6] 1 2 3 4 6 98
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;Personal con fines personales&quot; &quot;Personal con fines de negocios&quot; &quot;Por encargo de terceros con fines personales&quot; &quot;Por encargo de terceros con fines de negocio&quot; ...
+##  $ P1          : num  2 2 2 2 2 2 4 4 2 1 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;1. Pensando en la experiencia que acaba de tener hoy en {0} y utilizando la siguiente escala (Mostrar tarjeta).&quot;| __truncated__
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:5] 1 2 3 4 5
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;Muy satisfecho&quot; &quot;Satisfecho&quot; &quot;Ni satisfecho / ni insatisfecho&quot; &quot;Insatisfecho&quot; ...</code></pre>
+<pre class="r"><code>colnames(data[,1:10]) #Visualice los nombres de las variables de la bbdd</code></pre>
+<pre><code>##  [1] &quot;SbjNum&quot;       &quot;d3&quot;           &quot;PROVINCIA&quot;    &quot;DISTRITO&quot;     &quot;ORGANIZACION&quot;
+##  [6] &quot;A&quot;            &quot;B&quot;            &quot;D&quot;            &quot;E&quot;            &quot;P1&quot;</code></pre>
+<p>Limpieza de las variables previo al análisis: a. Seleccionar
+variables que conceptualmente generen un índice de satisfacción. Revisar
+preguntas en encuesta.</p>
+<p>Según el cuestionario, <em>5</em> significa <em>muy insatisfecho</em>
+y <em>1</em> significa <em>muy satisfecho</em>.</p>
+<ul>
+<li><p>P10 = satisfacción con trabajador que lo atendió</p></li>
+<li><p>P25 = satisfacción con tiempo de espera desde que llegó a la
+entidad hasta ser atendido</p></li>
+<li><p>P30 = satisfacción con el proceso de gestión / trámite realizado
+(cantidad de documentos)</p></li>
+<li><p>P31 = satisfacción con la cantidad de pasos requeridos para
+completar gestión / trámite</p></li>
+</ul>
+<p>Si deseamos crear un indicador de satisfacción, entonces el máximo
+valor debe ser la calificacion más alta de satisfacción, y por tanto el
+valor mínimo dede mostra la insatisfacción. Dado que es cuestionario, no
+pregunto de esta manera, entonces tenemos que cambiar los valores de la
+siguiente manera:</p>
+<ul>
+<li><p>1 ‘Muy satisfecho’ a 5</p></li>
+<li><p>2 a 4</p></li>
+<li><p>3 a 3</p></li>
+<li><p>4 a 2</p></li>
+<li><p>5 ’Muy insatisfecho’a 1</p>
+<p><strong>Ojo: Si bien estas variables deberían estar catalogadas como
+factor, para poder crear el índice necesitamos que se mantengan como
+numéricas para poder sumarlas.</strong></p></li>
+</ul>
+<pre class="r"><code>summary(data$P10)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   2.000   2.000   2.145   2.000   5.000</code></pre>
+<pre class="r"><code>summary(data$P25)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   2.000   2.000   2.437   3.000   5.000</code></pre>
+<pre class="r"><code>summary(data$P30)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   2.000   2.000   2.344   3.000   5.000</code></pre>
+<pre class="r"><code>summary(data$P32)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   2.000   2.000   2.391   3.000   5.000</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Recodificar los valores de las variables</li>
+</ol>
+<p>Ejemplo: La recodificación de una variable a la vez.</p>
+<pre class="r"><code>library(dplyr)
+data=data %&gt;%
+ mutate(satisfaccion_trabajador=case_when(
+  P10 == 1 ~ &quot;5&quot;, 
+  P10 == 2 ~ &quot;4&quot;,
+  P10 == 3~ &quot;3&quot;,
+  P10 == 4 ~ &quot;2&quot;,
+  P10 == 5 ~&quot;1&quot;),
+  satisfaccion_tiempo=case_when(
+  P25 == 1 ~ &quot;5&quot;, 
+  P25 == 2 ~ &quot;4&quot;,
+  P25 == 3~ &quot;3&quot;,
+  P25 == 4 ~ &quot;2&quot;,
+  P25 == 5 ~&quot;1&quot;),
+  satisfaccion_n_documentos=case_when(
+  P30 == 1 ~ &quot;5&quot;, 
+  P30 == 2 ~ &quot;4&quot;,
+  P30 == 3~ &quot;3&quot;,
+  P30 == 4 ~ &quot;2&quot;,
+  P30 == 5 ~&quot;1&quot;),
+   satisfaccion_n_pasos=case_when(
+  P31 == 1 ~ &quot;5&quot;, 
+  P31 == 2 ~ &quot;4&quot;,
+  P31 == 3~ &quot;3&quot;,
+  P31 == 4 ~ &quot;2&quot;,
+  P31 == 5 ~&quot;1&quot;))</code></pre>
+<p>Verifiquemos que nuestra recodificación se realizó de manera
+correcta.</p>
+<pre class="r"><code>table(data$P10)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5 
+##  619 2724  415  349   35</code></pre>
+<pre class="r"><code>table(data$satisfaccion_trabajador)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5 
+##   35  349  415 2724  619</code></pre>
+<p>La recodificación de un conjunto de variables.</p>
+<pre class="r"><code>#library(dplyr)
+#data=data %&gt;% 
+#   mutate(across(c(P10,P25, P30,P31), 
+#             ~ case_when(. == 1 ~ &quot;5&quot;, 
+#                       . == 2 ~ &quot;4&quot;,
+#                       . == 3~ &quot;3&quot;,
+#                       . == 4 ~ &quot;2&quot;,
+#                       . == 5 ~&quot;1&quot;)))</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Convertir las variables a numéricas</li>
+</ol>
+<pre class="r"><code>library(dplyr)
+data=data %&gt;% # objeto base de datos cargada
+    mutate(satisfaccion_trabajador = as.numeric(satisfaccion_trabajador),#recategorizamos nuestras nuevas variables como numéricas
+         satisfaccion_tiempo = as.numeric(satisfaccion_tiempo),
+         satisfaccion_n_documentos = as.numeric(satisfaccion_n_documentos),
+         satisfaccion_n_pasos = as.numeric(satisfaccion_n_pasos))</code></pre>
+<pre class="r"><code>summary(data$satisfaccion_trabajador)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   4.000   4.000   3.855   4.000   5.000</code></pre>
+<pre class="r"><code>summary(data$satisfaccion_tiempo)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   3.000   4.000   3.563   4.000   5.000</code></pre>
+<pre class="r"><code>summary(data$satisfaccion_n_documentos)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   3.000   4.000   3.656   4.000   5.000</code></pre>
+<pre class="r"><code>summary(data$satisfaccion_n_pasos)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   3.000   4.000   3.585   4.000   5.000</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li><p>Recordemos los pasos para crear un índice aditivo:</p>
+<p><em>((var_suma - mín_de_suma)/máx_de_suma))*valor al que quiere que
+llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50,
+etc).</em></p>
+<p>Crearemos una variable nueva “indice_satisfacción”. Sumamos las
+variables</p></li>
+</ol>
+<pre class="r"><code>data=data %&gt;%
+  mutate(suma = satisfaccion_trabajador + 
+           satisfaccion_tiempo +
+           satisfaccion_n_documentos +
+           satisfaccion_n_pasos)</code></pre>
+<p>Revisamos mínimo y máximo</p>
+<pre class="r"><code>summary(data$suma)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    4.00   13.00   16.00   14.66   16.00   20.00</code></pre>
+<pre class="r"><code>data=data %&gt;%
+  mutate(resta = ((suma - 4)# Menos el minimo
+                                / 16), # Cuarto paso: dividir entre el nuevo máximo
+         indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100</code></pre>
+<p>Opción 2: Sin crear variable “resta”</p>
+<pre class="r"><code>#data = data %&gt;%
+ # mutate(indice_satisfaccion = ((suma-4)/16)*100) </code></pre>
+<pre class="r"><code>summary(data$indice_satisfaccion)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.00   56.25   75.00   66.62   75.00  100.00</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Los grupos que compararemos serán dados por la variable P4. Damos
+formato a la variable categórica P4, si recibio orientación o no</li>
+</ol>
+<pre class="r"><code>data$P4=as.factor(data$P4)
+data$P4=factor(data$P4,
+                levels = levels(data$P4),
+                labels = c(&quot;Si orientación&quot;,&quot;No orientación&quot;),
+                ordered = F)</code></pre>
+</div>
+<div id="realizamos-la-prueba-t" class="section level2">
+<h2>Realizamos la Prueba T</h2>
+<div id="primer-paso-establecer-la-hipótesis." class="section level3">
+<h3><strong>Primer paso: Establecer la hipótesis.</strong></h3>
+<p>La hipotesis de la prueba T queda establecida de la siguiente
+forma:</p>
+<ul>
+<li><p>Ho: No hay diferencia entre las medias del índice de satisfacción
+aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad.
+<strong>(no diferencia de medias)</strong></p></li>
+<li><p>H1: Si existen diferencias entre las medias del índice de
+satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30
+años de edad. <strong>(sí diferencia de medias)</strong></p></li>
+</ul>
+<p>Ambas hipótesis son acerca de los parámetros de la población.</p>
+</div>
+<div id="segundo-paso-calcular-el-estadístico-a-emplear"
+class="section level3">
+<h3><strong>Segundo paso: Calcular el estadístico a
+emplear</strong></h3>
+<p>Para verificar la diferencia de medias se calcula el estadístico T, y
+uno de los primeros pasos es calcular las diferencias entre las medias
+muestrales, ya que es lo quiero extrapolar y por tanto saber si existe o
+no una diferencia significativa entre las medias poblacionales de ambos
+grupos:</p>
+<pre class="r"><code>library(lsr)
+tabla=data%&gt;%
+  group_by(P4) %&gt;%
+summarise(Desviacion = sd(indice_satisfaccion, na.rm=T),
+          Media = mean(indice_satisfaccion, na.rm=T),
+            min = ciMean(indice_satisfaccion,conf = 0.95, na.rm=T)[1],
+            max = ciMean(indice_satisfaccion,conf = 0.95, na.rm=T)[2],
+          n=length(indice_satisfaccion))
+            
+tabla</code></pre>
+<pre><code>## # A tibble: 2 × 6
+##   P4             Desviacion Media   min   max     n
+##   &lt;fct&gt;               &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 Si orientación       15.6  69.3  68.7  69.9  2606
+## 2 No orientación       19.4  62.0  61.1  63.0  1536</code></pre>
+</div>
+<div id="tercer-paso-determinar-el-nivel-de-significancia"
+class="section level3">
+<h3><strong>Tercer paso: Determinar el nivel de
+significancia</strong></h3>
+<p>Se trata de la probabilidad que define qué tan inusual debe ser la
+diferencia de medias muestrales para rechazar la H0 (que la diferencia
+de medias poblacionales sea 0). El valor más común es de α=0.05 a un
+nivel de confianza de 95%. De manera convencional establecemos la
+siguiente regla para nuestra prueba T:</p>
+<ul>
+<li>p-value&lt;=0.05 Rechazo la H0 y acepto H1</li>
+<li>p-value&gt;0.05 No rechazo la H0</li>
+</ul>
+</div>
+<div id="cuarto-paso-calcular-el-p-value-y-realizar-la-prueba-t.test"
+class="section level3">
+<h3><strong>Cuarto paso: Calcular el p-value y realizar la prueba
+t.test</strong></h3>
+<p>El p-value mide la probabilidad de observar en una muestra una
+diferencia de medias como la observada, si la diferencia de medias
+poblacional fuera cero.</p>
+<pre class="r"><code>t.test(indice_satisfaccion ~ P4, data = data,
+  alternative = &quot;two.sided&quot;, 
+  conf.level  = 0.95 #nivel de confianza (95%)
+)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  indice_satisfaccion by P4
+## t = 12.521, df = 2706.3, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group Si orientación and group No orientación is not equal to 0
+## 95 percent confidence interval:
+##  6.139042 8.418809
+## sample estimates:
+## mean in group Si orientación mean in group No orientación 
+##                     69.32320                     62.04427</code></pre>
+</div>
+<div id="quinto-paso-interpretar" class="section level3">
+<h3><strong>Quinto paso: Interpretar</strong></h3>
+<p><strong>¿Cómo interpreto?</strong></p>
+<p>Recordando nuestras hipotesis:</p>
+<ul>
+<li><p>Ho: No hay diferencia entre las medias del índice de satisfacción
+aditivo entre los grupos hasta 30 años de edad y más de 30 años de
+edad.</p></li>
+<li><p>H1: Si existen diferencias entre las medias del índice de
+satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30
+años de edad.</p></li>
+</ul>
+<p>Asimismo, en el paso 4, determinamos el nivel de significancia de la
+siguiente manera:</p>
+<ul>
+<li><p>Si el p-value del t test es &lt;=0.05 Rechazo la H0 y se afirma
+H1.</p></li>
+<li><p>Si el p-value del t test es &gt;0.05 No rechazo la H0</p></li>
+</ul>
+<p>Entonces, vemos que el p-value es 0.005803, y es menor al alpha
+(0.05), entonces rechazo la H0, por tanto, existe una diferencia
+estadísticamente significativa entre las medias del índice de
+satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30
+años de edad con un 95% de confianza.</p>
+</div>
+<div id="paso-final-graficar" class="section level3">
+<h3><strong>Paso FINAL: Graficar</strong></h3>
+<p>Otro método para evaluar la comparación entre grupos es realizar un
+gráfico de medias con intervalos de confianza de cada grupo.</p>
+<p>Para calcular la diferencia de medias</p>
+<pre class="r"><code>library(Rmisc)
+ic_grupo = group.CI(indice_satisfaccion~P4,data)
+ic_grupo</code></pre>
+<pre><code>##               P4 indice_satisfaccion.upper indice_satisfaccion.mean
+## 1 Si orientación                  69.92385                 69.32320
+## 2 No orientación                  63.01339                 62.04427
+##   indice_satisfaccion.lower
+## 1                  68.72254
+## 2                  61.07515</code></pre>
+<div id="barras-de-error" class="section level4">
+<h4><strong>Barras de Error</strong></h4>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
+  geom_errorbar(aes(ymin=indice_satisfaccion.lower, ymax=indice_satisfaccion.upper), width = 0.2)+
+   geom_text(aes(label=paste(round(indice_satisfaccion.mean,1))), size=3)+
+  xlab(&quot;Orientación&quot;) +
+  ylim(60, 70)</code></pre>
+<p><img src="pd4_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><strong>Interpretación</strong>: Tal como se observa ambos intervalos
+de confianza no se traslapan, por lo que se puede concluir gráficamente
+que existe una diferencia estadísticamente significativa entre los
+grupos. El grupo que si recibio orientación tiene mayor satisfacción que
+no recibio con un 95% de confianza en la población.</p>
+<p><strong>EJERCICIO PRÁCTICO</strong></p>
+<p>Verifica si existe o no relación entre el número de veces que un
+ciudadano fue a la institución pública para realizar un trámite
+transaccional (grupo 1 sola vez vs grupo más de 1 vez) y el índice de
+satisfacción.</p>
+<p>=============================================================================</p>
+<p>Finalmente, no olvidemos exportar el Rmd en formato PDF o Html,
+usando Knit</p>
+<ul>
+<li><p>Para Html, seleccionamos en el menú Knit &gt; Knit to
+html</p></li>
+<li><p>Para pdf, seleccionamos Knit &gt; Knit to PDF, pero antes de
+exportar en pdf deberá instalar lo siguiente desde su consola:</p></li>
+</ul>
+<pre class="r"><code>#install.packages(&#39;tinytex&#39;)
+#tinytex::install_tinytex()</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
