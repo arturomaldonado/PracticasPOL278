@@ -324,9 +324,9 @@ t.test(indice_satisfaccion ~ P4, data = data,
 
 Recordando nuestras hipotesis:
 
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad.
+-   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no.
 
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad.
+-   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no.
 
 Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente manera:
 
@@ -334,7 +334,7 @@ Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente m
 
 -   Si el p-value del t test es \>0.05 No rechazo la H0
 
-Entonces, vemos que el p-value es 0.005803, y es menor al alpha (0.05), entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del índice de satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad con un 95% de confianza.
+Entonces, vemos que el p-value es 0.005803, y es menor al alpha (0.05), entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. con un 95% de confianza.
 
 ### **Paso FINAL: Graficar**
 
