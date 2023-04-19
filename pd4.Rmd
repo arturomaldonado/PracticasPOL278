@@ -22,13 +22,13 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 knitr::include_graphics("logoPUCP.png") 
 ```
 
-## Recordando lo avanzado
+## **Recordando lo avanzado**
 
 En la sesión anterior de teoría, nos adentramos al análisis inferencial bivariado, teniendo como base del tema el cálculo del Intervalo de Confianza (IC) para una media (variables numéricas) y para una proporción (variables categóricas). Recordemos que gracias al IC podemos determinar si la estimación es representativa de la población. La idea era calcular los intervalos de confianza para cada grupo y ver si los intervalos se interceptan o no. La regla era que si los intervalos de ambos grupos no se interceptaban, podíamos extrapolar que la diferencia muestral existe en la población al 95% de confianza.
 
 Para profundizar sobre estadística inferencial, evaluaremos las hipótesis mediante la introducción a la prueba t de diferencia de medias y desarrollaremos los cincos pasos de la inferencia estadística. Recordemos que el objetivo es corroborar que es posible extrapolar un resultado de la muestra a la población.
 
-# ¿Qué es la prueba T de diferencia de medias?
+## **¿Qué es la prueba T de diferencia de medias?**
 
 Generalmente, cuando queremos comparar dos grupos centramos nuestra atención en el promedio de cada uno. Sin embargo, el hecho de que los promedios sean distintos no supone, necesariamente, que existe una diferencia estadísticamente significativa.
 
@@ -36,9 +36,9 @@ Para saber si la diferencia observada entre las medias de dos grupos es o no sig
 
 La prueba T compara la media de una variable numérica para dos grupos o categorías de una variable nominal u ordinal. Los grupos que forman la variable nominal/ordinal tienen que ser independientes. Es decir, cada observación debe pertenecer a un grupo o al otro, pero no a ambos.
 
-# Pruebas T para muestras independientes
+# **Pruebas T para muestras independientes**
 
-## Condiciones
+## **Condiciones**
 
 1.  Independencia: Las muestras deben ser independientes. El muestreo debe ser aleatorio.
 
@@ -50,7 +50,7 @@ La prueba T compara la media de una variable numérica para dos grupos o categor
 
 La condición de normalidad también es considerada si es que la muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n pequeño menor a 30 observaciones). A medida que el n se hace más grande, el supuesto de normalidad es menos importante pues con grandes n confiamos en el teorema del límite central que nos indica que la distribución muestral será siempre normal.
 
-## Pasos para realizar la Prueba T
+## **Pasos para realizar la Prueba T**
 
 1.  Establecer hipótesis
 2.  Calcular el estadístico (parámetro estimado) que se va a emplear
@@ -66,7 +66,7 @@ H1: Sí existe diferencia estadísticamente significativa entre las medias de lo
 
 La H0 es **generalmente** la hipótesis de no efecto, de no diferencias.
 
-## Indicador Proxy
+# **Indicador Proxy**
 
 También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
 
@@ -74,9 +74,9 @@ Un indicador proxy es una medición o señal indirecto que aproxima o representa
 
 Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
 
-## Indicador Aditivo
+## **Indicador Aditivo**
 
-### Pasos para construir un indicador:
+### **Pasos para construir un indicador:**
 
 1.  Verificar que las variables que construyan el indicador correspondan al concepto que se desea medir. *Ejemplo: Si deseo mejor Satisfacción del Usuario, las preguntas deben ser sobre ello.*
 2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
@@ -86,9 +86,9 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 6.  Al resultado de lo anterior, dividir por el nuevo máximo, con ello, se va a obtener valores entre 0 y 1.
 7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
 
-# Apliquemos lo aprendido
+# **Apliquemos lo aprendido**
 
-## Carguemos la base de datos
+## **Carguemos la base de datos**
 
 *Descripción del Proyecto: Satisfacción de la ciudadanía con los servicios públicos transaccionales en regiones*
 
@@ -271,7 +271,7 @@ data$P4=factor(data$P4,
                 ordered = F)
 ```
 
-## Realizamos la Prueba T
+## **Realizamos la Prueba T**
 
 ### **Primer paso: Establecer la hipótesis.**
 
