@@ -55,7 +55,7 @@ La condición de normalidad también es considerada si es que la muestra fuera p
 1.  Establecer hipótesis
 2.  Calcular el estadístico (parámetro estimado) que se va a emplear
 3.  Determinar el nivel de significancia α (alpha)
-4.  Calcular el p-value y realizar la prueba prop.test
+4.  Calcular el p-value y realizar la prueba t.test
 5.  Interpretar
 
 **Recuerda** El H0 de la prueba T es la siguiente:
