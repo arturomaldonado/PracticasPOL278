@@ -277,9 +277,9 @@ data$P4=factor(data$P4,
 
 La hipotesis de la prueba T queda establecida de la siguiente forma:
 
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad. **(no diferencia de medias)**
+-   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. **(no diferencia de medias)**
 
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos hasta 30 años de edad y más de 30 años de edad. **(sí diferencia de medias)**
+-   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. **(sí diferencia de medias)**
 
 Ambas hipótesis son acerca de los parámetros de la población.
 
