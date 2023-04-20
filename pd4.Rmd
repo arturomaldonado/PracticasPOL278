@@ -83,7 +83,7 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
 4.  Una vez realizada la suma, identificar el mínimo y el máximo.
 5.  Restar a todos los valores el valor mínimo.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo, con ello, se va a obtener valores entre 0 y 1.
+6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
 7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
 
 # **Apliquemos lo aprendido**
@@ -131,7 +131,7 @@ Según el cuestionario, *5* significa *muy insatisfecho* y *1* significa *muy sa
 
 -   P31 = satisfacción con la cantidad de pasos requeridos para completar gestión / trámite
 
-Si deseamos crear un indicador de satisfacción, entonces el máximo valor debe ser la calificacion más alta de satisfacción, y por tanto el valor mínimo dede mostra la insatisfacción. Dado que es cuestionario, no pregunto de esta manera, entonces tenemos que cambiar los valores de la siguiente manera:
+Si deseamos crear un indicador de satisfacción, entonces el máximo valor debe ser la calificacion más alta de satisfacción, y por tanto el valor mínimo dede mostra la insatisfacción. Dado que el cuestionario no preguntó de esta manera, entonces tenemos que cambiar los valores de la siguiente manera:
 
 -   1 'Muy satisfecho' a 5
 
@@ -225,7 +225,7 @@ summary(data$satisfaccion_n_pasos)
 
 d.  Recordemos los pasos para crear un índice aditivo:
 
-    *((var_suma - mín_de_suma)/máx_de_suma))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
+    *((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
 
     Crearemos una variable nueva "indice_satisfacción". Sumamos las variables
 
@@ -246,7 +246,7 @@ summary(data$suma)
 ```{r}
 data=data %>%
   mutate(resta = ((suma - 4)# Menos el minimo
-                                / 16), # Cuarto paso: dividir entre el nuevo máximo
+                                / 16), # Cuarto paso: dividir entre el máximo valor de la suma menos el mínimo (20-4)
          indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100
 ```
 
@@ -360,7 +360,7 @@ ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
   ylim(60, 70)
 ```
 
-**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción que no recibio con un 95% de confianza en la población.
+**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción que no recibió con un 95% de confianza en la población.
 
 **EJERCICIO PRÁCTICO**
 

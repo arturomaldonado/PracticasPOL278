@@ -499,8 +499,8 @@ proceder a sumarlas, si no lo están, proceder a recodificarlas para
 luego sumar.</li>
 <li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
 <li>Restar a todos los valores el valor mínimo.</li>
-<li>Al resultado de lo anterior, dividir por el nuevo máximo, con ello,
-se va a obtener valores entre 0 y 1.</li>
+<li>Al resultado de lo anterior, dividir por el nuevo máximo menos el
+mínimo, con ello, se va a obtener valores entre 0 y 1.</li>
 <li>Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se
 desea el índice de 0 a 10.</li>
 </ol>
@@ -605,8 +605,8 @@ completar gestión / trámite</p></li>
 </ul>
 <p>Si deseamos crear un indicador de satisfacción, entonces el máximo
 valor debe ser la calificacion más alta de satisfacción, y por tanto el
-valor mínimo dede mostra la insatisfacción. Dado que es cuestionario, no
-pregunto de esta manera, entonces tenemos que cambiar los valores de la
+valor mínimo dede mostra la insatisfacción. Dado que el cuestionario no
+preguntó de esta manera, entonces tenemos que cambiar los valores de la
 siguiente manera:</p>
 <ul>
 <li><p>1 ‘Muy satisfecho’ a 5</p></li>
@@ -702,9 +702,9 @@ data=data %&gt;% # objeto base de datos cargada
 ##   1.000   3.000   4.000   3.585   4.000   5.000</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li><p>Recordemos los pasos para crear un índice aditivo:</p>
-<p><em>((var_suma - mín_de_suma)/máx_de_suma))*valor al que quiere que
-llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50,
-etc).</em></p>
+<p><em>((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))*valor al
+que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50
+será 50, etc).</em></p>
 <p>Crearemos una variable nueva “indice_satisfacción”. Sumamos las
 variables</p></li>
 </ol>
@@ -719,7 +719,7 @@ variables</p></li>
 ##    4.00   13.00   16.00   14.66   16.00   20.00</code></pre>
 <pre class="r"><code>data=data %&gt;%
   mutate(resta = ((suma - 4)# Menos el minimo
-                                / 16), # Cuarto paso: dividir entre el nuevo máximo
+                                / 16), # Cuarto paso: dividir entre el máximo valor de la suma menos el mínimo (20-4)
          indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100</code></pre>
 <p>Opción 2: Sin crear variable “resta”</p>
 <pre class="r"><code>#data = data %&gt;%
@@ -868,7 +868,7 @@ ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
 de confianza no se traslapan, por lo que se puede concluir gráficamente
 que existe una diferencia estadísticamente significativa entre los
 grupos. El grupo que si recibio orientación tiene mayor satisfacción que
-no recibio con un 95% de confianza en la población.</p>
+no recibió con un 95% de confianza en la población.</p>
 <p><strong>EJERCICIO PRÁCTICO</strong></p>
 <p>Verifica si existe o no relación entre el número de veces que un
 ciudadano fue a la institución pública para realizar un trámite
