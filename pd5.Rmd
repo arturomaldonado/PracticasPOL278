@@ -246,6 +246,7 @@ Identificamos lo que nos interesa: La frecuencia de los que tienen un indicador 
 #Hallamos la proporción
 prop.test(x=c(23,19),n=c(23+18,19+108))
 ```
+Interpretación: la diferencia entre aquellos países que cuenta con un indicador de servicios públicos alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un indicador de servicios público bajo o medio se encuentra entre 23.1% y 59.2%, a un 95% de confianza. 
 
 # **Ejercicios**
 
