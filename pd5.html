@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 5</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 5</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<div id="revisemos-lo-avanzado-sobre-estadística-inferencial"
+class="section level1">
+<h1><strong>Revisemos lo avanzado sobre estadística
+inferencial</strong></h1>
+<p>En esta sesión repasaremos lo revisado hasta el momento sobre
+estadística inferencial: intervalos de confianza, prueba T y revisamos
+comparación de proporciones.</p>
+<p>La base a usar en esta sesión (“data-paises.xlsx”) proviene de la
+unión de tres bases de datos distintas, estas son “Human Development
+Index” elaborada por UNDP (<a
+href="https://hdr.undp.org/data-center/documentation-and-downloads">https://hdr.undp.org/data-center/documentation-and-downloads)</a>,);
+“Index of Economic Freedom” realizada por Heritage Foundation (<a
+href="https://indexdotnet.azurewebsites.net/index/explore">https://indexdotnet.azurewebsites.net/index/explore)</a>)
+y “Fragile State Index” elaborada por The Fund For Peace (<a
+href="https://fragilestatesindex.org/global-data/">https://fragilestatesindex.org/global-data/).</a>.)
+Asimismo, los datos con los que trabajaremos corresponden a información
+del 2021 y la unidad de análisis son países.</p>
+<p>Sobre las bases de estudio:</p>
+<ul>
+<li><p>El Human Development Index mide el índice de desarrollo humano a
+través de 3 aspectos: esperanza de vida, educación e ingresos per
+cápita. Su escala es de 0 a 1.</p></li>
+<li><p>El Index of Economic Freedom mide el grado de libertad económica
+mediante 12 indicadores agrupados en 4 categorías: Estado de Derecho,
+tamaño de Gobierno, eficiencia regulatoria y apertura de
+mercados.</p></li>
+<li><p>El Fragile State Index mide la fragilidad de un Estado a través
+de 12 indicadores agrupados en 4 categorías: cohesión, economía,
+política y social. Su escala es de 0 a 120.</p></li>
+</ul>
+<pre class="r"><code>#Llamemos al paquete
+library(rio)
+data=import(&quot;data-paises.xlsx&quot;)
+#Llamemos a nuestra base de datos</code></pre>
+</div>
+<div id="prueba-t" class="section level1">
+<h1><strong>Prueba T</strong></h1>
+<p>Recuerda que hay condiciones para poder realizar la prueba T:</p>
+<ul>
+<li><p>Independencia: Las muestras deben ser independientes. El muestreo
+debe ser aleatorio.</p></li>
+<li><p>Igualdad de varianza: La varianza de ambas poblaciones comparadas
+debe ser igual. <em>(Prueba Levene)</em></p></li>
+<li><p>La variable numérica se distribuye de manera normal.</p></li>
+</ul>
+<div id="pasos-para-realizar-la-prueba-t" class="section level3">
+<h3><strong>Pasos para realizar la Prueba T</strong></h3>
+<ol style="list-style-type: decimal">
+<li>Establecer hipótesis</li>
+<li>Calcular el estadístico (parámetro estimado) que se va a
+emplear</li>
+<li>Determinar el nivel de significancia α (alpha)</li>
+<li>Calcular el p-value y realizar la prueba t.test</li>
+<li>Interpretar</li>
+</ol>
+<p>Apliquemos lo revisado…</p>
+<p>Primero, exploraremos un poco las variables de interés:</p>
+<p>V27: Índice de desarrollo humano V1: Índice de libertad económica</p>
+<p>Al ver la estrctura de nuesta base de datos podemos observar que
+ambas variables de interés (V27 y V1) son categóricas. Por ello, haremos
+un pequeño cambio.</p>
+<p>Segundo volveremos la variable V27 una variable numérica y crearemos
+2 grupos.</p>
+<p>Siendo los niveles: “Bajo / Medio” = si es menor o igual a 0.7350, y,
+“Alto/ Muy alto” = si es mayor a 0.7350</p>
+<p>¿Cómo lo haremos? Con case when!</p>
+<pre class="r"><code>library(tidyverse)
+data$V27 = as.numeric(data$V27)
+
+data = data %&gt;%
+  mutate(
+   grupo_IDH= case_when(V27&lt;=0.7350 ~ &quot;1. Bajo/Medio&quot;, V27&gt;0.7350 ~ &quot;2. Alto/Muy alto&quot;))</code></pre>
+<p>Segundo,vamos a transformar la variable “V1” para que sea
+númerica</p>
+<pre class="r"><code>data$V1 = as.numeric(data$V1)</code></pre>
+<p>Ahora, analizaremos la varianza en los grupos, para ello usaremos la
+prueba Levene:</p>
+<p>H0: La varianza del Índice de Desarrollo Humano es igual a la
+varianza del Índice de Libertad Económica. H1: La varianza del Índice de
+Desarrollo Humano NO es igual a la varianza del Índice de Libertad
+Económica.</p>
+<pre class="r"><code>library(DescTools)
+LeveneTest(data$V1, data$V27)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##        Df F value Pr(&gt;F)
+## group 145  0.3759 0.9997
+##        22</code></pre>
+<p>Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son
+iguales, por lo que podemos realizar la Prueba T.</p>
+</div>
+<div id="realizamos-la-prueba-t" class="section level3">
+<h3><strong>Realizamos la Prueba T</strong></h3>
+<div id="primer-paso-establecer-la-hipótesis." class="section level4">
+<h4><strong>Primer paso: Establecer la hipótesis.</strong></h4>
+<p>La hipotesis de la prueba T queda establecida de la siguiente
+forma:</p>
+<ul>
+<li><p>H0: No hay diferencia de promedio en los niveles de libertad
+económica entre aquellos países que tienen un índice de desarrollo
+humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
+“Alto / Muy alto” <strong>(no diferencia de medias)</strong></p></li>
+<li><p>H1: Si hay diferencia de promedio en los niveles de libertad
+económica entre aquellos países que tienen un índice de desarrollo
+humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
+“Alto / Muy alto” <strong>(sí diferencia de medias)</strong></p></li>
+</ul>
+<p>Ambas hipótesis son acerca de los parámetros de la población.</p>
+</div>
+<div id="segundo-paso-calcular-el-estadístico-a-emplear"
+class="section level4">
+<h4><strong>Segundo paso: Calcular el estadístico a
+emplear</strong></h4>
+<p>Para verificar la diferencia de medias se calcula el estadístico T, y
+uno de los primeros pasos es calcular las diferencias entre las medias
+muestrales, ya que es lo quiero extrapolar y por tanto saber si existe o
+no una diferencia significativa entre las medias poblacionales de ambos
+grupos:</p>
+<pre class="r"><code>library(lsr)
+tabla=data%&gt;%
+  group_by(grupo_IDH) %&gt;%
+summarise(Desviacion = sd(V1, na.rm=T),
+          Media = mean(V1, na.rm=T),
+            min = ciMean(V1,conf = 0.95, na.rm=T)[1],
+            max = ciMean(V1,conf = 0.95, na.rm=T)[2],
+          n=length(V1))
+            
+tabla</code></pre>
+<pre><code>## # A tibble: 2 × 6
+##   grupo_IDH        Desviacion Media   min   max     n
+##   &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 1. Bajo/Medio          7.03  55.6  54.1  57.2    82
+## 2 2. Alto/Muy alto       9.32  68.0  66.0  70.0    86</code></pre>
+</div>
+<div id="tercer-paso-determinar-el-nivel-de-significancia"
+class="section level4">
+<h4><strong>Tercer paso: Determinar el nivel de
+significancia</strong></h4>
+<p>De manera convencional establecemos la siguiente regla para nuestra
+prueba T:</p>
+<ul>
+<li><p>p-value\&lt;=0.05 Rechazo la H0 y acepto H1</p></li>
+<li><p>p-value\&gt;0.05 No rechazo la H0</p></li>
+</ul>
+</div>
+<div id="cuarto-paso-calcular-el-p-value-y-realizar-la-prueba-t.test"
+class="section level4">
+<h4><strong>Cuarto paso: Calcular el p-value y realizar la prueba
+t.test</strong></h4>
+<p>Recuerda que el p-value mide la probabilidad de observar en una
+muestra una diferencia de medias como la observada, si la diferencia de
+medias poblacional fuera cero.</p>
+<pre class="r"><code>t.test(V1 ~ grupo_IDH, data = data,
+  alternative = &quot;two.sided&quot;, 
+  conf.level  = 0.95 #nivel de confianza (95%)
+)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  V1 by grupo_IDH
+## t = -9.7594, df = 157.77, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group 1. Bajo/Medio and group 2. Alto/Muy alto is not equal to 0
+## 95 percent confidence interval:
+##  -14.895211  -9.880966
+## sample estimates:
+##    mean in group 1. Bajo/Medio mean in group 2. Alto/Muy alto 
+##                       55.60610                       67.99419</code></pre>
+</div>
+<div id="quinto-paso-interpretar" class="section level4">
+<h4><strong>Quinto paso: Interpretar</strong></h4>
+<p><strong>¿Cómo interpreto?</strong></p>
+<p>Recordando nuestras hipotesis:</p>
+<ul>
+<li><p>H0: No hay diferencia de promedio en los niveles de libertad
+económica entre aquellos países que tienen un índice de desarrollo
+humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
+“Alto / Muy alto”</p></li>
+<li><p>H1: Si hay diferencia de promedio en los niveles de libertad
+económica entre aquellos países que tienen un índice de desarrollo
+humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
+“Alto / Muy alto”</p></li>
+</ul>
+<p>Asimismo, en el paso 4, determinamos el nivel de significancia de la
+siguiente manera:</p>
+<ul>
+<li><p>Si el p-value del t test es &lt;=0.05 Rechazo la H0 y se afirma
+H1.</p></li>
+<li><p>Si el p-value del t test es &gt;0.05 No rechazo la H0</p></li>
+</ul>
+<p>Entonces, vemos que el p-value es menor a 0.05, entonces rechazo la
+H0, por tanto, existe una diferencia estadísticamente significativa
+entre las medias del Índice de libertad económica entre los países que
+tienen un Índice de Desarrollo Humano “Bajo / Medio” y los países que
+tiene in Índice de Desarrollo Humano “Alto / Muy alto”.</p>
+</div>
+<div id="paso-final-graficar" class="section level4">
+<h4><strong>Paso FINAL: Graficar</strong></h4>
+<p>Otro método para evaluar la comparación entre grupos es realizar un
+gráfico de medias con intervalos de confianza de cada grupo.</p>
+<p>Para calcular la diferencia de medias</p>
+<pre class="r"><code>library(Rmisc)
+ic_grupo = group.CI(V27~grupo_IDH,data)
+ic_grupo</code></pre>
+<pre><code>##          grupo_IDH V27.upper  V27.mean V27.lower
+## 1    1. Bajo/Medio 0.6120113 0.5910610 0.5701106
+## 2 2. Alto/Muy alto 0.8622095 0.8473837 0.8325579</code></pre>
+<p><strong>Barras de Error</strong></p>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(ic_grupo, aes(x= grupo_IDH, y =V27.mean)) +
+  geom_errorbar(aes(ymin=V27.lower, ymax=V27.upper), width = 0.2)+
+   geom_text(aes(label=paste(round(V27.mean,1))), size=3)+
+  xlab(&quot;Índice de Desarrollo Humano&quot;) + ylab(&quot;Índice de Libertad Económica&quot;)</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><strong>Interpretación</strong>: Tal como se observa ambos intervalos
+de confianza no se traslapan, por lo que se puede concluir gráficamente
+que existe una diferencia estadísticamente significativa entre los
+grupos. El grupo que tiene un IDH “Alto/Muy alto” tiene mayor libertad
+económica que el grupo que tiene un IDH “Bajo/Medio” con un 95% de
+confianza.</p>
+</div>
+</div>
+</div>
+<div id="comparación-de-proporciones" class="section level1">
+<h1><strong>Comparación de proporciones</strong></h1>
+<p>Para este ejercicio trabajaremos con dos variables:</p>
+<ul>
+<li><p><em>V20: Legitimidad del Estado</em></p></li>
+<li><p><em>V21: Servicios públicos</em></p></li>
+</ul>
+<p>Revisemos a nuestras variables</p>
+<p>Variable V20:</p>
+<pre class="r"><code>class(data$V20) #Revisamos como está catalogada nuestra variable</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>summary(data$V20) </code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.500   3.600   6.250   5.593   7.725  10.000</code></pre>
+<p>Recordemos que para comparar proporciones necesitamos que nuestra
+variable sea categórica. La recodificaremos para que tengamos dos
+grupos: Baja/Media (de 7.73 a menos) y Alta (más de 7.73).</p>
+<pre class="r"><code>library(tidyverse)#Llamemos al paquete
+data = data %&gt;%
+  mutate(V20_2 = case_when(V20 &lt;= 7.73 ~ &quot;Baja/Media&quot;,
+                          TRUE ~ &quot;Alta&quot;))</code></pre>
+<p>Realizamos el mismo ejercicio con nuestra variable V21:</p>
+<pre class="r"><code>class(data$V21) #Revisamos como está catalogada nuestra variable</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>summary(data$V21) </code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.200   3.700   5.300   5.585   7.600  10.000</code></pre>
+<p>La recodificaremos para que tengamos dos grupos: Baja/Media (de 7.6 a
+menos) y Alta (más de 7.6).</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(V21_2 = case_when(V21 &lt;= 7.6 ~ &quot;Baja/Media&quot;,
+                          TRUE ~ &quot;Alta&quot;))</code></pre>
+<p>Necesitamos calcular la diferencia entre aquellos países que cuenta
+con un indicador de servicios públicos alto y alta legitimidad, y
+aquellos que tienen una alta legitimidad y un indicador de servicios
+público bajo o medio.</p>
+<pre class="r"><code>#Realizamos una tabla de frecuencias
+table(data$V20_2,data$V21_2)</code></pre>
+<pre><code>##             
+##              Alta Baja/Media
+##   Alta         23         19
+##   Baja/Media   18        108</code></pre>
+<p>Identificamos lo que nos interesa: La frecuencia de los que tienen un
+indicador alta en legitimidad y servicios públicos es 23; mientras que,
+los que tienen un indicador alto de legitimidad y bajo o medio de
+servicios públicos es de 19.</p>
+<pre class="r"><code>#Hallamos la proporción
+prop.test(x=c(23,19),n=c(23+18,19+108))</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  c(23, 19) out of c(23 + 18, 19 + 108)
+## X-squared = 25.822, df = 1, p-value = 3.744e-07
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.2311536 0.5915850
+## sample estimates:
+##    prop 1    prop 2 
+## 0.5609756 0.1496063</code></pre>
+<p>Interpretación: la diferencia entre aquellos países que cuenta con un
+indicador de servicios públicos alto y alta legitimidad, y aquellos que
+tienen una alta legitimidad y un indicador de servicios público bajo o
+medio se encuentra entre 23.1% y 59.2%, a un 95% de confianza.</p>
+</div>
+<div id="ejercicios" class="section level1">
+<h1><strong>Ejercicios</strong></h1>
+<ul>
+<li><p>Analizaremos la variable V17 - Economía.</p>
+<ul>
+<li><p>Halla el intervalo de confianza para la media.</p></li>
+<li><p>Halla el intervalo de confianza para la media según <strong>gasto
+de gobierno (V6)</strong>. Toma en consideración que la variable gasto
+de gobierno está como numérica, necesitamos que esté como categórica.
+Para ello usamos case_when y recodificamos según gasto bajo, medio y
+alto.</p></li>
+</ul></li>
+<li><p>Analizaremos la variable <em>V30: Promedio de años de
+escolaridad</em></p>
+<ul>
+<li><p>Halla el intervalo de confianza para la proporción de países que
+tienen un promedio de años de escolaridad alto. Para ello recodifica de
+la siguiente manera:</p>
+<ul>
+<li><p>De 12 años a menos: “Doce años a menos”</p></li>
+<li><p>Más de 12: “Más de 12 años”</p></li>
+</ul></li>
+</ul></li>
+<li><p>¿Existe diferencia de medias de gasto del gobierno (V6) según
+tiempo de escolaridad (V30_2, creada en ejercicio anterior)? Recuerda
+realizar la prueba Levene.</p></li>
+</ul>
+<div id="section" class="section level2">
+<h2></h2>
+<div id="section-1" class="section level3">
+<h3></h3>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
