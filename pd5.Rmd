@@ -67,7 +67,7 @@ Primero, exploraremos un poco las variables de interés:
 
 V27: Índice de desarrollo humano V1: Índice de libertad económica
 
-Al ver la estrctura de nuesta base de datos podemos observar que ambas variables de interés (V27 y V1) son categóricas. Por ello, haremos un pequeño cambio.
+Al ver la estrctura de nuesta base de datos podemos observar que ambas variables de interés (V27 y V1) son numéricas. Por ello, haremos un pequeño cambio.
 
 Segundo volveremos la variable V27 una variable numérica y crearemos 2 grupos.
 
@@ -192,7 +192,13 @@ ggplot(ic_grupo, aes(x= grupo_IDH, y =V27.mean)) +
 
 **Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que tiene un IDH "Alto/Muy alto" tiene mayor libertad económica que el grupo que tiene un IDH "Bajo/Medio" con un 95% de confianza.
 
-# **Comparación de proporciones**
+# **Prueba de proporciones**
+
+Nuestras hipótesis para la prueba de proporciones son
+
+-   H0:No hay diferencia entre las proporciones/Las proporciones son iguales
+
+-   H1: Hay diferencia entre las proporciones/las proporciones son diferentes.
 
 Para este ejercicio trabajaremos con dos variables:
 
@@ -233,7 +239,7 @@ data = data %>%
                           TRUE ~ "Alta"))
 ```
 
-Necesitamos calcular la diferencia entre aquellos países que cuenta con un indicador de servicios públicos alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un indicador de servicios público bajo o medio.
+Necesitamos calcular la diferencia entre aquellos países que cuenta con un indicador de servicios públicos alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un indicador de servicios públicos bajo o medio.
 
 ```{r}
 #Realizamos una tabla de frecuencias
@@ -242,11 +248,24 @@ table(data$V20_2,data$V21_2)
 
 Identificamos lo que nos interesa: La frecuencia de los que tienen un indicador alta en legitimidad y servicios públicos es 23; mientras que, los que tienen un indicador alto de legitimidad y bajo o medio de servicios públicos es de 19.
 
+Realizamos el prop table para analizar las proporciones.
+
+```{r}
+prop.table(table(data$V20_2,data$V21_2),2)*100 #Después de la coma va el 2 para que el porcentaje sea por columnas
+```
+
+Recordemos las hipótesis:
+
+H0:No hay diferencia entre las proporciones de aquellos países que cuentan con un indicador de servicios públicos alto y alta legitimidad y aquellos que tienen una alta legitimidad y un indicador de servicios públicos bajo o medio
+
+H1: Hay diferencia entre las proporciones de aquellos países que cuentan con un indicador de servicios públicos alto y alta legitimidad y aquellos que tienen una alta legitimidad y un indicador de servicios públicos bajo o medio
+
 ```{r}
 #Hallamos la proporción
 prop.test(x=c(23,19),n=c(23+18,19+108))
 ```
-Interpretación: la diferencia entre aquellos países que cuenta con un indicador de servicios públicos alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un indicador de servicios público bajo o medio se encuentra entre 23.1% y 59.2%, a un 95% de confianza. 
+
+Interpretación: Al ser el p valor menor a 0.05 podemos afirmar a un 95% de confianza que a nivel de población las proporciones de los países que cuentan con un indicador de servicios públicos alto y alta legitimidad y aquellos que tienen una alta legitimidad y un indicador de servicios públicos bajo o medio son distintas. Además, la diferencia entre aquellos países que cuenta con un indicador de servicios públicos alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un indicador de servicios público bajo o medio se encuentra entre 23.1% y 59.2%, a un 95% de confianza.
 
 # **Ejercicios**
 
