@@ -397,7 +397,6 @@ div.tocify {
 <center>
 <img src=" " width="200"/>
 </center>
-<p><img src="logoPUCP.png" width="30%" /></p>
 <div id="revisemos-lo-avanzado-sobre-estadística-inferencial"
 class="section level1">
 <h1><strong>Revisemos lo avanzado sobre estadística
@@ -457,7 +456,7 @@ emplear</li>
 <p>Primero, exploraremos un poco las variables de interés:</p>
 <p>V27: Índice de desarrollo humano V1: Índice de libertad económica</p>
 <p>Al ver la estrctura de nuesta base de datos podemos observar que
-ambas variables de interés (V27 y V1) son numéricas. Por ello, haremos
+ambas variables de interés (V27 y V1) son categóricas. Por ello, haremos
 un pequeño cambio.</p>
 <p>Segundo volveremos la variable V27 una variable numérica y crearemos
 2 grupos.</p>
@@ -480,13 +479,16 @@ varianza del Índice de Libertad Económica. H1: La varianza del Índice de
 Desarrollo Humano NO es igual a la varianza del Índice de Libertad
 Económica.</p>
 <pre class="r"><code>library(DescTools)
-LeveneTest(data$V1, data$V27)</code></pre>
+LeveneTest(data$V1, data$grupo_IDH)</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
-##        Df F value Pr(&gt;F)
-## group 145  0.3759 0.9997
-##        22</code></pre>
-<p>Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son
-iguales, por lo que podemos realizar la Prueba T.</p>
+##        Df F value  Pr(&gt;F)  
+## group   1   4.473 0.03593 *
+##       166                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Para poder continuar con el ejercicio, asumimos que el resultado es
+mayor a 0.05. Ello nos permitiría afirmar que las varianzas son iguales.
+Siendo ello una condición para realizar la prueba T.</p>
 </div>
 <div id="realizamos-la-prueba-t" class="section level3">
 <h3><strong>Realizamos la Prueba T</strong></h3>
@@ -598,17 +600,17 @@ tiene in Índice de Desarrollo Humano “Alto / Muy alto”.</p>
 gráfico de medias con intervalos de confianza de cada grupo.</p>
 <p>Para calcular la diferencia de medias</p>
 <pre class="r"><code>library(Rmisc)
-ic_grupo = group.CI(V27~grupo_IDH,data)
+ic_grupo = group.CI(V1~grupo_IDH,data)
 ic_grupo</code></pre>
-<pre><code>##          grupo_IDH V27.upper  V27.mean V27.lower
-## 1    1. Bajo/Medio 0.6120113 0.5910610 0.5701106
-## 2 2. Alto/Muy alto 0.8622095 0.8473837 0.8325579</code></pre>
+<pre><code>##          grupo_IDH V1.upper  V1.mean V1.lower
+## 1    1. Bajo/Medio 57.15019 55.60610 54.06201
+## 2 2. Alto/Muy alto 69.99139 67.99419 65.99698</code></pre>
 <p><strong>Barras de Error</strong></p>
 <pre class="r"><code>library(ggplot2)
 
-ggplot(ic_grupo, aes(x= grupo_IDH, y =V27.mean)) +
-  geom_errorbar(aes(ymin=V27.lower, ymax=V27.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(V27.mean,1))), size=3)+
+ggplot(ic_grupo, aes(x= grupo_IDH, y =V1.mean)) +
+  geom_errorbar(aes(ymin=V1.lower, ymax=V1.upper), width = 0.2)+
+   geom_text(aes(label=paste(round(V1.mean,1))), size=3)+
   xlab(&quot;Índice de Desarrollo Humano&quot;) + ylab(&quot;Índice de Libertad Económica&quot;)</code></pre>
 <p><img src="pd5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><strong>Interpretación</strong>: Tal como se observa ambos intervalos
@@ -620,15 +622,8 @@ confianza.</p>
 </div>
 </div>
 </div>
-<div id="prueba-de-proporciones" class="section level1">
-<h1><strong>Prueba de proporciones</strong></h1>
-<p>Nuestras hipótesis para la prueba de proporciones son</p>
-<ul>
-<li><p>H0:No hay diferencia entre las proporciones/Las proporciones son
-iguales</p></li>
-<li><p>H1: Hay diferencia entre las proporciones/las proporciones son
-diferentes.</p></li>
-</ul>
+<div id="comparación-de-proporciones" class="section level1">
+<h1><strong>Comparación de proporciones</strong></h1>
 <p>Para este ejercicio trabajaremos con dos variables:</p>
 <ul>
 <li><p><em>V20: Legitimidad del Estado</em></p></li>
@@ -662,7 +657,7 @@ menos) y Alta (más de 7.6).</p>
 <p>Necesitamos calcular la diferencia entre aquellos países que cuenta
 con un indicador de servicios públicos alto y alta legitimidad, y
 aquellos que tienen una alta legitimidad y un indicador de servicios
-públicos bajo o medio.</p>
+público bajo o medio.</p>
 <pre class="r"><code>#Realizamos una tabla de frecuencias
 table(data$V20_2,data$V21_2)</code></pre>
 <pre><code>##             
@@ -673,21 +668,6 @@ table(data$V20_2,data$V21_2)</code></pre>
 indicador alta en legitimidad y servicios públicos es 23; mientras que,
 los que tienen un indicador alto de legitimidad y bajo o medio de
 servicios públicos es de 19.</p>
-<p>Realizamos el prop table para analizar las proporciones.</p>
-<pre class="r"><code>prop.table(table(data$V20_2,data$V21_2),2)*100 #Después de la coma va el 2 para que el porcentaje sea por columnas</code></pre>
-<pre><code>##             
-##                  Alta Baja/Media
-##   Alta       56.09756   14.96063
-##   Baja/Media 43.90244   85.03937</code></pre>
-<p>Recordemos las hipótesis:</p>
-<p>H0:No hay diferencia entre las proporciones de aquellos países que
-cuentan con un indicador de servicios públicos alto y alta legitimidad y
-aquellos que tienen una alta legitimidad y un indicador de servicios
-públicos bajo o medio</p>
-<p>H1: Hay diferencia entre las proporciones de aquellos países que
-cuentan con un indicador de servicios públicos alto y alta legitimidad y
-aquellos que tienen una alta legitimidad y un indicador de servicios
-públicos bajo o medio</p>
 <pre class="r"><code>#Hallamos la proporción
 prop.test(x=c(23,19),n=c(23+18,19+108))</code></pre>
 <pre><code>## 
@@ -701,15 +681,10 @@ prop.test(x=c(23,19),n=c(23+18,19+108))</code></pre>
 ## sample estimates:
 ##    prop 1    prop 2 
 ## 0.5609756 0.1496063</code></pre>
-<p>Interpretación: Al ser el p valor menor a 0.05 podemos afirmar a un
-95% de confianza que a nivel de población las proporciones de los países
-que cuentan con un indicador de servicios públicos alto y alta
-legitimidad y aquellos que tienen una alta legitimidad y un indicador de
-servicios públicos bajo o medio son distintas. Además, la diferencia
-entre aquellos países que cuenta con un indicador de servicios públicos
-alto y alta legitimidad, y aquellos que tienen una alta legitimidad y un
-indicador de servicios público bajo o medio se encuentra entre 23.1% y
-59.2%, a un 95% de confianza.</p>
+<p>Interpretación: la diferencia entre aquellos países que cuenta con un
+indicador de servicios públicos alto y alta legitimidad, y aquellos que
+tienen una alta legitimidad y un indicador de servicios público bajo o
+medio se encuentra entre 23.1% y 59.2%, a un 95% de confianza.</p>
 </div>
 <div id="ejercicios" class="section level1">
 <h1><strong>Ejercicios</strong></h1>
