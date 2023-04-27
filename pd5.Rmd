@@ -70,39 +70,37 @@ Primero, exploraremos un poco las variables de interés:
 
 V27: Índice de desarrollo humano V1: Índice de libertad económica
 
-Al ver la estrctura de nuesta base de datos podemos observar que ambas variables de interés (V27 y V1) son categóricas. Por ello, haremos un pequeño cambio.
+Ambas variables son numéricas, inicialmente. Sin embargo para la prueba T es necesario contar con una variable numérica y otra categórica. Es así que crearemos 2 grupos según la variable V1 (Que puede ir del 0 al 100). 
 
-Segundo volveremos la variable V27 una variable numérica y crearemos 2 grupos.
-
-Siendo los niveles: "Bajo / Medio" = si es menor o igual a 0.7350, y, "Alto/ Muy alto" = si es mayor a 0.7350
+Siendo los niveles: "Bajo" = si es menor o igual a 50, y, "Medio/Alto" = si es mayor a 50
 
 ¿Cómo lo haremos? Con case when!
 
 ```{r}
 library(tidyverse)
-data$V27 = as.numeric(data$V27)
+summary(data$V1)
+```
 
+Si revisamos el summary 
+```{r}
 data = data %>%
   mutate(
-   grupo_IDH= case_when(V27<=0.7350 ~ "1. Bajo/Medio", V27>0.7350 ~ "2. Alto/Muy alto"))
+   grupo_ILE= case_when(V1<=50 ~ "1. Bajo", V1>50 ~ "2.Medio/Alto"))
 ```
 
-Segundo,vamos a transformar la variable "V1" para que sea númerica
-
-```{r}
-data$V1 = as.numeric(data$V1)
-```
+La variable "V27" ya es númerica por lo que no añadimos cambios.
 
 Ahora, analizaremos la varianza en los grupos, para ello usaremos la prueba Levene:
 
-H0: La varianza del Índice de Desarrollo Humano es igual a la varianza del Índice de Libertad Económica. H1: La varianza del Índice de Desarrollo Humano NO es igual a la varianza del Índice de Libertad Económica.
+H0: La varianza del Índice de Libertad Económica (en grupos) es igual a la varianza del Índice de Desarrollo Humano. 
+H1: La varianza del Índice de Libertad Económica (en grupos) NO es igual a la varianza del Índice de Desarrollo Humano.
 
 ```{r}
 library(DescTools)
-LeveneTest(data$V1, data$grupo_IDH)
+LeveneTest(data$V27, data$grupo_ILE)
 ```
 
-Para poder continuar con el ejercicio, asumimos que el resultado es mayor a 0.05. Ello nos permitiría afirmar que las varianzas son iguales. Siendo ello una condición para realizar la prueba T.
+Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son iguales, por lo que podemos realizar la Prueba T.
 
 ### **Realizamos la Prueba T**
 
@@ -110,9 +108,9 @@ Para poder continuar con el ejercicio, asumimos que el resultado es mayor a 0.05
 
 La hipotesis de la prueba T queda establecida de la siguiente forma:
 
--   H0: No hay diferencia de promedio en los niveles de libertad económica entre aquellos países que tienen un índice de desarrollo humano "Bajo / Medio" y los que tienen un índice de desarrollo humano "Alto / Muy alto" **(no diferencia de medias)**
+-   H0: No hay diferencia de promedio en los niveles del Índice de desarrollo humano entre aquellos países que tienen un índice libertad económica "Bajo" y los que tienen un índice libertad económica "Medio/Alto" **(no diferencia de medias)**
 
--   H1: Si hay diferencia de promedio en los niveles de libertad económica entre aquellos países que tienen un índice de desarrollo humano "Bajo / Medio" y los que tienen un índice de desarrollo humano "Alto / Muy alto" **(sí diferencia de medias)**
+-   H1: Si hay diferencia de promedio en los niveles del Índice de desarrollo humano entre aquellos países que tienen un índice libertad económica "Bajo" y los que tienen un índice libertad económica "Medio/Alto" **(sí diferencia de medias)**
 
 Ambas hipótesis son acerca de los parámetros de la población.
 
@@ -123,12 +121,12 @@ Para verificar la diferencia de medias se calcula el estadístico T, y uno de lo
 ```{r}
 library(lsr)
 tabla=data%>%
-  group_by(grupo_IDH) %>%
-summarise(Desviacion = sd(V1, na.rm=T),
-          Media = mean(V1, na.rm=T),
-            min = ciMean(V1,conf = 0.95, na.rm=T)[1],
-            max = ciMean(V1,conf = 0.95, na.rm=T)[2],
-          n=length(V1))
+  group_by(grupo_ILE) %>%
+summarise(Desviacion = sd(V27, na.rm=T),
+          Media = mean(V27, na.rm=T),
+            min = ciMean(V27,conf = 0.95, na.rm=T)[1],
+            max = ciMean(V27,conf = 0.95, na.rm=T)[2],
+          n=length(V27))
             
 tabla
 ```
@@ -146,7 +144,7 @@ De manera convencional establecemos la siguiente regla para nuestra prueba T:
 Recuerda que el p-value mide la probabilidad de observar en una muestra una diferencia de medias como la observada, si la diferencia de medias poblacional fuera cero.
 
 ```{r}
-t.test(V1 ~ grupo_IDH, data = data,
+t.test(V27 ~ grupo_ILE, data = data,
   alternative = "two.sided", 
   conf.level  = 0.95 #nivel de confianza (95%)
 )
@@ -158,9 +156,9 @@ t.test(V1 ~ grupo_IDH, data = data,
 
 Recordando nuestras hipotesis:
 
--   H0: No hay diferencia de promedio en los niveles de libertad económica entre aquellos países que tienen un índice de desarrollo humano "Bajo / Medio" y los que tienen un índice de desarrollo humano "Alto / Muy alto"
+-   H0: No hay diferencia de promedio en los niveles de IDH entre aquellos países que tienen un índice de libertad económica "Bajo" y los que tienen un índice de libertad económica "Medio / Alto"
 
--   H1: Si hay diferencia de promedio en los niveles de libertad económica entre aquellos países que tienen un índice de desarrollo humano "Bajo / Medio" y los que tienen un índice de desarrollo humano "Alto / Muy alto"
+-   H1: Sí hay diferencia de promedio en los niveles de IDH entre aquellos países que tienen un índice de libertad económica "Bajo" y los que tienen un índice de libertad económica "Medio / Alto"
 
 Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente manera:
 
@@ -168,7 +166,7 @@ Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente m
 
 -   Si el p-value del t test es \>0.05 No rechazo la H0
 
-Entonces, vemos que el p-value es menor a 0.05, entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del Índice de libertad económica entre los países que tienen un Índice de Desarrollo Humano "Bajo / Medio" y los países que tiene in Índice de Desarrollo Humano "Alto / Muy alto".
+Entonces, vemos que el p-value es menor a 0.05, entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del IDH entre los países que tienen un Índice de libertad económica "Bajo" y los países que tiene un Índice de libertad económica "Medio /Alto".
 
 #### **Paso FINAL: Graficar**
 
@@ -178,7 +176,7 @@ Para calcular la diferencia de medias
 
 ```{r}
 library(Rmisc)
-ic_grupo = group.CI(V1~grupo_IDH,data)
+ic_grupo = group.CI(V27~grupo_ILE,data)
 ic_grupo
 ```
 
@@ -187,13 +185,13 @@ ic_grupo
 ```{r}
 library(ggplot2)
 
-ggplot(ic_grupo, aes(x= grupo_IDH, y =V1.mean)) +
-  geom_errorbar(aes(ymin=V1.lower, ymax=V1.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(V1.mean,1))), size=3)+
-  xlab("Índice de Desarrollo Humano") + ylab("Índice de Libertad Económica")
+ggplot(ic_grupo, aes(x= grupo_ILE, y =V27.mean)) +
+  geom_errorbar(aes(ymin=V27.lower, ymax=V27.upper), width = 0.2)+
+   geom_text(aes(label=paste(round(V27.mean,1))), size=3)+
+  xlab("Índice de Libertad Económica") + ylab("Índice de Desarrollo Humano")
 ```
 
-**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que tiene un IDH "Alto/Muy alto" tiene mayor libertad económica que el grupo que tiene un IDH "Bajo/Medio" con un 95% de confianza.
+**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que tiene un índice de libertad económica "Medio/Alto" tiene mayor IDH que el grupo que tiene un indíce de libertad económica "Bajo" con un 95% de confianza.
 
 # **Comparación de proporciones**
 
