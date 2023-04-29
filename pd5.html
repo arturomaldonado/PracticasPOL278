@@ -13,7 +13,11 @@
 
 <title>Práctica dirigida 5</title>
 
+<<<<<<< HEAD
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+=======
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+>>>>>>> 9a956ab703412b9cfc7cff4595e22405f5712d51
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,8 +39,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -400,7 +404,6 @@ div.tocify {
 <center>
 <img src=" " width="200"/>
 </center>
-<p><img src="logoPUCP.png" width="30%" /></p>
 <div id="revisemos-lo-avanzado-sobre-estadística-inferencial"
 class="section level1">
 <h1><strong>Revisemos lo avanzado sobre estadística
@@ -459,35 +462,34 @@ emplear</li>
 <p>Apliquemos lo revisado…</p>
 <p>Primero, exploraremos un poco las variables de interés:</p>
 <p>V27: Índice de desarrollo humano V1: Índice de libertad económica</p>
-<p>Al ver la estrctura de nuesta base de datos podemos observar que
-ambas variables de interés (V27 y V1) son categóricas. Por ello, haremos
-un pequeño cambio.</p>
-<p>Segundo volveremos la variable V27 una variable numérica y crearemos
-2 grupos.</p>
-<p>Siendo los niveles: “Bajo / Medio” = si es menor o igual a 0.7350, y,
-“Alto/ Muy alto” = si es mayor a 0.7350</p>
+<p>Ambas variables son numéricas, inicialmente. Sin embargo para la
+prueba T es necesario contar con una variable numérica y otra
+categórica. Es así que crearemos 2 grupos según la variable V1 (Que
+puede ir del 0 al 100).</p>
+<p>Siendo los niveles: “Bajo” = si es menor o igual a 50, y,
+“Medio/Alto” = si es mayor a 50</p>
 <p>¿Cómo lo haremos? Con case when!</p>
 <pre class="r"><code>library(tidyverse)
-data$V27 = as.numeric(data$V27)
-
-data = data %&gt;%
+summary(data$V1)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   24.70   55.67   62.00   61.95   69.35   89.70</code></pre>
+<p>Si revisamos el summary</p>
+<pre class="r"><code>data = data %&gt;%
   mutate(
-   grupo_IDH= case_when(V27&lt;=0.7350 ~ &quot;1. Bajo/Medio&quot;, V27&gt;0.7350 ~ &quot;2. Alto/Muy alto&quot;))</code></pre>
-<p>Segundo,vamos a transformar la variable “V1” para que sea
-númerica</p>
-<pre class="r"><code>data$V1 = as.numeric(data$V1)</code></pre>
+   grupo_ILE= case_when(V1&lt;=50 ~ &quot;1. Bajo&quot;, V1&gt;50 ~ &quot;2.Medio/Alto&quot;))</code></pre>
+<p>La variable “V27” ya es númerica por lo que no añadimos cambios.</p>
 <p>Ahora, analizaremos la varianza en los grupos, para ello usaremos la
 prueba Levene:</p>
-<p>H0: La varianza del Índice de Desarrollo Humano es igual a la
-varianza del Índice de Libertad Económica. H1: La varianza del Índice de
-Desarrollo Humano NO es igual a la varianza del Índice de Libertad
-Económica.</p>
+<p>H0: La varianza del Índice de Libertad Económica (en grupos) es igual
+a la varianza del Índice de Desarrollo Humano. H1: La varianza del
+Índice de Libertad Económica (en grupos) NO es igual a la varianza del
+Índice de Desarrollo Humano.</p>
 <pre class="r"><code>library(DescTools)
-LeveneTest(data$V1, data$V27)</code></pre>
+LeveneTest(data$V27, data$grupo_ILE)</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
 ##        Df F value Pr(&gt;F)
-## group 145  0.3759 0.9997
-##        22</code></pre>
+## group   1  0.4909 0.4845
+##       166</code></pre>
 <p>Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son
 iguales, por lo que podemos realizar la Prueba T.</p>
 </div>
@@ -498,14 +500,14 @@ iguales, por lo que podemos realizar la Prueba T.</p>
 <p>La hipotesis de la prueba T queda establecida de la siguiente
 forma:</p>
 <ul>
-<li><p>H0: No hay diferencia de promedio en los niveles de libertad
-económica entre aquellos países que tienen un índice de desarrollo
-humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
-“Alto / Muy alto” <strong>(no diferencia de medias)</strong></p></li>
-<li><p>H1: Si hay diferencia de promedio en los niveles de libertad
-económica entre aquellos países que tienen un índice de desarrollo
-humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
-“Alto / Muy alto” <strong>(sí diferencia de medias)</strong></p></li>
+<li><p>H0: No hay diferencia de promedio en los niveles del Índice de
+desarrollo humano entre aquellos países que tienen un índice libertad
+económica “Bajo” y los que tienen un índice libertad económica
+“Medio/Alto” <strong>(no diferencia de medias)</strong></p></li>
+<li><p>H1: Si hay diferencia de promedio en los niveles del Índice de
+desarrollo humano entre aquellos países que tienen un índice libertad
+económica “Bajo” y los que tienen un índice libertad económica
+“Medio/Alto” <strong>(sí diferencia de medias)</strong></p></li>
 </ul>
 <p>Ambas hipótesis son acerca de los parámetros de la población.</p>
 </div>
@@ -520,19 +522,16 @@ no una diferencia significativa entre las medias poblacionales de ambos
 grupos:</p>
 <pre class="r"><code>library(lsr)
 tabla=data%&gt;%
-  group_by(grupo_IDH) %&gt;%
-summarise(Desviacion = sd(V1, na.rm=T),
-          Media = mean(V1, na.rm=T),
-            min = ciMean(V1,conf = 0.95, na.rm=T)[1],
-            max = ciMean(V1,conf = 0.95, na.rm=T)[2],
-          n=length(V1))
+  group_by(grupo_ILE) %&gt;%
+summarise(Desviacion = sd(V27, na.rm=T),
+          Media = mean(V27, na.rm=T),
+            min = ciMean(V27,conf = 0.95, na.rm=T)[1],
+            max = ciMean(V27,conf = 0.95, na.rm=T)[2],
+          n=length(V27))
             
 tabla</code></pre>
-<pre><code>## # A tibble: 2 × 6
-##   grupo_IDH        Desviacion Media   min   max     n
-##   &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 1. Bajo/Medio          7.03  55.6  54.1  57.2    82
-## 2 2. Alto/Muy alto       9.32  68.0  66.0  70.0    86</code></pre>
+<pre><code>##   Desviacion     Media       min      max   n
+## 1  0.1528323 0.7222738 0.6989947 0.745553 168</code></pre>
 </div>
 <div id="tercer-paso-determinar-el-nivel-de-significancia"
 class="section level4">
@@ -552,35 +551,33 @@ t.test</strong></h4>
 <p>Recuerda que el p-value mide la probabilidad de observar en una
 muestra una diferencia de medias como la observada, si la diferencia de
 medias poblacional fuera cero.</p>
-<pre class="r"><code>t.test(V1 ~ grupo_IDH, data = data,
+<pre class="r"><code>t.test(V27 ~ grupo_ILE, data = data,
   alternative = &quot;two.sided&quot;, 
   conf.level  = 0.95 #nivel de confianza (95%)
 )</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
-## data:  V1 by grupo_IDH
-## t = -9.7594, df = 157.77, p-value &lt; 2.2e-16
-## alternative hypothesis: true difference in means between group 1. Bajo/Medio and group 2. Alto/Muy alto is not equal to 0
+## data:  V27 by grupo_ILE
+## t = -3.6649, df = 19.566, p-value = 0.001583
+## alternative hypothesis: true difference in means between group 1. Bajo and group 2.Medio/Alto is not equal to 0
 ## 95 percent confidence interval:
-##  -14.895211  -9.880966
+##  -0.19840150 -0.05434192
 ## sample estimates:
-##    mean in group 1. Bajo/Medio mean in group 2. Alto/Muy alto 
-##                       55.60610                       67.99419</code></pre>
+##      mean in group 1. Bajo mean in group 2.Medio/Alto 
+##                  0.6079375                  0.7343092</code></pre>
 </div>
 <div id="quinto-paso-interpretar" class="section level4">
 <h4><strong>Quinto paso: Interpretar</strong></h4>
 <p><strong>¿Cómo interpreto?</strong></p>
 <p>Recordando nuestras hipotesis:</p>
 <ul>
-<li><p>H0: No hay diferencia de promedio en los niveles de libertad
-económica entre aquellos países que tienen un índice de desarrollo
-humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
-“Alto / Muy alto”</p></li>
-<li><p>H1: Si hay diferencia de promedio en los niveles de libertad
-económica entre aquellos países que tienen un índice de desarrollo
-humano “Bajo / Medio” y los que tienen un índice de desarrollo humano
-“Alto / Muy alto”</p></li>
+<li><p>H0: No hay diferencia de promedio en los niveles de IDH entre
+aquellos países que tienen un índice de libertad económica “Bajo” y los
+que tienen un índice de libertad económica “Medio / Alto”</p></li>
+<li><p>H1: Sí hay diferencia de promedio en los niveles de IDH entre
+aquellos países que tienen un índice de libertad económica “Bajo” y los
+que tienen un índice de libertad económica “Medio / Alto”</p></li>
 </ul>
 <p>Asimismo, en el paso 4, determinamos el nivel de significancia de la
 siguiente manera:</p>
@@ -591,9 +588,9 @@ H1.</p></li>
 </ul>
 <p>Entonces, vemos que el p-value es menor a 0.05, entonces rechazo la
 H0, por tanto, existe una diferencia estadísticamente significativa
-entre las medias del Índice de libertad económica entre los países que
-tienen un Índice de Desarrollo Humano “Bajo / Medio” y los países que
-tiene in Índice de Desarrollo Humano “Alto / Muy alto”.</p>
+entre las medias del IDH entre los países que tienen un Índice de
+libertad económica “Bajo” y los países que tiene un Índice de libertad
+económica “Medio /Alto”.</p>
 </div>
 <div id="paso-final-graficar" class="section level4">
 <h4><strong>Paso FINAL: Graficar</strong></h4>
@@ -601,25 +598,25 @@ tiene in Índice de Desarrollo Humano “Alto / Muy alto”.</p>
 gráfico de medias con intervalos de confianza de cada grupo.</p>
 <p>Para calcular la diferencia de medias</p>
 <pre class="r"><code>library(Rmisc)
-ic_grupo = group.CI(V27~grupo_IDH,data)
+ic_grupo = group.CI(V27~grupo_ILE,data)
 ic_grupo</code></pre>
-<pre><code>##          grupo_IDH V27.upper  V27.mean V27.lower
-## 1    1. Bajo/Medio 0.6120113 0.5910610 0.5701106
-## 2 2. Alto/Muy alto 0.8622095 0.8473837 0.8325579</code></pre>
+<pre><code>##      grupo_ILE V27.upper  V27.mean V27.lower
+## 1      1. Bajo 0.6766740 0.6079375 0.5392010
+## 2 2.Medio/Alto 0.7584273 0.7343092 0.7101911</code></pre>
 <p><strong>Barras de Error</strong></p>
 <pre class="r"><code>library(ggplot2)
 
-ggplot(ic_grupo, aes(x= grupo_IDH, y =V27.mean)) +
+ggplot(ic_grupo, aes(x= grupo_ILE, y =V27.mean)) +
   geom_errorbar(aes(ymin=V27.lower, ymax=V27.upper), width = 0.2)+
    geom_text(aes(label=paste(round(V27.mean,1))), size=3)+
-  xlab(&quot;Índice de Desarrollo Humano&quot;) + ylab(&quot;Índice de Libertad Económica&quot;)</code></pre>
+  xlab(&quot;Índice de Libertad Económica&quot;) + ylab(&quot;Índice de Desarrollo Humano&quot;)</code></pre>
 <p><img src="pd5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><strong>Interpretación</strong>: Tal como se observa ambos intervalos
 de confianza no se traslapan, por lo que se puede concluir gráficamente
 que existe una diferencia estadísticamente significativa entre los
-grupos. El grupo que tiene un IDH “Alto/Muy alto” tiene mayor libertad
-económica que el grupo que tiene un IDH “Bajo/Medio” con un 95% de
-confianza.</p>
+grupos. El grupo que tiene un índice de libertad económica “Medio/Alto”
+tiene mayor IDH que el grupo que tiene un indíce de libertad económica
+“Bajo” con un 95% de confianza.</p>
 </div>
 </div>
 </div>
