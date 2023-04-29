@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 2</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -339,7 +339,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="pd3.html">Práctica 3</a>
+  <a href="Pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -511,26 +511,8 @@ str(data)</code></pre>
 <pre class="r"><code>colnames(data) = c(&quot;Country&quot;,&quot;Year&quot;,&quot;Rank&quot;,&quot;Score_Frag_States&quot;,&quot;Security&quot;,&quot;Elites&quot;,&quot;G_Grivance&quot;,&quot;Economy&quot;,&quot;Inequality&quot;,&quot;B_Drain&quot;,&quot;State_Legit&quot;,&quot;P_Services&quot;,&quot;Hum_Rights&quot;,&quot;Demo_Press&quot;,&quot;Refugees&quot;,&quot;Interven&quot;,&quot;Democracy_Score&quot;,&quot;Type&quot;)</code></pre>
 <div id="análisis-de-una-variable-ordinal" class="section level2">
 <h2><strong>Análisis de una variable ordinal</strong></h2>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages
-## ───────────────────────────────────────
-## tidyverse 1.3.2 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.4.1     ✔ purrr   0.3.5
-## ✔ tibble  3.1.8     ✔ stringr 1.4.1
-## ✔ tidyr   1.2.1     ✔ forcats 0.5.2
-## ✔ readr   2.1.3     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(tidyverse)</code></pre>
 <pre class="r"><code>#comprobamos el tipo de dato que analizaremos
 class(data$Type)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
