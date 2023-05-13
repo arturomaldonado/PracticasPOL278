@@ -17,7 +17,6 @@ editor_options:
   markdown: 
     wrap: sentence
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
@@ -52,7 +51,7 @@ data=import("CAP_800A_URBANO_RURAL_10.csv")
 
 Usamos el comando *names* para reconocer los nombres de las variables
 
-```{r}
+```{r, eval=FALSE}
 names(data)
 ```
 
@@ -368,7 +367,4 @@ t.test(indicador ~ sexo, data = data_ejercicio,conf.level = 0.95)
 ¿Es cierto que existe una brecha entre el **consumo de cultura** según la región natural **region_natural**?
 ?
 
-# Ejercicio 6
 
-¿Es cierto que existe una brecha entre el **consumo de cultura** según área urbano vs rural **AREA**?
-?
