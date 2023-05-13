@@ -10,9 +10,6 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
 ---
 
 ```{r setup, include=FALSE}
@@ -70,7 +67,7 @@ Primero, exploraremos un poco las variables de interés:
 
 V27: Índice de desarrollo humano V1: Índice de libertad económica
 
-Ambas variables son numéricas, inicialmente. Sin embargo para la prueba T es necesario contar con una variable numérica y otra categórica. Es así que crearemos 2 grupos según la variable V1 (Que puede ir del 0 al 100). 
+Ambas variables son numéricas, inicialmente. Sin embargo para la prueba T es necesario contar con una variable numérica y otra categórica. Es así que crearemos 2 grupos según la variable V1 (Que puede ir del 0 al 100).
 
 Siendo los niveles: "Bajo" = si es menor o igual a 50, y, "Medio/Alto" = si es mayor a 50
 
@@ -81,7 +78,8 @@ library(tidyverse)
 summary(data$V1)
 ```
 
-Si revisamos el summary 
+Si revisamos el summary
+
 ```{r}
 data = data %>%
   mutate(
@@ -92,8 +90,7 @@ La variable "V27" ya es númerica por lo que no añadimos cambios.
 
 Ahora, analizaremos la varianza en los grupos, para ello usaremos la prueba Levene:
 
-H0: La varianza del Índice de Libertad Económica (en grupos) es igual a la varianza del Índice de Desarrollo Humano. 
-H1: La varianza del Índice de Libertad Económica (en grupos) NO es igual a la varianza del Índice de Desarrollo Humano.
+H0: La varianza del Índice de Libertad Económica (en grupos) es igual a la varianza del Índice de Desarrollo Humano. H1: La varianza del Índice de Libertad Económica (en grupos) NO es igual a la varianza del Índice de Desarrollo Humano.
 
 ```{r}
 library(DescTools)
