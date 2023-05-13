@@ -13,6 +13,7 @@ output:
     output: pdf_document
 ---
 
+
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -162,6 +163,8 @@ graf1
 ```{r}
 library(ggplot2)
 library(taylor) #opcional (una ventaja de que R sea software libre)
+
+
 ggplot(graf1, aes(x=Type, y=Freq, fill=Type)) + 
 geom_bar(stat = "identity") 
 ```
@@ -174,8 +177,8 @@ ggplot(graf1, aes(x=reorder(Type,Freq), y=Freq, fill=Type)) +
   xlab("Régimen") + ylab("Frecuencia")+
   geom_text(aes(label=Freq), vjust=0.5, color="black", size=5)+
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
-  scale_fill_brewer(palette="Dark2")
-  #scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
+  #scale_fill_brewer(palette="Dark2")
+  scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
 
 ```
 

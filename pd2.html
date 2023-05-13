@@ -741,6 +741,8 @@ graf1</code></pre>
 ## 4       Full democracy   22</code></pre>
 <pre class="r"><code>library(ggplot2)
 library(taylor) #opcional (una ventaja de que R sea software libre)
+
+
 ggplot(graf1, aes(x=Type, y=Freq, fill=Type)) + 
 geom_bar(stat = &quot;identity&quot;) </code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
@@ -750,9 +752,9 @@ geom_bar(stat = &quot;identity&quot;) </code></pre>
   xlab(&quot;Régimen&quot;) + ylab(&quot;Frecuencia&quot;)+
   geom_text(aes(label=Freq), vjust=0.5, color=&quot;black&quot;, size=5)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) +
-  scale_fill_brewer(palette=&quot;Dark2&quot;)</code></pre>
+  #scale_fill_brewer(palette=&quot;Dark2&quot;)
+  scale_fill_taylor_d(album=&quot;Lover&quot;) #&quot;Fearless (Taylor&#39;s Version)&quot;</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<pre class="r"><code>  #scale_fill_taylor_d(album=&quot;Lover&quot;) #&quot;Fearless (Taylor&#39;s Version)&quot;</code></pre>
 </div>
 <div id="análisis-de-variables-numéricas" class="section level2">
 <h2>2. Análisis de variables numéricas</h2>
