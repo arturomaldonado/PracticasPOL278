@@ -549,11 +549,11 @@ ggplot(data_ejercicio, aes(y=indicador))+
   geom_boxplot()+
   ylab(&quot;Consumo cultura 0 a 10&quot;) +
   scale_y_continuous(limits = c(0, 12))</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data_ejercicio, aes(x=indicador))+
   geom_histogram() +
   xlab(&quot;Consumo cultura 0 a 10&quot;) </code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="ejercicio-3" class="section level1">
 <h1>Ejercicio 3:</h1>
@@ -593,7 +593,7 @@ consumocultura_estrato</code></pre>
 <pre class="r"><code>ggplot(consumocultura_estrato, aes(x=media, y=reorder(ESTRATO, media)))+
   geom_bar(stat=&quot;identity&quot;, width=0.5)+
   ylab(&quot;Estrato sociodemográfico&quot;)</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data_ejercicio, aes(y=indicador, x=ESTRATO))+
   geom_boxplot() +
   scale_y_continuous(limits = c(0, 12))+
@@ -601,7 +601,7 @@ consumocultura_estrato</code></pre>
   xlab(&quot;Estrato sociodemográfico&quot;)+
   theme_minimal()+
   coord_flip()</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="inferencial" class="section level2">
 <h2>Inferencial</h2>
@@ -625,7 +625,7 @@ tabla</code></pre>
 ## 5 E            0.875 0.444 0.422 0.466  5949</code></pre>
 <pre class="r"><code>library(ggplot2)
 ggplot(tabla,aes(x=ESTRATO,y=Media))+geom_errorbar(aes(ymin=min,ymax=max))+xlab(&quot;Indicador&quot;)+ylab(&quot;Estrato&quot;)+ylim(0,1)</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre class="r"><code>anova= aov(indicador~ESTRATO, data =data_ejercicio)
 summary(anova)</code></pre>
 <pre><code>##                Df Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -664,7 +664,7 @@ compara.df$compara=rownames(compara.df)</code></pre>
   geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
   theme_classic()
 graf</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <div id="ejercicio-4" class="section level1">
@@ -717,7 +717,7 @@ tabla</code></pre>
   geom_errorbar(aes(ymin=min,ymax=max))+xlab(&quot;Consumo cultura 0 a 10&quot;)+
   ylab(&quot;Consumo cultura 0 a 10&quot;)+
   ylim(0,2)</code></pre>
-<p><img src="PD_7_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
 <div id="inferencial-1" class="section level2">
 <h2>Inferencial</h2>
