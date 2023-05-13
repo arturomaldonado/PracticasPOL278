@@ -13,6 +13,9 @@ output:
   pdf_document:
     toc: yes
     toc_depth: '1'
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -22,9 +25,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
-#knitr::include_graphics("logoPUCP.png") 
+knitr::include_graphics("logoPUCP.png") 
 ```
-
 
 FACULTAD DE CIENCIAS SOCIALES - PUCP<br>
 
@@ -33,8 +35,7 @@ Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1
 ## Ejercicios:
 
 Utilizamos la base de datos de la Encuesta Nacional de Programas Presupuestales (ENAPRES) 2021.
-Descargala en: 
-https://www.datosabiertos.gob.pe/dataset/encuesta-nacional-de-programas-presupuestales-enapres-2021-instituto-nacional-de-estad%C3%ADstica
+Descargala en: <https://www.datosabiertos.gob.pe/dataset/encuesta-nacional-de-programas-presupuestales-enapres-2021-instituto-nacional-de-estad%C3%ADstica>
 
 El cuestionario, base de datos, diccionario de variables se encuentran en la carpeta de la práctica dirigida.
 
@@ -51,30 +52,40 @@ data=import("CAP_800A_URBANO_RURAL_10.csv")
 
 Usamos el comando *names* para reconocer los nombres de las variables
 
-
 ```{r}
 names(data)
 ```
 
 # Selección de variables de interés para el ejercicio
 
-AREA  1 = urbano 2 = rural
-P800A_1_1 EN LOS ÚLTIMOS 12 MESES, ¿USTED VISITÓ ALGÚN: Monumento histórico (Iglesia, Catedral, fortaleza, muralla, casona, centro histórico, mausoleo, etc.)? 
-P800A_2_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Monumento Arqueológico (sitio arqueológico, huaca, ruina, sitios de fósiles)?
-P800A_3_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Museo?
-P800A_8_1 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de teatro?
-P800A_8_2 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de danza?
-P800A_8_4 ¿USTED ASISTIÓ A UN/UNA: Espectáculo musical (conciertos, festivales,etc.)?
-P800A_8_5 ¿USTED ASISTIÓ A UN/UNA:Función del Cine?
-P800A_8_8 ¿USTED ASISTIÓ A UN/UNA Biblioteca y/o sala de lectura?
-P800A_13_1 ¿USTED OBTUVO O ADQUIRIÓ: Libros?
-P207 SEXO 1 hombre 2 mujer
-P208_A Años cumplidos
-REGIONNATU Región Natural
-ESTRATO ESTRATO SOCIODEMOGRÁFICO
+-   AREA: 1 = urbano, 2 = rural
+
+-   P800A_1\_1:EN LOS ÚLTIMOS 12 MESES, ¿USTED VISITÓ ALGÚN: Monumento histórico (Iglesia, Catedral, fortaleza, muralla, casona, centro histórico, mausoleo, etc.)?
+
+-   P800A_2\_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Monumento Arqueológico (sitio arqueológico, huaca, ruina, sitios de fósiles)?
+
+-   P800A_3\_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Museo?
+
+-   P800A_8\_1 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de teatro?
+
+-   P800A_8\_2 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de danza?
+
+-   P800A_8\_4 ¿USTED ASISTIÓ A UN/UNA: Espectáculo musical (conciertos, festivales,etc.)?
+
+-   P800A_8\_5 ¿USTED ASISTIÓ A UN/UNA:Función del Cine?
+    P800A_8\_8 ¿USTED ASISTIÓ A UN/UNA Biblioteca y/o sala de lectura?
+
+-   P800A_13_1 ¿USTED OBTUVO O ADQUIRIÓ: Libros?
+
+-   P207 SEXO 1 hombre 2 mujer
+
+-   P208_A Años cumplidos
+
+-   REGIONNATU: Región Natural
+
+-   ESTRATO: ESTRATO SOCIODEMOGRÁFICO
 
 Usamos el comando *select* para seleccionar variables y aprovechamos a cambiarles de nombre a uno más sencillo.
-
 
 ```{r}
 library(dplyr)
@@ -100,6 +111,7 @@ Vamos a quedarnos con los casos completos para fines del ejercicio
 Usamos el comando *drop_na* para eliminar los valores perdidos de las variables seleccionadas en la **data_ejercicio**.
 
 ```{r}
+library(tidyr)
 data_ejercicio = data_ejercicio %>% 
   drop_na()
 
@@ -107,12 +119,12 @@ data_ejercicio = data_ejercicio %>%
 
 # Ejercicio 1
 
-1. Crea un indicador aditivo que resuma el **consumo de cultura**. Describir el indicador.
-
+1.  Crea un indicador aditivo que resuma el **consumo de cultura**. Describir el indicador.
 
 Primero, al revisar el diccionario de variables, es necesario recategorizar el puntaje de cada pregunta.
 
-Usamos el comando *case_when* para recategorizar las variables. Cuando es 2 que significa *No* lo convertimos a 0.
+Usamos el comando *case_when* para recategorizar las variables.
+Cuando es 2 que significa *No* lo convertimos a 0.
 
 **data_ejercicio**.
 
@@ -153,14 +165,13 @@ Usamos el comando *summary* para regenerar un resumen de la variable numérica.
 summary(data_ejercicio$indicador_paso0)
 ```
 
-Usamos el comando *mutate* para crear una nueva variable de suma, a la cual restamos el mínimo, y lo dividimos entre 9. 
-
+Usamos el comando *mutate* para crear una nueva variable de suma, a la cual restamos el mínimo, y lo dividimos entre 9.
 
 ```{r}
 data_ejercicio=data_ejercicio %>% mutate(indicador_paso1=(indicador_paso0-0)/9)
 ```
 
-Usamos el comando *mutate* para multiplicar por 10, y que el indicador vaya de 0 a 10. 
+Usamos el comando *mutate* para multiplicar por 10, y que el indicador vaya de 0 a 10.
 
 ```{r}
 data_ejercicio=data_ejercicio %>% mutate(indicador=indicador_paso1*10)
@@ -192,6 +203,7 @@ resumen_consumo_cultura
 # Graficando una variable
 
 ```{r}
+library(ggplot2)
 ggplot(data_ejercicio, aes(y=indicador))+
   geom_boxplot()+
   ylab("Consumo cultura 0 a 10") +
@@ -204,13 +216,12 @@ ggplot(data_ejercicio, aes(x=indicador))+
   xlab("Consumo cultura 0 a 10") 
 ```
 
-
 # Ejercicio 3:
 
-Muchos investigadores afirman que existe una brecha entre el **consumo de cultura** según el estrato sociodemográfico **ESTRATO**. 
+Muchos investigadores afirman que existe una brecha entre el **consumo de cultura** según el estrato sociodemográfico **ESTRATO**.
 ¿Es cierto?
 
-## Descriptiva 
+## Descriptiva
 
 ```{r}
 table(data_ejercicio$ESTRATO)
@@ -226,7 +237,6 @@ class(data_ejercicio$ESTRATO)
 
 ```
 
-
 ```{r}
 consumocultura_estrato = data_ejercicio  %>%  
   group_by(ESTRATO) %>% 
@@ -235,13 +245,11 @@ consumocultura_estrato = data_ejercicio  %>%
 consumocultura_estrato
 ```
 
-
 ```{r}
 ggplot(consumocultura_estrato, aes(x=media, y=reorder(ESTRATO, media)))+
   geom_bar(stat="identity", width=0.5)+
   ylab("Estrato sociodemográfico")
 ```
-
 
 ```{r}
 ggplot(data_ejercicio, aes(y=indicador, x=ESTRATO))+
@@ -273,18 +281,17 @@ library(ggplot2)
 ggplot(tabla,aes(x=ESTRATO,y=Media))+geom_errorbar(aes(ymin=min,ymax=max))+xlab("Indicador")+ylab("Estrato")+ylim(0,1)
 ```
 
-
-
 ```{r}
 anova= aov(indicador~ESTRATO, data =data_ejercicio)
 summary(anova)
 ```
+
 ```{r}
 compara=TukeyHSD(anova)
 compara
 ```
 
-_Interpretacion: al 95% de diferencia de medias, si existe una diferencia significativa entre ellas. 
+\_Interpretacion: al 95% de diferencia de medias, si existe una diferencia significativa entre ellas.
 
 ```{r}
 compara.df=as.data.frame(compara[1])
@@ -301,11 +308,12 @@ graf = ggplot(compara.df, aes(x=compara, y=ESTRATO.diff))+
   theme_classic()
 graf
 ```
+
 # Ejercicio 4
 
-¿Es cierto que existe una brecha entre el **consumo de cultura** según el sexo **sexo**? 
+¿Es cierto que existe una brecha entre el **consumo de cultura** según el sexo **sexo**?
 
-## Descriptiva 
+## Descriptiva
 
 ```{r}
 table(data_ejercicio$sexo)
@@ -320,7 +328,6 @@ table(data_ejercicio$sexo)
 class(data_ejercicio$sexo)
 
 ```
-
 
 ```{r}
 consumocultura_sexo = data_ejercicio  %>%  
@@ -349,18 +356,19 @@ ggplot(tabla,aes(x=sexo,y=Media))+
   ylab("Consumo cultura 0 a 10")+
   ylim(0,2)
 ```
+
 ## Inferencial
 
 ```{r}
 t.test(indicador ~ sexo, data = data_ejercicio,conf.level = 0.95)
 ```
 
-
 # Ejercicio 5
 
-¿Es cierto que existe una brecha entre el **consumo de cultura** según la región natural **region_natural**? ?
-
+¿Es cierto que existe una brecha entre el **consumo de cultura** según la región natural **region_natural**?
+?
 
 # Ejercicio 6
 
-¿Es cierto que existe una brecha entre el **consumo de cultura** según área urbano vs rural **AREA**? ?
+¿Es cierto que existe una brecha entre el **consumo de cultura** según área urbano vs rural **AREA**?
+?
