@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 7</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 7</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p>FACULTAD DE CIENCIAS SOCIALES - PUCP<br></p>
+<p>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2023 - 1 <br></p>
+<div id="ejercicios" class="section level2">
+<h2>Ejercicios:</h2>
+<p>Utilizamos la base de datos de la Encuesta Nacional de Programas
+Presupuestales (ENAPRES) 2021. Descargala en: <a
+href="https://www.datosabiertos.gob.pe/dataset/encuesta-nacional-de-programas-presupuestales-enapres-2021-instituto-nacional-de-estad%C3%ADstica"
+class="uri">https://www.datosabiertos.gob.pe/dataset/encuesta-nacional-de-programas-presupuestales-enapres-2021-instituto-nacional-de-estad%C3%ADstica</a></p>
+<p>El cuestionario, base de datos, diccionario de variables se
+encuentran en la carpeta de la práctica dirigida.</p>
+<p>Para todas las preguntas utilice un gráfico para evidenciar su
+respuesta y redacte un párrafo donde exprese su respuesta.</p>
+</div>
+<div id="abrimos-la-base-de-datos" class="section level2">
+<h2>Abrimos la base de datos</h2>
+<p>Usamos el paquete <em>rio</em> para importar la base de datos.</p>
+<pre class="r"><code>library(rio)
+data=import(&quot;CAP_800A_URBANO_RURAL_10.csv&quot;)</code></pre>
+<p>Usamos el comando <em>names</em> para reconocer los nombres de las
+variables</p>
+<pre class="r"><code>names(data)</code></pre>
+<pre><code>##   [1] &quot;MES&quot;              &quot;PER&quot;              &quot;CONGLOMERADO&quot;    
+##   [4] &quot;VIVIENDA&quot;         &quot;HOGAR&quot;            &quot;ANIO&quot;            
+##   [7] &quot;NSELV&quot;            &quot;TSELV&quot;            &quot;VIVREM&quot;          
+##  [10] &quot;NUMVIVREM&quot;        &quot;AREA&quot;             &quot;CCDD&quot;            
+##  [13] &quot;NOMBREDD&quot;         &quot;CCPP&quot;             &quot;NOMBREPP&quot;        
+##  [16] &quot;CCDI&quot;             &quot;NOMBREDI&quot;         &quot;TOT_HOGAR&quot;       
+##  [19] &quot;RESFIN&quot;           &quot;P800A_A&quot;          &quot;P800A_C&quot;         
+##  [22] &quot;P800A_1_1&quot;        &quot;P800A_1_3A_1&quot;     &quot;P800A_1_3A_2&quot;    
+##  [25] &quot;P800A_1_3A_3&quot;     &quot;P800A_1_3A_4&quot;     &quot;P800A_1_3A_5&quot;    
+##  [28] &quot;P800A_1_3A_6&quot;     &quot;P800A_1_3A_O&quot;     &quot;P800A_1_6B&quot;      
+##  [31] &quot;P800A_1_6C&quot;       &quot;P800A_1_6D&quot;       &quot;P800A_1_6E_1&quot;    
+##  [34] &quot;P800A_1_6E_2&quot;     &quot;P800A_1_6E_3&quot;     &quot;P800A_1_6E_4&quot;    
+##  [37] &quot;P800A_1_6E_5&quot;     &quot;P800A_1_6E_6&quot;     &quot;P800A_1_6E_7&quot;    
+##  [40] &quot;P800A_1_6E_8&quot;     &quot;P800A_1_6E_9&quot;     &quot;P800A_1_6E_9_O&quot;  
+##  [43] &quot;P800A_1_7&quot;        &quot;P800A_1_7_O&quot;      &quot;P800A_2_1&quot;       
+##  [46] &quot;P800A_2_3A_1&quot;     &quot;P800A_2_3A_2&quot;     &quot;P800A_2_3A_3&quot;    
+##  [49] &quot;P800A_2_3A_4&quot;     &quot;P800A_2_3A_5&quot;     &quot;P800A_2_3A_6&quot;    
+##  [52] &quot;P800A_2_3A_O&quot;     &quot;P800A_2_6B&quot;       &quot;P800A_2_6C&quot;      
+##  [55] &quot;P800A_2_6D&quot;       &quot;P800A_2_6E_1&quot;     &quot;P800A_2_6E_2&quot;    
+##  [58] &quot;P800A_2_6E_3&quot;     &quot;P800A_2_6E_4&quot;     &quot;P800A_2_6E_5&quot;    
+##  [61] &quot;P800A_2_6E_6&quot;     &quot;P800A_2_6E_7&quot;     &quot;P800A_2_6E_8&quot;    
+##  [64] &quot;P800A_2_6E_9&quot;     &quot;P800A_2_6E_9_O&quot;   &quot;P800A_2_7&quot;       
+##  [67] &quot;P800A_2_7_O&quot;      &quot;P800A_3_1&quot;        &quot;P800A_3_3A_1&quot;    
+##  [70] &quot;P800A_3_3A_2&quot;     &quot;P800A_3_3A_3&quot;     &quot;P800A_3_3A_4&quot;    
+##  [73] &quot;P800A_3_3A_5&quot;     &quot;P800A_3_3A_6&quot;     &quot;P800A_3_3A_O&quot;    
+##  [76] &quot;P800A_3_6B&quot;       &quot;P800A_3_6C&quot;       &quot;P800A_3_6D&quot;      
+##  [79] &quot;P800A_3_6E_1&quot;     &quot;P800A_3_6E_2&quot;     &quot;P800A_3_6E_3&quot;    
+##  [82] &quot;P800A_3_6E_4&quot;     &quot;P800A_3_6E_5&quot;     &quot;P800A_3_6E_6&quot;    
+##  [85] &quot;P800A_3_6E_7&quot;     &quot;P800A_3_6E_8&quot;     &quot;P800A_3_6E_9&quot;    
+##  [88] &quot;P800A_3_6E_9_O&quot;   &quot;P800A_3_7&quot;        &quot;P800A_3_7_O&quot;     
+##  [91] &quot;P800A_8_1&quot;        &quot;P800A_9_1&quot;        &quot;P800A_9_O_1&quot;     
+##  [94] &quot;P800A_10_1&quot;       &quot;P800A_10_O_1&quot;     &quot;P800A_11_ENT_1&quot;  
+##  [97] &quot;P800A_11_DEC_1&quot;   &quot;P800A_12_1&quot;       &quot;P800A_12_O_1&quot;    
+## [100] &quot;P800A_8_2&quot;        &quot;P800A_9_2&quot;        &quot;P800A_9_O_2&quot;     
+## [103] &quot;P800A_10_2&quot;       &quot;P800A_10_O_2&quot;     &quot;P800A_11_ENT_2&quot;  
+## [106] &quot;P800A_11_DEC_2&quot;   &quot;P800A_12_2&quot;       &quot;P800A_12_O_2&quot;    
+## [109] &quot;P800A_8_3&quot;        &quot;P800A_9_3&quot;        &quot;P800A_9_O_3&quot;     
+## [112] &quot;P800A_10_3&quot;       &quot;P800A_10_O_3&quot;     &quot;P800A_11_ENT_3&quot;  
+## [115] &quot;P800A_11_DEC_3&quot;   &quot;P800A_12_3&quot;       &quot;P800A_12_O_3&quot;    
+## [118] &quot;P800A_8_4&quot;        &quot;P800A_9_4&quot;        &quot;P800A_9_O_4&quot;     
+## [121] &quot;P800A_10_4&quot;       &quot;P800A_10_O_4&quot;     &quot;P800A_11_ENT_4&quot;  
+## [124] &quot;P800A_11_DEC_4&quot;   &quot;P800A_12_4&quot;       &quot;P800A_12_O_4&quot;    
+## [127] &quot;P800A_8_5&quot;        &quot;P800A_9_5&quot;        &quot;P800A_9_O_5&quot;     
+## [130] &quot;P800A_10_5&quot;       &quot;P800A_10_O_5&quot;     &quot;P800A_11_ENT_5&quot;  
+## [133] &quot;P800A_11_DEC_5&quot;   &quot;P800A_12_5&quot;       &quot;P800A_12_O_5&quot;    
+## [136] &quot;P800A_8_6&quot;        &quot;P800A_9_6&quot;        &quot;P800A_9_O_6&quot;     
+## [139] &quot;P800A_10_6&quot;       &quot;P800A_10_O_6&quot;     &quot;P800A_11_ENT_6&quot;  
+## [142] &quot;P800A_11_DEC_6&quot;   &quot;P800A_12_6&quot;       &quot;P800A_12_O_6&quot;    
+## [145] &quot;P800A_8_7&quot;        &quot;P800A_9_7&quot;        &quot;P800A_9_O_7&quot;     
+## [148] &quot;P800A_10_7&quot;       &quot;P800A_10_O_7&quot;     &quot;P800A_11_ENT_7&quot;  
+## [151] &quot;P800A_11_DEC_7&quot;   &quot;P800A_12_7&quot;       &quot;P800A_12_O_7&quot;    
+## [154] &quot;P800A_8_8&quot;        &quot;P800A_9_8&quot;        &quot;P800A_9_O_8&quot;     
+## [157] &quot;P800A_10_8&quot;       &quot;P800A_10_O_8&quot;     &quot;P800A_11_ENT_8&quot;  
+## [160] &quot;P800A_11_DEC_8&quot;   &quot;P800A_12_8&quot;       &quot;P800A_12_O_8&quot;    
+## [163] &quot;P800A_8_9&quot;        &quot;P800A_9_9&quot;        &quot;P800A_9_O_9&quot;     
+## [166] &quot;P800A_10_9&quot;       &quot;P800A_10_O_9&quot;     &quot;P800A_11_ENT_9&quot;  
+## [169] &quot;P800A_11_DEC_9&quot;   &quot;P800A_12_9&quot;       &quot;P800A_12_O_9&quot;    
+## [172] &quot;P800A_8_10&quot;       &quot;P800A_9_10&quot;       &quot;P800A_9_O_10&quot;    
+## [175] &quot;P800A_10_10&quot;      &quot;P800A_10_O_10&quot;    &quot;P800A_11_ENT_10&quot; 
+## [178] &quot;P800A_11_DEC_10&quot;  &quot;P800A_12_10&quot;      &quot;P800A_12_O_10&quot;   
+## [181] &quot;P800A_8_11&quot;       &quot;P800A_8_11_O&quot;     &quot;P800A_9_11&quot;      
+## [184] &quot;P800A_9_O_11&quot;     &quot;P800A_10_11&quot;      &quot;P800A_10_O_11&quot;   
+## [187] &quot;P800A_11_ENT_11&quot;  &quot;P800A_11_DEC_11&quot;  &quot;P800A_12_11&quot;     
+## [190] &quot;P800A_12_O_11&quot;    &quot;P800A_13_1&quot;       &quot;P800A_14_1&quot;      
+## [193] &quot;P800A_14_O_1&quot;     &quot;P800A_18_1&quot;       &quot;P800A_18_O_1&quot;    
+## [196] &quot;P800A_13_2&quot;       &quot;P800A_14_2&quot;       &quot;P800A_14_O_2&quot;    
+## [199] &quot;P800A_18_2&quot;       &quot;P800A_18_O_2&quot;     &quot;P800A_13_3&quot;      
+## [202] &quot;P800A_14_3&quot;       &quot;P800A_14_O_3&quot;     &quot;P800A_18_3&quot;      
+## [205] &quot;P800A_18_O_3&quot;     &quot;P800A_13_4&quot;       &quot;P800A_14_4&quot;      
+## [208] &quot;P800A_14_O_4&quot;     &quot;P800A_18_4&quot;       &quot;P800A_18_O_4&quot;    
+## [211] &quot;P800A_13_5&quot;       &quot;P800A_14_5&quot;       &quot;P800A_14_O_5&quot;    
+## [214] &quot;P800A_18_5&quot;       &quot;P800A_18_O_5&quot;     &quot;P800A_13_6&quot;      
+## [217] &quot;P800A_14_6&quot;       &quot;P800A_14_O_6&quot;     &quot;P800A_18_6&quot;      
+## [220] &quot;P800A_18_O_6&quot;     &quot;P800A_13_7&quot;       &quot;P800A_14_7&quot;      
+## [223] &quot;P800A_14_O_7&quot;     &quot;P800A_18_7&quot;       &quot;P800A_18_O_7&quot;    
+## [226] &quot;P800A_13_8&quot;       &quot;P800A_14_8&quot;       &quot;P800A_14_O_8&quot;    
+## [229] &quot;P800A_18_8&quot;       &quot;P800A_18_O_8&quot;     &quot;P800A_13_9&quot;      
+## [232] &quot;P800A_14_9&quot;       &quot;P800A_14_O_9&quot;     &quot;P800A_18_9&quot;      
+## [235] &quot;P800A_18_O_9&quot;     &quot;P800A_13_10&quot;      &quot;P800A_14_10&quot;     
+## [238] &quot;P800A_14_O_10&quot;    &quot;P800A_18_10&quot;      &quot;P800A_18_O_10&quot;   
+## [241] &quot;P800A_13_11&quot;      &quot;P800A_14_11&quot;      &quot;P800A_14_O_11&quot;   
+## [244] &quot;P800A_18_11&quot;      &quot;P800A_18_O_11&quot;    &quot;P800A_13_12&quot;     
+## [247] &quot;P800A_14_12&quot;      &quot;P800A_14_O_12&quot;    &quot;P800A_18_12&quot;     
+## [250] &quot;P800A_18_O_12&quot;    &quot;P800A_13_13&quot;      &quot;P800A_14_13&quot;     
+## [253] &quot;P800A_14_O_13&quot;    &quot;P800A_18_13&quot;      &quot;P800A_18_O_13&quot;   
+## [256] &quot;P800A_13_14&quot;      &quot;P800A_14_14&quot;      &quot;P800A_14_O_14&quot;   
+## [259] &quot;P800A_18_14&quot;      &quot;P800A_18_O_14&quot;    &quot;P800A_13_15&quot;     
+## [262] &quot;P800A_14_15&quot;      &quot;P800A_14_O_15&quot;    &quot;P800A_18_15&quot;     
+## [265] &quot;P800A_18_O_15&quot;    &quot;P800A_13_16&quot;      &quot;P800A_13_O_16&quot;   
+## [268] &quot;P800A_14_16&quot;      &quot;P800A_14_O_16&quot;    &quot;P800A_18_16&quot;     
+## [271] &quot;P800A_18_O_16&quot;    &quot;P201&quot;             &quot;P204&quot;            
+## [274] &quot;P205&quot;             &quot;P206&quot;             &quot;P207&quot;            
+## [277] &quot;P208_A&quot;           &quot;REGIONNATU&quot;       &quot;ESTRATO&quot;         
+## [280] &quot;MOD_ENC&quot;          &quot;FACTOR_CALIBRADO&quot;</code></pre>
+</div>
+<div id="selección-de-variables-de-interés-para-el-ejercicio"
+class="section level1">
+<h1>Selección de variables de interés para el ejercicio</h1>
+<ul>
+<li><p>AREA: 1 = urbano, 2 = rural</p></li>
+<li><p>P800A_1_1:EN LOS ÚLTIMOS 12 MESES, ¿USTED VISITÓ ALGÚN: Monumento
+histórico (Iglesia, Catedral, fortaleza, muralla, casona, centro
+histórico, mausoleo, etc.)?</p></li>
+<li><p>P800A_2_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Monumento
+Arqueológico (sitio arqueológico, huaca, ruina, sitios de
+fósiles)?</p></li>
+<li><p>P800A_3_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN:
+Museo?</p></li>
+<li><p>P800A_8_1 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de
+teatro?</p></li>
+<li><p>P800A_8_2 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de danza?</p></li>
+<li><p>P800A_8_4 ¿USTED ASISTIÓ A UN/UNA: Espectáculo musical
+(conciertos, festivales,etc.)?</p></li>
+<li><p>P800A_8_5 ¿USTED ASISTIÓ A UN/UNA:Función del Cine? P800A_8_8
+¿USTED ASISTIÓ A UN/UNA Biblioteca y/o sala de lectura?</p></li>
+<li><p>P800A_13_1 ¿USTED OBTUVO O ADQUIRIÓ: Libros?</p></li>
+<li><p>P207 SEXO 1 hombre 2 mujer</p></li>
+<li><p>P208_A Años cumplidos</p></li>
+<li><p>REGIONNATU: Región Natural</p></li>
+<li><p>ESTRATO: ESTRATO SOCIODEMOGRÁFICO</p></li>
+</ul>
+<p>Usamos el comando <em>select</em> para seleccionar variables y
+aprovechamos a cambiarles de nombre a uno más sencillo.</p>
+<pre class="r"><code>library(dplyr)
+data_ejercicio = data %&gt;% 
+  select(AREA,
+         visita_monumentohistorico=P800A_1_1,
+         visita_monumentoarqueologico=P800A_2_1,
+         visita_museo=P800A_3_1,
+         asistencia_teatro=P800A_8_1,
+         asistencia_danza=P800A_8_2,
+         asistencia_espectaculomusical=P800A_8_4,
+         asistencia_cine=P800A_8_5,
+         asistencia_biblioteca=P800A_8_8,
+         adquirir_libro=P800A_13_1,
+         sexo=P207,
+         region_natural=REGIONNATU,
+         ESTRATO)</code></pre>
+<p>Vamos a quedarnos con los casos completos para fines del
+ejercicio</p>
+<p>Usamos el comando <em>drop_na</em> para eliminar los valores perdidos
+de las variables seleccionadas en la
+<strong>data_ejercicio</strong>.</p>
+<pre class="r"><code>library(tidyr)
+data_ejercicio = data_ejercicio %&gt;% 
+  drop_na()</code></pre>
+</div>
+<div id="ejercicio-1" class="section level1">
+<h1>Ejercicio 1</h1>
+<ol style="list-style-type: decimal">
+<li>Crea un indicador aditivo que resuma el <strong>consumo de
+cultura</strong>. Describir el indicador.</li>
+</ol>
+<p>Primero, al revisar el diccionario de variables, es necesario
+recategorizar el puntaje de cada pregunta.</p>
+<p>Usamos el comando <em>case_when</em> para recategorizar las
+variables. Cuando es 2 que significa <em>No</em> lo convertimos a 0.</p>
+<p><strong>data_ejercicio</strong>.</p>
+<pre class="r"><code>data_ejercicio = data_ejercicio %&gt;% 
+  mutate(visita_monumentohistorico=case_when(visita_monumentohistorico==2~0,T~visita_monumentohistorico),
+         visita_monumentoarqueologico=case_when(visita_monumentoarqueologico==2~0,T~visita_monumentoarqueologico),          visita_museo=case_when(visita_museo==2~0,T~visita_museo),
+         asistencia_teatro=case_when(asistencia_teatro==2~0,T~asistencia_teatro),
+         asistencia_danza=case_when(asistencia_danza==2~0,T~asistencia_danza),
+         asistencia_espectaculomusical=case_when(asistencia_espectaculomusical==2~0,T~asistencia_espectaculomusical),
+         asistencia_cine=case_when(asistencia_cine==2~0,T~asistencia_cine),
+         asistencia_biblioteca=case_when(asistencia_biblioteca==2~0,T~asistencia_biblioteca),
+         adquirir_libro=case_when(adquirir_libro==2~0,T~adquirir_libro))</code></pre>
+<p>Segundo, construcción del índice aditivo</p>
+<p>Usamos el comando <em>mutate</em> para crear una nueva variable que
+resuma la suma de las variables empleadas para el indicador.</p>
+<pre class="r"><code>data_ejercicio = data_ejercicio %&gt;% 
+  mutate(indicador_paso0 = visita_monumentohistorico +
+                           visita_monumentoarqueologico+
+                           visita_museo+
+                           asistencia_teatro+
+                           asistencia_danza+
+                           asistencia_espectaculomusical+
+                           asistencia_cine+
+                           asistencia_biblioteca+
+                           adquirir_libro)</code></pre>
+<p>Usamos el comando <em>summary</em> para regenerar un resumen de la
+variable numérica.</p>
+<pre class="r"><code>summary(data_ejercicio$indicador_paso0)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  0.0000  0.5171  1.0000  9.0000</code></pre>
+<p>Usamos el comando <em>mutate</em> para crear una nueva variable de
+suma, a la cual restamos el mínimo, y lo dividimos entre 9.</p>
+<pre class="r"><code>data_ejercicio=data_ejercicio %&gt;% mutate(indicador_paso1=(indicador_paso0-0)/9)</code></pre>
+<p>Usamos el comando <em>mutate</em> para multiplicar por 10, y que el
+indicador vaya de 0 a 10.</p>
+<pre class="r"><code>data_ejercicio=data_ejercicio %&gt;% mutate(indicador=indicador_paso1*10)</code></pre>
+<pre class="r"><code>summary(data_ejercicio$indicador)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  0.0000  0.5745  1.1111 10.0000</code></pre>
+</div>
+<div id="ejercicio-2-describe-la-variable" class="section level1">
+<h1>Ejercicio 2: Describe la variable</h1>
+<p>Obtenga estadísticos, grafice y describa el comportamiento de la
+nueva variable: consumo de cultura</p>
+<p>Usamos el comando <em>summarise</em> para solicitar una tabla resumen
+con mínimo (<em>min</em>), máximo (<em>max</em>), media (<em>mean</em>),
+mediana (<em>median</em>), desviación (<em>sd</em>), cuartiles
+(<em>quantile</em>).</p>
+<pre class="r"><code>resumen_consumo_cultura = data_ejercicio %&gt;% 
+  summarise(minimo = min(indicador,na.rm = TRUE), 
+            media = mean(indicador,na.rm = TRUE), 
+            mediana = median(indicador,na.rm = TRUE),
+            maximo = max(indicador,na.rm = TRUE), 
+            desviacion = sd(indicador,na.rm = TRUE), 
+            iqr25= quantile(indicador,na.rm = TRUE,probs = 0.25),
+            iqr75= quantile(indicador,na.rm = TRUE,probs = 0.75),
+            iqr95= quantile(indicador,na.rm = TRUE,probs = 0.95))
+resumen_consumo_cultura</code></pre>
+<pre><code>##   minimo     media mediana maximo desviacion iqr25    iqr75    iqr95
+## 1      0 0.5745035       0     10   1.021341     0 1.111111 2.222222</code></pre>
+</div>
+<div id="graficando-una-variable" class="section level1">
+<h1>Graficando una variable</h1>
+<pre class="r"><code>library(ggplot2)
+ggplot(data_ejercicio, aes(y=indicador))+
+  geom_boxplot()+
+  ylab(&quot;Consumo cultura 0 a 10&quot;) +
+  scale_y_continuous(limits = c(0, 12))</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data_ejercicio, aes(x=indicador))+
+  geom_histogram() +
+  xlab(&quot;Consumo cultura 0 a 10&quot;) </code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="ejercicio-3" class="section level1">
+<h1>Ejercicio 3:</h1>
+<p>Muchos investigadores afirman que existe una brecha entre el
+<strong>consumo de cultura</strong> según el estrato sociodemográfico
+<strong>ESTRATO</strong>. ¿Es cierto?</p>
+<div id="descriptiva" class="section level2">
+<h2>Descriptiva</h2>
+<pre class="r"><code>table(data_ejercicio$ESTRATO)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5 
+## 2190 4077 5847 6302 5949</code></pre>
+<pre class="r"><code>data_ejercicio = data_ejercicio %&gt;% 
+  mutate(ESTRATO=factor(ESTRATO,
+                        labels = c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;),
+                        ordered = T))
+
+table(data_ejercicio$ESTRATO)</code></pre>
+<pre><code>## 
+##    A    B    C    D    E 
+## 2190 4077 5847 6302 5949</code></pre>
+<pre class="r"><code>class(data_ejercicio$ESTRATO)</code></pre>
+<pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
+<pre class="r"><code>consumocultura_estrato = data_ejercicio  %&gt;%  
+  group_by(ESTRATO) %&gt;% 
+  summarise(media = mean(indicador,na.rm = TRUE), 
+            desviacion = sd(indicador,na.rm = TRUE))
+consumocultura_estrato</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   ESTRATO media desviacion
+##   &lt;ord&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+## 1 A       0.833      1.21 
+## 2 B       0.744      1.17 
+## 3 C       0.555      1.01 
+## 4 D       0.516      0.959
+## 5 E       0.444      0.875</code></pre>
+<pre class="r"><code>ggplot(consumocultura_estrato, aes(x=media, y=reorder(ESTRATO, media)))+
+  geom_bar(stat=&quot;identity&quot;, width=0.5)+
+  ylab(&quot;Estrato sociodemográfico&quot;)</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data_ejercicio, aes(y=indicador, x=ESTRATO))+
+  geom_boxplot() +
+  scale_y_continuous(limits = c(0, 12))+
+  ylab(&quot;Consumo cultura 0 a 10&quot;)+
+  xlab(&quot;Estrato sociodemográfico&quot;)+
+  theme_minimal()+
+  coord_flip()</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="inferencial" class="section level2">
+<h2>Inferencial</h2>
+<pre class="r"><code>library(lsr)
+tabla=data_ejercicio%&gt;%
+  group_by(ESTRATO) %&gt;%
+  summarise(Desviacion = sd(indicador, na.rm=T),
+          Media = mean(indicador, na.rm=T),
+            min = ciMean(indicador,conf = 0.95, na.rm=T)[1],
+            max = ciMean(indicador,conf = 0.95, na.rm=T)[2],
+            n=length(indicador)
+            )
+tabla</code></pre>
+<pre><code>## # A tibble: 5 × 6
+##   ESTRATO Desviacion Media   min   max     n
+##   &lt;ord&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 A            1.21  0.833 0.782 0.884  2190
+## 2 B            1.17  0.744 0.709 0.780  4077
+## 3 C            1.01  0.555 0.529 0.581  5847
+## 4 D            0.959 0.516 0.493 0.540  6302
+## 5 E            0.875 0.444 0.422 0.466  5949</code></pre>
+<pre class="r"><code>library(ggplot2)
+ggplot(tabla,aes(x=ESTRATO,y=Media))+geom_errorbar(aes(ymin=min,ymax=max))+xlab(&quot;Indicador&quot;)+ylab(&quot;Estrato&quot;)+ylim(0,1)</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>anova= aov(indicador~ESTRATO, data =data_ejercicio)
+summary(anova)</code></pre>
+<pre><code>##                Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## ESTRATO         4    389   97.31   94.72 &lt;2e-16 ***
+## Residuals   24360  25026    1.03                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>compara=TukeyHSD(anova)
+compara</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = indicador ~ ESTRATO, data = data_ejercicio)
+## 
+## $ESTRATO
+##            diff         lwr         upr     p adj
+## B-A -0.08879600 -0.16205033 -0.01554168 0.0083949
+## C-A -0.27799918 -0.34727061 -0.20872774 0.0000000
+## D-A -0.31684142 -0.38542807 -0.24825478 0.0000000
+## E-A -0.38930759 -0.45841702 -0.32019817 0.0000000
+## C-B -0.18920317 -0.24561917 -0.13278717 0.0000000
+## D-B -0.22804542 -0.28361844 -0.17247240 0.0000000
+## E-B -0.30051159 -0.35672854 -0.24429463 0.0000000
+## D-C -0.03884225 -0.08904879  0.01136430 0.2154858
+## E-C -0.11130842 -0.16222681 -0.06039003 0.0000000
+## E-D -0.07246617 -0.12244895 -0.02248339 0.0007310</code></pre>
+<p>_Interpretacion: al 95% de diferencia de medias, si existe una
+diferencia significativa entre ellas.</p>
+<pre class="r"><code>compara.df=as.data.frame(compara[1])
+compara.df$compara=rownames(compara.df)</code></pre>
+<pre class="r"><code>graf = ggplot(compara.df, aes(x=compara, y=ESTRATO.diff))+
+  geom_errorbar(aes(ymin=ESTRATO.lwr, ymax=ESTRATO.upr), width=0.2)+
+  geom_text(aes(label=paste(round(ESTRATO.diff, 1))), vjust=-1, size=3)+
+  xlab(&quot;Comparación&quot;) + ylab(&quot;Diferencia&quot;)+
+  coord_flip() +
+  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
+  theme_classic()
+graf</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+</div>
+<div id="ejercicio-4" class="section level1">
+<h1>Ejercicio 4</h1>
+<p>¿Es cierto que existe una brecha entre el <strong>consumo de
+cultura</strong> según el sexo <strong>sexo</strong>?</p>
+<div id="descriptiva-1" class="section level2">
+<h2>Descriptiva</h2>
+<pre class="r"><code>table(data_ejercicio$sexo)</code></pre>
+<pre><code>## 
+##     1     2 
+## 11294 13071</code></pre>
+<pre class="r"><code>data_ejercicio = data_ejercicio %&gt;% 
+  mutate(sexo=factor(sexo,
+                        labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;),
+                        ordered = F))
+
+table(data_ejercicio$sexo)</code></pre>
+<pre><code>## 
+## Hombre  Mujer 
+##  11294  13071</code></pre>
+<pre class="r"><code>class(data_ejercicio$sexo)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>consumocultura_sexo = data_ejercicio  %&gt;%  
+  group_by(sexo) %&gt;% 
+  summarise(media = mean(indicador,na.rm = TRUE), 
+            desviacion = sd(indicador,na.rm = TRUE))
+consumocultura_sexo</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   sexo   media desviacion
+##   &lt;fct&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Hombre 0.641      1.08 
+## 2 Mujer  0.517      0.962</code></pre>
+<pre class="r"><code>library(lsr)
+tabla=data_ejercicio%&gt;%
+  group_by(sexo) %&gt;%
+  summarise(Desviacion = sd(indicador, na.rm=T),
+          Media = mean(indicador, na.rm=T),
+            min = ciMean(indicador,conf = 0.95, na.rm=T)[1],
+            max = ciMean(indicador,conf = 0.95, na.rm=T)[2],
+            n=length(indicador)
+            )
+tabla</code></pre>
+<pre><code>## # A tibble: 2 × 6
+##   sexo   Desviacion Media   min   max     n
+##   &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 Hombre      1.08  0.641 0.621 0.661 11294
+## 2 Mujer       0.962 0.517 0.501 0.534 13071</code></pre>
+<pre class="r"><code>ggplot(tabla,aes(x=sexo,y=Media))+
+  geom_errorbar(aes(ymin=min,ymax=max))+xlab(&quot;Consumo cultura 0 a 10&quot;)+
+  ylab(&quot;Consumo cultura 0 a 10&quot;)+
+  ylim(0,2)</code></pre>
+<p><img src="PD_7_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="inferencial-1" class="section level2">
+<h2>Inferencial</h2>
+<pre class="r"><code>t.test(indicador ~ sexo, data = data_ejercicio,conf.level = 0.95)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  indicador by sexo
+## t = 9.3208, df = 22801, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group Hombre and group Mujer is not equal to 0
+## 95 percent confidence interval:
+##  0.0972338 0.1490182
+## sample estimates:
+## mean in group Hombre  mean in group Mujer 
+##            0.6405564            0.5174304</code></pre>
+</div>
+</div>
+<div id="ejercicio-5" class="section level1">
+<h1>Ejercicio 5</h1>
+<p>¿Es cierto que existe una brecha entre el <strong>consumo de
+cultura</strong> según la región natural
+<strong>region_natural</strong>? ?</p>
+</div>
+<div id="ejercicio-6" class="section level1">
+<h1>Ejercicio 6</h1>
+<p>¿Es cierto que existe una brecha entre el <strong>consumo de
+cultura</strong> según área urbano vs rural <strong>AREA</strong>? ?</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
