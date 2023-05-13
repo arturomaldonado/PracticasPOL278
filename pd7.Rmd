@@ -128,7 +128,10 @@ Cuando es 2 que significa *No* lo convertimos a 0.
 
 **data_ejercicio**.
 
+
 ```{r}
+library(bit64)
+library(dplyr)
 data_ejercicio = data_ejercicio %>% 
   mutate(visita_monumentohistorico=case_when(visita_monumentohistorico==2~0,T~visita_monumentohistorico),
          visita_monumentoarqueologico=case_when(visita_monumentoarqueologico==2~0,T~visita_monumentoarqueologico),          visita_museo=case_when(visita_museo==2~0,T~visita_museo),
@@ -363,12 +366,4 @@ ggplot(tabla,aes(x=sexo,y=Media))+
 t.test(indicador ~ sexo, data = data_ejercicio,conf.level = 0.95)
 ```
 
-# Ejercicio 5
 
-¿Es cierto que existe una brecha entre el **consumo de cultura** según la región natural **region_natural**?
-?
-
-# Ejercicio 6
-
-¿Es cierto que existe una brecha entre el **consumo de cultura** según área urbano vs rural **AREA**?
-?
