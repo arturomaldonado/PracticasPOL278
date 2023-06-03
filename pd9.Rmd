@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 9"
+title: "Práctica dirigida 8"
 output:
   html_document:
     toc: yes
@@ -11,6 +11,7 @@ output:
     highlight: textmate
     always_allow_html: true
 ---
+
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -23,33 +24,34 @@ knitr::include_graphics("logoPUCP.png")
 
 ------------------------------------------------------------------------
 
+
 ## **Diagramas de dispersión y Correlación**
 
 ### Ideas clave
 
 La correlación es en esencia una medida normalizada de asociación o covariación lineal entre dos variables.
 
-* La __correlación__ es una medida de la relación (covariación) entre __dos variables cuantitativas.__
+-   La **correlación** es una medida de la relación (covariación) entre **dos variables cuantitativas.**
 
-* La manera más sencilla de saber si dos variables están correlacionadas es determinar si co-varían (varían conjuntamente). 
+-   La manera más sencilla de saber si dos variables están correlacionadas es determinar si co-varían (varían conjuntamente).
 
-* Es importante hacer notar que __esta covariación no implica necesariamente causalidad__, la correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental.
+-   Es importante hacer notar que **esta covariación no implica necesariamente causalidad**, la correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental.
 
 ### Coeficiente de Correlación de Pearson
 
-* “El Coeficiente de Correlación de Pearson es un estadístico paramétrico, pues se asume que ambas variables tienen una distribución aproximadamente normal, o sea, distribución normal bivariante”.
+-   "El Coeficiente de Correlación de Pearson es un estadístico paramétrico, pues se asume que ambas variables tienen una distribución aproximadamente normal, o sea, distribución normal bivariante".
 
-* Es una medida que __puede variar entre -1 y +1__, ambos extremos indicando correlaciones perfectas, negativa y positiva respectivamente.
+-   Es una medida que **puede variar entre -1 y +1**, ambos extremos indicando correlaciones perfectas, negativa y positiva respectivamente.
 
-* Un valor de r = 0 indica que no existe relación lineal entre las dos variables.
+-   Un valor de r = 0 indica que no existe relación lineal entre las dos variables.
 
 ![](G1.png)
 
 ### Supuestos
 
-- Normalidad = Teorema Central del Límite plantea que, en la medida que nuestro marco muestral es suficientemente grande (mayor a 121 casos), la variable aleatoria se aproxima a un comportamiento normal.
+-   Normalidad = Teorema Central del Límite plantea que, en la medida que nuestro marco muestral es suficientemente grande (mayor a 121 casos), la variable aleatoria se aproxima a un comportamiento normal.
 
-### Gráfico de dispersión 
+### Gráfico de dispersión
 
 ![](G2.png)
 
@@ -84,6 +86,7 @@ library(rio)
 data = import("Data Provincias.xlsx")
 head(data)
 ```
+
 ### Ejercicio 1: Relación entre el voto a Pedro Castillo y el IDH
 
 **Paso 1: Exploramos variables de interés**
@@ -120,9 +123,10 @@ data %>%
            Mediana = median(IDH),
            Max = max(IDH))
 ```
+
 **Paso 2: Gráfico de dispersión**
 
-Visualizamos la relación entre dos variables cuantitativas. Esta “nube” de puntos en el gráfico de dispersión nos da una idea visual de la probable relación entre las variables. 
+Visualizamos la relación entre dos variables cuantitativas. Esta "nube" de puntos en el gráfico de dispersión nos da una idea visual de la probable relación entre las variables.
 
 ```{r eval=FALSE}
 ggplot(data, aes(x=PL, y=IDH)) +
@@ -137,19 +141,19 @@ ggplot(data, aes(x=PL, y=IDH)) +
 
 -   H0 = No existe correlación entre el IDH y el % de voto a Pedro Castillo
 -   H1 = Sí existe correlación entre el IDH y el % de voto a Pedro Castillo
- 
+
 ```{r eval=FALSE}
 #Prueba de correlación
 cor.test(data$PL, data$IDH)
 ```
 
--   p < 0.05 Rechazas la H0/Aceptas la H1
--   P > 0.05 Aceptas la H0/Rechazas la H1
- 
- **¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a < 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo". 
+-   p \< 0.05 Rechazas la H0/Aceptas la H1
+-   P \> 0.05 Aceptas la H0/Rechazas la H1
+
+**¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a \< 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo".
 
 El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una "correlación negativa"; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación fuerte.
- 
+
 ### Ejercicio 2: Relación entre el voto a Pedro Castillo y los ingresos per cápita
 
 **Paso 1: Exploramos variables de interés**
@@ -185,7 +189,7 @@ ggplot(data, aes(x=PL, y=ingresos)) +
 
 -   H0 = No existe correlación entre los ingresos per cápita y el % de voto a Pedro Castillo
 -   H1 = Sí existe correlación entre los ingresos per cápita y el % de voto a Pedro Castillo
- 
+
 ```{r eval=FALSE}
 #Prueba de correlación
 cor.test(data$PL, data$ingresos)
@@ -228,7 +232,7 @@ ggplot(data, aes(x=PL, y=secundaria)) +
 
 -   H0 = No existe correlación entre el acceso a educación secundaria y el % de voto a Pedro Castillo
 -   H1 = Sí existe correlación entre el acceso a educación secundaria y el % de voto a Pedro Castillo
- 
+
 ```{r eval=FALSE}
 #Prueba de correlación
 cor.test(data$PL, data$secundaria)
@@ -271,7 +275,7 @@ ggplot(data, aes(x=PL, y=esperanza)) +
 
 -   H0 = No existe correlación entre la esperanza de vida y el % de voto a Pedro Castillo
 -   H1 = Sí existe correlación entre la esperanza de vida y el % de voto a Pedro Castillo
- 
+
 ```{r eval=FALSE}
 #Prueba de correlación
 cor.test(data$PL, data$esperanza)
