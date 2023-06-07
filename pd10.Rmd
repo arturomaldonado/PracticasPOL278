@@ -81,7 +81,7 @@ Las variables que utilizaremos serán:
 
 **Part** = Indicador de democracia participativa - Vdem
 
-## Gráfico de dispersión: 
+## Gráfico de dispersión:
 
 **¿El indicador de democracia participativa tiene un impacto en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción?**
 
@@ -178,7 +178,7 @@ También podemos obtener los coeficientes de intercepción/intercepto y pendient
 modelo1$coefficients
 ```
 
-### Quinto: Predecir 
+### Quinto: Predecir
 
 Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente para un valor dado de la variable independiente.
 
@@ -196,6 +196,6 @@ Por lo tanto, utilizando la ecuación de la recta, cuando el índice de democrac
 
 Practica resolviendo los siguientes ejercicios
 
-Ejercicio 2: Impacto de la puntuación de libertad en el % de personas que opinan que el nivel de corrupción aumentó en el país
+Ejercicio 2: Impacto de la puntuación de libertad en el % de personas que opinan que el nivel de corrupción disminuyó en el país
 
 Ejercicio 3: Impacto del % de personas que están de acuerdo con la frase "Denunciaría un caso de corrupción aunque tuviera que pasar un día en el juzgado para declarar" en el % de personas que está de acuerdo con que los ciudadanos de a pie creen que pueden hacer la diferencia en la lucha contra la corrupción en el país
