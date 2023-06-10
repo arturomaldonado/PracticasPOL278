@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 10</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 10</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<div id="i.-análisis-de-regresión-simple-ideas-clave"
+class="section level1">
+<h1><strong>I. Análisis de regresión simple: ideas clave</strong></h1>
+<p>Técnica estadística que predice el valor de una variable con los
+valores de otra. La regresión lineal simple es un método útil para
+predecir una respuesta cuantitativa <strong>Y</strong> partiendo de una
+sola variable predictora <strong>X</strong>, asumiendo que hay una
+relación aproximadamente lineal entre X e Y. Matemáticamente, esta
+relación lineal se representa como</p>
+<p>Y = a + bX + E</p>
+<ul>
+<li><p>Y = variable dependiente o explicada. Variable cuyos valores se
+desea predecir o resumir. Un modelo de regresión lineal tiene como
+variable dependiente una variable numérica</p></li>
+<li><p>a = Constante: ordenada en el origen, valor esperado de “Y”
+cuando X=0</p></li>
+<li><p>b = Pendiente: mide el cambio de la variable “Y” por cada unidad
+de cambio de “X”. Su magnitud sirve para predecir en cuánto aumentará
+“y” cada vez que “x” se incremente en una unidad.Su signo puede ser
+positivo o negativo, y en esto la interpretación coincide con la
+correlación.</p></li>
+<li><p>X = variable utilizada para predecir el valor de la variable
+dependiente. También se denomina variable predictora o variable
+explicativa. Las variables explicativas que son parte del modelo suelen
+ser numéricas o intervalares; sin embargo, es posible incorporar
+variables explicativas ordinales o categóricas.</p></li>
+<li><p>E = Corresponde a las desviaciones de los valores verdaderos de Y
+con respecto a los valores esperados de “Y” (diferencia entre lo
+observado y estimado por el modelo). Asumimos que es independiente de
+“X”.</p></li>
+</ul>
+<p>La relación entre las variables depende de la pendiente:</p>
+<ul>
+<li><p>Si b es positivo, Y aumenta cuando X aumenta. Es una relación
+directa / positiva.</p></li>
+<li><p>Si b es negativo, Y aumenta cuando X disminuye. Es una relación
+inversa / negativa.</p></li>
+<li><p>Si b es cero.Y no cambia cuando X varía. No existe relación entre
+las variables.</p></li>
+</ul>
+<p>Asimismo, con el método de la regresión lineal se puede responder las
+siguientes preguntas:</p>
+<ul>
+<li><p>Analizar si hay una <strong>asociación</strong> entre las
+variables mediante un test de independencia estadística.</p></li>
+<li><p>Analizar la <strong>dirección</strong> de la asociación (directa
+o inversa).</p></li>
+<li><p>Evaluar la <strong>fuerza</strong> de la asociación usando una
+medida de asociación llamada <em>correlación de Pearson</em>.</p></li>
+<li><p>Estimar una ecuación de regresión que <strong>“predice”</strong>
+los valores de la variable dependiente para valores de la variable
+independiente.</p></li>
+</ul>
+</div>
+<div id="ii.-aplicación-práctica" class="section level1">
+<h1><strong>II. Aplicación práctica</strong></h1>
+<p>Para la sesión de hoy trabajaremos con datos del 2017 de una base de
+datos que contiene variables obtenidas de las siguientes bases: -
+Freedom in the World - V-Dem - Democracy Index - Global Corruption
+Barometer</p>
+<p>Información sobre las bases: - Freedom in the World es elaborado por
+Freedom House y analiza los siguientes aspectos: el proceso electoral,
+las políticas pluriculturales y la participación, el funcionamiento del
+gobierno, la libertad de expresión y de creencia, los derechos de
+asociación y organización, el estado de derecho, la autonomía personal y
+los derechos individuales.</p>
+<ul>
+<li><p>V-Dem es publicada por el V-Dem Institute. En ella se describe la
+calidad de los gobiernos a partir de información de 542 indicadores. La
+sata describe todos los aspectos de un gobierno, brindándo énfasis en la
+calidad de la democracia, la inclusividad y otros indicadores
+económicos.</p></li>
+<li><p>Democracy Index es elaborado por The Economist y utiliza 60
+indicadores, agrupados en cinco categorías: proceso electoral y
+pluralismo, libertades civiles, funcionamiento del gobierno,
+participación política y política cultural. A partir de estas categorías
+posiciona a los países en alguno de los cuatro tipos de régimen:
+Democracia plena, democracia imperfecta, régimen híbrido y régimen
+autoritario.</p></li>
+<li><p>Global Corruption Barometer es publicado por Transparencia
+Internacional y contiene información proveniente de la opinión pública
+ciudadana</p></li>
+</ul>
+<pre class="r"><code>library(rio)
+data=import(&quot;corrupcion-democracia-1.xlsx&quot;)</code></pre>
+<p>Ejercicio 1: Impacto del índice de democracia participativa en % de
+personas que personas que opinan que la mayoría de autoridades están
+implicada en corrupción por país</p>
+<p>Las variables que utilizaremos serán:</p>
+<p><strong>Q2c</strong> = Porcentaje de personas que opinan que la
+mayoría o todos los funcionarios del gobierno están envueltos en
+corrupción</p>
+<p><strong>Part</strong> = Indicador de democracia participativa -
+Vdem</p>
+<div id="gráfico-de-dispersión" class="section level2">
+<h2>Gráfico de dispersión:</h2>
+<p><strong>¿El indicador de democracia participativa tiene un impacto en
+el porcentaje de personas que opinan que la mayoría/todos los
+funcionarios están envueltos en corrupción?</strong></p>
+<p>Opción 1: Gráfico de dispersión y la recta</p>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+data %&gt;%
+  ggplot(aes (x=Part, y=Q2c*100)) +
+  geom_point(colour=&quot;lightsteelblue4&quot;) +  
+  xlab(&quot;Índicador de democracia participativa&quot;) +  
+  ylab(&quot;% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
+       públicos están involucrados en corrupción&quot;)+ theme_light() + 
+  geom_smooth(method=&quot;lm&quot;, se = T, colour=&quot;grey5&quot;)</code></pre>
+<p><img src="pd10_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Opción 2: Gráfico de dispersión, recta, ecuación y R<sup>2</sup></p>
+<pre class="r"><code>library(ggpmisc) #Para agregar la ecuación y R2
+
+  data %&gt;%
+  ggplot()+
+  aes (x=Part, y=Q2c) +
+  stat_poly_line(se = FALSE) +
+  stat_poly_eq(formula = y ~ x,aes(label = paste(..eq.label.., ..rr.label.., sep = &quot;~~~&quot;)),label.x = &quot;right&quot;) + 
+  stat_fit_deviations(colour = &quot;lightsteelblue&quot;) + 
+  geom_point(colour=&quot;lightsteelblue4&quot;) +  
+  xlab(&quot;Índicador de democracia participativa&quot;) +  
+  ylab(&quot;% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
+       públicos están involucrados en corrupción&quot;)+ theme_light() + 
+  geom_smooth(method=&quot;lm&quot;, se = F, colour=&quot;grey5&quot;)</code></pre>
+<p><img src="pd10_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>A primera vista parece haber un leve impacto, y la relación entre
+nuestras variables se perfila como negativa. Comprobémoslo …</p>
+</div>
+<div id="creación-del-modelo" class="section level2">
+<h2>Creación del modelo</h2>
+<pre class="r"><code>modelo1=lm(Q2c~Part,data=data)
+summary(modelo1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Q2c ~ Part, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.34146 -0.09825 -0.01978  0.08791  0.41694 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.44221    0.03317  13.330  &lt; 2e-16 ***
+## Part        -0.24436    0.07887  -3.098  0.00245 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.155 on 114 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.07765,    Adjusted R-squared:  0.06956 
+## F-statistic: 9.598 on 1 and 114 DF,  p-value: 0.002453</code></pre>
+</div>
+<div id="interpretación" class="section level2">
+<h2>Interpretación</h2>
+<p><em>¿El indicador de democracia participativa tiene un impacto en el
+porcentaje de personas que opinan que la mayoría/todos los funcionarios
+están envueltos en corrupción?</em></p>
+<p>Para interpretar los resultados del modelo debemos tener presente lo
+siguiente:</p>
+<div id="primero-p-value" class="section level3">
+<h3>Primero: p-value</h3>
+<p>Sabremos si la variable independiente impacta en la dependiente al
+revisar la significancia del p valor.</p>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li><p>H0: El modelo de regresión no es válido</p></li>
+<li><p>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</p></li>
+</ul>
+<p>Como el p valor es <strong>0.002453</strong> entonces podemos afirmar
+que hay suficiente evidencia para rechazar la H0, por lo que concluimos
+que el modelo sí es válido como modelo de predicción. Es decir, podemos
+decir que hay evidencia estadística suficiente para afirmar que existe
+una relación significativa entre el índice de democracia participativa y
+la percepción de funcionarios corruptos por país.</p>
+</div>
+<div id="segundo-pendienteb" class="section level3">
+<h3>Segundo: pendiente/b</h3>
+<p>Explicar cómo es el efecto de x en y. Para ello analizamos el valor
+del parámetro de la pendiente.</p>
+<p>En este caso, al ser este valor <strong>-0.24436</strong>, concluímos
+que cada vez que el valor del índice de democracia participativa aumenta
+en 1, el porcentaje de personas que opinan que la mayoría/todos los
+funcionarios están envueltos en corrupción por país disminuye en
+0.244.</p>
+</div>
+<div id="tercero-r2" class="section level3">
+<h3>Tercero: R<sup>2</sup></h3>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por la variable independiente (x), para ello revisamor el
+<strong>R<sup>2</sup></strong> (Multiple R-squared). Los valores van de
+0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad
+explicada. El R2 es un indicador de ajuste del modelo.</p>
+<p>En nuestro modelo, este arrojó el valor de <strong>0.07765</strong>,
+por lo que podemos concluir que aproximadamente el <strong>7.8%</strong>
+(0.07765*100)de la variabilidad en el porcentaje de personas que opinan
+que la mayoría/todos los funcionarios están envueltos en corrupción por
+país puede ser explicada por el índice de democracia participativa. Esto
+quiere decir que la cantidad de variabilidad explicada es relativamente
+baja. Por lo que podemos afirmar que hay otros factores más importantes
+o complejos que afectan la percepción de corrupción en cada país.</p>
+</div>
+<div id="cuarto-ecuación-de-la-recta" class="section level3">
+<h3>Cuarto: Ecuación de la recta</h3>
+<p>Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos
+los dos valores de la tabla que se encuentran en la columna de
+“Estimate”, el valor de la primera fila es el del intercepto (a) y el de
+la segunda es el de la pendiente (b).</p>
+<p>Del segundo paso, ya conocíamos que el valor de la pendiente es
+<strong>-0.24436.</strong> Si volvemos a revisar nuestra tabla podemos
+observar que en el cruce de Estimate e Intercept está el valor de
+<strong>0.44221</strong>, este sería nuestro a/intercepto. Ahora armemos
+nuestra ecuación de la recta:</p>
+<p><strong>Ŷ = 0.44221 - 0.24436∗X</strong></p>
+<p>Donde:</p>
+<ul>
+<li>X = Indicador de democracia participativa - (independiente)</li>
+<li>Y = Porcentaje de personas que opinan que la mayoría o todos los
+funcionarios del gobierno están envueltos en corrupción -
+(dependiente)</li>
+</ul>
+<p>Esa ecuación crea una línea recta en el diagrama de dispersión que
+representa la relación entre ambas variables y además indica que el
+cambio esperado en nuestra variable dependiente (Porcentaje de personas
+que opinan que la mayoría o todos los funcionarios del gobierno están
+envueltos en corrupción) por cada cambio de una unidad en nuestra
+variable independiente (Indicador de democracia participativa). Así, con
+esta ecuación se puede estimar el valor de Y para cualquier valor de
+X.</p>
+<p>También podemos obtener los coeficientes de intercepción/intercepto y
+pendiente de la siguiente forma:</p>
+<pre class="r"><code>modelo1$coefficients</code></pre>
+<pre><code>## (Intercept)        Part 
+##   0.4422086  -0.2443560</code></pre>
+</div>
+<div id="quinto-predecir" class="section level3">
+<h3>Quinto: Predecir</h3>
+<p>Podemos utilizar la relación linear establecida por la ecuación para
+estimar el valor de la variable dependiente para un valor dado de la
+variable independiente.</p>
+<p>Previamente ya habíamos hallado la ecuación de la recta de nuestro
+modelo, si queremos calcular el valor de porcentaje de personas que
+opinan que la mayoría/todos los funcionarios están envueltos en
+corrupción cuando el índice de democracia participativa (0 a 1) es 0.4
+solo tenemos que reemplazar el valor de x por 0.4 en nuestra
+ecuación.</p>
+<p>Sustituyendo el valor de “x” en la ecuación, tenemos:</p>
+<p><strong>Ŷ = 0.44221 - 0.24436 * 0.4</strong></p>
+<p><strong>Ŷ = 0.44221 - 0.097744</strong></p>
+<p><strong>Ŷ = 0.344466</strong></p>
+<p>Por lo tanto, utilizando la ecuación de la recta, cuando el índice de
+democracia participativa es 0.4 , podemos predecir que aproximadamente
+el 34.4% de las personas opinan que la mayoría/todos los funcionarios
+están envueltos en corrupción en ese país.</p>
+<p>Practica resolviendo los siguientes ejercicios</p>
+<p>Ejercicio 2: Impacto de la puntuación de libertad en el % de personas
+que opinan que el nivel de corrupción disminuyó en el país</p>
+<p>Ejercicio 3: Impacto del % de personas que están de acuerdo con la
+frase “Denunciaría un caso de corrupción aunque tuviera que pasar un día
+en el juzgado para declarar” en el % de personas que está de acuerdo con
+que los ciudadanos de a pie creen que pueden hacer la diferencia en la
+lucha contra la corrupción en el país</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
