@@ -152,7 +152,7 @@ cor.test(data$PL, data$IDH)
 
 **¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a \< 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo".
 
-El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una "correlación negativa"; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación fuerte.
+El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una "correlación negativa"; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación mediana.
 
 ### Ejercicio 2: Relación entre el voto a Pedro Castillo y los ingresos per cápita
 
@@ -178,7 +178,7 @@ data %>%
 
 ```{r eval=FALSE}
 ggplot(data, aes(x=PL, y=ingresos)) +
-  geom_point(colour="red") +  xlab("Ingresos per cápita") +  ylab("% voto a Pedro Castillo") +
+  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Ingresos per cápita") +
   ggtitle("Relación entre los ingresos per cápita y el voto a Castillo") +
   theme_light()
 ```
