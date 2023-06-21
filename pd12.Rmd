@@ -25,45 +25,49 @@ knitr::include_graphics("logoPUCP.png")
 ------------------------------------------------------------------------
 
 # **Regresión linea múltiple**
-_Recordando lo avanzado_
 
+***Recordando lo avanzado***
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 knitr::include_graphics("pd12_diap1.png") 
 ```
 
+------------------------------------------------------------------------
 
+Para fines prácticos tenemos a continuación el siguiente flujograma el cual nos muestra los pasos que seguiremos en la presente sesión
 
-**Digital Access Index** 😎
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("pd12_diap2.png") 
+```
 
-El Índice de Acceso Digital (Digital Access Index, DAI) es un indicador utilizado para medir y evaluar el nivel de acceso a las tecnologías digitales y a Internet en un país o región. Proporciona una medida de hasta qué punto las personas y las comunidades pueden utilizar y beneficiarse de las tecnologías digitales.
+# **Factores que determinan el acceso a la información en los Estados**
 
-El DAI tiene en cuenta diversos factores que contribuyen al acceso digital, como la disponibilidad de infraestructura, la asequibilidad de los servicios de Internet, los niveles de educación y las tasas de uso de Internet. Al analizar estos componentes, el índice tiene como objetivo evaluar la preparación digital y la inclusión digital en una determinada área.
+El acceso a la información es fundamental para el funcionamiento de cualquier Estado democrático, ya que promueve la transparencia, la responsabilidad y la participación ciudadana. Permite a los ciudadanos comprender y evaluar las acciones y decisiones de sus gobiernos, fomenta el debate público informado y ayuda a prevenir la corrupción y el abuso de poder. Además, facilita la innovación y el desarrollo al permitir el intercambio de ideas y conocimientos. En suma, el acceso a la información es una herramienta vital para garantizar el respeto de los derechos humanos, la justicia social y el desarrollo sostenible.
+
+Para poder realizar dicho análisis se han revisado diversas fuentes de información que describiremos a continuación:
+
+**Digital Access Index** El Índice de Acceso Digital (Digital Access Index, DAI) es un indicador utilizado para medir y evaluar el nivel de acceso a las tecnologías digitales y a Internet en un país o región. Proporciona una medida de hasta qué punto las personas y las comunidades pueden utilizar y beneficiarse de las tecnologías digitales.
 
 El DAI es una herramienta útil para los responsables de políticas, investigadores y organizaciones para comprender el estado del acceso digital e identificar áreas que necesitan mejorar. Puede ayudar a orientar los esfuerzos para reducir la brecha digital y garantizar que todas las personas tengan igualdad de oportunidades para beneficiarse de las tecnologías digitales.
 
-**Egov-index**
+**Egov-index** El Índice de Gobierno Electrónico (e-Government Index) es una medida que evalúa el nivel de desarrollo y adopción de tecnologías de la información y la comunicación (TIC) en el sector público de un país. Este índice se utiliza para medir y comparar la capacidad de los gobiernos para proporcionar servicios en línea, promover la participación ciudadana y utilizar las TIC de manera efectiva en la gestión gubernamental.
 
-El Índice de Gobierno Electrónico (e-Government Index) es una medida que evalúa el nivel de desarrollo y adopción de tecnologías de la información y la comunicación (TIC) en el sector público de un país. Este índice se utiliza para medir y comparar la capacidad de los gobiernos para proporcionar servicios en línea, promover la participación ciudadana y utilizar las TIC de manera efectiva en la gestión gubernamental.
+**Democracy Index** El Índice de Democracia es un índice que mide el estado de la democracia en países de todo el mundo. Es elaborado por la Unidad de Inteligencia de The Economist (EIU), una firma independiente de investigación y análisis. El índice evalúa el funcionamiento de los procesos e instituciones democráticas en cada país en base a una serie de indicadores.
 
-El Índice de Gobierno Electrónico suele ser elaborado por organismos internacionales, como la Organización de las Naciones Unidas (ONU) y su Departamento de Asuntos Económicos y Sociales (UNDESA), o el Banco Mundial. Cada organismo puede tener su propio método y conjunto de indicadores para calcular el índice.
+A partir de la información recolectada se ha creado una base de datos llamada Egov.
 
-**Democracy Index**
-
-El Índice de Democracia es un índice que mide el estado de la democracia en países de todo el mundo. Es elaborado por la Unidad de Inteligencia de The Economist (EIU), una firma independiente de investigación y análisis. El índice evalúa el funcionamiento de los procesos e instituciones democráticas en cada país en base a una serie de indicadores.
-
-```{r,echo=FALSE, out.width="60%",fig.align="center"}
+```{r,echo=FALSE, out.width="80%",fig.align="center"}
 knitr::include_graphics("PD12_diccionarioEgov.png") 
 ```
 
 ```{r}
 library(rio)
 Egov=import("Egov.xlsx")
-```
-
-```{r}
 names(Egov)
 ```
+
+
+## **Modelo 1**
 
 ```{r}
 library(dplyr)
@@ -73,39 +77,107 @@ modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_H
 summary(modelo1)
 ```
 
-Interpretamos
+## **Interpretamos 😎**
 
-¿El modelo es válido?
-Primero: p-value
-
-Sabremos si las variables independientes impactan en la dependiente al revisar la significancia del p valor.
+### **¿El modelo es válido?**
 
 Establezcamos nuestras hipótesis:
 
-H0: El modelo de regresión no es válido
+-   H0: El modelo de regresión no es válido
 
-H1: El modelo de regresión es válido (variable X aporta al modelo)
+-   H1: El modelo de regresión es válido (variable X aporta al modelo)
 
-Como el p valor es < 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el índice de democracia participativa y la percepción de funcionarios corruptos por país.
+Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el Acceso a la información y nuestras variables independientes invocadas en el modelo 1.
 
-¿Qué tanto explica el modelo?
-Segundo: R2
+### **¿Qué tanto explica el modelo?**
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes (x1 y x2), para ello revisamor el R2 (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
+Observamos el **R2 ajustado**.
 
-En nuestro modelo, este arrojó el valor de 0.1015, por lo que podemos concluir que aproximadamente el 10.2% (0.1015*100)de la variabilidad en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción por país puede ser explicada por el índice de democracia participativa. Esto quiere decir que la cantidad de variabilidad explicada es relativamente baja. Por lo que podemos afirmar que hay otros factores más importantes o complejos que afectan la percepción de corrupción en cada país.
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
 
-¿La variable aporta al modelo?
-Tercero: p-value por variable independiente
+En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos concluir mi modelo explica aproximadamente el 97.2% (0.9217\*100) de la variabilidad en el acceso a la información (variable dependiente). En otras palabras, este valor alto de R cuadrado ajustado indica que el modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar la relación entre las variables independientes y la variable dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice nada sobre la significancia estadística de las variables individuales, ni sobre la causalidad. Por ello analizaremos también las variables de forma independiente en el siguiente paso.
 
-Revisamos el p-value de cada una de las variables independientes:
+*Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un R cuadrado de 1 indica que el modelo explica toda la variabilidad de la variable de respuesta en torno a su media. Un R cuadrado de 0 indica que el modelo no explica ninguna de la variabilidad de la variable de respuesta en torno a su media.*
 
-Tiempo de la gestión -> <2e-16 Edad -> 0.089
+### **¿Las variables aportan al modelo?**
 
-¿Cuál o cuáles son significativas?
+Revisamos **p-value** por cada variable independiente.
 
-¿Cuáles son los coeficientes de la ecuación?
-Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los valores de la tabla que se encuentran en la columna de “Estimate”, el valor de la primera fila es el del intercepto (a) y las siguientes son de la pendiente para cada variable independiente (b).
+-   Esperamos obtener un p-value \<0.05.
+-   Nos damos cuenta que *no todas* las variables independientes cumplen, es el caso de: participaciónDigital y Servicios_Online
 
-¿Ha mejorado el nivel de explicación del modelo?
+### **¿Cuáles son los coeficientes de la ecuación?**
 
+Una forma amigable de poder identificar los coeficientes es usando el siguiente código:
+
+*No olvidar identificar el signo de cada coeficiente, este tendrá repercusión en la ecuación y su futura aplicación*
+
+```{r}
+modelo1$coefficients
+```
+
+De esa manera puedo hallar la ecuación:
+
+$$
+Y = -0.12 + \text{participaciónDigital} \times (-0.078) + \text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times (0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times (0.013) + \text{UsuariosInternet} \times (0.0015)
+$$
+
+¿Qué sucede si retiro las variables independientes que no aportan al modelo 1? Veamos un segundo modelo 👀 .
+
+## **Modelo 2**
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+modelo2 = lm(accesoInformacion ~Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
+summary(modelo2)
+```
+
+## **Interpretamos 😎**
+
+### **¿El modelo es válido?**
+
+Establezcamos nuestras hipótesis:
+
+-   H0: El modelo de regresión no es válido
+
+-   H1: El modelo de regresión es válido (variable X aporta al modelo)
+
+Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el Acceso a la información y nuestras variables independientes invocadas en el modelo 2.
+
+### **¿Qué tanto explica el modelo?**
+
+Observamos el **R2 ajustado**.
+
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
+
+En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos concluir mi modelo explica aproximadamente el 97.25% (0.9225\*100) de la variabilidad en el acceso a la información (variable dependiente). En otras palabras, este valor alto de R cuadrado ajustado indica que el modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar la relación entre las variables independientes y la variable dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice nada sobre la significancia estadística de las variables individuales, ni sobre la causalidad. Por ello analizaremos también las variables de forma independiente en el siguiente paso.
+
+
+### **¿Las variables aportan al modelo?**
+
+Revisamos **p-value** por cada variable independiente.
+
+-   Esperamos obtener un p-value \<0.05.
+-   Esta vez *todas* las variables independientes aportan al modelo.
+
+### **¿Cuáles son los coeficientes de la ecuación?**
+
+Una forma amigable de poder identificar los coeficientes es usando el siguiente código:
+
+*No olvidar identificar el signo de cada coeficiente, este tendrá repercusión en la ecuación y su futura aplicación*
+
+```{r}
+modelo2$coefficients
+```
+
+De esa manera puedo hallar la ecuación:
+
+$$
+Y = -0.12 + \text{Capital\_Humano} \times (0.288) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times (0.0145) + \text{UsuariosInternet} \times (0.0016)
+$$
+
+- ¿Qué variable aporta más al modelo? 
+- ¿Mi modelo ha mejorado? 
+Sí, el modelo 1 explicaba un 92.17% y el modelo 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto, con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así la mejora. ha haya sido sustancial).
