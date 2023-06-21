@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 12</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -516,8 +516,7 @@ summary(modelo1)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li><p>H0: El modelo de regresión no es válido</p></li>
-<li><p>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</p></li>
+<li><p>H1: El modelo de regresión es válido</p></li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 &lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
@@ -625,8 +624,7 @@ summary(modelo2)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li><p>H0: El modelo de regresión no es válido</p></li>
-<li><p>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</p></li>
+<li><p>H1: El modelo de regresión es válido</p></li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 &lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
@@ -693,6 +691,15 @@ Telecommunicacion_Infrastructura</li>
 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto,
 con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así
 la mejora. ha haya sido sustancial).</p>
+<p><strong>Gráfico comparativo de modelos</strong></p>
+<pre class="r"><code>library(jtools)
+plot_coefs(modelo1,modelo2,scale=FALSE)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;broom&#39;:
+##   method            from  
+##   tidy.glht         jtools
+##   tidy.summary.glht jtools</code></pre>
+<pre><code>## Loading required namespace: broom.mixed</code></pre>
+<p><img src="pd12_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -772,11 +779,13 @@ str(Covid)</code></pre>
 ##  $ Q8 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 1 2 NA 2 2 2 2 2 NA ...
 ##  $ Q11: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 2 2 NA 1 2 2 1 1 NA ...
 ##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<p>Convertimos a numéricas</p>
 <pre class="r"><code>Covid$Q1= as.numeric(Covid$Q1)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>Covid$Q13= as.numeric(Covid$Q13)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>Covid &lt;- Covid[complete.cases(Covid), ]</code></pre>
+<p>Nos quedamos con los casos completos (ningún NA)</p>
+<pre class="r"><code>Covid = Covid[complete.cases(Covid), ]</code></pre>
 <div id="modelo-3" class="section level2">
 <h2><strong>Modelo 3</strong></h2>
 <p>Hacemos uso de todas las variables de la base de datos. Veamos los
@@ -816,8 +825,7 @@ summary(modelo3)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li><p>H0: El modelo de regresión no es válido</p></li>
-<li><p>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</p></li>
+<li><p>H1: El modelo de regresión es válido</p></li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 2.224e-08 entonces podemos afirmar que hay suficiente evidencia para
@@ -846,8 +854,8 @@ Este resultado es bajo.</p>
 independiente.</p>
 <ul>
 <li>Esperamos obtener un p-value &lt;0.05.</li>
-<li>Esta vez las variables que <em>sí aportan</em> al modelo son: Q7 y
-Q11</li>
+<li>Esta vez las variables que <strong>sí aportan</strong> al modelo
+son: Q7 y Q11</li>
 </ul>
 </div>
 <div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
@@ -903,8 +911,7 @@ summary(modelo4)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li><p>H0: El modelo de regresión no es válido</p></li>
-<li><p>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</p></li>
+<li><p>H1: El modelo de regresión es válido</p></li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 1.367e-09 entonces podemos afirmar que hay suficiente evidencia para
@@ -930,7 +937,7 @@ no nos dice nada sobre el aporte de cada variable independiente, hay que
 realizar el siguiente paso.</p>
 </div>
 <div id="las-variables-aportan-al-modelo-3" class="section level3">
-<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<h3><strong>¿Las variables aportan al modelo?</strong> 🤔</h3>
 <p>Revisamos <strong>p-value</strong> por cada variable
 independiente.</p>
 <ul>
@@ -951,17 +958,21 @@ repercusión en la ecuación y su futura aplicación</em></p>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
 Y = 7.27  + \text{Q7} \times (-0.88) +  \text{Q11} \times (-0.458)
-\]</span> ¿Qué variable aporta más al modelo? Ojo, que no debemos de
-olvidar identificar el signo de las variables, por lo cual las dos
-independientes son negativas, es decir se trata de una relación
-indirecta.</p>
+\]</span> <strong>¿Qué variable aporta más al modelo?</strong></p>
+<p>Ojo, que no debemos de olvidar identificar el signo de las variables,
+por lo cual las dos independientes son negativas, es decir se trata de
+una relación indirecta.</p>
 <p>Por otro lado, y en comparación al modelo 3, no podemos identificar
 un R cuadrado ajustado muy diferente entre los modelos (3 y 4); sin
 embargo, existen puntos a considerar como por ejemplo la revisión de
 variables que sí aporten al modelo, ya que en este último caso (modelo
-4) las variables sí aportan al modelo. Esto probaría que se trata de una
-mejor elección de variables a pesar de tener un R cuadrado ajustado un
-poco menor al modelo 3.</p>
+4) todas las variables sí aportan al modelo. Esto probaría que se trata
+de una mejor elección de variables a pesar de tener un R cuadrado
+ajustado un poco menor al modelo 3. 👩‍🔬</p>
+<p><strong>Gráfico comparativo de modelos</strong></p>
+<pre class="r"><code>library(jtools)
+plot_coefs(modelo3,modelo4,scale=FALSE)</code></pre>
+<p><img src="pd12_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 </div>
