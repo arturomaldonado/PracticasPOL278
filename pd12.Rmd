@@ -1,0 +1,111 @@
+---
+title: "Práctica dirigida 12"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 1
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: true
+---
+
+<center><img src=" " width="200"/></center>
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1 <br>
+
+------------------------------------------------------------------------
+
+# **Regresión linea múltiple**
+_Recordando lo avanzado_
+
+
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("pd12_diap1.png") 
+```
+
+
+
+**Digital Access Index** 😎
+
+El Índice de Acceso Digital (Digital Access Index, DAI) es un indicador utilizado para medir y evaluar el nivel de acceso a las tecnologías digitales y a Internet en un país o región. Proporciona una medida de hasta qué punto las personas y las comunidades pueden utilizar y beneficiarse de las tecnologías digitales.
+
+El DAI tiene en cuenta diversos factores que contribuyen al acceso digital, como la disponibilidad de infraestructura, la asequibilidad de los servicios de Internet, los niveles de educación y las tasas de uso de Internet. Al analizar estos componentes, el índice tiene como objetivo evaluar la preparación digital y la inclusión digital en una determinada área.
+
+El DAI es una herramienta útil para los responsables de políticas, investigadores y organizaciones para comprender el estado del acceso digital e identificar áreas que necesitan mejorar. Puede ayudar a orientar los esfuerzos para reducir la brecha digital y garantizar que todas las personas tengan igualdad de oportunidades para beneficiarse de las tecnologías digitales.
+
+**Egov-index**
+
+El Índice de Gobierno Electrónico (e-Government Index) es una medida que evalúa el nivel de desarrollo y adopción de tecnologías de la información y la comunicación (TIC) en el sector público de un país. Este índice se utiliza para medir y comparar la capacidad de los gobiernos para proporcionar servicios en línea, promover la participación ciudadana y utilizar las TIC de manera efectiva en la gestión gubernamental.
+
+El Índice de Gobierno Electrónico suele ser elaborado por organismos internacionales, como la Organización de las Naciones Unidas (ONU) y su Departamento de Asuntos Económicos y Sociales (UNDESA), o el Banco Mundial. Cada organismo puede tener su propio método y conjunto de indicadores para calcular el índice.
+
+**Democracy Index**
+
+El Índice de Democracia es un índice que mide el estado de la democracia en países de todo el mundo. Es elaborado por la Unidad de Inteligencia de The Economist (EIU), una firma independiente de investigación y análisis. El índice evalúa el funcionamiento de los procesos e instituciones democráticas en cada país en base a una serie de indicadores.
+
+```{r,echo=FALSE, out.width="60%",fig.align="center"}
+knitr::include_graphics("PD12_diccionarioEgov.png") 
+```
+
+```{r}
+library(rio)
+Egov=import("Egov.xlsx")
+```
+
+```{r}
+names(Egov)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
+summary(modelo1)
+```
+
+Interpretamos
+
+¿El modelo es válido?
+Primero: p-value
+
+Sabremos si las variables independientes impactan en la dependiente al revisar la significancia del p valor.
+
+Establezcamos nuestras hipótesis:
+
+H0: El modelo de regresión no es válido
+
+H1: El modelo de regresión es válido (variable X aporta al modelo)
+
+Como el p valor es < 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el índice de democracia participativa y la percepción de funcionarios corruptos por país.
+
+¿Qué tanto explica el modelo?
+Segundo: R2
+
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes (x1 y x2), para ello revisamor el R2 (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
+
+En nuestro modelo, este arrojó el valor de 0.1015, por lo que podemos concluir que aproximadamente el 10.2% (0.1015*100)de la variabilidad en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción por país puede ser explicada por el índice de democracia participativa. Esto quiere decir que la cantidad de variabilidad explicada es relativamente baja. Por lo que podemos afirmar que hay otros factores más importantes o complejos que afectan la percepción de corrupción en cada país.
+
+¿La variable aporta al modelo?
+Tercero: p-value por variable independiente
+
+Revisamos el p-value de cada una de las variables independientes:
+
+Tiempo de la gestión -> <2e-16 Edad -> 0.089
+
+¿Cuál o cuáles son significativas?
+
+¿Cuáles son los coeficientes de la ecuación?
+Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los valores de la tabla que se encuentran en la columna de “Estimate”, el valor de la primera fila es el del intercepto (a) y las siguientes son de la pendiente para cada variable independiente (b).
+
+¿Ha mejorado el nivel de explicación del modelo?
+
