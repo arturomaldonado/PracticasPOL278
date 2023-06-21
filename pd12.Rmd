@@ -75,3 +75,4 @@ library(ggplot2)
 modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
 summary(modelo1)
 ```
+
