@@ -9,12 +9,8 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: yes
+    always_allow_html: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
-```
 
 <center><img src=" " width="200"/></center>
 
@@ -29,7 +25,7 @@ knitr::include_graphics("logoPUCP.png")
 ------------------------------------------------------------------------
 
 # **Regresión linea múltiple**
-_Recordando la clase anterior_
+_Recordando lo avanzado_
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 knitr::include_graphics("pd12_diap1.png") 

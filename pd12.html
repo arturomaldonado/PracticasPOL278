@@ -408,9 +408,8 @@ class="section level2">
 </div>
 <div id="regresión-linea-múltiple" class="section level1">
 <h1><strong>Regresión linea múltiple</strong></h1>
-<p><em>Recordando la clase anterior</em></p>
-<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" />
-# Regresión múltiple</p>
+<p><em>Recordando lo avanzado</em></p>
+<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p><strong>Digital Access Index</strong> 😎</p>
 <p>El Índice de Acceso Digital (Digital Access Index, DAI) es un
 indicador utilizado para medir y evaluar el nivel de acceso a las
@@ -458,8 +457,16 @@ Egov=import(&quot;Egov.xlsx&quot;)</code></pre>
 ## [5] &quot;Telecommunicacion_Infrastructura&quot; &quot;ProcesoElectoral&quot;                
 ## [7] &quot;Policulture&quot;                      &quot;accesoInformacion&quot;               
 ## [9] &quot;UsuariosInternet&quot;</code></pre>
-<pre class="r"><code>library(dplyr)
-library(ggplot2)
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggplot2)
 
 modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
 summary(modelo1)</code></pre>
