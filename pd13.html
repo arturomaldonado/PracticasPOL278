@@ -464,8 +464,6 @@ data_grafico</code></pre>
 <p>Grafiquemos</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(data_grafico,aes(x=ESTRATOS_IOP,y=Media))+geom_errorbar(aes(ymin=min,ymax=max),color=&quot;steelblue3&quot;,size=0.6)+xlab(&quot;ESTRATO&quot;)+ylab(&quot;Gasto en transporte en el hogar&quot;)+ylim(0,130)+theme_bw()</code></pre>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.</code></pre>
 <p><img src="pd13_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Ahora, confirmemos la observación visual con la prueba ANOVA.</p>
 <pre class="r"><code>anova = aov(data$PE10A~data$ESTRATOS_IOP)
@@ -615,7 +613,6 @@ una idea inicial</p>
   geom_point(colour=&quot;darkblue&quot;) +  xlab(&quot;Gasto en transporte&quot;) +  ylab(&quot;Años en Lima&quot;) +
   ggtitle(&quot;Relación entre el gasto en transporte y el tiempo (en años) \n que se ha vivido en Lima - Solo Lima Norte&quot;) + xlim(0,1000)+ylim(0,30)+
   theme_light()</code></pre>
-<pre><code>## Warning: Removed 704 rows containing missing values (`geom_point()`).</code></pre>
 <p><img src="pd13_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Podemos atisbar una gran dispersión, a primera vista parece no haber
 relación alguna.</p>
@@ -694,8 +691,6 @@ summary(data$evaluacion_ti)</code></pre>
   ylab(&quot;Indicador de independencia del Banco Central&quot;)+ theme_light() + 
   geom_smooth(method=&quot;lm&quot;, se = T, colour=&quot;grey5&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 2767 rows containing non-finite values (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 2767 rows containing missing values (`geom_point()`).</code></pre>
 <p><img src="pd13_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Podemos observar que existe correlación entre ambas variables (p
 valor = 0,012) y que la correlación es negativa y que no es
