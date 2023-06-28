@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 13</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 13</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p>Realicemos un repaso de lo que hemos revisado hasta ahora sobre
+análisis bivariado: la prueba ANOVA, Chi cuadrado y las medidas de
+asociación.</p>
+<p>Para esta sesión emplearemos la base del proyecto Lima Cómo Vamos,
+correspondiente a los años 2018 y 2019. Recordemos que los datos solo
+son de Lima.</p>
+<pre class="r"><code>library(rio)
+data=import(&quot;LCV1819-1.sav&quot;)</code></pre>
+<div id="test-de-anova" class="section level1">
+<h1>TEST DE ANOVA</h1>
+<p>Recordemos la teoría, el test de ANOVA se usa para comparar la media
+de una variable dependiente numérica entre grupos de una variable de
+tipo factor con más de 2 grupos.</p>
+<p>Ojo: Esta prueba solo nos indica si es que existe diferencias entre
+alguno de los grupos, más no entre cuales.</p>
+<p>Repasemos nuestras hipótesis:</p>
+<p>H0: No existe diferencia entre las medias poblacionales de los grupos
+evaluados / Hay igualdad entre las medias</p>
+<p>H1: Al menos una media poblacional de un grupo es diferente / Hay
+diferencias entre al menos un grupo o más<br />
+</p>
+<div id="ejercicio-1" class="section level2">
+<h2>Ejercicio 1:</h2>
+<p>Respondamos a la siguiente pregunta ¿Existe alguna diferencia
+estadísticamente significativa entre el gasto en transporte (PE10A)
+entre los estratos de lima metropolitana (ESTRATOS_IOP)? Si existe,
+¿entre qué grupos?</p>
+<p>Preparemos nuestras variables</p>
+<pre class="r"><code>class(data$PE10A)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>summary(data$ESTRATOS_IOP)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   1.000   2.000   2.384   3.000   4.000</code></pre>
+<pre class="r"><code>data$ESTRATOS_IOP = as.factor(data$ESTRATOS_IOP)
+data$ESTRATOS_IOP=factor(data$ESTRATOS_IOP, levels = levels(data$ESTRATOS_IOP),labels = c(&quot;Centro&quot;,&quot;Este&quot;,&quot;Norte&quot;,&quot;Sur&quot;))</code></pre>
+<p>Realicemos una tabla de la media y límites de los intervalos para ver
+qué podemos anticipar:</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(lsr)
+data_grafico= data %&gt;%                          
+  group_by(ESTRATOS_IOP)%&gt;%
+  summarise(Desviacion = sd(PE10A, na.rm=T),
+          Media = mean(PE10A, na.rm=T),
+            min = ciMean(PE10A,conf = 0.95, na.rm=T)[1],
+            max = ciMean(PE10A,conf = 0.95, na.rm=T)[2],
+            n=length(PE10A))
+            
+data_grafico</code></pre>
+<pre><code>## # A tibble: 4 × 6
+##   ESTRATOS_IOP Desviacion Media   min   max     n
+##   &lt;fct&gt;             &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 Centro            201.  114.  101.  128.    975
+## 2 Este              103.   49.8  43.1  56.4  1043
+## 3 Norte             477.   95.0  65.0 125.   1038
+## 4 Sur                94.0  61.2  54.0  68.4   688</code></pre>
+<p>Grafiquemos</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data_grafico,aes(x=ESTRATOS_IOP,y=Media))+geom_errorbar(aes(ymin=min,ymax=max),color=&quot;steelblue3&quot;,size=0.6)+xlab(&quot;ESTRATO&quot;)+ylab(&quot;Gasto en transporte en el hogar&quot;)+ylim(0,130)+theme_bw()</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Ahora, confirmemos la observación visual con la prueba ANOVA.</p>
+<pre class="r"><code>anova = aov(data$PE10A~data$ESTRATOS_IOP)
+summary(anova)</code></pre>
+<pre><code>##                     Df    Sum Sq Mean Sq F value   Pr(&gt;F)    
+## data$ESTRATOS_IOP    3   2341308  780436   9.881 1.74e-06 ***
+## Residuals         3436 271386169   78983                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 304 observations deleted due to missingness</code></pre>
+<p>Obsevamos que el p-value es bastante pequeño y menor a 0.05, por lo
+que podemos afirmar que existe diferencia de promedios de gasto en
+transporte según estrato de residencia: Lima Centro, Este, Norte y Sur.
+Lo que coincide con lo reportado por el gráfico. Confirmemos qué grupo/s
+tiene/n promedios distintos con la prueba Tukey.</p>
+<pre class="r"><code>TukeyHSD(anova)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = data$PE10A ~ data$ESTRATOS_IOP)
+## 
+## $`data$ESTRATOS_IOP`
+##                   diff       lwr        upr     p adj
+## Este-Centro  -64.69197 -98.67775 -30.706190 0.0000062
+## Norte-Centro -19.39430 -52.99287  14.204264 0.4474926
+## Sur-Centro   -53.23831 -90.37509 -16.101541 0.0013284
+## Norte-Este    45.29767  12.10080  78.494539 0.0025848
+## Sur-Este      11.45366 -25.32009  48.227404 0.8541834
+## Sur-Norte    -33.84401 -70.26020   2.572178 0.0794053</code></pre>
+<pre class="r"><code>plot(TukeyHSD(anova),cex.axis=0.3)</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Según la prueba Tukey, la media de gasto de transporte en los hogares
+de Lima Este es distinta a la de Lima Norte y Centro; mientras que el
+promedio de los hogares de Lima Sur es distinta a la de Lima Centro. Por
+el gráfico, podemos complementar esta intrepretación e indicar que los
+promedios más altos de gasto en transporte los reportan los hogares de
+Lima Centro y Norte. Asimismo, sobre los grupos con diferencia de
+promedios, podemos afirmar que el promedio de gasto en transporte en
+Lima Este es menor que el de Centro y Norte y que los hogares de Lima
+sur gastan menos, en promedio, que los de Lima Centro.</p>
+</div>
+</div>
+<div id="chi-cuadrado-y-pruebas-de-asociación" class="section level1">
+<h1>CHI CUADRADO Y PRUEBAS DE ASOCIACIÓN</h1>
+<p>Recordemos que chi cuadrado es una prueba para probar si existe
+asociación entre variables categóricas.</p>
+<p>H0: Las variables son estadísticamente independientes/no hay
+dependencia</p>
+<p>OJO: Recuerden que hablar de asociación no implica causalidad.</p>
+<div id="ejercicio-2" class="section level2">
+<h2>Ejercicio 2:</h2>
+<p>¿Existe asociación entre el gasto en transporte y la edad (EDAD)?</p>
+<p>La variable de gasto en transporte es numérica, (PE10A). Separemos
+esta variable en 3 grupos, nos guiaremos de los cuartiles para crear los
+grupos: Bajo(menos de 20) , medio (de 20 a 70) , Alto (más de 70). . La
+nueva variable se llamará “GASTO_T”.</p>
+<pre class="r"><code>summary(data$PE10A)</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA&#39;s 
+##     0.00    10.00    20.00    81.33    70.00 14000.00      304</code></pre>
+<pre class="r"><code>data = data %&gt;%
+  mutate(GASTO_T=case_when(PE10A&lt;20 ~ &quot;1.BAJO&quot;,
+                             PE10A&gt;=20 &amp; EG2OTRO&lt;=70 ~ &quot;2.MEDIO&quot;,
+                             PE10A&gt;70 ~ &quot;3.ALTO&quot;))
+
+
+data$EDAD = as.factor(data$EDAD)
+data$EDAD=factor(data$EDAD, levels = levels(data$EDAD),labels = c(&quot;18 a 29&quot;,
+                                                                  &quot;30 a 44&quot;,
+                                                                  &quot;más de 45&quot;))</code></pre>
+<p>Creemos nuestra tabla de contingencia</p>
+<pre class="r"><code>tabla=table(data$EDAD,data$GASTO_T)
+tabla #con esta realizamos la prueba</code></pre>
+<pre><code>##            
+##             1.BAJO 2.MEDIO 3.ALTO
+##   18 a 29      383     195    190
+##   30 a 44      441     274    159
+##   más de 45    483     427    121</code></pre>
+<p>En porcentajes: calculamos el 100% sobre “EDAD”</p>
+<pre class="r"><code>tabla_p= tabla %&gt;%
+  prop.table(1)%&gt;% #porcentaje por filas
+  round(3)*100
+tabla_p</code></pre>
+<pre><code>##            
+##             1.BAJO 2.MEDIO 3.ALTO
+##   18 a 29     49.9    25.4   24.7
+##   30 a 44     50.5    31.4   18.2
+##   más de 45   46.8    41.4   11.7</code></pre>
+<p>Grafiquemos:</p>
+<pre class="r"><code>toPlot = as.data.frame(tabla_p) 
+names(toPlot) = c(&quot;Edad&quot;, &quot;Gasto&quot;, &quot;Porcentaje&quot;)
+
+ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Edad)) + 
+    geom_bar(position=&quot;fill&quot;, stat=&quot;identity&quot;) + 
+    labs( y = &#39;Porcentaje (%)&#39;, x = &#39; &#39;)+
+    ggtitle(&#39;Gasto en transporte según grupo etario&#39;)+
+    theme_bw()</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>El grafico y la tabla muestran que en los 3 grupos etarios la mayoría
+tiene un gasto bajo en transporte. Sin embargo, se puede observar que en
+comparación, la proporción que tiene un gasto elevado entre los más
+jóvenes es mayor que dentro de los otros grupos etarios.</p>
+<pre class="r"><code>chisq.test(tabla)$expected</code></pre>
+<pre><code>##            
+##               1.BAJO  2.MEDIO   3.ALTO
+##   18 a 29   375.5241 257.4366 135.0393
+##   30 a 44   427.3543 292.9682 153.6775
+##   más de 45 504.1216 345.5952 181.2832</code></pre>
+<p>Podemos proceder con la prueba</p>
+<pre class="r"><code>chisq.test(tabla)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla
+## X-squared = 79.615, df = 4, p-value &lt; 2.2e-16</code></pre>
+<p>De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al
+ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son
+independientes). Por lo tanto concluimos que existe dependencia entre el
+gasto en transporte (bajo/medio/alto) y el grupo etario.</p>
+</div>
+</div>
+<div id="correlación" class="section level1">
+<h1>CORRELACIÓN</h1>
+<p>Esta es una medida de relación entre dos variables cuantitativas o
+numéricas.</p>
+<ul>
+<li><p>H0 = No existe correlación las variables</p></li>
+<li><p>H1 = Sí existe correlación entre las variables</p></li>
+</ul>
+<p>En esta prueba, no es suficiente analizar el pvalue, también debemos
+interpretar el coeficiente de correlación de pearson. Este nos indica la
+fuerza y la dirección de la relación entre las variables.</p>
+<div id="ejercicio-3" class="section level2">
+<h2>Ejercicio 3:</h2>
+<p>En el caso de las personas que de Lima Norte, ¿Existe relación entre
+el gasto en transporte (PE10A) y el tiempo en años que la persona ha
+vivido en Lima</p>
+<p>Primero, debemos filtrar solo los casos de Lima Norte</p>
+<pre class="r"><code>str(data$EG2OTRO)</code></pre>
+<pre><code>##  num [1:3744] NA NA NA NA 2 NA 63 50 NA NA ...
+##  - attr(*, &quot;label&quot;)= chr &quot;¿Hace cuántos años que vive en la ciudad de Lima? - Especificar número de años&quot;
+##  - attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;</code></pre>
+<pre class="r"><code>data_cor=data%&gt;%
+  filter(ESTRATOS_IOP==&quot;Norte&quot;)</code></pre>
+<p>Previo a la prueba, realicemos un gráfico de dispersión para hacernos
+una idea inicial</p>
+<pre class="r"><code>ggplot(data_cor,aes(x=PE10A, y=EG2OTRO)) +
+  geom_point(colour=&quot;darkblue&quot;) +  xlab(&quot;Gasto en transporte&quot;) +  ylab(&quot;Años en Lima&quot;) +
+  ggtitle(&quot;Relación entre el gasto en transporte y el tiempo (en años) \n que se ha vivido en Lima - Solo Lima Norte&quot;) + xlim(0,1000)+ylim(0,30)+
+  theme_light()</code></pre>
+<pre><code>## Warning: Removed 704 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Podemos atisbar una gran dispersión, a primera vista parece no haber
+relación alguna.</p>
+<pre class="r"><code>cor.test(data_cor$PE10A, data_cor$EG2OTRO)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data_cor$PE10A and data_cor$EG2OTRO
+## t = -0.15352, df = 464, p-value = 0.8781
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.09789981  0.08376338
+## sample estimates:
+##          cor 
+## -0.007127018</code></pre>
+<p>Confirmando lo que mostraba el gráfico, no se rechaza la hipótesis
+nula; en ese sentido podemos afirmar que en el caso de las personas de
+Lima Norte, no hay relación entre el gasto en transporte y los años que
+han vivido en Lima.</p>
+</div>
+</div>
+<div id="regresión-simple" class="section level1">
+<h1>REGRESIÓN SIMPLE</h1>
+<p>Recordemos que con la regresión predecimos el valor de una variable
+con los valores de otra. La regresión lineal simple es un método útil
+para predecir una respuesta cuantitativa <strong>Y</strong> partiendo de
+una sola variable predictora <strong>X</strong>, asumiendo que hay una
+relación aproximadamente lineal entre X e Y.</p>
+<div id="pasos-para-la-regresión-lineal-simple" class="section level2">
+<h2>Pasos para la regresión lineal simple</h2>
+<ul>
+<li><p>Paso 1: Analizar la asociación entre las variables de insumo:
+Diagrama de dispersión y correlación bivariada</p></li>
+<li><p>Paso 2: Verificar la validez del modelo: TABLA ANOVA</p></li>
+<li><p>Paso 3: Conocer qué tanto explica el modelo: COEFICIENTE DE
+DETERMINACIÓN – R2</p></li>
+<li><p>Paso 4: Conocer los parámetros del modelo: TABLA DE
+COEFICIENTES</p></li>
+<li><p>Paso 5: Construir la ecuación y predecir</p></li>
+</ul>
+</div>
+<div id="ejercicio-4" class="section level2">
+<h2>Ejercicio 4:</h2>
+<p>Queremos analizar posibles modelos que expliquen la percepción de los
+limeños acerca del transporte público informal (buses, cousters y
+combis, y mototaxis). Para esto calcularemos un indice aditivo de la
+calificación de los servicios de buses (MT7A), de cousters y combis
+(MT7B) y de mototaxis (MT7D), que varíe de 0 a 100.</p>
+<p>Pero, ¿qué puede influir en la percepción de los limeños acerca del
+transporte público? Para este ejercicio emplearemos dos variables:</p>
+<ol style="list-style-type: decimal">
+<li>Tiempo que vive una persona en Lima (EG2OTRO)</li>
+<li>Gasto en transporte (PE10A)</li>
+</ol>
+<p>Creación del índice:</p>
+<pre class="r"><code>data$evaluacion_ti = ((data$MT7A + data$MT7B + data$MT7D)-3)/12*100
+summary(data$evaluacion_ti)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00   33.33   50.00   47.95   58.33  100.00    1626</code></pre>
+<p>Paso 1: Diagrama de dispersión y correlación bivariada</p>
+<pre class="r"><code>cor.test(data$evaluacion_ti, data$EG2OTRO, method = &quot;pearson&quot;)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data$evaluacion_ti and data$EG2OTRO
+## t = -2.5253, df = 975, p-value = 0.01172
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.14260835 -0.01798253
+## sample estimates:
+##         cor 
+## -0.08061048</code></pre>
+<pre class="r"><code>ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
+  geom_point(colour=&quot;lightsteelblue4&quot;) +  
+  xlab(&quot;Índicador de globalización&quot;) +  
+  ylab(&quot;Indicador de independencia del Banco Central&quot;)+ theme_light() + 
+  geom_smooth(method=&quot;lm&quot;, se = T, colour=&quot;grey5&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 2767 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 2767 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Podemos observar que existe correlación entre ambas variables (p
+valor = 0,012) y que la correlación es negativa y que no es
+relevante.</p>
+<p>Paso 2, Paso 3 y Paso 4</p>
+<pre class="r"><code>modelo1 = lm(data$evaluacion_ti ~ data$EG2OTRO)
+summary(modelo1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -50.153  -8.572   1.053   9.645  53.120 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  50.84202    0.98083  51.836   &lt;2e-16 ***
+## data$EG2OTRO -0.08614    0.03411  -2.525   0.0117 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 17.15 on 975 degrees of freedom
+##   (2767 observations deleted due to missingness)
+## Multiple R-squared:  0.006498,   Adjusted R-squared:  0.005479 
+## F-statistic: 6.377 on 1 and 975 DF,  p-value: 0.01172</code></pre>
+<p>Ahora, debemos responder las siguientes preguntas:</p>
+<ul>
+<li>¿El modelo es válido?</li>
+</ul>
+<p>Con un p valor de 0,012 podemos rechazar la hipótesis nula. Es decir,
+rechazamos que el modelo no sea válido.</p>
+<ul>
+<li>¿Qué tanto explica el modelo?</li>
+</ul>
+<p>Con un valor de 0,006, podemos afirmar que el 0,6% de la variabilidad
+del índice aditivo de la calificación del transporte es explicada por el
+tiempo que una persona vive en Lima.</p>
+<ul>
+<li>¿La variable aporta al modelo?</li>
+</ul>
+<p>Con un p valor menor a 0,05 podemos afirmar que la variable “tiempo
+que una persona vive en Lima” aporta al modelo de regresión.</p>
+<p>Paso 5: Construir la ecuación y predecir</p>
+<p><strong>Y = 50.84202 - 0.0861 * X</strong></p>
+<p>Realizar el ejercicio con la variable: Gasto en transporte
+(PE10A)</p>
+</div>
+</div>
+<div id="regresión-múltiple" class="section level1">
+<h1>REGRESIÓN MÚLTIPLE</h1>
+<p>De manera independiente, vemos que cada modelo explica de manera
+diferente nuestra variable de interés, ahora probemos combinando algunas
+de estas variables y busquemos alguna diferencia en el porcentaje de
+predicción.</p>
+<div id="ejercicio-5" class="section level2">
+<h2>Ejercicio 5:</h2>
+<p>VD = Evaluación del transporte informal (evaluacion_ti) VI = Gasto de
+su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima
+(EG2OTRO)</p>
+<pre class="r"><code>modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+summary(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -50.699  -8.847   1.073   9.359  52.319 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  51.41257    1.06017  48.495  &lt; 2e-16 ***
+## data$EG2OTRO -0.08111    0.03590  -2.259  0.02410 *  
+## data$PE10A   -0.01298    0.00431  -3.012  0.00267 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 17.13 on 896 degrees of freedom
+##   (2845 observations deleted due to missingness)
+## Multiple R-squared:  0.01571,    Adjusted R-squared:  0.01352 
+## F-statistic: 7.152 on 2 and 896 DF,  p-value: 0.0008287</code></pre>
+<p>Ahora, debemos responder las siguientes preguntas:</p>
+<ul>
+<li>¿El modelo es válido?</li>
+</ul>
+<p>Con un p valor menor a 0,05 podemos rechazar la hipótesis nula. Es
+decir, rechazamos que el modelo no sea válido.</p>
+<ul>
+<li>¿Qué tanto explica el modelo?</li>
+</ul>
+<p>Con un valor de 0,014, podemos afirmar que el 1,4% de la variabilidad
+del índice aditivo de la calificación del transporte es explicada por el
+tiempo que una persona vive en Lima y por el gasto que emplea su hogar
+en transporte.</p>
+<ul>
+<li>¿La variable aporta al modelo?</li>
+</ul>
+<p>Con un p valor menor a 0,05 podemos afirmar que ambas variables
+aportan al modelo de regresión.</p>
+<p>Paso 5: Construir la ecuación y predecir</p>
+<p><strong>Y = 51.41257 - 0.08111 * X1 - 0.01298 * X2</strong></p>
+</div>
+<div id="ejercicio-6" class="section level2">
+<h2>Ejercicio 6:</h2>
+<p>Ahora se busca añadir información sociodemográfica al modelo
+multivariado previo. Para ello, deben crearse variables dummy para cada
+categoría de las variables sociodemográficas.</p>
+<p>Categorías de las variables sociodemográficas: - Dummy de mujer -
+Dummy de 30-44 años - Dummy de 45+ años - Dummy de NSE C - Dummy de NSE
+D/E - Dummy de Lima Este - Dummy de Lima Norte - Dummy de Lima Sur</p>
+<pre class="r"><code>data$EG6B = as.ordered(data$EG6B)
+levels(data$EG6B) = c(&quot;nada_satisfecho&quot; , &quot;poco_satisfecho&quot; , &quot;indiferente&quot; , &quot;algo_satisfecho&quot; , &quot;muy_satisfecho&quot;)
+data$SEXO = as.factor(data$SEXO)
+levels(data$SEXO) = c(&quot;hombre&quot; , &quot;mujer&quot;)
+data$NSE_IOP = as.ordered(data$NSE_IOP)
+levels(data$NSE_IOP) = c(&quot;A_B&quot; , &quot;C&quot; , &quot;D_E&quot;)</code></pre>
+<pre class="r"><code>data$SEXO_mujer=factor(ifelse(data$SEXO==&quot;mujer&quot;,1,0))
+data$EDAD30_a_44=factor(ifelse(data$EDAD==&quot;30 a 44&quot;,1,0))
+data$EDAD45_mas=factor(ifelse(data$EDAD==&quot;más de 45&quot;,1,0))
+data$NSE_IOP_C =factor(ifelse(data$NSE_IOP==&quot;C&quot;,1,0))
+data$NSE_IOP_D_E=factor(ifelse(data$NSE_IOP==&quot;D_E&quot;,1,0))
+data$ESTRATOS_IOP_Este=factor(ifelse(data$ESTRATOS_IOP==&quot;Este&quot;,1,0))
+data$ESTRATOS_IOP_Norte=factor(ifelse(data$ESTRATOS_IOP==&quot;Norte&quot;,1,0))
+data$ESTRATOS_IOP_Sur=factor(ifelse(data$ESTRATOS_IOP==&quot;Sur&quot;,1,0))</code></pre>
+<p>Agreguemos nuestras nuevas variables al anterior modelo</p>
+<pre class="r"><code>modelo3 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A+data$SEXO_mujer + data$EDAD30_a_44 + data$EDAD45_mas + data$NSE_IOP_C + data$NSE_IOP_D_E + data$ESTRATOS_IOP_Este + data$ESTRATOS_IOP_Norte + data$ESTRATOS_IOP_Sur)
+
+summary(modelo3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + 
+##     data$SEXO_mujer + data$EDAD30_a_44 + data$EDAD45_mas + data$NSE_IOP_C + 
+##     data$NSE_IOP_D_E + data$ESTRATOS_IOP_Este + data$ESTRATOS_IOP_Norte + 
+##     data$ESTRATOS_IOP_Sur)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -49.728  -8.618   1.231   9.542  53.126 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)              47.138151   2.370932  19.882  &lt; 2e-16 ***
+## data$EG2OTRO             -0.035950   0.047184  -0.762 0.446315    
+## data$PE10A               -0.009787   0.004222  -2.318 0.020681 *  
+## data$SEXO_mujer1          0.830715   1.119862   0.742 0.458404    
+## data$EDAD30_a_441        -0.904667   1.559322  -0.580 0.561950    
+## data$EDAD45_mas1         -1.769323   1.843166  -0.960 0.337349    
+## data$NSE_IOP_C1           3.650571   1.477682   2.470 0.013681 *  
+## data$NSE_IOP_D_E1         5.675998   1.557497   3.644 0.000284 ***
+## data$ESTRATOS_IOP_Este1  -1.810669   2.027650  -0.893 0.372105    
+## data$ESTRATOS_IOP_Norte1 -3.383524   2.005833  -1.687 0.091985 .  
+## data$ESTRATOS_IOP_Sur1    7.320362   2.121168   3.451 0.000585 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 16.48 on 887 degrees of freedom
+##   (2846 observations deleted due to missingness)
+## Multiple R-squared:  0.0978, Adjusted R-squared:  0.08762 
+## F-statistic: 9.615 on 10 and 887 DF,  p-value: 2.471e-15</code></pre>
+<p>Ahora, debemos responder las siguientes preguntas:</p>
+<ul>
+<li>¿El modelo es válido?</li>
+</ul>
+<p>Con un p valor menor a 0,05 podemos rechazar la hipótesis nula. Es
+decir, rechazamos que el modelo no sea válido.</p>
+<ul>
+<li>¿Qué tanto explica el modelo?</li>
+</ul>
+<p>Podemos afirmar que el 8,8% de la variabilidad del índice aditivo de
+la calificación del transporte es explicada por las variables
+independientes del modelo.</p>
+<ul>
+<li>¿La variable aporta al modelo?</li>
+</ul>
+<p>Con un p valor menor a 0,05 podemos afirmar que solo las siguientes
+variables aportan al modelo: - PE10A - NSE_IOP_C - NSE_IOP_D_E -
+ESTRATOS_IOP_Norte - ESTRATOS_IOP_Sur</p>
+<ul>
+<li>¿Qué variable aporta más?</li>
+</ul>
+<pre class="r"><code>lm.beta::lm.beta(modelo3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + 
+##     data$SEXO_mujer + data$EDAD30_a_44 + data$EDAD45_mas + data$NSE_IOP_C + 
+##     data$NSE_IOP_D_E + data$ESTRATOS_IOP_Este + data$ESTRATOS_IOP_Norte + 
+##     data$ESTRATOS_IOP_Sur)
+## 
+## Standardized Coefficients::
+##              (Intercept)             data$EG2OTRO               data$PE10A 
+##                       NA              -0.03318506              -0.07526729 
+##         data$SEXO_mujer1        data$EDAD30_a_441         data$EDAD45_mas1 
+##               0.02390180              -0.02457836              -0.05106163 
+##          data$NSE_IOP_C1        data$NSE_IOP_D_E1  data$ESTRATOS_IOP_Este1 
+##               0.10437554               0.15840568              -0.04957309 
+## data$ESTRATOS_IOP_Norte1   data$ESTRATOS_IOP_Sur1 
+##              -0.09200624               0.18088563</code></pre>
+<p>Según los coeficientes estandarizados, la variable que aporta más al
+modelo es la de si reside en Lima Sur.</p>
+<p>Paso 5: Construir la ecuación y predecir</p>
+<pre class="r"><code>round(modelo3$coefficients,2)</code></pre>
+<pre><code>##              (Intercept)             data$EG2OTRO               data$PE10A 
+##                    47.14                    -0.04                    -0.01 
+##         data$SEXO_mujer1        data$EDAD30_a_441         data$EDAD45_mas1 
+##                     0.83                    -0.90                    -1.77 
+##          data$NSE_IOP_C1        data$NSE_IOP_D_E1  data$ESTRATOS_IOP_Este1 
+##                     3.65                     5.68                    -1.81 
+## data$ESTRATOS_IOP_Norte1   data$ESTRATOS_IOP_Sur1 
+##                    -3.38                     7.32</code></pre>
+<p><strong>Y = 47.14 -0.04 * X1 - 0.01 * X2 + 0.83 * X3 - 0.09 * X4 -
+1.77 * X5 + 3.65 * X6 + 5.68 * X7- 1.81 * X8 - 3.38 * X9 + 7.32 *
+X10</strong></p>
+<p>Grafiquemos los coeficientes de los modelos</p>
+<pre class="r"><code>library(jtools)
+plot_coefs(modelo1,modelo2,modelo3,scale=FALSE)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;broom&#39;:
+##   method            from  
+##   tidy.glht         jtools
+##   tidy.summary.glht jtools</code></pre>
+<pre><code>## Loading required namespace: broom.mixed
+## Loading required namespace: broom.mixed
+## Loading required namespace: broom.mixed</code></pre>
+<p><img src="pd13_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
