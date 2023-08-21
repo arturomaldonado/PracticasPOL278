@@ -63,7 +63,7 @@ knitr::include_graphics("pd2_GrafTipoVar.png")
 
 # **4.Análisis descriptivo**
 
-Carguemos la data *Enades-2022.dta*.
+Carguemos la data *Enades_subset.dta*.
 
 Hoy trabajaremos con algunas de las variables que forman parte de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice su nombre, esta encuesta busca ahondar en la percepción de las diferentes formas de desigualdad en el Perú e incorpora indicadores que permiten medir la magnitud de brechas sociales y políticas como género, clase, etc.
 
