@@ -13,7 +13,6 @@ output:
     output: pdf_document
 ---
 
-
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
@@ -22,7 +21,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
 
 ------------------------------------------------------------------------
 
@@ -64,19 +63,18 @@ knitr::include_graphics("pd2_GrafTipoVar.png")
 
 # **4.Análisis descriptivo**
 
-Carguemos la data *state_democracy_final.xlsx*.
+Carguemos la data *Enades-2022.dta*.
 
-Hoy trabajaremos con el Índice de Estados Frágiles 2021 (Fragile State Index) la cual es una herramienta analítica desarrollada por The Fund for Peace y publicada anualmente en colaboración con Foreign Policy Magazine. El índice mide la fragilidad de los Estados y su capacidad para proporcionar servicios básicos a sus ciudadanos, mantener el control del territorio y la seguridad interna, así como su capacidad para interactuar efectivamente con otros Estados y actores internacionales. La fragilidad del Estado se mide a través de varios indicadores, incluyendo conflictos étnicos y religiosos, violencia, desplazamiento de población, desigualdad, pobreza, corrupción y falta de Estado de derecho. El índice es utilizado por gobiernos, organizaciones internacionales y expertos para comprender mejor la dinámica de los Estados frágiles y desarrollar políticas y estrategias para abordar sus desafíos.
+Hoy trabajaremos con algunas de las variables que forman parte de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice su nombre, esta encuesta busca ahondar en la percepción de las diferentes formas de desigualdad en el Perú e incorpora indicadores que permiten medir la magnitud de brechas sociales y políticas como género, clase, etc.
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
-knitr::include_graphics("pd2_fragilindex.png") 
+knitr::include_graphics("Diccionario-enades.png") 
 ```
 
-Adicionalmente a la información recogida del Índice de Estados Frágiles, se le ha añadido los resultados del Democracy index. El índice de democracia (Democracy Index) es una herramienta analítica desarrollada por The Economist Intelligence Unit (EIU) que mide el nivel de democracia en 167 países del mundo. El índice se basa en cinco categorías principales: proceso electoral y pluralismo, funcionamiento del gobierno, participación política, cultura política y derechos civiles. Cada categoría se desglosa en subcategorías y se otorga una puntuación a cada país en función de su desempeño en cada una de ellas. *La puntuación final de un país se clasifica en una de las cuatro categorías generales: democracia plena, democracia imperfecta, régimen híbrido o régimen autoritario*. El índice se utiliza para evaluar y comparar el nivel de democracia en diferentes países y se actualiza anualmente para reflejar los cambios políticos y sociales.
-
-```{r}
+```{r,warning=FALSE}
 library(rio) #Convocamos el paquete   
-data=import("state_democracy_final.xlsx") 
+data=import("Enades_subset.dta") 
+
 str(data)
 ```
 
@@ -84,159 +82,213 @@ str(data)
 names(data) #revisamos los nombres
 ```
 
-Renombramos las variables
+### **Análisis de una variable ordinal**
 
-```{r}
-colnames(data) = c("Country","Year","Rank","Score_Frag_States","Security","Elites","G_Grivance","Economy","Inequality","B_Drain","State_Legit","P_Services","Hum_Rights","Demo_Press","Refugees","Interven","Democracy_Score","Type")
-```
-
-## **Análisis de una variable ordinal**
-
-```{r}
+```{r,warning=FALSE}
 library(dplyr)
-library(tidyverse)
 ```
 
 ```{r}
 #comprobamos el tipo de dato que analizaremos
-class(data$Type)
+class(data$p04)
 ```
 
-¿Cómo está medida la variable? Démosle el formato debido:
+Del diccionario de datos, sabemos que esta variable es una ordinal, revisemos los niveles antes de categorizarla correctamente.
 
 ```{r}
-data$Type = factor(data$Type)
-str(data$Type)
+table(data$p04) #Veamos los niveles de la variable
 ```
 
-Revisamos la frecuencia
+Otorguemosle etiquetas y categorizemosla como factor:
+
+```{r}
+data$p04 = factor(data$p04, levels = c(1:4), labels = c("Mucho","Algo","Poco","Nada"),ordered = TRUE)
+```
+
+Revisemos que el cambio se haya realizado correctamente correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2. commando summarize/summarise de dplyr
 
 ```{r}
 data %>%
- group_by(Type) %>%
+ group_by(p04) %>%
   summarize(Freq=n())
 ```
 
-Ordenado descendente con porcentaje
+A primera vista, la tabla nos indica que la mayoría de los encuestados (868) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería eso en porcentaje?
+
+Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior
+
+```{r}
+para_grafico=data %>%
+ group_by(p04) %>%
+  summarize(Freq=n()) %>%
+   mutate(Porcentaje = (Freq / sum(Freq))*100)
+```
+
+Ahora bien, afirmamos que más del 50% de los encuestados percibe que el país es muy desigual económicamente.
+
+Podemos analizar cómo cambia esto si solo seleccionamos los casos de los menores de 30 años.
 
 ```{r}
 data %>%
- group_by(Type) %>%
+  filter(edad<30)%>%
+  group_by(p04) %>%
   summarize(Freq=n()) %>%
-   mutate(Porcentaje = (Freq / sum(Freq))*100)#desc(Freq)
-```
-
-Ordenado descendente. ¿Cuales son las primeras conclusiones?
-
-```{r}
-tablaFreq=data %>%
- group_by(Type) %>%
-  summarize(Freq=n()) %>%
-  mutate(Porcentaje = (Freq / sum(Freq))*100) %>% 
-  arrange(.,desc(Freq))
-
-tablaFreq
-```
-
-¿Cómo están los resultados en Perú? ¿Cuál fue su régmien?
-
-```{r}
-filter(data, Country =="PERU") 
-```
-
-Revisamos más detalle sobre qué otros paises acompañan a Perú en su régimen.
-
-```{r}
-FlawDemo=filter(data, Type =="Flawed democracy") 
-FlawDemo
+  mutate(Porcentaje = (Freq / sum(Freq))*100)
 ```
 
 Grafiquemos los resultados con *ggplot2*
 
-```{r}
-#preparación de los datos a usar en el gráfico
-graf1=tablaFreq %>% select(Type,Freq)
-graf1=as.data.frame(graf1)
-graf1
-```
+Las tablas creadas anteriormente no fueron guardadas por R como un objeto. Para poder graficar los resultados que arrojó en porcentaje, tendremos que guardarla. Trabajemos con la segunda tabla resumen que contiene los porcentajes y frecuencia sin filtros.
 
 ```{r}
 library(ggplot2)
 library(taylor) #opcional (una ventaja de que R sea software libre)
 
-
-ggplot(graf1, aes(x=Type, y=Freq, fill=Type)) + 
+ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
 geom_bar(stat = "identity") 
 ```
 
+Este es un gráfico básico, pero podemos personalizarlo según nuestros gustos.
+
 ```{r}
 
-ggplot(graf1, aes(x=reorder(Type,Freq), y=Freq, fill=Type)) + 
-  geom_bar(stat = "identity") +
-  ggtitle("Frecuencia de paises por régimen") +
-  xlab("Régimen") + ylab("Frecuencia")+
-  geom_text(aes(label=Freq), vjust=0.5, color="black", size=5)+
+ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
+  geom_bar(stat = "identity")  +
+  ggtitle("Percepción de desigualdad económica") +
+  xlab("¿Qué tan desigual cree que\n es el Perú económicamente") + ylab("Porcentaje")+
+  geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="black", size=3)+
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
   #scale_fill_brewer(palette="Dark2")
   scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
 
 ```
 
-## 2. Análisis de variables numéricas
+El ejercicio de análisis descriptivo con variables numéricas lo realizaremos con un indicador aditivo que crearemos a continuación.
 
-Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajemos con la variable *state legitimacy*, indicador que evalúa la representatividad y apertura del gobierno, y la manera como interactúa con la ciudadanía. Se toman en cuenta los niveles de confianza en las instituciones, demostraciones de desobediencia civil e insurgencias armadas.
+### **Indicador Proxy**
 
-Más información del indicador por acá: <https://fragilestatesindex.org/indicators/p1/>
+También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
+
+Un indicador proxy es una medición o señal indirecto que aproxima o representa un fenómeno en la ausencia de una medición o señal directo.
+
+Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
+
+## **Indicador Aditivo**
+
+### **Pasos para construir un indicador:**
+
+1.  Verificar que las variables que construyan el indicador correspondan al concepto que se desea medir. *Ejemplo: Si deseo mejor Satisfacción del Usuario, las preguntas deben ser sobre ello.*
+2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
+3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
+4.  Una vez realizada la suma, identificar el mínimo y el máximo.
+5.  Restar a todos los valores el valor mínimo.
+6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
+7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
+
+Construiremos un indicador aditivos de percepción de desigualdad en el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables p11_1,p11_2,p11_3 y p11_4. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual.
+
+El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Para modificarlo podemos cambiar el orden mediante el uso del comando "case_when".
 
 ```{r}
-class(data$State_Legit)
+data=data %>%
+ mutate(d_educ=case_when(
+  p11_1 == 1 ~ "3", 
+  p11_1 == 2 ~ "2",
+  p11_1 == 3~ "1"),
+  d_salud=case_when(
+  p11_2 == 1 ~ "3", 
+  p11_2 == 2 ~ "2",
+  p11_2 == 3~ "1"),
+  d_trabajo=case_when(
+  p11_3 == 1 ~ "3", 
+  p11_3 == 2 ~ "2",
+  p11_3 == 3~ "1"),
+   d_justicia=case_when(
+  p11_4 == 1 ~ "3", 
+  p11_4 == 2 ~ "2",
+  p11_4 == 3~ "1"))
 ```
 
-Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Ojo con cómo está medido: 10 es un Estado que posee un alto grado de ilegitimidad (o presión). 0 un Estado con poca presión o alta legitimidad desde la ciudadanía.
+Revisemos que se haya realizado correctamente
 
 ```{r}
-summary(data$State_Legit) #Ojo con los casos perdidos:
+table(data$p11_1)
+table(data$d_educ)
+```
+
+Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
+
+```{r}
+str(data)#Podemos notar que las variables que creamos son de tipo caracter.
+```
+
+Recategorizemos nuestras variables a numéricas:
+
+```{r}
+names(data)
+data[9:13] = lapply(data[9:13],as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
+```
+
+Recordemos los pasos para crear un índice aditivo:
+
+```         
+*((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
 ```
 
 ```{r}
-sd(data$State_Legit) 
-mean(data$State_Legit) #veamos la varianza
-rango=max(data$State_Legit)-min(data$State_Legit)
-rango
+data=data %>%
+  mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)
+
 ```
 
-Analicemos por tipo de régimen. 10 es un Estado que posee un alto grado de ilegitimidad (o presión). 0 un Estado con poca presión o alta legitimidad desde la ciudadanía.
+Revisamos mínimo y máximo
+
+```{r}
+summary(data$suma)
+```
+
+```{r}
+data = data %>%
+ mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 
+```
+
+### Análisis de variables numéricas
+
+Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear
+
+Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Recordemos que va del 0 al 100.
+
+```{r}
+data%>%
+  summarise(Media = mean(indicador), 
+            Mediana = median(indicador),
+            Desviacion = sd(indicador),
+            Minimo = min(indicador),
+            Maximo = max(indicador))
+```
+
+Podemos analizar la respuesta según si están de acuerdo con la entrega de bonos (p13 - 1 De acuerdo y 2-Desacuerdo)
+
+```{r}
+data$p13 = factor(data$p13, levels = c(1:2), labels = c("De acuerdo","Desacuerdo"),ordered = TRUE)
+```
 
 ```{r}
 data %>%
- group_by(Type) %>%
-  summarize(MediaStateLegit=mean(State_Legit)) %>%
-  arrange(.,desc(MediaStateLegit))
+ group_by(p13) %>%
+  summarize(Media=mean(indicador)) 
+```
+
+La tabla nos indica que aquellos encuestados/as que están de acuerdo con la entrega de bonos, perciben ligeramente una menor desigualdad en los derechos y servicios.
+
+Podemos visualizarlo mejor con un gráfico
+
+```{r}
+ggplot(data, aes(x=p13, y=indicador, color=p13)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  theme_classic()
 
 ```
 
-```{r fig.height=6, fig.width=9}
-ggplot(data, aes(x=Type, y=State_Legit)) + 
-  geom_boxplot() + coord_flip() #Volteamos el gráfico
-
-ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + #Damos color
-  geom_boxplot() + coord_flip() #Volteamos el gráfico
-
-ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + 
-  geom_boxplot() + coord_flip() + #Volteamos el gráfico
-  theme(legend.position = "top")
-
-
-ggplot(data, aes(x=Type, y=State_Legit, color =Type)) + 
-  geom_boxplot() + coord_flip() + #Volteamos el gráfico
- 
-   theme(legend.position = "top", axis.text.y = element_blank(), 
-        panel.background=element_rect(fill = "white", colour = "white")) + #Quitamos categorías
-  
-  geom_jitter(shape=16, position=position_jitter(0.2)) + #Agregamos los casos como puntos
-  
-  labs(title = "Legitimidad estatal según el tipo de régimen político", x="", y="Index")
-
-```
-
-**Ejercicio** Analice descriptivos y elabore el gráfico correspondiente para otra variable numérica de la base de datos.
+**Ejercicio:** Analice descriptivos y elabore el gráfico correspondiente para la variable edad.
