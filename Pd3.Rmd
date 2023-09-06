@@ -32,7 +32,7 @@ La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha publicado c
 
 La evaluación mide el rendimiento del gobierno electrónico de los países en relación con los demás, en lugar de ser una medición absoluta. Reconoce que cada país debe decidir el nivel y la extensión de sus iniciativas de gobierno electrónico de acuerdo con sus propias prioridades nacionales de desarrollo y para lograr los Objetivos de Desarrollo Sostenible. La Encuesta sirve como una herramienta de referencia y desarrollo para que los países aprendan entre sí, identifiquen áreas de fortaleza y desafíos en el gobierno electrónico y moldeen sus políticas y estrategias. También tiene como objetivo facilitar e informar las discusiones de los órganos intergubernamentales, incluida la Asamblea General de las Naciones Unidas, el Consejo Económico y Social y el Foro Político de Alto Nivel.
 
-```{r,echo=FALSE, out.width="30%",fig.align="center"}
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("PD3_egov22.png") 
 ```
 
@@ -58,24 +58,17 @@ data=import("egov2022.xlsx")
 -   **Mediana**: Ordinales y numéricas
 -   **Media**: Numéricas
 
-¿Qué variables tiene la data? 🧐
+Vemos las variables 🧐
 
 ```{r}
 names(data)
 ```
-
+Revisamos la estructura de la bd
 ```{r}
 str(data)
 ```
 
-```{r}
-table(data$region)
-```
-
-```{r}
-data$region=as.factor(data$region)
-str(data) #comprobamos
-```
+Podemos ver que casi todas las variables son numéricas, excepto la variable *region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a categorizarla.
 
 ```{r}
 data %>%
@@ -83,6 +76,14 @@ data %>%
   summarize(Freq=n())
 ```
 
+```{r}
+data$region=as.factor(data$region)
+str(data) #comprobamos
+```
+
+# **2. Análisis del E-Gov Index**
+
+Revisamos solo la media del E-Egov Index
 ```{r}
 data |>
   summarise(mean(`E-Government Index`))

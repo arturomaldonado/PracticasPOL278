@@ -428,7 +428,7 @@ facilitar e informar las discusiones de los órganos
 intergubernamentales, incluida la Asamblea General de las Naciones
 Unidas, el Consejo Económico y Social y el Foro Político de Alto
 Nivel.</p>
-<p><img src="PD3_egov22.png" width="30%" style="display: block; margin: auto;" /></p>
+<p><img src="PD3_egov22.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>Carguemos la data <em>egov2022.xlsx</em></p>
 <pre class="r"><code>library(tidyverse)#Convocamos el paquete
 library(rio)    
@@ -455,7 +455,7 @@ data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <li><strong>Mediana</strong>: Ordinales y numéricas</li>
 <li><strong>Media</strong>: Numéricas</li>
 </ul>
-<p>¿Qué variables tiene la data? 🧐</p>
+<p>Vemos las variables 🧐</p>
 <pre class="r"><code>names(data)</code></pre>
 <pre><code>## [1] &quot;Country Name&quot;                          
 ## [2] &quot;E-Government Index&quot;                    
@@ -464,6 +464,7 @@ data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 ## [5] &quot;Human Capital Index&quot;                   
 ## [6] &quot;Telecommunication Infrastructure Index&quot;
 ## [7] &quot;region&quot;</code></pre>
+<p>Revisamos la estructura de la bd</p>
 <pre class="r"><code>str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    181 obs. of  7 variables:
 ##  $ Country Name                          : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
@@ -473,10 +474,20 @@ data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 ##  $ Human Capital Index                   : num  35 80 70 76 46 81 92 79 100 91 ...
 ##  $ Telecommunication Infrastructure Index: num  19 60 61 88 20 60 73 69 88 85 ...
 ##  $ region                                : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...</code></pre>
-<pre class="r"><code>table(data$region)</code></pre>
-<pre><code>## 
-##   Africa Americas     Asia   Europe  Oceania 
-##       52       32       43       40       14</code></pre>
+<p>Podemos ver que casi todas las variables son numéricas, excepto la
+variable <em>region</em> que se muestra como texto, pero es categórica.
+Procedemos a revisar sus niveles y a categorizarla.</p>
+<pre class="r"><code>data %&gt;%
+ group_by(region) %&gt;%
+  summarize(Freq=n())</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   region    Freq
+##   &lt;chr&gt;    &lt;int&gt;
+## 1 Africa      52
+## 2 Americas    32
+## 3 Asia        43
+## 4 Europe      40
+## 5 Oceania     14</code></pre>
 <pre class="r"><code>data$region=as.factor(data$region)
 str(data) #comprobamos</code></pre>
 <pre><code>## &#39;data.frame&#39;:    181 obs. of  7 variables:
@@ -487,17 +498,6 @@ str(data) #comprobamos</code></pre>
 ##  $ Human Capital Index                   : num  35 80 70 76 46 81 92 79 100 91 ...
 ##  $ Telecommunication Infrastructure Index: num  19 60 61 88 20 60 73 69 88 85 ...
 ##  $ region                                : Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 4 1 4 1 2 2 3 5 4 ...</code></pre>
-<pre class="r"><code>data %&gt;%
- group_by(region) %&gt;%
-  summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   region    Freq
-##   &lt;fct&gt;    &lt;int&gt;
-## 1 Africa      52
-## 2 Americas    32
-## 3 Asia        43
-## 4 Europe      40
-## 5 Oceania     14</code></pre>
 <pre class="r"><code>data |&gt;
   summarise(mean(`E-Government Index`))</code></pre>
 <pre><code>##   mean(`E-Government Index`)
@@ -520,7 +520,7 @@ data |&gt;
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
    theme_minimal()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>data |&gt;
 ggplot(aes(x=`E-Government Index`))+
   geom_histogram(fill = &quot;blue&quot;,
@@ -532,12 +532,12 @@ ggplot(aes(x=`E-Government Index`))+
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>data |&gt; 
   ggplot(aes(y=`E-Government Index`))+
   geom_boxplot()+
   ylab(&quot;E-Government Index&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <div id="por-regiones" class="section level3">
 <h3>Por regiones</h3>
 <p>¿Cuál es la importancia de analizar por regiones?</p>
@@ -568,7 +568,7 @@ paraGBarras |&gt;
 geom_bar(stat = &quot;identity&quot;) +
    geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme_minimal()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <pre class="r"><code>library(ggplot2)
 library(dplyr)
 data |&gt;
@@ -577,12 +577,12 @@ data |&gt;
   facet_wrap(~region)+
   xlab(&quot;E-Gov Index&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data, aes(x=region, y=`E-Government Index`, color=region)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 </div>
 
