@@ -45,11 +45,17 @@ data=import("egov2022.xlsx")
 ```
 
 -   "Country Name" : Nombre del país\
+
 -   "E-Government Index" : Puntaje final de la encuesta\
--   "E-Participation Index" :\
--   "Online Service Index" :\
--   "Human Capital Index" :\
--   "Telecommunication Infrastructure Index" :
+
+-   "E-Participation Index" : Transparencia y acceso a la información, participación ciudadana en línea\
+
+-   "Online Service Index" : Servicios en línea otorgado por el Estado\
+
+-   "Human Capital Index" : Miembros del Estado especializados en el tema\
+
+-   "Telecommunication Infrastructure Index" : índice de capacidad de redes de telecomunicaciones como acceso a internet 5g.
+
 -   "region" : Continente donde pertenece cada país
 
 # **1.Recordando el análisis descriptivo**
@@ -63,7 +69,9 @@ Vemos las variables 🧐
 ```{r}
 names(data)
 ```
+
 Revisamos la estructura de la bd
+
 ```{r}
 str(data)
 ```
@@ -83,15 +91,17 @@ str(data) #comprobamos
 
 # **2. Análisis del E-Gov Index**
 
-- **E-Government Index**: Variable numérica
+-   **E-Government Index**: Variable numérica
 
 Revisamos *solo* la media del E-Egov Index
+
 ```{r}
 data |>
   summarise(mean(`E-Government Index`))
 ```
 
-Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos? 
+Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos?
+
 ```{r}
 data |>
   summarise(Mínimo=min(`E-Government Index`), 
@@ -100,15 +110,19 @@ data |>
             Media= mean(`E-Government Index`),
             Máximo= max(`E-Government Index`))
 ```
-- ¿Cuál es el puntaje más bajo y el máximo?
-- ¿Cuál es el rango? (*max-min*)
 
-- **Desviación estándar (*sd*)**: *La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central.*
+-   ¿Cuál es el puntaje más bajo y el máximo?
 
-- ¿Hay mucha variabilidad en los datos? *sd*
+-   ¿Cuál es el rango? (*max-min*)
 
-## Visualización
-Histograma 1 del E-Gov
+-   **Desviación estándar (*sd*)**: *La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central.*
+
+-   ¿Hay mucha variabilidad en los datos? *sd*
+
+## **Visualización**
+
+Histograma de E-Gov
+
 ```{r}
 library(ggplot2)
 data |>
@@ -122,7 +136,8 @@ data |>
    theme_minimal()
 ```
 
-Histograma del E-Gov + mediana (rojo) + media (verde)
+Histograma de E-Gov + mediana (rojo) + media (verde)
+
 ```{r}
 data |>
 ggplot(aes(x=`E-Government Index`))+
@@ -137,7 +152,17 @@ ggplot(aes(x=`E-Government Index`))+
   theme_light()
 ```
 
-Observamos la línea de la media y la mediana casi sobrepuestas ¿qué nos dice esto? -> Simetría
+Observamos la línea de la media y la mediana casi sobrepuestas ¿qué nos dice esto? -\> Simetría
+
+### Cuartiles y diagrama de cajas
+
+```{r}
+data |> 
+  summarise(CuartilesEgov = quantile(`E-Government Index`))
+```
+
+¿Cómo ubicamos los cuartiles en el diagrama de cajas?
+
 ```{r}
 data |> 
   ggplot(aes(y=`E-Government Index`))+
@@ -145,15 +170,19 @@ data |>
   ylab("E-Government Index")
 ```
 
-### Por regiones
+### **Análisis por regiones**
 
 ¿Cuál es la importancia de analizar por regiones?
+
+Si queremos ver solo una región, en este caso África
 
 ```{r}
 data |> 
   filter(region =="Africa") |>
   summarise(mean(`E-Government Index`))
 ```
+
+E-gov por regiones :)
 
 ```{r}
 data %>%
@@ -195,3 +224,30 @@ ggplot(data, aes(x=region, y=`E-Government Index`, color=region)) +
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()
 ```
+
+Analicemos los resultados 😼
+
+**Descriptivos por región**
+
+```{r}
+data |>
+  filter(region == "Asia") |>
+  summarise(Mínimo=min(`E-Government Index`), 
+            Mediana= median(`E-Government Index`), 
+            Desviación=sd(`E-Government Index`),
+            Media= mean(`E-Government Index`),
+            Máximo= max(`E-Government Index`))
+```
+
+Si deseo un subset solamente de los países que están por encima de la media ¿cuántos países son?
+
+```{r}
+MayorMedia=data |>
+  filter(`E-Government Index` > mean(`E-Government Index`)) 
+```
+
+Ejercicios 👾 :
+
+-   Realizar los estadísticos descriptivos del Online Service Index.
+-   Relizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones.
+-   Relizar diagrama de cajas del E-Participation Index por región.

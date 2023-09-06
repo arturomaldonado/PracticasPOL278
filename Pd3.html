@@ -434,18 +434,22 @@ Nivel.</p>
 library(rio)    
 data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <ul>
-<li>“Country Name” : Nombre del país<br />
-</li>
-<li>“E-Government Index” : Puntaje final de la encuesta<br />
-</li>
-<li>“E-Participation Index” :<br />
-</li>
-<li>“Online Service Index” :<br />
-</li>
-<li>“Human Capital Index” :<br />
-</li>
-<li>“Telecommunication Infrastructure Index” :</li>
-<li>“region” : Continente donde pertenece cada país</li>
+<li><p>“Country Name” : Nombre del país<br />
+</p></li>
+<li><p>“E-Government Index” : Puntaje final de la encuesta<br />
+</p></li>
+<li><p>“E-Participation Index” : Transparencia y acceso a la
+información, participación ciudadana en línea<br />
+</p></li>
+<li><p>“Online Service Index” : Servicios en línea otorgado por el
+Estado<br />
+</p></li>
+<li><p>“Human Capital Index” : Miembros del Estado especializados en el
+tema<br />
+</p></li>
+<li><p>“Telecommunication Infrastructure Index” : índice de capacidad de
+redes de telecomunicaciones como acceso a internet 5g.</p></li>
+<li><p>“region” : Continente donde pertenece cada país</p></li>
 </ul>
 </div>
 <div id="recordando-el-análisis-descriptivo" class="section level1">
@@ -530,8 +534,8 @@ números alrededor de un número central.</em></p></li>
 <li><p>¿Hay mucha variabilidad en los datos? <em>sd</em></p></li>
 </ul>
 <div id="visualización" class="section level2">
-<h2>Visualización</h2>
-<p>Histograma 1 del E-Gov</p>
+<h2><strong>Visualización</strong></h2>
+<p>Histograma de E-Gov</p>
 <pre class="r"><code>library(ggplot2)
 data |&gt;
   ggplot(aes(x=`E-Government Index`))+
@@ -543,7 +547,7 @@ data |&gt;
   ylab(&quot;Frecuencia&quot;)+
    theme_minimal()</code></pre>
 <p><img src="Pd3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Histograma del E-Gov + mediana (rojo) + media (verde)</p>
+<p>Histograma de E-Gov + mediana (rojo) + media (verde)</p>
 <pre class="r"><code>data |&gt;
 ggplot(aes(x=`E-Government Index`))+
   geom_histogram(fill = &quot;blue&quot;,
@@ -558,19 +562,33 @@ ggplot(aes(x=`E-Government Index`))+
 <p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Observamos la línea de la media y la mediana casi sobrepuestas ¿qué
 nos dice esto? -&gt; Simetría</p>
+<div id="cuartiles-y-diagrama-de-cajas" class="section level3">
+<h3>Cuartiles y diagrama de cajas</h3>
+<pre class="r"><code>data |&gt; 
+  summarise(CuartilesEgov = quantile(`E-Government Index`))</code></pre>
+<pre><code>##   CuartilesEgov
+## 1             0
+## 2            40
+## 3            59
+## 4            79
+## 5           100</code></pre>
+<p>¿Cómo ubicamos los cuartiles en el diagrama de cajas?</p>
 <pre class="r"><code>data |&gt; 
   ggplot(aes(y=`E-Government Index`))+
   geom_boxplot()+
   ylab(&quot;E-Government Index&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div id="por-regiones" class="section level3">
-<h3>Por regiones</h3>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="análisis-por-regiones" class="section level3">
+<h3><strong>Análisis por regiones</strong></h3>
 <p>¿Cuál es la importancia de analizar por regiones?</p>
+<p>Si queremos ver solo una región, en este caso África</p>
 <pre class="r"><code>data |&gt; 
   filter(region ==&quot;Africa&quot;) |&gt;
   summarise(mean(`E-Government Index`))</code></pre>
 <pre><code>##   mean(`E-Government Index`)
 ## 1                   36.28846</code></pre>
+<p>E-gov por regiones :)</p>
 <pre class="r"><code>data %&gt;%
  group_by(region) %&gt;%
   summarize(Media=mean(`E-Government Index`)) </code></pre>
@@ -593,7 +611,7 @@ paraGBarras |&gt;
 geom_bar(stat = &quot;identity&quot;) +
    geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme_minimal()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>library(ggplot2)
 library(dplyr)
 data |&gt;
@@ -602,12 +620,35 @@ data |&gt;
   facet_wrap(~region)+
   xlab(&quot;E-Gov Index&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data, aes(x=region, y=`E-Government Index`, color=region)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Analicemos los resultados 😼</p>
+<p><strong>Descriptivos por región</strong></p>
+<pre class="r"><code>data |&gt;
+  filter(region == &quot;Asia&quot;) |&gt;
+  summarise(Mínimo=min(`E-Government Index`), 
+            Mediana= median(`E-Government Index`), 
+            Desviación=sd(`E-Government Index`),
+            Media= mean(`E-Government Index`),
+            Máximo= max(`E-Government Index`))</code></pre>
+<pre><code>##   Mínimo Mediana Desviación    Media Máximo
+## 1     21      67   19.31929 63.16279     93</code></pre>
+<p>Si deseo un subset solamente de los países que están por encima de la
+media ¿cuántos países son?</p>
+<pre class="r"><code>MayorMedia=data |&gt;
+  filter(`E-Government Index` &gt; mean(`E-Government Index`)) </code></pre>
+<p>Ejercicios 👾 :</p>
+<ul>
+<li>Realizar los estadísticos descriptivos del Online Service
+Index.</li>
+<li>Relizar una muestra de aquellos paises que están por encima de la
+media del índice de infraestructura y telecomunicaciones.</li>
+<li>Relizar diagrama de cajas del E-Participation Index por región.</li>
+</ul>
 </div>
 </div>
 </div>
