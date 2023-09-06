@@ -185,15 +185,15 @@ data |>
 E-gov por regiones :)
 
 ```{r}
-data %>%
- group_by(region) %>%
+data |>
+ group_by(region) |>
   summarize(Media=mean(`E-Government Index`)) 
 ```
 
 ```{r}
-paraGBarras=data %>%
- group_by(region) %>%
-  summarize(Freq=n()) %>%
+paraGBarras=data |>
+ group_by(region) |>
+  summarize(Freq=n()) |>
    mutate(Porcentaje = (Freq / sum(Freq))*100)
 ```
 

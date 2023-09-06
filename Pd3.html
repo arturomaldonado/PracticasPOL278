@@ -589,8 +589,8 @@ nos dice esto? -&gt; Simetría</p>
 <pre><code>##   mean(`E-Government Index`)
 ## 1                   36.28846</code></pre>
 <p>E-gov por regiones :)</p>
-<pre class="r"><code>data %&gt;%
- group_by(region) %&gt;%
+<pre class="r"><code>data |&gt;
+ group_by(region) |&gt;
   summarize(Media=mean(`E-Government Index`)) </code></pre>
 <pre><code>## # A tibble: 5 × 2
 ##   region   Media
@@ -600,9 +600,9 @@ nos dice esto? -&gt; Simetría</p>
 ## 3 Asia      63.2
 ## 4 Europe    84.2
 ## 5 Oceania   47.7</code></pre>
-<pre class="r"><code>paraGBarras=data %&gt;%
- group_by(region) %&gt;%
-  summarize(Freq=n()) %&gt;%
+<pre class="r"><code>paraGBarras=data |&gt;
+ group_by(region) |&gt;
+  summarize(Freq=n()) |&gt;
    mutate(Porcentaje = (Freq / sum(Freq))*100)</code></pre>
 <pre class="r"><code>library(ggplot2)
 
