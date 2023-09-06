@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 3</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -411,16 +411,16 @@ class="section level1">
 Government</strong></h1>
 <p>La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha
 publicado cada dos años por el Departamento de Asuntos Económicos y
-Sociales de las Naciones Unidas (UN DESA) desde 2001. La Encuesta evalúa
-el estado de desarrollo del gobierno electrónico de todos los Estados
-miembros de las Naciones Unidas y, durante este tiempo, ha establecido
-un conjunto de datos y análisis exhaustivos.</p>
+Sociales de las Naciones Unidas desde 2001. La Encuesta evalúa el estado
+de desarrollo del gobierno electrónico de todos los Estados miembros de
+las Naciones Unidas y, durante este tiempo, ha establecido un conjunto
+de datos y análisis exhaustivos.</p>
 <p>La evaluación mide el rendimiento del gobierno electrónico de los
 países en relación con los demás, en lugar de ser una medición absoluta.
 Reconoce que cada país debe decidir el nivel y la extensión de sus
 iniciativas de gobierno electrónico de acuerdo con sus propias
 prioridades nacionales de desarrollo y para lograr los Objetivos de
-Desarrollo Sostenible (ODS). La Encuesta sirve como una herramienta de
+Desarrollo Sostenible. La Encuesta sirve como una herramienta de
 referencia y desarrollo para que los países aprendan entre sí,
 identifiquen áreas de fortaleza y desafíos en el gobierno electrónico y
 moldeen sus políticas y estrategias. También tiene como objetivo
@@ -455,6 +455,7 @@ data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <li><strong>Mediana</strong>: Ordinales y numéricas</li>
 <li><strong>Media</strong>: Numéricas</li>
 </ul>
+<p>¿Qué variables tiene la data? 🧐</p>
 <pre class="r"><code>names(data)</code></pre>
 <pre><code>## [1] &quot;Country Name&quot;                          
 ## [2] &quot;E-Government Index&quot;                    

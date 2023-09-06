@@ -84,7 +84,7 @@ Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
 
--   H1: El modelo de regresión es válido 
+-   H1: El modelo de regresión es válido
 
 Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el Acceso a la información y nuestras variables independientes invocadas en el modelo 1.
 
@@ -141,7 +141,7 @@ Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
 
--   H1: El modelo de regresión es válido 
+-   H1: El modelo de regresión es válido
 
 Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el Acceso a la información y nuestras variables independientes invocadas en el modelo 2.
 
@@ -182,6 +182,7 @@ $$
 Sí, mientras que el modelo 1 explicaba un 92.17% y el modelo 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto, con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así la mejora. ha haya sido sustancial).
 
 **Gráfico comparativo de modelos**
+
 ```{r}
 library(jtools)
 plot_coefs(modelo1,modelo2,scale=FALSE)
@@ -229,12 +230,16 @@ Covid$Q8= factor(ifelse(Covid$Q8=="Yes",1,0))
 Covid$Q11= factor(ifelse(Covid$Q11=="Yes",1,0))
 str(Covid)
 ```
+
 Convertimos a numéricas
+
 ```{r}
 Covid$Q1= as.numeric(Covid$Q1)
 Covid$Q13= as.numeric(Covid$Q13)
 ```
+
 Nos quedamos con los casos completos (ningún NA)
+
 ```{r}
 Covid = Covid[complete.cases(Covid), ]
 ```
@@ -259,7 +264,7 @@ Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
 
--   H1: El modelo de regresión es válido 
+-   H1: El modelo de regresión es válido
 
 Luego nos fijamos en el **p-value** Como el p valor es 2.224e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el el promedio de horas de sueño y las variables independientes invocadas en el modelo 3.
 
@@ -312,7 +317,7 @@ Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
 
--   H1: El modelo de regresión es válido 
+-   H1: El modelo de regresión es válido
 
 Luego nos fijamos en el **p-value** Como el p valor es 1.367e-09 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el Promedio de horas de sueño y las variables independientes invocadas en el modelo 4.
 
@@ -352,8 +357,8 @@ Ojo, que no debemos de olvidar identificar el signo de las variables, por lo cua
 Por otro lado, y en comparación al modelo 3, no podemos identificar un R cuadrado ajustado muy diferente entre los modelos (3 y 4); sin embargo, existen puntos a considerar como por ejemplo la revisión de variables que sí aporten al modelo, ya que en este último caso (modelo 4) todas las variables sí aportan al modelo. Esto probaría que se trata de una mejor elección de variables a pesar de tener un R cuadrado ajustado un poco menor al modelo 3. 👩‍🔬
 
 **Gráfico comparativo de modelos**
+
 ```{r}
 library(jtools)
 plot_coefs(modelo3,modelo4,scale=FALSE)
 ```
-
