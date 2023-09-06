@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 3</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -476,7 +476,7 @@ data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 ##  $ region                                : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...</code></pre>
 <p>Podemos ver que casi todas las variables son numéricas, excepto la
 variable <em>region</em> que se muestra como texto, pero es categórica.
-Procedemos a revisar sus niveles y a categorizarla.</p>
+Procedemos a revisar sus niveles y a recodificarla.</p>
 <pre class="r"><code>data %&gt;%
  group_by(region) %&gt;%
   summarize(Freq=n())</code></pre>
@@ -501,11 +501,16 @@ str(data) #comprobamos</code></pre>
 </div>
 <div id="análisis-del-e-gov-index" class="section level1">
 <h1><strong>2. Análisis del E-Gov Index</strong></h1>
-<p>Revisamos solo la media del E-Egov Index</p>
+<ul>
+<li><strong>E-Government Index</strong>: Variable numérica</li>
+</ul>
+<p>Revisamos <em>solo</em> la media del E-Egov Index</p>
 <pre class="r"><code>data |&gt;
   summarise(mean(`E-Government Index`))</code></pre>
 <pre><code>##   mean(`E-Government Index`)
 ## 1                   58.79558</code></pre>
+<p>Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos
+comentar de los datos obtenidos?</p>
 <pre class="r"><code>data |&gt;
   summarise(Mínimo=min(`E-Government Index`), 
             Mediana= median(`E-Government Index`), 
@@ -514,6 +519,19 @@ str(data) #comprobamos</code></pre>
             Máximo= max(`E-Government Index`))</code></pre>
 <pre><code>##   Mínimo Mediana Desviación    Media Máximo
 ## 1      0      59   23.98373 58.79558    100</code></pre>
+<ul>
+<li><p>¿Cuál es el puntaje más bajo y el máximo?</p></li>
+<li><p>¿Cuál es el rango? (<em>max-min</em>)</p></li>
+<li><p><strong>Desviación estándar (<em>sd</em>)</strong>: <em>La
+desviación estándar es una medida que nos ayuda a entender cuánto se
+separan los números en un conjunto de datos del valor promedio o medio.
+Podemos traducir ello como una forma de medir cuánto “se dispersan” los
+números alrededor de un número central.</em></p></li>
+<li><p>¿Hay mucha variabilidad en los datos? <em>sd</em></p></li>
+</ul>
+<div id="visualización" class="section level2">
+<h2>Visualización</h2>
+<p>Histograma 1 del E-Gov</p>
 <pre class="r"><code>library(ggplot2)
 data |&gt;
   ggplot(aes(x=`E-Government Index`))+
@@ -525,6 +543,7 @@ data |&gt;
   ylab(&quot;Frecuencia&quot;)+
    theme_minimal()</code></pre>
 <p><img src="Pd3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Histograma del E-Gov + mediana (rojo) + media (verde)</p>
 <pre class="r"><code>data |&gt;
 ggplot(aes(x=`E-Government Index`))+
   geom_histogram(fill = &quot;blue&quot;,
@@ -537,6 +556,8 @@ ggplot(aes(x=`E-Government Index`))+
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
 <p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Observamos la línea de la media y la mediana casi sobrepuestas ¿qué
+nos dice esto? -&gt; Simetría</p>
 <pre class="r"><code>data |&gt; 
   ggplot(aes(y=`E-Government Index`))+
   geom_boxplot()+
@@ -587,6 +608,7 @@ data |&gt;
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
 <p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
 </div>
 </div>
 

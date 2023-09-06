@@ -68,7 +68,7 @@ Revisamos la estructura de la bd
 str(data)
 ```
 
-Podemos ver que casi todas las variables son numéricas, excepto la variable *region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a categorizarla.
+Podemos ver que casi todas las variables son numéricas, excepto la variable *region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla.
 
 ```{r}
 data %>%
@@ -83,12 +83,15 @@ str(data) #comprobamos
 
 # **2. Análisis del E-Gov Index**
 
-Revisamos solo la media del E-Egov Index
+- **E-Government Index**: Variable numérica
+
+Revisamos *solo* la media del E-Egov Index
 ```{r}
 data |>
   summarise(mean(`E-Government Index`))
 ```
 
+Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos? 
 ```{r}
 data |>
   summarise(Mínimo=min(`E-Government Index`), 
@@ -97,7 +100,15 @@ data |>
             Media= mean(`E-Government Index`),
             Máximo= max(`E-Government Index`))
 ```
+- ¿Cuál es el puntaje más bajo y el máximo?
+- ¿Cuál es el rango? (*max-min*)
 
+- **Desviación estándar (*sd*)**: *La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central.*
+
+- ¿Hay mucha variabilidad en los datos? *sd*
+
+## Visualización
+Histograma 1 del E-Gov
 ```{r}
 library(ggplot2)
 data |>
@@ -111,6 +122,7 @@ data |>
    theme_minimal()
 ```
 
+Histograma del E-Gov + mediana (rojo) + media (verde)
 ```{r}
 data |>
 ggplot(aes(x=`E-Government Index`))+
@@ -125,6 +137,7 @@ ggplot(aes(x=`E-Government Index`))+
   theme_light()
 ```
 
+Observamos la línea de la media y la mediana casi sobrepuestas ¿qué nos dice esto? -> Simetría
 ```{r}
 data |> 
   ggplot(aes(y=`E-Government Index`))+
