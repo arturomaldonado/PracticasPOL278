@@ -79,8 +79,8 @@ str(data)
 Podemos ver que casi todas las variables son numéricas, excepto la variable *region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla.
 
 ```{r}
-data %>%
- group_by(region) %>%
+data|>
+ group_by(region)|>
   summarize(Freq=n())
 ```
 
@@ -218,12 +218,6 @@ data |>
   ylab("Frecuencia")
 ```
 
-```{r}
-ggplot(data, aes(x=region, y=`E-Government Index`, color=region)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
-  theme_classic()
-```
 
 Analicemos los resultados 😼
 
@@ -238,6 +232,27 @@ data |>
             Media= mean(`E-Government Index`),
             Máximo= max(`E-Government Index`))
 ```
+
+```{r}
+ data |>
+  group_by(region)|>
+  summarise(Mínimo=min(`E-Government Index`), 
+            Mediana= median(`E-Government Index`), 
+            Desviación=sd(`E-Government Index`),
+            Media= mean(`E-Government Index`),
+            Máximo= max(`E-Government Index`))
+```
+Comparo los resultsdos y los ubico en mi diagrama de cajas
+```{r}
+library(ggplot2)
+library(dplyr)
+ data |>
+ggplot(aes(x=region, y=`E-Government Index`, color=region)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  theme_classic()
+```
+
 
 Si deseo un subset solamente de los países que están por encima de la media ¿cuántos países son?
 

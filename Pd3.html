@@ -481,8 +481,8 @@ redes de telecomunicaciones como acceso a internet 5g.</p></li>
 <p>Podemos ver que casi todas las variables son numéricas, excepto la
 variable <em>region</em> que se muestra como texto, pero es categórica.
 Procedemos a revisar sus niveles y a recodificarla.</p>
-<pre class="r"><code>data %&gt;%
- group_by(region) %&gt;%
+<pre class="r"><code>data|&gt;
+ group_by(region)|&gt;
   summarize(Freq=n())</code></pre>
 <pre><code>## # A tibble: 5 × 2
 ##   region    Freq
@@ -621,11 +621,6 @@ data |&gt;
   xlab(&quot;E-Gov Index&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
 <p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<pre class="r"><code>ggplot(data, aes(x=region, y=`E-Government Index`, color=region)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
-  theme_classic()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Analicemos los resultados 😼</p>
 <p><strong>Descriptivos por región</strong></p>
 <pre class="r"><code>data |&gt;
@@ -637,6 +632,30 @@ data |&gt;
             Máximo= max(`E-Government Index`))</code></pre>
 <pre><code>##   Mínimo Mediana Desviación    Media Máximo
 ## 1     21      67   19.31929 63.16279     93</code></pre>
+<pre class="r"><code> data |&gt;
+  group_by(region)|&gt;
+  summarise(Mínimo=min(`E-Government Index`), 
+            Mediana= median(`E-Government Index`), 
+            Desviación=sd(`E-Government Index`),
+            Media= mean(`E-Government Index`),
+            Máximo= max(`E-Government Index`))</code></pre>
+<pre><code>## # A tibble: 5 × 6
+##   region   Mínimo Mediana Desviación Media Máximo
+##   &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Africa        0    35        17.3   36.3     73
+## 2 Americas     18    62.5      15.5   62.6     86
+## 3 Asia         21    67        19.3   63.2     93
+## 4 Europe       61    86         9.35  84.2    100
+## 5 Oceania      27    40.5      22.6   47.7     97</code></pre>
+<p>Comparo los resultsdos y los ubico en mi diagrama de cajas</p>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)
+ data |&gt;
+ggplot(aes(x=region, y=`E-Government Index`, color=region)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  theme_classic()</code></pre>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Si deseo un subset solamente de los países que están por encima de la
 media ¿cuántos países son?</p>
 <pre class="r"><code>MayorMedia=data |&gt;
