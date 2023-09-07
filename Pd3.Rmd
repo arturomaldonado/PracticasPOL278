@@ -190,22 +190,6 @@ data |>
   summarize(Media=mean(`E-Government Index`)) 
 ```
 
-```{r}
-paraGBarras=data |>
- group_by(region) |>
-  summarize(Freq=n()) |>
-   mutate(Porcentaje = (Freq / sum(Freq))*100)
-```
-
-```{r}
-library(ggplot2)
-
-paraGBarras |> 
-  ggplot(aes(x=region, y=Porcentaje, fill=region)) + 
-geom_bar(stat = "identity") +
-   geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="black", size=3)+
-  theme_minimal()
-```
 
 ```{r}
 library(ggplot2)
