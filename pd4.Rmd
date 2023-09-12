@@ -9,7 +9,10 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 ```{r setup, include=FALSE}
@@ -22,359 +25,140 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 knitr::include_graphics("logoPUCP.png") 
 ```
 
-## **Recordando lo avanzado**
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-En la sesión anterior de teoría, nos adentramos al análisis inferencial bivariado, teniendo como base del tema el cálculo del Intervalo de Confianza (IC) para una media (variables numéricas) y para una proporción (variables categóricas). Recordemos que gracias al IC podemos determinar si la estimación es representativa de la población. La idea era calcular los intervalos de confianza para cada grupo y ver si los intervalos se interceptan o no. La regla era que si los intervalos de ambos grupos no se interceptaban, podíamos extrapolar que la diferencia muestral existe en la población al 95% de confianza.
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
 
-Para profundizar sobre estadística inferencial, evaluaremos las hipótesis mediante la introducción a la prueba t de diferencia de medias y desarrollaremos los cincos pasos de la inferencia estadística. Recordemos que el objetivo es corroborar que es posible extrapolar un resultado de la muestra a la población.
+# **1.Intervalos de confianza**
 
-## **¿Qué es la prueba T de diferencia de medias?**
+Con este tema, comenzaremos a enfocarnos en la estadística inferencial. El objetivo de esta es determinar una aproximación del parámetro poblacional a partir de la data de una muestra representativa.
 
-Generalmente, cuando queremos comparar dos grupos centramos nuestra atención en el promedio de cada uno. Sin embargo, el hecho de que los promedios sean distintos no supone, necesariamente, que existe una diferencia estadísticamente significativa.
+Revisemos algunos conceptos:
 
-Para saber si la diferencia observada entre las medias de dos grupos es o no significativa se emplean métodos paramétricos como el de Z-scores o la distribución T-student. Estas técnicas calculan los intervalos de confianza de cada grupo y concluyen si existe una diferencia real entre las medias.
+-   **Estimador puntual:** un número que es nuestra predicción del parámetro
 
-La prueba T compara la media de una variable numérica para dos grupos o categorías de una variable nominal u ordinal. Los grupos que forman la variable nominal/ordinal tienen que ser independientes. Es decir, cada observación debe pertenecer a un grupo o al otro, pero no a ambos.
+-   **Intervalo de confianza:** un intervalo de números basado en la distribución de la data observada de la muestra dentro de la cual se cree que estaría el parámetro poblacional.
 
-# **Pruebas T para muestras independientes**
+    *IC = estimador puntual +-/margen de error*
 
-## **Condiciones**
+-   **Nivel de confianza:** es la probabilidad de que el parámetro se encuentre en ese intervalo.
 
-1.  Independencia: Las muestras deben ser independientes. El muestreo debe ser aleatorio.
+-   **Margen de error:** mide qué tan precisa es la estimación del parámetro.
 
-2.  Igualdad de varianza: La varianza de ambas poblaciones comparadas debe ser igual.
+-   **Error de muestreo:** diferencia entre el valor calculado de un estadístico y valor real de un parámetro de la población.
 
-3.  La variable numérica se distribuye de manera normal.
-
-**IMPORTANTE**
-
-La condición de normalidad también es considerada si es que la muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n pequeño menor a 30 observaciones). A medida que el n se hace más grande, el supuesto de normalidad es menos importante pues con grandes n confiamos en el teorema del límite central que nos indica que la distribución muestral será siempre normal.
-
-## **Pasos para realizar la Prueba T**
-
-1.  Establecer hipótesis
-2.  Calcular el estadístico (parámetro estimado) que se va a emplear
-3.  Determinar el nivel de significancia α (alpha)
-4.  Calcular el p-value y realizar la prueba t.test
-5.  Interpretar
-
-**Recuerda** El H0 de la prueba T es la siguiente:
-
-Ho: No existe diferencia estadísticamente significativa entre las medias de los dos grupos comparados.
-
-H1: Sí existe diferencia estadísticamente significativa entre las medias de los dos grupos comparados.
-
-La H0 es **generalmente** la hipótesis de no efecto, de no diferencias.
-
-# **Indicador Proxy**
-
-También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
-
-Un indicador proxy es una medición o señal indirecto que aproxima o representa un fenómeno en la ausencia de una medición o señal directo.
-
-Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
-
-## **Indicador Aditivo**
-
-### **Pasos para construir un indicador:**
-
-1.  Verificar que las variables que construyan el indicador correspondan al concepto que se desea medir. *Ejemplo: Si deseo mejor Satisfacción del Usuario, las preguntas deben ser sobre ello.*
-2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
-3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
-4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar a todos los valores el valor mínimo.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
-7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
-
-# **Apliquemos lo aprendido**
-
-## **Carguemos la base de datos**
-
-*Descripción del Proyecto: Satisfacción de la ciudadanía con los servicios públicos transaccionales en regiones*
-
-Este estudio fue realizado por la Secretaría de Gestión Pública de la Presidencia del Consejo de Ministros en el año 2021. El propósito del estudio consistió en identificar los conductores de calidad (variables explicativas) en la satisfacción de una persona con la realización de un servicio público transaccional (duplicado de DNI, pago en el Banco de la Nación, pasaporte, etc).
-
-Se identificó que los factores que impactan en las regiones respecto a la satisfacción sobre los servicios públicos son: i. el tiempo de desplazamiento hacia la sede de la entidad, ii. la calidad del trato, iii. la rapidez del trabajador, iv. el procedimiento de atención, v. el resultado de la gestión, y, vi. la confianza.
-
-Lo que buscaremos en este ejercicio es corroborar que los grupos de edad hasta 35 años y mayor a 35 años tienen diferencias estadísticas sobre el nivel de satisfacción.
-
-Más sobre el proyecto accediendo al siguiente enlace: <https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados>
-
-```{r,warning = FALSE, message=FALSE}
-#No olvides cambiar el directorio de trabajo
-
-library(rio) 
-data=import("data.sav")
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("IC.png") 
 ```
 
-Exploramos las variables que tiene la base de datos:
+### Conceptualización e Importancia
 
-Utilizamor *str* para ver la estructura de la data.
+ - Los intervalos de confianza ofrecen una manera de estimar, con alta probabilidad, un rango de valores en el que se encuentra el valor poblacional (o parámetro) de una determinada variable.
+ - El intervalo de confianza describe la variabilidad entre la medida obtenida en un estudio y la medida real de la población (el valor real).
+ - Un intervalo de confianza de 90%/95%/99% nos indica que dentro del rango dado se encuentra el valor real de un parámetro con 90%/95%/99% de certeza. 
+ - Existe una relación inversa entre la amplitud del IC y el tamaño muestral: mientras más pequeño es el n, más amplio es el IC. A mayor n, el IC es más estrecho. 
+ - Gracias al IC podemos determinar si la estimación es representativa de la población.
 
-Utilizamor *colnames* para verificar los nombres de la data.
+### Sobre el nivel de confianza...
 
-```{r,warning = FALSE}
-str(data[,1:10]) #Visualice la estructura de la bbdd
-colnames(data[,1:10]) #Visualice los nombres de las variables de la bbdd
+Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cáldulo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
 
-```
+# **2.Intervalos de confianza para una media**
 
-Limpieza de las variables previo al análisis: a. Seleccionar variables que conceptualmente generen un índice de satisfacción. Revisar preguntas en encuesta.
+Carguemos la data *ENADES2022.dta*
 
-Según el cuestionario, *5* significa *muy insatisfecho* y *1* significa *muy satisfecho*.
-
--   P10 = satisfacción con trabajador que lo atendió
-
--   P25 = satisfacción con tiempo de espera desde que llegó a la entidad hasta ser atendido
-
--   P30 = satisfacción con el proceso de gestión / trámite realizado (cantidad de documentos)
-
--   P31 = satisfacción con la cantidad de pasos requeridos para completar gestión / trámite
-
-Si deseamos crear un indicador de satisfacción, entonces el máximo valor debe ser la calificacion más alta de satisfacción, y por tanto el valor mínimo dede mostra la insatisfacción. Dado que el cuestionario no preguntó de esta manera, entonces tenemos que cambiar los valores de la siguiente manera:
-
--   1 'Muy satisfecho' a 5
-
--   2 a 4
-
--   3 a 3
-
--   4 a 2
-
--   5 'Muy insatisfecho'a 1
-
-    **Ojo: Si bien estas variables deberían estar catalogadas como factor, para poder crear el índice necesitamos que se mantengan como numéricas para poder sumarlas.**
+La Encuesta Nacional de Percepción de Desigualdades o ENADES ha sido elaborada por el Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo indica su nombre, este estudio se enfoca en analizar la percepción de diferentes formas de desigualdad en el país. Esta incluye indicadores que permiten medir la magnitud de brechas sociales y políticas: diferencias de género, clase y relaciones étnico raciales, y dimensiones subjetivas de desigualdad y sus vínculos con orientaciones políticas. En este caso, nuestra unidad de análisis sería cada persona que completó la encuesta.
 
 ```{r}
-summary(data$P10)
-summary(data$P25)
-summary(data$P30)
-summary(data$P32)
+library(rio) #Convocamos el paquete   
+data=import("ENADES-2022.dta") 
 ```
 
-b.  Recodificar los valores de las variables
+Recordemos la fórmula para hallar el intervalo de confianza para una media es
 
-Ejemplo: La recodificación de una variable a la vez.
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("ICmedia.png") 
+```
+
+*Hallemos el intervalo de confianza para la media de la variable "ABros4".*
+
+El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
 
 ```{r}
-library(dplyr)
-data=data %>%
- mutate(satisfaccion_trabajador=case_when(
-  P10 == 1 ~ "5", 
-  P10 == 2 ~ "4",
-  P10 == 3~ "3",
-  P10 == 4 ~ "2",
-  P10 == 5 ~"1"),
-  satisfaccion_tiempo=case_when(
-  P25 == 1 ~ "5", 
-  P25 == 2 ~ "4",
-  P25 == 3~ "3",
-  P25 == 4 ~ "2",
-  P25 == 5 ~"1"),
-  satisfaccion_n_documentos=case_when(
-  P30 == 1 ~ "5", 
-  P30 == 2 ~ "4",
-  P30 == 3~ "3",
-  P30 == 4 ~ "2",
-  P30 == 5 ~"1"),
-   satisfaccion_n_pasos=case_when(
-  P31 == 1 ~ "5", 
-  P31 == 2 ~ "4",
-  P31 == 3~ "3",
-  P31 == 4 ~ "2",
-  P31 == 5 ~"1"))
+class(data$ABros4) #Revisemos que nuestra variale esté bien clasificada
 ```
 
-Verifiquemos que nuestra recodificación se realizó de manera correcta.
-
-```{r}
-table(data$P10)
-table(data$satisfaccion_trabajador)
-```
-
-La recodificación de un conjunto de variables.
-
-```{r}
-#library(dplyr)
-#data=data %>% 
-#   mutate(across(c(P10,P25, P30,P31), 
-#             ~ case_when(. == 1 ~ "5", 
-#                       . == 2 ~ "4",
-#                       . == 3~ "3",
-#                       . == 4 ~ "2",
-#                       . == 5 ~"1")))
-```
-
-c.  Convertir las variables a numéricas
-
-```{r}
-library(dplyr)
-data=data %>% # objeto base de datos cargada
-    mutate(satisfaccion_trabajador = as.numeric(satisfaccion_trabajador),#recategorizamos nuestras nuevas variables como numéricas
-         satisfaccion_tiempo = as.numeric(satisfaccion_tiempo),
-         satisfaccion_n_documentos = as.numeric(satisfaccion_n_documentos),
-         satisfaccion_n_pasos = as.numeric(satisfaccion_n_pasos))
-```
-
-```{r}
-summary(data$satisfaccion_trabajador)
-summary(data$satisfaccion_tiempo)
-summary(data$satisfaccion_n_documentos)
-summary(data$satisfaccion_n_pasos)
-```
-
-d.  Recordemos los pasos para crear un índice aditivo:
-
-    *((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
-
-    Crearemos una variable nueva "indice_satisfacción". Sumamos las variables
-
-```{r}
-data=data %>%
-  mutate(suma = satisfaccion_trabajador + 
-           satisfaccion_tiempo +
-           satisfaccion_n_documentos +
-           satisfaccion_n_pasos)
-```
-
-Revisamos mínimo y máximo
-
-```{r}
-summary(data$suma)
-```
-
-```{r}
-data=data %>%
-  mutate(resta = ((suma - 4)# Menos el minimo
-                                / 16), # Cuarto paso: dividir entre el máximo valor de la suma menos el mínimo (20-4)
-         indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100
-```
-
-Opción 2: Sin crear variable "resta"
-
-```{r}
-#data = data %>%
- # mutate(indice_satisfaccion = ((suma-4)/16)*100) 
-```
-
-```{r}
-summary(data$indice_satisfaccion)
-```
-
-e.  Los grupos que compararemos serán dados por la variable P4. Damos formato a la variable categórica P4, si recibio orientación o no
-
-```{r,warning = FALSE, message=FALSE}
-data$P4=as.factor(data$P4)
-data$P4=factor(data$P4,
-                levels = levels(data$P4),
-                labels = c("Si orientación","No orientación"),
-                ordered = F)
-```
-
-## **Realizamos la Prueba T**
-
-### **Primer paso: Establecer la hipótesis.**
-
-La hipotesis de la prueba T queda establecida de la siguiente forma:
-
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. **(no diferencia de medias)**
-
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. **(sí diferencia de medias)**
-
-Ambas hipótesis son acerca de los parámetros de la población.
-
-### **Segundo paso: Calcular el estadístico a emplear**
-
-Para verificar la diferencia de medias se calcula el estadístico T, y uno de los primeros pasos es calcular las diferencias entre las medias muestrales, ya que es lo quiero extrapolar y por tanto saber si existe o no una diferencia significativa entre las medias poblacionales de ambos grupos:
+**ciMean**, del paquete **lsr**, es la función que calcula el intervalo de confianza de una media.
 
 ```{r}
 library(lsr)
-tabla=data%>%
-  group_by(P4) %>%
-summarise(Desviacion = sd(indice_satisfaccion, na.rm=T),
-          Media = mean(indice_satisfaccion, na.rm=T),
-            min = ciMean(indice_satisfaccion,conf = 0.95, na.rm=T)[1],
-            max = ciMean(indice_satisfaccion,conf = 0.95, na.rm=T)[2],
-          n=length(indice_satisfaccion))
-            
-tabla
+ic_media = ciMean(data$ABros4, na.rm = TRUE) #con el último argumento indicamos no tomar en consideracion los valores perdidos (NA)
+
+ic_media
 ```
 
-### **Tercer paso: Determinar el nivel de significancia**
+Nuestra media poblacional se encuentra entre 7.54 y 7.83. Esto quiere decir que la estimación del intervalo indica que tenemos un 95% de certeza de que el valor poblacional del nivel de acuerdo con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" se encuentra entre 7.5 y 7.8.
 
-Se trata de la probabilidad que define qué tan inusual debe ser la diferencia de medias muestrales para rechazar la H0 (que la diferencia de medias poblacionales sea 0). El valor más común es de α=0.05 a un nivel de confianza de 95%. De manera convencional establecemos la siguiente regla para nuestra prueba T:
+# **3.Intervalos de confianza para una proporción**
 
--   p-value\<=0.05 Rechazo la H0 y acepto H1
--   p-value\>0.05 No rechazo la H0
+Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles: votó/no votó; sí/no, etc.
 
-### **Cuarto paso: Calcular el p-value y realizar la prueba t.test**
+Recordemos la fórmula para hallar el intervalo de confianza para una proporción
 
-El p-value mide la probabilidad de observar en una muestra una diferencia de medias como la observada, si la diferencia de medias poblacional fuera cero.
-
-```{r,message=FALSE}
-t.test(indice_satisfaccion ~ P4, data = data,
-  alternative = "two.sided", 
-  conf.level  = 0.95 #nivel de confianza (95%)
-)
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("ICprop.png") 
 ```
 
-### **Quinto paso: Interpretar**
+*Hallemos el intervalo de confianza para la proporción de las personas que opinan que hay mucha desigualdad económica en el Perú.*
 
-**¿Cómo interpreto?**
+Para ello trabajaremos con la variable p04_1. Esta variable contiene la información de la pregunta P04 recodificada, de tal forma que 1 es "Mucho" y 0 es "Algo/Poco/Nada". 
 
-Recordando nuestras hipotesis:
+Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxtio y del total de casos.
 
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no.
+```{r}
+table(data$p04_1)#realizamos una tabla de frecuencias
+x = 868 #almacenamos en "x" la frecuencia de nuestro caso de éxito
+n = 868 + 625 #almacenamos en "n" el total de casos
+```
 
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no.
+Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
-Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente manera:
+```{r}
+ic_prop = prop.test(x,n)
+ic_prop #llamamos a ic_prop para visualizar los resultados
+```
 
--   Si el p-value del t test es \<=0.05 Rechazo la H0 y se afirma H1.
+Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de personas que considera que existe mucha desigualdad en el Perú oscila entre el 55.6% y 60.6% .
 
--   Si el p-value del t test es \>0.05 No rechazo la H0
+# **3.Intervalo de confianza de una media según grupo**
 
-Entonces, vemos que el p-value es 0.005803, y es menor al alpha (0.05), entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no. con un 95% de confianza.
+Hallemos el intervalo de confianza para el nivel de acuerdo con que "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" según si considera que existe mucha desigualdad o no en el Perú. Para ello usaremos el comando **group.CI** del paquete Rmisc
 
-### **Paso FINAL: Graficar**
-
-Otro método para evaluar la comparación entre grupos es realizar un gráfico de medias con intervalos de confianza de cada grupo.
-
-Para calcular la diferencia de medias
-
-```{r,message=FALSE}
+```{r}
 library(Rmisc)
-ic_grupo = group.CI(indice_satisfaccion~P4,data)
+ic_grupo = group.CI(ABros4~p04_1,data)
 ic_grupo
 ```
 
-#### **Barras de Error**
+Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media del grupo que considera que hay mucha desigualdad en el Perú está de acuerdo en mayor medida con que el Estado debe implementar políticas firmes para reducir la desigualdad, a comparación de lo que no se consideran que hay mucha desigualdad.
 
-```{r,message=FALSE}
-library(ggplot2)
-
-ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
-  geom_errorbar(aes(ymin=indice_satisfaccion.lower, ymax=indice_satisfaccion.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(indice_satisfaccion.mean,1))), size=3)+
-  xlab("Orientación") +
-  ylim(60, 70)
-```
-
-**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción que no recibió con un 95% de confianza en la población.
-
-**EJERCICIO PRÁCTICO**
-
-Verifica si existe o no relación entre el número de veces que un ciudadano fue a la institución pública para realizar un trámite transaccional (grupo 1 sola vez vs grupo más de 1 vez) y el índice de satisfacción.
-
-=============================================================================
-
-Finalmente, no olvidemos exportar el Rmd en formato PDF o Html, usando Knit
-
--   Para Html, seleccionamos en el menú Knit \> Knit to html
-
--   Para pdf, seleccionamos Knit \> Knit to PDF, pero antes de exportar en pdf deberá instalar lo siguiente desde su consola:
+Grafiquemos nuestros resultados.
 
 ```{r}
-#install.packages('tinytex')
-#tinytex::install_tinytex()
+library(ggplot2)
+ggplot(ic_grupo, aes(x= p04_1, y =ABros4.mean)) +
+  geom_errorbar(aes(ymin=ABros4.lower, ymax=ABros4.upper), width = 0.2)+
+   geom_text(aes(label=paste(round(ABros4.mean, 2))), size=4)+
+  xlab("Considera que hay ... desigualdad en el Perú") + ylab("Nivel de acuerdo con que se necesitan \n políticas firmes para reducir brechas")+
+  ylim(7, 8.5)
 ```
+
+¿Qué podemos extraer del gráfico?
+
+## Ejercicio
+
+Trabajemos con la variable p03_1: nivel de acuerdo con la frase "En el Perú todos tienen iguales oportunidades para salir de la pobreza", va del 1 (muy en desacuerdo) al 10 (muy de acuerdo)
+
+-   ¿Cuál es el intervalo de confianza de la media de la variable?
+
+-   ¿ Cuál es la diferencia del intervalo de confianza de la media según región natural? (variable region)
