@@ -553,14 +553,20 @@ grupo</strong></h1>
 <p>Hallemos el intervalo de confianza para el nivel de acuerdo con que
 “El Estado peruano debe implementar políticas firmes para reducir la
 desigualdad de ingresos entre ricos y pobres” según si considera que
-existe mucha desigualdad o no en el Perú. Para ello usaremos el comando
-<strong>group.CI</strong> del paquete Rmisc</p>
-<pre class="r"><code>library(Rmisc)
-ic_grupo = group.CI(ABros4~p04_1,data)
+existe mucha desigualdad o no en el Perú.</p>
+<pre class="r"><code>ic_grupo = data |&gt;
+  dplyr::group_by(p04_1) |&gt;
+  dplyr::summarise(Media = mean(ABros4, na.rm=T),
+            min = ciMean(ABros4, na.rm=T)[1],
+            max = ciMean(ABros4, na.rm=T)[2]
+            )
 ic_grupo</code></pre>
-<pre><code>##   p04_1 ABros4.upper ABros4.mean ABros4.lower
-## 1     1     8.142751    7.969732     7.796714
-## 2     2     7.576645    7.334951     7.093258</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   p04_1 Media   min   max
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1  7.97  7.80  8.14
+## 2     2  7.33  7.09  7.58
+## 3    NA  6.84  5.77  7.91</code></pre>
 <p>Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad
 de que a nivel poblacional la media del grupo que considera que hay
 mucha desigualdad en el Perú está de acuerdo en mayor medida con que el
@@ -568,9 +574,9 @@ Estado debe implementar políticas firmes para reducir la desigualdad, a
 comparación de lo que no se consideran que hay mucha desigualdad.</p>
 <p>Grafiquemos nuestros resultados.</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(ic_grupo, aes(x= p04_1, y =ABros4.mean)) +
-  geom_errorbar(aes(ymin=ABros4.lower, ymax=ABros4.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(ABros4.mean, 2))), size=4)+
+ggplot(ic_grupo, aes(x= p04_1, y =Media)) +
+  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+   geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Considera que hay ... desigualdad en el Perú&quot;) + ylab(&quot;Nivel de acuerdo con que se necesitan \n políticas firmes para reducir brechas&quot;)+
   ylim(7, 8.5)</code></pre>
 <p><img src="pd4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>

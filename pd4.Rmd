@@ -1,9 +1,6 @@
 ---
-title: "Práctica dirigida 3"
+title: "Práctica dirigida 4"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
@@ -13,6 +10,9 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 ```{r setup, include=FALSE}
