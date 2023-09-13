@@ -1,6 +1,9 @@
 ---
-title: "Práctica dirigida 4"
+title: "Práctica dirigida 3"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
@@ -10,9 +13,6 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
 ---
 
 ```{r setup, include=FALSE}
@@ -132,11 +132,15 @@ Esto quiere decir que tenemos un 95% de certeza de que, en la población, el por
 
 # **3.Intervalo de confianza de una media según grupo**
 
-Hallemos el intervalo de confianza para el nivel de acuerdo con que "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" según si considera que existe mucha desigualdad o no en el Perú. Para ello usaremos el comando **group.CI** del paquete Rmisc
+Hallemos el intervalo de confianza para el nivel de acuerdo con que "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" según si considera que existe mucha desigualdad o no en el Perú.
 
 ```{r}
-library(Rmisc)
-ic_grupo = group.CI(ABros4~p04_1,data)
+ic_grupo = data |>
+  dplyr::group_by(p04_1) |>
+  dplyr::summarise(Media = mean(ABros4, na.rm=T),
+            min = ciMean(ABros4, na.rm=T)[1],
+            max = ciMean(ABros4, na.rm=T)[2]
+            )
 ic_grupo
 ```
 
@@ -146,9 +150,9 @@ Grafiquemos nuestros resultados.
 
 ```{r}
 library(ggplot2)
-ggplot(ic_grupo, aes(x= p04_1, y =ABros4.mean)) +
-  geom_errorbar(aes(ymin=ABros4.lower, ymax=ABros4.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(ABros4.mean, 2))), size=4)+
+ggplot(ic_grupo, aes(x= p04_1, y =Media)) +
+  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+   geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab("Considera que hay ... desigualdad en el Perú") + ylab("Nivel de acuerdo con que se necesitan \n políticas firmes para reducir brechas")+
   ylim(7, 8.5)
 ```
