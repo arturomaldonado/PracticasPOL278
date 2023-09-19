@@ -433,8 +433,8 @@ responden a “En una escala del 1 al 4, donde 1 es”Muy difícil” y 4 -
 actividades vinculadas al quehacer docente?”</p>
 <table>
 <colgroup>
-<col width="26%" />
-<col width="73%" />
+<col width="29%" />
+<col width="70%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -499,10 +499,18 @@ summary(data$suma) #identifico mínimo y máximo</code></pre>
 <p>Procedo a crear el indicador</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(indicador = ((suma-6)/18)*10) #le restamos el mínimo y dividimos entre 24-6
-
+#Lo multiplicamos por 10 porque queremos que vaya hasta 10
   summary(data$indicador)#revisamos que se haya creado bien el indicador</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   3.333   3.333   4.975   6.667  10.000</code></pre>
+<div id="dato-adicional" class="section level4">
+<h4><em>Dato adicional:</em></h4>
+<p>Si queremos cambiar la escala de nuestro indicador podemos usar la
+función rescale, como primer argumento indicamos la variable (indicador)
+a reescalar y como segundo argumento los límites de la nueva escala: de
+0 a 50, de 0 a 100, etc.</p>
+<pre class="r"><code>library(scales)
+data$ind_reescalado = rescale(data$indicador, to = c(0,50))</code></pre>
 <p>Ahora que hemos creado nuestro indicador, procedemos a calcular el
 intervalo de confianza para su media.</p>
 <pre class="r"><code>ic_media = ciMean(data$indicador)
@@ -514,6 +522,7 @@ decir que tenemos una certeza del 95% de que el valor poblacional de la
 <strong>percepción de facilidad de labor docente</strong> se encuentra
 entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del
 indicador (5).</p>
+</div>
 </div>
 </div>
 <div id="intervalos-de-confianza-para-una-proporción"
@@ -619,7 +628,7 @@ complementar esta afirmación.</p>
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Región&quot;) + ylab(&quot;Indicador de percepción de facilidad de labor docente&quot;)+
   theme_bw()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Debemos que buscar traslape entre las barras, en este caso podemos
 reafirmar que los docentes de la sierra perciben una menor facilidad en
 sus labores a comparación de los de la selva o costa. Por otro lado, los
