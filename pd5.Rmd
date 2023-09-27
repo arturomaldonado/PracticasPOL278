@@ -80,7 +80,7 @@ Ya habíamos revisado previamente que las variables si están como numéricas.
 
 ```{r}
 data = data %>%
-  mutate(suma=P1_27_A+P1_27_A+P1_27_A+P1_27_A+P1_27_A+P1_27_A) #creamos la suma 
+  mutate(suma=P1_27_A+P1_27_B+P1_27_C+P1_27_D+P1_27_E) #creamos la suma 
 summary(data$suma) #identifico mínimo y máximo
 
 ```
@@ -89,8 +89,8 @@ Procedo a crear el indicador
 
 ```{r}
 data = data %>%
-  mutate(indicador = ((suma-6)/18)*10) #le restamos el mínimo y dividimos entre 24-6
-#Lo multiplicamos por 10 porque queremos que vaya hasta 10
+  mutate(indicador = ((suma-5)/15)*10) #le restamos el mínimo y dividimos entre 20-5
+#Lo multiplicamos por 10 porque queremos que vaya hasta 0 al 10
   summary(data$indicador)#revisamos que se haya creado bien el indicador
 
 ```
@@ -101,7 +101,7 @@ Si queremos cambiar la escala de nuestro indicador podemos usar la función resc
 
 ```{r, include = T, eval = F}
 library(scales)
-data$ind_reescalado = rescale(data$indicador, to = c(0,50))
+data$ind_reescalado = rescale(data$indicador, to = c(0,10))
 ```
 
 Ahora que hemos creado nuestro indicador, procedemos a calcular el intervalo de confianza para su media.
@@ -197,6 +197,10 @@ Debemos que buscar traslape entre las barras, en este caso podemos reafirmar que
 ## Ejercicio
 
 1.  Calcular el intervalo de confianza para la media de la variable que mide el tiempo invertido en preparar las clase y labores administrativas de lunes a viernes (P1_9_A_LV_MIN)
+
+```{r}
+str(data$P1_9_A_LV_MIN)
+```
 
 2.  Calcular el intervalo de confianza para la proporción de personas que recibieron apoyo psicológico y/o emocional (P1_13)
 
