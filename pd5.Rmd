@@ -59,7 +59,7 @@ names(data)
 Para el intervalo de confianza para la media crearemos el indicador: **percepción de facilidad de labor docente, este indicador debe ir del 0 al 10**. Para ello nos basaremos en cinco variables que responden a "En una escala del 1 al 4, donde 1 es"Muy difícil" y 4 - "Muy fácil ¿Qué tan facil o difícil es realizar las siguientes actividades vinculadas al quehacer docente?"
 
 | Nombre de variable |                                                                Etiqueta                                                                |
-|:-------------------:|:-------------------------------------------------:|
+|:-------------:|:-------------------------------------------------------:|
 |      P1_27_A       |                       ¿Qué tan fácil o difícil es comunicarse y retroalimentar y motivar a las y los estudiante                        |
 |      P1_27_B       |                                   ¿Atender los problemas socioemocionales de las y los estudiantes?                                    |
 |      P1_27_C       | ¿Virtualizar la enseñanza, adaptando y/o complementando las sesiones de "Aprendo en casa", según necesidades de las y los estudiantes? |
@@ -90,7 +90,11 @@ Procedo a crear el indicador
 ```{r}
 data = data %>%
   mutate(indicador = ((suma-5)/15)*10) #le restamos el mínimo y dividimos entre 20-5
+<<<<<<< HEAD
 #Lo multiplicamos por 10 porque queremos que vaya hasta 0 al 10
+=======
+#Lo multiplicamos por 10 porque queremos que vaya hasta 10
+>>>>>>> ee5e6a199300472be30e2caf43bce0d11f5b4665
   summary(data$indicador)#revisamos que se haya creado bien el indicador
 
 ```
