@@ -1,10 +1,15 @@
 ---
-title: "Sesión 6. Prueba T y Comparaciones de proporciones"
-author: "Curso: POL278 - Estadística para el análisis político 1"
-date: '2023-09-27'
+title: "Práctica dirigida 6"
 output:
-  pdf_document: default
-  html_document: default
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 1
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: yes
 ---
 
 ```{r,echo=FALSE, out.width="40%",fig.align="center"}
