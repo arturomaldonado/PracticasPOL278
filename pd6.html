@@ -9,11 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Curso: POL278 - Estadística para el análisis político 1" />
 
 
-<title>Práctica dirigida 6</title>
+<title>Sesión 6. Prueba T y Comparaciones de proporciones</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +30,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -389,7 +390,10 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Práctica dirigida 6</h1>
+<h1 class="title toc-ignore">Sesión 6. Prueba T y Comparaciones de
+proporciones</h1>
+<h4 class="author">Curso: POL278 - Estadística para el análisis político
+1</h4>
 
 </div>
 
@@ -522,9 +526,9 @@ sobre el nivel de satisfacción.</p>
 href="https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados"
 class="uri">https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados</a></p>
 <pre class="r"><code>#No olvides cambiar el directorio de trabajo
-
+library(dplyr)
 library(rio) 
-data &lt;- import(&quot;data.sav&quot;)</code></pre>
+data &lt;- import(&quot;data.csv&quot;)</code></pre>
 <p>Exploramos las variables que tiene la base de datos:</p>
 <p>Utilizamos <em>glimpse</em> para ver la estructura de la data.</p>
 <p>Utilizamos <em>colnames</em> para verificar los nombres de la
@@ -533,29 +537,11 @@ data.</p>
 data.</p>
 <pre class="r"><code>str(data[,1:5]) #Visualice la estructura de la bbdd</code></pre>
 <pre><code>## &#39;data.frame&#39;:    4142 obs. of  5 variables:
-##  $ SbjNum      : num  1.52e+08 1.52e+08 1.52e+08 1.52e+08 1.52e+08 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;SbjNum&quot;
-##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F10.0&quot;
-##  $ d3          : num  17 17 17 17 24 24 10 10 14 23 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3d.    ¿En qué departamento vives?&quot;
-##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
-##   ..- attr(*, &quot;labels&quot;)= Named num [1:26] 1 2 3 4 5 6 7 8 9 10 ...
-##   .. ..- attr(*, &quot;names&quot;)= chr [1:26] &quot;Amazonas&quot; &quot;Áncash&quot; &quot;Apurímac&quot; &quot;Arequipa&quot; ...
-##  $ PROVINCIA   : num  1701 1701 1701 1701 2401 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3p.    ¿En qué provincia vives?&quot;
-##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
-##   ..- attr(*, &quot;labels&quot;)= Named num [1:196] 101 102 103 104 105 106 107 201 202 203 ...
-##   .. ..- attr(*, &quot;names&quot;)= chr [1:196] &quot;Chachapoyas&quot; &quot;Bagua&quot; &quot;Bongará&quot; &quot;Condorcanqui&quot; ...
-##  $ DISTRITO    : num  170101 170101 170101 170101 240101 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;DC3dd.    ¿En qué distrito vives?&quot;
-##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
-##   ..- attr(*, &quot;labels&quot;)= Named num [1:1874] 10101 10102 10103 10104 10105 ...
-##   .. ..- attr(*, &quot;names&quot;)= chr [1:1874] &quot;Chachapoyas&quot; &quot;Asunción&quot; &quot;Balsas&quot; &quot;Cheto&quot; ...
-##  $ ORGANIZACION: num  71 71 71 71 6 71 21 21 71 71 ...
-##   ..- attr(*, &quot;label&quot;)= chr &quot;ORGANIZACION - ENTIDAD:&quot;
-##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.0&quot;
-##   ..- attr(*, &quot;labels&quot;)= Named num [1:86] 1 2 3 4 5 6 7 8 9 10 ...
-##   .. ..- attr(*, &quot;names&quot;)= chr [1:86] &quot;Gobierno Regional de Ancash&quot; &quot;Gobierno Regional de La Libertad&quot; &quot;Gobierno Regional de Lambayeque&quot; &quot;Gobierno Regional de Cajamarca&quot; ...</code></pre>
+##  $ SbjNum      : int  152438142 152439341 152440100 152441040 152446528 152448667 152475627 152477706 152479187 152480833 ...
+##  $ d3          : int  17 17 17 17 24 24 10 10 14 23 ...
+##  $ PROVINCIA   : int  1701 1701 1701 1701 2401 2401 1001 1001 1401 2301 ...
+##  $ DISTRITO    : int  170101 170101 170101 170101 240101 240101 100101 100101 140101 230101 ...
+##  $ ORGANIZACION: int  71 71 71 71 6 71 21 21 71 71 ...</code></pre>
 <pre class="r"><code>colnames(data[,1:5]) #Visualice los nombres de las variables de la bbdd</code></pre>
 <pre><code>## [1] &quot;SbjNum&quot;       &quot;d3&quot;           &quot;PROVINCIA&quot;    &quot;DISTRITO&quot;     &quot;ORGANIZACION&quot;</code></pre>
 <pre class="r"><code>colSums(is.na(data))</code></pre>
@@ -622,29 +608,20 @@ numéricas para poder sumarlas.</strong></p></li>
 </ul>
 <pre class="r"><code>summary(data$P10)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   2.000   2.000   2.145   2.000   5.000</code></pre>
+##   1.000   2.000   2.000   2.448   3.000   5.000</code></pre>
 <pre class="r"><code>summary(data$P25)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   2.000   2.000   2.437   3.000   5.000</code></pre>
 <pre class="r"><code>summary(data$P30)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   2.000   2.000   2.344   3.000   5.000</code></pre>
+##   1.000   2.000   2.000   2.357   3.000   5.000</code></pre>
 <pre class="r"><code>summary(data$P31)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   2.000   2.000   2.415   3.000   5.000</code></pre>
+##   1.000   2.000   3.000   2.658   3.000   5.000</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Recodificar los valores de las variables</li>
 </ol>
 <p>Ejemplo: La recodificación de una variable a la vez.</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>data=data %&gt;%
  mutate(satisfaccion_trabajador=case_when(
   P10 == 1 ~ &quot;5&quot;, 
@@ -675,11 +652,11 @@ correcta.</p>
 <pre class="r"><code>table(data$P10)</code></pre>
 <pre><code>## 
 ##    1    2    3    4    5 
-##  619 2724  415  349   35</code></pre>
+##  442 1811 1505  358   26</code></pre>
 <pre class="r"><code>table(data$satisfaccion_trabajador)</code></pre>
 <pre><code>## 
 ##    1    2    3    4    5 
-##   35  349  415 2724  619</code></pre>
+##   26  358 1505 1811  442</code></pre>
 <p>La recodificación de un conjunto de variables.</p>
 <pre class="r"><code>#library(dplyr)
 #data=data %&gt;% 
@@ -700,23 +677,23 @@ data=data %&gt;% # objeto base de datos cargada
          satisfaccion_n_pasos = as.numeric(satisfaccion_n_pasos))</code></pre>
 <pre class="r"><code>summary(data$satisfaccion_trabajador)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   4.000   4.000   3.855   4.000   5.000</code></pre>
+##   1.000   3.000   4.000   3.552   4.000   5.000</code></pre>
 <pre class="r"><code>summary(data$satisfaccion_tiempo)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   3.000   4.000   3.563   4.000   5.000</code></pre>
 <pre class="r"><code>summary(data$satisfaccion_n_documentos)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   3.000   4.000   3.656   4.000   5.000</code></pre>
+##   1.000   3.000   4.000   3.643   4.000   5.000</code></pre>
 <pre class="r"><code>summary(data$satisfaccion_n_pasos)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   3.000   4.000   3.585   4.000   5.000</code></pre>
+##   1.000   3.000   3.000   3.342   4.000   5.000</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li><p>Recordemos los pasos para crear un índice aditivo:</p>
 <p><em>((var_suma - mín_de_suma)/máx_de_suma))*valor al que quiere que
 llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50,
 etc).</em></p>
-<p>Crearemos una variable nueva “indice_satisfacción”. Sumamos las
-variables</p></li>
+<p>Crearemos una variable nueva “indice_satisfacción”. Primero, sumamos
+las variables:</p></li>
 </ol>
 <pre class="r"><code>data=data %&gt;%
   mutate(suma = satisfaccion_trabajador + 
@@ -726,17 +703,24 @@ variables</p></li>
 <p>Revisamos mínimo y máximo</p>
 <pre class="r"><code>summary(data$suma)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    4.00   13.00   16.00   14.66   16.00   20.00</code></pre>
+##     4.0    12.0    14.0    14.1    16.0    20.0</code></pre>
 <pre class="r"><code>data=data %&gt;%
   mutate(resta = ((suma - 4)# Menos el minimo
-                                / 20), # Cuarto paso: dividir entre el nuevo máximo
+                                / 16), # Cuarto paso: dividir entre el nuevo máximo
          indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100</code></pre>
 <p>Opción 2: Sin crear variable “resta”</p>
 <pre class="r"><code>#data = data %&gt;%
- # mutate(indice_satisfaccion = ((suma-4)/20)*100) </code></pre>
+ # mutate(indice_satisfaccion = ((suma-4)/16)*100) </code></pre>
 <pre class="r"><code>summary(data$indice_satisfaccion)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     0.0    45.0    60.0    53.3    60.0    80.0</code></pre>
+##    0.00   50.00   62.50   63.13   75.00  100.00</code></pre>
+<p>Otra opción es usar el rescale:</p>
+<pre class="r"><code>library(scales)
+data = data %&gt;%
+mutate(indice_satisfaccion_rescale = rescale(suma, to = c(0,100)))
+summary(data$indice_satisfaccion_rescale)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.00   50.00   62.50   63.13   75.00  100.00</code></pre>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Los grupos que compararemos serán dados por la variable P4. Damos
 formato a la variable categórica P4, si recibio orientación o no</li>
@@ -746,6 +730,22 @@ data$P4=factor(data$P4,
                 levels = levels(data$P4),
                 labels = c(&quot;Si orientación&quot;,&quot;No orientación&quot;),
                 ordered = F)</code></pre>
+<p>Como se menciona en las consideraciones, analizaremos la varianza en
+los grupos, para ello usaremos la prueba Levene (varianza debe ser
+igual):</p>
+<p>H0: La varianza de los grupos comparados (grupo que recibió
+información y grupo que NO recibió información) son iguales H1: La
+varianza de los grupos comparados (grupo que recibió información y grupo
+que NO recibió información) NO son iguales</p>
+<pre class="r"><code>library(DescTools)
+LeveneTest(data$indice_satisfaccion, data$P4)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value Pr(&gt;F)
+## group    1  1.0408 0.3077
+##       4140</code></pre>
+<p>Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son
+iguales, por lo que podemos continuar con la realización de la Prueba
+T.</p>
 </div>
 <div id="realizamos-la-prueba-t" class="section level2">
 <h2><strong>Realizamos la Prueba T</strong></h2>
@@ -769,11 +769,11 @@ medias)</strong></p></li>
 class="section level3">
 <h3><strong>Segundo paso: Calcular el estadístico a
 emplear</strong></h3>
-<p>Para verificar la diferencia de medias se calcula el estadístico T, y
-uno de los primeros pasos es calcular las diferencias entre las medias
-muestrales, ya que es lo quiero extrapolar y por tanto saber si existe o
-no una diferencia significativa entre las medias poblacionales de ambos
-grupos:</p>
+<p>Para verificar la diferencia de medias, se calcula el estadístico T.
+Uno de los primeros pasos es calcular las diferencias entre las medias
+muestrales, ya que es lo quiero extrapolar y, por tanto, saber si existe
+o no una diferencia significativa entre las medias poblacionales de
+ambos grupos.</p>
 </div>
 <div id="tercer-paso-determinar-el-nivel-de-significancia"
 class="section level3">
@@ -785,8 +785,8 @@ de medias poblacionales sea 0). El valor más común es de alpha = 0.05 a
 un nivel de confianza de 95%. De manera convencional establecemos la
 siguiente regla para nuestra prueba T:</p>
 <ul>
-<li>p-value &gt;= 0.05 Rechazo la H0 y acepto H1</li>
-<li>p-value &lt; 0.05 No rechazo la H0</li>
+<li>p-value &lt;= 0.05 Rechazo la H0 y acepto H1</li>
+<li>p-value &gt; 0.05 No rechazo la H0</li>
 </ul>
 </div>
 <div id="cuarto-paso-calcular-el-p-value-y-realizar-la-prueba-t.test"
@@ -804,13 +804,13 @@ poblacional fuera cero.</p>
 ##  Welch Two Sample t-test
 ## 
 ## data:  indice_satisfaccion by P4
-## t = 12.521, df = 2706.3, p-value &lt; 2.2e-16
+## t = 36.92, df = 3483.4, p-value &lt; 2.2e-16
 ## alternative hypothesis: true difference in means between group Si orientación and group No orientación is not equal to 0
 ## 95 percent confidence interval:
-##  4.911234 6.735047
+##  16.17863 17.99336
 ## sample estimates:
 ## mean in group Si orientación mean in group No orientación 
-##                     55.45856                     49.63542</code></pre>
+##                      69.4623                      52.3763</code></pre>
 </div>
 <div id="quinto-paso-interpretar" class="section level3">
 <h3><strong>Quinto paso: Interpretar</strong></h3>
@@ -841,31 +841,26 @@ los que no recibieron información con un 95% de confianza.</p>
 <h3><strong>Paso FINAL: Graficar</strong></h3>
 <p>Otro método para evaluar la comparación entre grupos es realizar un
 gráfico de medias con intervalos de confianza de cada grupo.</p>
-<p>Para calcular la diferencia de medias</p>
-<pre class="r"><code>library(Rmisc)
-ic_grupo = group.CI(indice_satisfaccion~P4,data)
-ic_grupo</code></pre>
-<pre><code>##               P4 indice_satisfaccion.upper indice_satisfaccion.mean
-## 1 Si orientación                  55.93908                 55.45856
-## 2 No orientación                  50.41071                 49.63542
-##   indice_satisfaccion.lower
-## 1                  54.97803
-## 2                  48.86012</code></pre>
-<div id="barras-de-error" class="section level4">
-<h4><strong>Barras de Error</strong></h4>
 <pre class="r"><code>library(ggplot2)
+library(lsr)
 
-ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
-  geom_errorbar(aes(ymin=indice_satisfaccion.lower, ymax=indice_satisfaccion.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(indice_satisfaccion.mean,1))), size=3)+
-  xlab(&quot;Orientación&quot;) +
-  ylim(45, 60)</code></pre>
-<p><img src="pd6_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p><strong>Interpretación</strong>: Tal como se observa ambos intervalos
-de confianza no se traslapan, por lo que se puede concluir gráficamente
-que existe una diferencia estadísticamente significativa entre los
-grupos. El grupo que si recibio orientación tiene mayor satisfacción que
-no recibio con un 95% de confianza en la población.</p>
+data %&gt;%
+  group_by(P4) %&gt;%
+  summarise(Media = mean(indice_satisfaccion, na.rm=T),
+            min = ciMean(indice_satisfaccion, na.rm=T)[1],
+            max = ciMean(indice_satisfaccion, na.rm=T)[2]) %&gt;% 
+ggplot(aes(x= P4, y = Media)) +
+  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+   geom_text(aes(label=paste(round(Media,1))), size=3)+
+  xlab(&quot;Grupo de comparación por Orientación&quot;) +
+  ylim(45, 75) # Especificar según los valores que obtienes</code></pre>
+<p><img src="pd6_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><strong>Interpretación</strong>: Tal como se observa, ambos
+intervalos de confianza no se traslapan, por lo que se puede concluir
+gráficamente que existe una diferencia estadísticamente significativa
+entre los grupos. El grupo que si recibio orientación tiene mayor
+satisfacción en comparación al grupo que no recibió orientación, con un
+95% de confianza en la población.</p>
 <p><strong>EJERCICIO PRÁCTICO</strong></p>
 <p>Verifica si existe o no relación entre el número de veces que un
 ciudadano fue a la institución pública para realizar un trámite
@@ -874,36 +869,32 @@ satisfacción.</p>
 </div>
 </div>
 </div>
-</div>
 <div id="comparación-de-proporciones" class="section level1">
 <h1><strong>Comparación de proporciones</strong></h1>
 <p>Para este ejercicio trabajaremos con dos variables:</p>
 <ul>
-<li><p><em>P45: Confianza en la entidad pública</em></p></li>
-<li><p><em>P42: Preferencia realiza sus gestiones con entidades
-públicas</em></p></li>
+<li><p><em>P42: Preferencia en la realización de gestiones
+presenciales</em></p></li>
+<li><p><em>INDICE_SATISFACCION: Índice de satisfacción aditivo creado en
+la sección anterior</em></p></li>
 </ul>
-<p>Revisemos a nuestras variables</p>
-<p>Variable V20:</p>
-<pre class="r"><code>class(data$P45) #Revisamos como está catalogada nuestra variable</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>summary(data$P45) </code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.000   2.000   2.000   2.315   3.000   5.000</code></pre>
-<p>Recordemos que para comparar proporciones necesitamos que nuestra
-variable sea categórica. La recodificaremos para que tengamos dos
-grupos: Confianza alta y Confianza baja.</p>
+<p>Revisemos a nuestras variables:</p>
+<p>Recordemos que para comparar proporciones necesitamos que nuestras
+variables sean ambas categóricas. En el caso del índice de satisfacción
+aditivo, se recodificará para que tengamos dos grupos: Satisfecho vs No
+Satisfecho.</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(INDICE_AGRUPADO = case_when(indice_satisfaccion &gt;= 60.00 ~ &quot;Satisfecho&quot;,
                           indice_satisfaccion &lt; 60.00 ~ &quot;No satisfecho&quot;))</code></pre>
 <p>Realizamos el mismo ejercicio con nuestra variable P42:</p>
-<pre class="r"><code>class(data$P42) #Revisamos como está catalogada nuestra variable</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(data$P42) #Revisamos cómo está catalogada nuestra variable</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code>summary(data$P42) </code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   1.000   1.000   1.629   2.000   4.000</code></pre>
 <p>La recodificaremos para que tengamos dos grupos: Presencial y No
-presencial</p>
+presencial (revisar cuestionario para corroborar sentido de
+investigación)</p>
 <pre class="r"><code>data = data %&gt;%
   mutate(P42_2 = case_when(P42 == 1 ~ &quot;Presencial&quot;,
                           TRUE ~ &quot;No presencial&quot;))</code></pre>
@@ -911,29 +902,38 @@ presencial</p>
 table(data$INDICE_AGRUPADO,data$P42_2)</code></pre>
 <pre><code>##                
 ##                 No presencial Presencial
-##   No satisfecho           646       1165
-##   Satisfecho              677       1654</code></pre>
+##   No satisfecho           481        831
+##   Satisfecho              842       1988</code></pre>
 <p>Identificamos lo que nos interesa: La frecuencia de los que tienen
-satisfacción alta y prefieren realizar gestiones presenciales es 1654;
+satisfacción alta y prefieren realizar gestiones presenciales es 1988;
 mientras que, los que tienen satisfacción alta y prefieren realizar
-gestiones no presenciales es de 677.</p>
+gestiones no presenciales es de 842.</p>
 <pre class="r"><code>#Hallamos la proporción
-prop.test(x=c(1654,677),n=c(1654+1165,677+646))</code></pre>
+prop.test(x=c(1988,842),n=c(1988+831,842+481))</code></pre>
 <pre><code>## 
 ##  2-sample test for equality of proportions with continuity correction
 ## 
-## data:  c(1654, 677) out of c(1654 + 1165, 677 + 646)
-## X-squared = 20.289, df = 1, p-value = 6.657e-06
+## data:  c(1988, 842) out of c(1988 + 831, 842 + 481)
+## X-squared = 19.367, df = 1, p-value = 1.079e-05
 ## alternative hypothesis: two.sided
 ## 95 percent confidence interval:
-##  0.04196679 0.10806739
+##  0.03732162 0.10024291
 ## sample estimates:
 ##    prop 1    prop 2 
-## 0.5867329 0.5117158</code></pre>
-<p>Interpretación: la diferencia entre aquellas personas que tienen
-satisfacción alta y preferencia por gestión presencial vs personas que
-tienen satisfacción alta y preferencia por gestión no presencial, se
-encuentra entre 4% y 10%, a un 95% de confianza.</p>
+## 0.7052146 0.6364324</code></pre>
+<p>Interpretación:</p>
+<p>Si el intervalo de confianza no contiene el valor cero, esto sugiere
+que las proporciones de los dos grupos son significativamente diferentes
+y que la hipótesis nula de que las proporciones son iguales debe ser
+rechazada. Por otro lado, si el intervalo de confianza contiene el valor
+cero, no podemos rechazar la hipótesis nula y no podemos concluir que
+las proporciones son significativamente diferentes. En el ejercicio,
+dado que el intervalo no contiene el valor cero, las proporciones son
+significativamente diferentes.</p>
+<p>La diferencia entre aquellas personas que tienen satisfacción alta y
+preferencia por gestión presencial vs personas que tienen satisfacción
+alta y preferencia por gestión no presencial, se encuentra entre 4% y
+10%, a un 95% de confianza cuando se extrapola a la población.</p>
 <pre class="r"><code># Grafiquemos la comparación de proporciones
 library(fastDummies)</code></pre>
 <pre><code>## Thank you for using fastDummies!</code></pre>
@@ -951,24 +951,25 @@ tabla2</code></pre>
 <pre><code>## # A tibble: 2 × 4
 ##   P42_2         Media limiteinferior limitesuperior
 ##   &lt;chr&gt;         &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
-## 1 No presencial 0.512          0.476          0.547
-## 2 Presencial    0.587          0.563          0.611</code></pre>
+## 1 No presencial 0.636          0.602          0.671
+## 2 Presencial    0.705          0.683          0.727</code></pre>
 <pre class="r"><code># Grafiquemos la comparación de proporciones
 tabla2=as.data.frame(tabla2)
 library(ggplot2)
 ggplot(tabla2, aes(x=P42_2, y = Media))+
-  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
   geom_errorbar(aes(ymin=limiteinferior, ymax=limitesuperior), width=0.2)+
   geom_text(aes(label=paste(round(Media, 2))), size = 4)+
   xlab(&quot;Presencialidad&quot;) + ylab(&quot;Satisfacción&quot;)+
-  ggtitle(&quot;Promedio de satisfacción por presencialidad&quot;)+ylim(0,1)</code></pre>
+  ylim(0.55,0.75)</code></pre>
 <p><img src="pd6_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 <div id="ejercicios" class="section level1">
 <h1><strong>Ejercicios</strong></h1>
 <ul>
-<li>Recodifica variables en 2 categorías y compara sus proporciones con
-sentido de investigación.</li>
+<li>Revisa al cuestionario para identificar variables categóricas y/o
+numéricas que sean posibles - con sentido de investigación - recodificar
+en 2 categorías. Luego, realiza ejemplos de comparación de proporciones
+y esboza hipótesis sobre los hallazgos identificados.</li>
 </ul>
 </div>
 
