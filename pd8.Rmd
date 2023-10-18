@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 7"
+title: "Práctica dirigida 8"
 output:
   html_document:
     toc: yes
@@ -26,7 +26,7 @@ editor_options:
 
 # **Tablas de contingencia y prueba Chi2**
 
-## Tablas de contingencia
+# Tablas de contingencia
 
 -   Son tablas de doble entrada, en las cuales se cruzan las categorías de dos variables de interés.
 -   En las casillas de la tabla se ubica la frecuencia o el número de casos de cada cruce.
