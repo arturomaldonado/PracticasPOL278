@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 8"
+title: "Práctica dirigida 9"
 output:
   html_document:
     toc: yes
@@ -288,3 +288,4 @@ cor.test(data$PL, data$esperanza)
 ```
 
 ¿Qué nos dice el resultado?
+Prueba
