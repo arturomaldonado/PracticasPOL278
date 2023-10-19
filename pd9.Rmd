@@ -9,7 +9,13 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 <center><img src=" " width="200"/></center>
