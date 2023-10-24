@@ -185,10 +185,11 @@ data %>%
 **Paso 2: Gráfico de dispersión**
 
 ```{r eval=FALSE}
+library(ggplot2)
 ggplot(data, aes(x=PL, y=ingresos)) +
   geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Ingresos per cápita") +
   ggtitle("Relación entre los ingresos per cápita y el voto a Castillo") +
-  theme_light()
+  theme_light() + geom_smooth(method=lm,se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
@@ -276,7 +277,7 @@ data %>%
 ggplot(data, aes(x=PL, y=esperanza)) +
   geom_point(colour="red") +  xlab("Esperanza de vida") +  ylab("% voto a Pedro Castillo") +
   ggtitle("Relación entre la esperanza de vida y el voto a Castillo") +
-  theme_light()
+  theme_light() + geom_smooth(method=lm, se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
