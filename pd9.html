@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 9</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -419,11 +419,12 @@ cuantitativas.</strong></p></li>
 <li><p>La manera más sencilla de saber si dos variables están
 correlacionadas es determinar si co-varían (varían
 conjuntamente).</p></li>
-<li><p>Es importante hacer notar que <strong>esta covariación no implica
-necesariamente causalidad</strong>, la correlación puede ser fortuita,
-como en el caso clásico de la correlación entre el número de venta de
-helados e incendios, debido al efecto de una tercera variable, la
-temperatura ambiental.</p></li>
+<li><p>Es importante hacer notar que <strong>esta covariación o relación
+no implica necesariamente causalidad</strong>: La correlación puede ser
+fortuita, como en el caso clásico de la correlación entre el número de
+venta de helados e incendios, debido al efecto de una tercera variable,
+la temperatura ambiental. A este tipo de relación se le llama
+“espuria”.</p></li>
 </ul>
 </div>
 <div id="coeficiente-de-correlación-de-pearson" class="section level3">
@@ -511,8 +512,8 @@ data %&gt;%
            Max = max(IDH))</code></pre>
 <p><strong>Paso 2: Gráfico de dispersión</strong></p>
 <p>Visualizamos la relación entre dos variables cuantitativas. Esta
-“nube” de puntos en el gráfico de dispersión nos da una idea visual de
-la probable relación entre las variables.</p>
+“nube” de puntos en el gráfico de dispersión nos da una idea visual
+(preliminar) de la probable relación entre las variables.</p>
 <pre class="r"><code>ggplot(data, aes(x=PL, y=IDH)) +
   geom_point(colour=&quot;red&quot;) +  xlab(&quot;Índice de Desarrollo Humano&quot;) +  ylab(&quot;% voto a Pedro Castillo&quot;) +
   ggtitle(&quot;Relación entre el IDH y el voto a Castillo&quot;) +
@@ -520,6 +521,7 @@ la probable relación entre las variables.</p>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
 ¿Qué sentido?</p>
 <p><strong>Paso 3: Correlación</strong></p>
+<p>Dos hipótesis:</p>
 <ul>
 <li>H0 = No existe correlación entre el IDH y el % de voto a Pedro
 Castillo</li>
@@ -529,16 +531,16 @@ Castillo</li>
 <pre class="r"><code>#Prueba de correlación
 cor.test(data$PL, data$IDH)</code></pre>
 <ul>
-<li>p &lt; 0.05 Rechazas la H0/Aceptas la H1</li>
-<li>P &gt; 0.05 Aceptas la H0/Rechazas la H1</li>
+<li>p &lt; 0.05 Rechazas la H0/Aceptas la H1 (sí hay correlación)</li>
+<li>P &gt; 0.05 Aceptas la H0/Rechazas la H1 (no hay correlación)</li>
 </ul>
 <p><strong>¿Qué nos dice el resultado?</strong> Interpretación: Dado que
-el p-valor es menor a &lt; 0.05, no hay suficiente evidencia estadística
-para aceptar la H0. Por lo tanto, aceptamos la H1 de que “Sí existe
+el p-valor es menor a 0.05, no hay suficiente evidencia estadística para
+aceptar la H0. Por lo tanto, aceptamos la H1 de que “Sí existe
 correlación entre el IDH y el % de voto a Pedro Castillo”.</p>
 <p>El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una
 “correlación negativa”; es decir, relación indirecta (-) y (ii) Según
-los criterios de Cohen (1988), se trata de una correlación fuerte.</p>
+los criterios de Cohen (1988), se trata de una correlación mediana.</p>
 </div>
 <div
 id="ejercicio-2-relación-entre-el-voto-a-pedro-castillo-y-los-ingresos-per-cápita"
@@ -556,7 +558,7 @@ per cápita</h3>
            Max = max(ingresos))</code></pre>
 <p><strong>Paso 2: Gráfico de dispersión</strong></p>
 <pre class="r"><code>ggplot(data, aes(x=PL, y=ingresos)) +
-  geom_point(colour=&quot;red&quot;) +  xlab(&quot;Ingresos per cápita&quot;) +  ylab(&quot;% voto a Pedro Castillo&quot;) +
+  geom_point(colour=&quot;red&quot;) +  xlab(&quot;% voto a Pedro Castillo&quot;) +  ylab(&quot;Ingresos per cápita&quot;) +
   ggtitle(&quot;Relación entre los ingresos per cápita y el voto a Castillo&quot;) +
   theme_light()</code></pre>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
@@ -603,6 +605,10 @@ el % de voto a Pedro Castillo</li>
 <pre class="r"><code>#Prueba de correlación
 cor.test(data$PL, data$secundaria)</code></pre>
 <p>¿Qué nos dice el resultado?</p>
+<p>En el ejericicio anterior, nuestro p= 0.14, el cual es mayor a 0.05.
+Por ello, <strong>no se puede rechazar la H0</strong> y, por el
+contrario, se debe concluir que no existe una correlación entre el
+acceso a la educación secundaria y el % de voto a Pedro Castillo.</p>
 </div>
 <div
 id="ejercicio-4-relación-entre-el-voto-a-pedro-castillo-y-la-esperanza-de-vida"

@@ -1,5 +1,6 @@
 ---
-title: "Práctica dirigida 6"
+title: "Sesión 6. Prueba T y Comparaciones de proporciones"
+author: "Curso: POL278 - Estadística para el análisis político 1"
 output:
   html_document:
     toc: yes
@@ -10,6 +11,9 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 ```{r,echo=FALSE, out.width="40%",fig.align="center"}
@@ -43,6 +47,7 @@ La prueba T compara la media de una variable numérica para dos grupos o categor
 **IMPORTANTE**
 
 La condición de normalidad también es considerada si es que la muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n pequeño menor a 30 observaciones). A medida que el n se hace más grande, el supuesto de normalidad es menos importante pues con grandes n confiamos en el teorema del límite central que nos indica que la distribución muestral será siempre normal.
+
 
 ## **Pasos para realizar la Prueba T**
 
@@ -91,9 +96,9 @@ Más sobre el proyecto accediendo al siguiente enlace: <https://www.gob.pe/insti
 
 ```{r,warning = FALSE, message=FALSE}
 #No olvides cambiar el directorio de trabajo
-
+library(dplyr)
 library(rio) 
-data <- import("data.sav")
+data <- import("data.csv")
 ```
 
 Exploramos las variables que tiene la base de datos:
@@ -150,7 +155,6 @@ b.  Recodificar los valores de las variables
 Ejemplo: La recodificación de una variable a la vez.
 
 ```{r}
-library(dplyr)
 data=data %>%
  mutate(satisfaccion_trabajador=case_when(
   P10 == 1 ~ "5", 
@@ -220,7 +224,8 @@ d.  Recordemos los pasos para crear un índice aditivo:
 
     *((var_suma - mín_de_suma)/máx_de_suma))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
 
-    Crearemos una variable nueva "indice_satisfacción". Sumamos las variables
+    Crearemos una variable nueva "indice_satisfacción". 
+    Primero, sumamos las variables:
 
 ```{r}
 data=data %>%
@@ -239,7 +244,7 @@ summary(data$suma)
 ```{r}
 data=data %>%
   mutate(resta = ((suma - 4)# Menos el minimo
-                                / 20), # Cuarto paso: dividir entre el nuevo máximo
+                                / 16), # Cuarto paso: dividir entre el nuevo máximo
          indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100
 ```
 
@@ -247,11 +252,21 @@ Opción 2: Sin crear variable "resta"
 
 ```{r}
 #data = data %>%
- # mutate(indice_satisfaccion = ((suma-4)/20)*100) 
+ # mutate(indice_satisfaccion = ((suma-4)/16)*100) 
 ```
 
 ```{r}
 summary(data$indice_satisfaccion)
+```
+
+Otra opción es usar el rescale:
+
+```{r}
+library(scales)
+data = data %>%
+mutate(indice_satisfaccion_rescale = rescale(suma, to = c(0,100)))
+summary(data$indice_satisfaccion_rescale)
+       
 ```
 
 e.  Los grupos que compararemos serán dados por la variable P4. Damos formato a la variable categórica P4, si recibio orientación o no
@@ -263,6 +278,18 @@ data$P4=factor(data$P4,
                 labels = c("Si orientación","No orientación"),
                 ordered = F)
 ```
+
+Como se menciona en las consideraciones, analizaremos la varianza en los grupos, para ello usaremos la prueba Levene (varianza debe ser igual):
+
+H0: La varianza de los grupos comparados (grupo que recibió información y grupo que NO recibió información) son iguales
+H1: La varianza de los grupos comparados (grupo que recibió información y grupo que NO recibió información) NO son iguales
+
+```{r}
+library(DescTools)
+LeveneTest(data$indice_satisfaccion, data$P4)
+```
+
+Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son iguales, por lo que podemos continuar con la realización de la Prueba T.
 
 ## **Realizamos la Prueba T**
 
@@ -278,14 +305,14 @@ Ambas hipótesis son acerca de los parámetros de la población.
 
 ### **Segundo paso: Calcular el estadístico a emplear**
 
-Para verificar la diferencia de medias se calcula el estadístico T, y uno de los primeros pasos es calcular las diferencias entre las medias muestrales, ya que es lo quiero extrapolar y por tanto saber si existe o no una diferencia significativa entre las medias poblacionales de ambos grupos:
+Para verificar la diferencia de medias, se calcula el estadístico T. Uno de los primeros pasos es calcular las diferencias entre las medias muestrales, ya que es lo quiero extrapolar y, por tanto, saber si existe o no una diferencia significativa entre las medias poblacionales de ambos grupos.
 
 ### **Tercer paso: Determinar el nivel de significancia**
 
 Se trata de la probabilidad que define qué tan inusual debe ser la diferencia de medias muestrales para rechazar la H0 (que la diferencia de medias poblacionales sea 0). El valor más común es de alpha = 0.05 a un nivel de confianza de 95%. De manera convencional establecemos la siguiente regla para nuestra prueba T:
 
--   p-value >= 0.05 Rechazo la H0 y acepto H1
--   p-value < 0.05 No rechazo la H0
+-   p-value <= 0.05 Rechazo la H0 y acepto H1
+-   p-value > 0.05 No rechazo la H0
 
 ### **Cuarto paso: Calcular el p-value y realizar la prueba t.test**
 
@@ -320,27 +347,23 @@ Entonces, vemos que el p-value es 2.2e-16, y es menor al alpha (0.05), entonces 
 
 Otro método para evaluar la comparación entre grupos es realizar un gráfico de medias con intervalos de confianza de cada grupo.
 
-Para calcular la diferencia de medias
-
-```{r,message=FALSE}
-library(Rmisc)
-ic_grupo = group.CI(indice_satisfaccion~P4,data)
-ic_grupo
-```
-
-#### **Barras de Error**
-
 ```{r,message=FALSE}
 library(ggplot2)
+library(lsr)
 
-ggplot(ic_grupo, aes(x= P4, y =indice_satisfaccion.mean)) +
-  geom_errorbar(aes(ymin=indice_satisfaccion.lower, ymax=indice_satisfaccion.upper), width = 0.2)+
-   geom_text(aes(label=paste(round(indice_satisfaccion.mean,1))), size=3)+
-  xlab("Orientación") +
-  ylim(45, 60)
+data %>%
+  group_by(P4) %>%
+  summarise(Media = mean(indice_satisfaccion, na.rm=T),
+            min = ciMean(indice_satisfaccion, na.rm=T)[1],
+            max = ciMean(indice_satisfaccion, na.rm=T)[2]) %>% 
+ggplot(aes(x= P4, y = Media)) +
+  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+   geom_text(aes(label=paste(round(Media,1))), size=3)+
+  xlab("Grupo de comparación por Orientación") +
+  ylim(45, 75) # Especificar según los valores que obtienes
 ```
 
-**Interpretación**: Tal como se observa ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción que no recibio con un 95% de confianza en la población.
+**Interpretación**: Tal como se observa, ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción en comparación al grupo que no recibió orientación, con un 95% de confianza en la población.
 
 **EJERCICIO PRÁCTICO**
 
@@ -351,20 +374,13 @@ Verifica si existe o no relación entre el número de veces que un ciudadano fue
 
 Para este ejercicio trabajaremos con dos variables:
 
--   *P45: Confianza en la entidad pública*
+-   *P42: Preferencia en la realización de gestiones presenciales*
 
--   *P42: Preferencia realiza sus gestiones con entidades públicas*
+-   *INDICE_SATISFACCION: Índice de satisfacción aditivo creado en la sección anterior*
 
-Revisemos a nuestras variables
+Revisemos a nuestras variables:
 
-Variable V20:
-
-```{r}
-class(data$P45) #Revisamos como está catalogada nuestra variable
-summary(data$P45) 
-```
-
-Recordemos que para comparar proporciones necesitamos que nuestra variable sea categórica. La recodificaremos para que tengamos dos grupos: Confianza alta y Confianza baja.
+Recordemos que para comparar proporciones necesitamos que nuestras variables sean ambas categóricas. En el caso del índice de satisfacción aditivo, se recodificará para que tengamos dos grupos: Satisfecho vs No Satisfecho.
 
 ```{r}
 data = data %>%
@@ -375,11 +391,11 @@ data = data %>%
 Realizamos el mismo ejercicio con nuestra variable P42:
 
 ```{r}
-class(data$P42) #Revisamos como está catalogada nuestra variable
+class(data$P42) #Revisamos cómo está catalogada nuestra variable
 summary(data$P42) 
 ```
 
-La recodificaremos para que tengamos dos grupos: Presencial y No presencial
+La recodificaremos para que tengamos dos grupos: Presencial y No presencial (revisar cuestionario para corroborar sentido de investigación)
 
 ```{r}
 data = data %>%
@@ -392,14 +408,19 @@ data = data %>%
 table(data$INDICE_AGRUPADO,data$P42_2)
 ```
 
-Identificamos lo que nos interesa: La frecuencia de los que tienen satisfacción alta y prefieren realizar gestiones presenciales es 1654; mientras que, los que tienen satisfacción alta y prefieren realizar gestiones no presenciales es de 677.
+Identificamos lo que nos interesa: La frecuencia de los que tienen satisfacción alta y prefieren realizar gestiones presenciales es 1988; mientras que, los que tienen satisfacción alta y prefieren realizar gestiones no presenciales es de 842.
 
 ```{r}
 #Hallamos la proporción
-prop.test(x=c(1654,677),n=c(1654+1165,677+646))
+prop.test(x=c(1988,842),n=c(1988+831,842+481))
 ```
 
-Interpretación: la diferencia entre aquellas personas que tienen satisfacción alta y preferencia por gestión presencial vs personas que tienen satisfacción alta y preferencia por gestión no presencial, se encuentra entre 4% y 10%, a un 95% de confianza.
+Interpretación: 
+
+Si el intervalo de confianza no contiene el valor cero, esto sugiere que las proporciones de los dos grupos son significativamente diferentes y que la hipótesis nula de que las proporciones son iguales debe ser rechazada. Por otro lado, si el intervalo de confianza contiene el valor cero, no podemos rechazar la hipótesis nula y no podemos concluir que las proporciones son significativamente diferentes. En el ejercicio, dado que el intervalo no contiene el valor cero, las proporciones son significativamente diferentes.
+
+La diferencia entre aquellas personas que tienen satisfacción alta y preferencia por gestión presencial vs personas que tienen satisfacción alta y preferencia por gestión no presencial, se encuentra entre 4% y 10%, a un 95% de confianza cuando se extrapola a la población.
+
 
 ```{r}
 # Grafiquemos la comparación de proporciones
@@ -421,16 +442,16 @@ tabla2
 tabla2=as.data.frame(tabla2)
 library(ggplot2)
 ggplot(tabla2, aes(x=P42_2, y = Media))+
-  geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
   geom_errorbar(aes(ymin=limiteinferior, ymax=limitesuperior), width=0.2)+
   geom_text(aes(label=paste(round(Media, 2))), size = 4)+
   xlab("Presencialidad") + ylab("Satisfacción")+
-  ggtitle("Promedio de satisfacción por presencialidad")+ylim(0,1)
-
+  ylim(0.55,0.75)
 
 ```
 
 # **Ejercicios**
 
- - Recodifica variables en 2 categorías y compara sus proporciones con sentido de investigación.
+ - Revisa al cuestionario para identificar variables categóricas y/o numéricas que sean posibles - con sentido de investigación - recodificar en 2 categorías. Luego, realiza ejemplos de comparación de proporciones y esboza hipótesis sobre los hallazgos identificados.
  
+
+
