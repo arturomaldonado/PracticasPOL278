@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 8"
+title: "Práctica dirigida 9"
 output:
   html_document:
     toc: yes
@@ -9,7 +9,13 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 <center><img src=" " width="200"/></center>
@@ -35,7 +41,7 @@ La correlación es en esencia una medida normalizada de asociación o covariaci�
 
 -   La manera más sencilla de saber si dos variables están correlacionadas es determinar si co-varían (varían conjuntamente).
 
--   Es importante hacer notar que **esta covariación no implica necesariamente causalidad**, la correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental.
+-   Es importante hacer notar que **esta covariación o relación no implica necesariamente causalidad**: La correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental. A este tipo de relación se le llama "espuria".
 
 ### Coeficiente de Correlación de Pearson
 
@@ -126,7 +132,7 @@ data %>%
 
 **Paso 2: Gráfico de dispersión**
 
-Visualizamos la relación entre dos variables cuantitativas. Esta "nube" de puntos en el gráfico de dispersión nos da una idea visual de la probable relación entre las variables.
+Visualizamos la relación entre dos variables cuantitativas. Esta "nube" de puntos en el gráfico de dispersión nos da una idea visual (preliminar) de la probable relación entre las variables.
 
 ```{r eval=FALSE}
 ggplot(data, aes(x=PL, y=IDH)) +
@@ -139,6 +145,8 @@ ggplot(data, aes(x=PL, y=IDH)) +
 
 **Paso 3: Correlación**
 
+Dos hipótesis:
+
 -   H0 = No existe correlación entre el IDH y el % de voto a Pedro Castillo
 -   H1 = Sí existe correlación entre el IDH y el % de voto a Pedro Castillo
 
@@ -147,10 +155,10 @@ ggplot(data, aes(x=PL, y=IDH)) +
 cor.test(data$PL, data$IDH)
 ```
 
--   p \< 0.05 Rechazas la H0/Aceptas la H1
--   P \> 0.05 Aceptas la H0/Rechazas la H1
+-   p \< 0.05 Rechazas la H0/Aceptas la H1 (sí hay correlación)
+-   P \> 0.05 Aceptas la H0/Rechazas la H1 (no hay correlación)
 
-**¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a \< 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo".
+**¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo".
 
 El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una "correlación negativa"; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación mediana.
 
@@ -177,10 +185,11 @@ data %>%
 **Paso 2: Gráfico de dispersión**
 
 ```{r eval=FALSE}
+library(ggplot2)
 ggplot(data, aes(x=PL, y=ingresos)) +
   geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Ingresos per cápita") +
   ggtitle("Relación entre los ingresos per cápita y el voto a Castillo") +
-  theme_light()
+  theme_light() + geom_smooth(method=lm,se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
@@ -240,6 +249,8 @@ cor.test(data$PL, data$secundaria)
 
 ¿Qué nos dice el resultado?
 
+En el ejericicio anterior, nuestro p= 0.14, el cual es mayor a 0.05. Por ello, **no se puede rechazar la H0** y, por el contrario, se debe concluir que no existe una correlación entre el acceso a la educación secundaria y el % de voto a Pedro Castillo.
+
 ### Ejercicio 4: Relación entre el voto a Pedro Castillo y la esperanza de vida
 
 **Paso 1: Exploramos variables de interés**
@@ -266,7 +277,7 @@ data %>%
 ggplot(data, aes(x=PL, y=esperanza)) +
   geom_point(colour="red") +  xlab("Esperanza de vida") +  ylab("% voto a Pedro Castillo") +
   ggtitle("Relación entre la esperanza de vida y el voto a Castillo") +
-  theme_light()
+  theme_light() + geom_smooth(method=lm, se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?

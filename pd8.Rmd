@@ -9,65 +9,74 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
-
-<center><img src=" " width="200"/></center>
-
-```{r,echo=FALSE, out.width="30%"}
-knitr::include_graphics("logoPUCP.png") 
-```
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
 
 ------------------------------------------------------------------------
 
-## **Tablas de contingencia, prueba Chi2**
+# **Tablas de contingencia y prueba Chi2**
 
-### Tablas de contingencia
+# Tablas de contingencia
 
--   Son tablas de doble entrada, en las cuales se cruza dos variables de interés.
+-   Son tablas de doble entrada, en las cuales se cruzan las categorías de dos variables de interés.
 -   En las casillas de la tabla se ubica la frecuencia o el número de casos de cada cruce.
 -   Conceptos importantes: Frecuencias observadas y frecuencias esperadas.
 
 ![](IM1.png)
 
-**Frecuencias observadas y esperadas**
+### **Frecuencias observadas y esperadas**
 
 -   Frecuencia esperada: Estas son las frecuencisa que deberían darse si las variables fueran independientes.
+
 -   Frecuencia observada: Estas son las frecuencias reales que se observa en nuestra data.
 
 Ejemplo:
 
 ![](IM2.png)
 
-### Prueba Chi2
+# Prueba Chi2
 
-Chi2 es una prueba para estimar el grado de asociación entre variables categóricas: "Nominal - Nominal", "Nominal - Ordinal" y "Ordinal - Ordinal". Esto significa que una parte de la variabilidad de una variable puede ser explicada por otra variable.
+Chi2 es una prueba para estimar el grado de asociación entre variables categóricas: "Nominal - Nominal", "Nominal - Ordinal" y "Ordinal - Ordinal".
+Esto significa que una parte de la variabilidad de una variable puede ser explicada por otra variable.
 
 **Supuestos:**
 
-Para analizar asociación se requiere que haya al menos 5 observaciones en cada celda (frecuencia esperada).
+Para analizar asociación se requiere que el número de observaciones esperadas en cada celda de la tabla de contingencia debe ser suficientemente grande.
+
+Para fines de este curso, al menos cada celda de la TC de frecuencias esperadas debe ser de 5.
+
+Ten en cuenta que si estas condiciones no se cumplen, entonces la prueba podría no funcionar adecuadamente y los resultados de la prueba podrían no ser válidos.
+Si es que encuentran que no se cumple este supuesto: Repórtalo!
 
 **Hipótesis:**
 
--   Hipótesis nula (H0): Las variables son estadísticamente independientes.
--   Hipótesis alternativa (H1): Las variables son estadísticamente dependientes.
+-   Hipótesis nula (H0): Las variables son estadísticamente independientes (No hay asociación).
+
+-   Hipótesis alternativa (H1): Las variables son estadísticamente dependientes (Sí hay asociación).
 
 ### Ejercicios
 
-Utilizaremos data sobre elecciones presidenciales en Estados Unidos, de hace 20 años. La base de datos continene información sobre las preferencias electorales antes y después de las elecciones, así como informacion de las preferencias políticas, situación económica, religión, y participación política de los encuestados.
+Utilizaremos data sobre elecciones presidenciales en Estados Unidos, de hace 20 años.
+La base de datos continene información sobre las preferencias electorales antes y después de las elecciones, así como informacion de las preferencias políticas, situación económica, religión, y participación política de los encuestados.
 
 Cargamos la data:
 
-```{r eval=F}
+```{r warning=FALSE,message=FALSE}
 library(rio)
 eda=import("eda.sav")
 ```
 
-#### Ejercicio 1. Relación entre sexo y situación económica respecto del año pasado\*\*
+## Ejercicio 1. Relación entre sexo y situación económica respecto del año pasado\*\*
 
 *PASO 0: Revisamos la estructura de las variables que nos interesan:*
 
@@ -79,18 +88,18 @@ str(eda$sexo)
 
 Les damos el formato adecuado:
 
-```{r eval=F}
+```{r}
 eda$sexo = factor(eda$sexo, labels = c("Hombre","Mujer"))
 table(eda$sexo)
 ```
 
 Situación económica: ordinal
 
-```{r eval=F}
+```{r }
 str(eda$su_ecopas)
 ```
 
-```{r eval=F}
+```{r }
 eda$su_ecopas= factor(eda$su_ecopas, 
                       levels = c(1:3),
                       labels = c("Mejor","Igual","Peor"),
@@ -98,66 +107,68 @@ eda$su_ecopas= factor(eda$su_ecopas,
 table(eda$su_ecopas)
 ```
 
+```{r }
+prop.table(table(eda$su_ecopas))*100
+```
+
 **PASO 1: Tabla de contigencias**
 
 Los valores observados son los valores de nuestra tabla tal como la tenemos en nuestra base
 
-```{r eval=F}
+```{r }
 tabla1.1 = table(eda$su_ecopas, eda$sexo)
 tabla1.1 #tabla simple
 ```
 
 Creamos porcentajes por columna:
 
-```{r eval=F}
+```{r message=FALSE}
 library(tidyverse)
 tabla1.2 = tabla1.1 %>%
-  prop.table(2) %>%  # porcentaje por columna
-  round(3)*100
+           prop.table(2) %>%  # porcentaje por columna
+           round(3)
 tabla1.2
 ```
 
-Creamos porcentajes por fila:
+> Existe diferencia con lo que vemos a nivel de cada subgrupo (hombre y mujer) respecto a lo que habíamos visto a nivel de toda la muestra?
 
-```{r eval=F}
-tabla1.3 = tabla1.1 %>%
-  prop.table(1) %>%  # porcentaje por fila
-  round(3)*100
-tabla1.3
+**PASO 2: Diagrama de barras apiladas**
+
+Preparamos la data para graficar:
+
+```{r }
+toPlot1 = as.data.frame(tabla1.2) 
+names(toPlot1) = c("Categoria", "Sexo", "Porcentaje")
+toPlot1
 ```
 
-**PASO 2: Diagrama de barras**
+Generamos el gráfico y lo solicitamos:
 
-Opción 1
-
-```{r eval=F}
-toPlot = as.data.frame(tabla1.3) 
-names(toPlot) = c("Categoria", "Sexo", "Porcentaje")
-
+```{r }
 library(ggplot2)
-ggplot(toPlot, aes(fill=Sexo, y=Porcentaje, x=Categoria)) + 
-    geom_bar(position="dodge", stat="identity") +
-    labs( y = 'Porcentaje (%)', x = ' ')+
-    ggtitle('Situación económica en comparación con año anterior por sexo')+
-    theme_bw()
+
+barras_apiladas<-toPlot1 |> 
+  ggplot()+
+  aes(x=Sexo, y=Porcentaje, fill=Categoria) +
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=Porcentaje*100), 
+            position = position_stack(), 
+            vjust=1, size = 3)+
+  labs(x="Sexo", y="Categoría", fill="Situación económica")+
+  theme_bw()
+
+barras_apiladas
 ```
 
-Opción 2
-
-```{r eval=F}
-ggplot(toPlot, aes(fill=Sexo, y=Porcentaje, x=Categoria)) + 
-    geom_bar(position="fill", stat="identity") + 
-    labs( y = 'Porcentaje (%)', x = ' ')+
-    ggtitle('Situación económica en comparación con año anterior por sexo')+
-    theme_bw()
-```
+> De forma preliminar, ves diferencias entre la forma cómo se distribuye la variable "Situación Económica" en cada subgrupo (hombre y mujer)?
 
 **PASO 3: Prueba Chi cuadrado**
 
--   H0: Las variables son estadísticamente independientes
--   HA: Las variables son estadísticamente dependientes
+-   H0: El sexo es estadísticamente independiente de la situación económica respecto del año pasado
 
-```{r eval=F}
+-   HA: El sexo es estadísticamente dependiente de la situación económica respecto del año pasado
+
+```{r }
 chisq.test(tabla1.1)
 ```
 
@@ -165,7 +176,17 @@ De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor
 
 Por lo tanto, concluimos existe dependencia entre las variables escogidas: sexo y situación económica actual.
 
-# EJERCICIO 2: Relación entre nivel educativo (ordinal) y nivel de confianza en la política (ordinal)
+**SUPUESTO**
+
+Ten en cuenta que si te piden verificar el supuesto sólo tienes que solicitar la tabla de frecuencias esperadas y ver que efectivamente todas las celdas tienen un número igual o mayor a 5.
+
+```{r}
+chisq.test(tabla1.1)$expected
+```
+
+En este caso sí cumple el supuesto!
+
+## Ejercicio 2: Relación entre nivel educativo (ordinal) y nivel de confianza en la política (ordinal)
 
 *PASO 0: Revisamos la estructura de las variables que nos interesan:*
 
@@ -175,7 +196,7 @@ Variable nivel educativo: ordinal
 str(eda$educ)
 ```
 
-```{r eval=F}
+```{r }
 eda$educ = factor(eda$educ, 
                       levels = c(1:3),
                       labels = c("Menos que secundaria","Secundaria completa","Mas que secundaria"),
@@ -185,7 +206,7 @@ table(eda$educ)
 
 Confianza en la política: ordinal
 
-```{r eval=F}
+```{r }
 eda$confipolR = factor(eda$confipolR, 
                       levels = c(1:3),
                       labels = c("Baja","Media", "Alta"),
@@ -197,65 +218,69 @@ table(eda$confipolR)
 
 Los valores observados son los valores de nuestra tabla tal como la tenemos en nuestra base
 
-```{r eval=F}
+```{r }
 tabla2.1 = table(eda$confipolR, eda$educ)
 tabla2.1
 ```
 
 Creamos porcentajes por columna:
 
-```{r eval=F}
+```{r message= FALSE}
 library(tidyverse)
 tabla2.2 = tabla2.1 %>%
   prop.table(2) %>%  # porcentaje por columna
-  round(3)*100
+  round(3)
 tabla2.2
 ```
 
 Creamos porcentajes por fila:
 
-```{r eval=F}
-tabla2.3 = tabla2.1 %>%
-  prop.table(1) %>%  # porcentaje por fila
-  round(3)*100
-tabla2.3
+**PASO 2: Diagrama de barras apiladas**
+
+Preparamos la data para graficar:
+
+```{r }
+toPlot2 = as.data.frame(tabla2.2) 
+names(toPlot2) = c("Categoria", "Educacion", "Porcentaje")
+toPlot2
 ```
 
-**PASO 2: Diagrama de barras**
+Generamos el gráfico y lo solicitamos:
 
-Opción 1
+```{r}
+barras_apiladas2<-toPlot2 |> 
+  ggplot()+
+  aes(x=Educacion, y=Porcentaje, fill=Categoria) +
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=Porcentaje*100), 
+            position = position_stack(), 
+            vjust=1, size = 3)+
+  labs(x="Educacion", y="Categoría", fill="Confianza")+
+  theme_bw()
 
-```{r eval=F}
-toPlot = as.data.frame(tabla2.3) 
-names(toPlot) = c("Categoria", "Educacion", "Porcentaje")
-
-library(ggplot2)
-ggplot(toPlot, aes(fill=Educacion, y=Porcentaje, x=Categoria)) + 
-    geom_bar(position="dodge", stat="identity") + 
-    labs( y = 'Porcentaje (%)', x = ' ')+
-    ggtitle('Confianza en la política por nivel educativo')+
-    theme_bw()
-```
-
-Opción 2
-
-```{r eval=F}
-ggplot(toPlot, aes(fill=Educacion, y=Porcentaje, x=Categoria)) + 
-    geom_bar(position="fill", stat="identity") + 
-    labs( y = 'Porcentaje (%)', x = ' ')+
-    ggtitle('Confianza en la política por nivel educativo')+
-    theme_bw()
+barras_apiladas2
 ```
 
 **PASO 3: Prueba Chi cuadrado**
 
--   H0: Las variables son estadísticamente independientes
--   HA: Las variables son estadísticamente dependientes
+-   H0: El nivel educativo es estadísticamente independiente de la confianza en la política
 
-```{r eval=F}
+-   HA: El nivel educativo es estadísticamente dependiente de la confianza en la política
+
+```{r }
 chisq.test(tabla2.1)
 ```
 
 De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
 
 Por lo tanto, concluimos existe dependencia entre las variables escogidas: confianza en la política y nivel educativo.
+
+**SUPUESTO**
+
+Ten en cuenta que si te piden verificar el supuesto sólo tienes que solicitar la tabla de frecuencias esperadas y ver que efectivamente todas las celdas tienen un número igual o mayor a 5.
+
+```{r}
+chisq.test(tabla2.1)$expected
+```
+
+En este caso también cumple el supuesto!
