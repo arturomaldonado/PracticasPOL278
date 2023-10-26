@@ -84,6 +84,7 @@ Variable sexo: nominal
 
 ```{r eval=F}
 str(eda$sexo)
+
 ```
 
 Les damos el formato adecuado:
@@ -154,7 +155,7 @@ barras_apiladas<-toPlot1 |>
   geom_text(aes(label=Porcentaje*100), 
             position = position_stack(), 
             vjust=1, size = 3)+
-  labs(x="Sexo", y="Categoría", fill="Situación económica")+
+  labs(x="Sexo", y="Porcentaje", fill="Situación económica")+
   theme_bw()
 
 barras_apiladas
@@ -171,6 +172,8 @@ barras_apiladas
 ```{r }
 chisq.test(tabla1.1)
 ```
+
+
 
 De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
 
