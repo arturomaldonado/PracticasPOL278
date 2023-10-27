@@ -136,9 +136,9 @@ Visualizamos la relación entre dos variables cuantitativas. Esta "nube" de punt
 
 ```{r eval=FALSE}
 ggplot(data, aes(x=PL, y=IDH)) +
-  geom_point(colour="red") +  xlab("Índice de Desarrollo Humano") +  ylab("% voto a Pedro Castillo") +
+  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Índice de Desarrollo Humano") +
   ggtitle("Relación entre el IDH y el voto a Castillo") +
-  theme_light()
+  theme_light()+ geom_smooth(method=lm,se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
@@ -232,7 +232,7 @@ data %>%
 ggplot(data, aes(x=PL, y=secundaria)) +
   geom_point(colour="red") +  xlab("Acceso a educación secundaria") +  ylab("% voto a Pedro Castillo") +
   ggtitle("Relación entre el acceso a educación secundaria y el voto a Castillo") +
-  theme_light()
+  theme_light()+ geom_smooth(method=lm,se=F)
 ```
 
 ¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
@@ -275,7 +275,7 @@ data %>%
 
 ```{r eval=FALSE}
 ggplot(data, aes(x=PL, y=esperanza)) +
-  geom_point(colour="red") +  xlab("Esperanza de vida") +  ylab("% voto a Pedro Castillo") +
+  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Esperanza de vida") +
   ggtitle("Relación entre la esperanza de vida y el voto a Castillo") +
   theme_light() + geom_smooth(method=lm, se=F)
 ```

@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 9</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -515,9 +515,9 @@ data %&gt;%
 “nube” de puntos en el gráfico de dispersión nos da una idea visual
 (preliminar) de la probable relación entre las variables.</p>
 <pre class="r"><code>ggplot(data, aes(x=PL, y=IDH)) +
-  geom_point(colour=&quot;red&quot;) +  xlab(&quot;Índice de Desarrollo Humano&quot;) +  ylab(&quot;% voto a Pedro Castillo&quot;) +
+  geom_point(colour=&quot;red&quot;) +  xlab(&quot;% voto a Pedro Castillo&quot;) +  ylab(&quot;Índice de Desarrollo Humano&quot;) +
   ggtitle(&quot;Relación entre el IDH y el voto a Castillo&quot;) +
-  theme_light()</code></pre>
+  theme_light()+ geom_smooth(method=lm,se=F)</code></pre>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
 ¿Qué sentido?</p>
 <p><strong>Paso 3: Correlación</strong></p>
@@ -557,10 +557,11 @@ per cápita</h3>
            Mediana = median(ingresos),
            Max = max(ingresos))</code></pre>
 <p><strong>Paso 2: Gráfico de dispersión</strong></p>
-<pre class="r"><code>ggplot(data, aes(x=PL, y=ingresos)) +
+<pre class="r"><code>library(ggplot2)
+ggplot(data, aes(x=PL, y=ingresos)) +
   geom_point(colour=&quot;red&quot;) +  xlab(&quot;% voto a Pedro Castillo&quot;) +  ylab(&quot;Ingresos per cápita&quot;) +
   ggtitle(&quot;Relación entre los ingresos per cápita y el voto a Castillo&quot;) +
-  theme_light()</code></pre>
+  theme_light() + geom_smooth(method=lm,se=F)</code></pre>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
 ¿Qué sentido?</p>
 <p><strong>Paso 3: Correlación</strong></p>
@@ -592,7 +593,7 @@ educación secundaria</h3>
 <pre class="r"><code>ggplot(data, aes(x=PL, y=secundaria)) +
   geom_point(colour=&quot;red&quot;) +  xlab(&quot;Acceso a educación secundaria&quot;) +  ylab(&quot;% voto a Pedro Castillo&quot;) +
   ggtitle(&quot;Relación entre el acceso a educación secundaria y el voto a Castillo&quot;) +
-  theme_light()</code></pre>
+  theme_light()+ geom_smooth(method=lm,se=F)</code></pre>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
 ¿Qué sentido?</p>
 <p><strong>Paso 3: Correlación</strong></p>
@@ -626,9 +627,9 @@ de vida</h3>
            Max = max(esperanza))</code></pre>
 <p><strong>Paso 2: Gráfico de dispersión</strong></p>
 <pre class="r"><code>ggplot(data, aes(x=PL, y=esperanza)) +
-  geom_point(colour=&quot;red&quot;) +  xlab(&quot;Esperanza de vida&quot;) +  ylab(&quot;% voto a Pedro Castillo&quot;) +
+  geom_point(colour=&quot;red&quot;) +  xlab(&quot;% voto a Pedro Castillo&quot;) +  ylab(&quot;Esperanza de vida&quot;) +
   ggtitle(&quot;Relación entre la esperanza de vida y el voto a Castillo&quot;) +
-  theme_light()</code></pre>
+  theme_light() + geom_smooth(method=lm, se=F)</code></pre>
 <p>¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza?
 ¿Qué sentido?</p>
 <p><strong>Paso 3: Correlación</strong></p>
