@@ -85,37 +85,18 @@ Las variables que utilizaremos serán:
 
 **¿El indicador de democracia participativa tiene un impacto en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción?**
 
-Opción 1: Gráfico de dispersión y la recta
+Elaboramos el gráfico de dispersión y la recta
 
 ```{r}
 library(dplyr)
 library(ggplot2)
 data %>%
-  ggplot(aes (x=Part, y=Q2c*100)) +
+  ggplot(aes (x=Q2c*100, y=Part)) +
   geom_point(colour="lightsteelblue4") +  
-  xlab("Índicador de democracia participativa") +  
-  ylab("% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
-       públicos están involucrados en corrupción")+ theme_light() + 
+  xlab("% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
+       públicos están involucrados en corrupción") +  
+  ylab("Índicador de democracia participativa")+ theme_light() + 
   geom_smooth(method="lm", se = T, colour="grey5")
-```
-
-Opción 2: Gráfico de dispersión, recta, ecuación y R^2^
-
-```{r}
-library(ggpmisc) #Para agregar la ecuación y R2
-
-  data %>%
-  ggplot()+
-  aes (x=Part, y=Q2c) +
-  stat_poly_line(se = FALSE) +
-  stat_poly_eq(formula = y ~ x,aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")),label.x = "right") + 
-  stat_fit_deviations(colour = "lightsteelblue") + 
-  geom_point(colour="lightsteelblue4") +  
-  xlab("Índicador de democracia participativa") +  
-  ylab("% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
-       públicos están involucrados en corrupción")+ theme_light() + 
-  geom_smooth(method="lm", se = F, colour="grey5")
-
 ```
 
 A primera vista parece haber un leve impacto, y la relación entre nuestras variables se perfila como negativa. Comprobémoslo ...
@@ -123,13 +104,13 @@ A primera vista parece haber un leve impacto, y la relación entre nuestras vari
 ## Creación del modelo
 
 ```{r}
-modelo1=lm(Q2c~Part,data=data)
+modelo1=lm(Part~Q2c,data=data)
 summary(modelo1)
 ```
 
 ## Interpretación
 
-*¿El indicador de democracia participativa tiene un impacto en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción?*
+*¿El porcentaje de personas que creen que los funcionarios son corruptos influyen en el indicador de democracia participativa?*
 
 Para interpretar los resultados del modelo debemos tener presente lo siguiente:
 
@@ -143,32 +124,38 @@ Establezcamos nuestras hipótesis:
 
 -   H1: El modelo de regresión es válido (variable X aporta al modelo)
 
-Como el p valor es **0.002453** entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el índice de democracia participativa y la percepción de funcionarios corruptos por país.
+Como el p valor es **0.002453**, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el índice de democracia participativa y la percepción de funcionarios corruptos por país.
+
+En otras palabras, podemos decir que la percepción de funcionarios corruptos del país *sí influye* en el puntaje obtenido en el índice de democracia participativa.
 
 ### Segundo: pendiente/b
 
-Explicar cómo es el efecto de x en y. Para ello analizamos el valor del parámetro de la pendiente.
+Explica cómo es el efecto de x en y. Para ello analizamos el valor del parámetro de la pendiente.
 
-En este caso, al ser este valor **-0.24436**, concluímos que cada vez que el valor del índice de democracia participativa aumenta en 1, el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción por país disminuye en 0.244.
+En este caso, al ser este valor **-0.31779**, concluímos que cada vez que el valor de la percepción de corrupción en el país aumenta en 1, el puntaje del índice de democracia participativa disminuye en 0.318. Es decir, tenemos una *relación inversa o negativa*.
 
 ### Tercero: R^2^
 
 Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por la variable independiente (x), para ello revisamor el **R^2^** (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
 
-En nuestro modelo, este arrojó el valor de **0.07765**, por lo que podemos concluir que aproximadamente el **7.8%** (0.07765\*100)de la variabilidad en el porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción por país puede ser explicada por el índice de democracia participativa. Esto quiere decir que la cantidad de variabilidad explicada es relativamente baja. Por lo que podemos afirmar que hay otros factores más importantes o complejos que afectan la percepción de corrupción en cada país.
+En nuestro modelo, este arrojó el valor de **0.07765**, por lo que podemos concluir que aproximadamente el **7.8%** (0.07765\*100)de la variabilidad en el índice de democracia participativa puede ser explicado porel porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción. 
+
+Esto quiere decir que la cantidad de variabilidad explicada es relativamente baja. Por lo que podemos afirmar que hay otros factores más importantes o complejos que afectan la percepción de corrupción en cada país.
 
 ### Cuarto: Ecuación de la recta
 
 Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los dos valores de la tabla que se encuentran en la columna de "Estimate", el valor de la primera fila es el del intercepto (a) y el de la segunda es el de la pendiente (b).
 
-Del segundo paso, ya conocíamos que el valor de la pendiente es **-0.24436.** Si volvemos a revisar nuestra tabla podemos observar que en el cruce de Estimate e Intercept está el valor de **0.44221**, este sería nuestro a/intercepto. Ahora armemos nuestra ecuación de la recta:
+Del segundo paso, ya conocíamos que el valor de la pendiente es **-0.31779.** Si volvemos a revisar nuestra tabla podemos observar que en el cruce de Estimate e Intercept está el valor de **0.49004**, este sería nuestro intercepto. Ahora, armemos nuestra ecuación de la recta:
 
-**Ŷ = 0.44221 - 0.24436∗X**
+**Ŷ = 0.49004 - 0.31779∗X**
 
 Donde:
 
--   X = Indicador de democracia participativa - (independiente)
--   Y = Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción - (dependiente)
+-   X = Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción - (independiente)
+-   Y =  Indicador de democracia participativa - (dependiente)
+
+**¿Qué se quiere saber?**: Queremos saber si el % de personas que opinan que los funcionarios son corruptos influye en el indicador de democracia participativa.
 
 Esa ecuación crea una línea recta en el diagrama de dispersión que representa la relación entre ambas variables y además indica que el cambio esperado en nuestra variable dependiente (Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción) por cada cambio de una unidad en nuestra variable independiente (Indicador de democracia participativa). Así, con esta ecuación se puede estimar el valor de Y para cualquier valor de X.
 
@@ -182,17 +169,17 @@ modelo1$coefficients
 
 Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente (Y) para un valor dado de la variable independiente (X).
 
-Previamente, ya habíamos hallado la ecuación de la recta de nuestro modelo. Si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4, solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
+Por ejemplo, si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4, solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
 
 Sustituyendo el valor de "x" en la ecuación, tenemos:
 
-**Ŷ = 0.44221 - 0.24436 \* 0.4**
+**Ŷ = 0.49004 - 0.31779 \* 0.4**
 
-**Ŷ = 0.44221 - 0.097744**
+**Ŷ = 0.49004 - 0.12712**
 
-**Ŷ = 0.344466**
+**Ŷ = 0.36292**
 
-Por lo tanto, utilizando la ecuación de la recta, cuando el índice de democracia participativa es 0.4 , podemos predecir que aproximadamente el 34.4% de las personas opinan que la mayoría/todos los funcionarios están envueltos en corrupción en ese país.
+Por lo tanto, utilizando la ecuación de la recta, cuando el índice de democracia participativa es 0.4 , podemos predecir que aproximadamente el 36.2% de las personas opinan que la mayoría/todos los funcionarios están envueltos en corrupción en ese país.
 
 Practica resolviendo los siguientes ejercicios
 
