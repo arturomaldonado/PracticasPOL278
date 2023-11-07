@@ -180,9 +180,9 @@ modelo1$coefficients
 
 ### Quinto: Predecir
 
-Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente para un valor dado de la variable independiente.
+Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente (Y) para un valor dado de la variable independiente (X).
 
-Previamente ya habíamos hallado la ecuación de la recta de nuestro modelo, si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4 solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
+Previamente, ya habíamos hallado la ecuación de la recta de nuestro modelo. Si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4, solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
 
 Sustituyendo el valor de "x" en la ecuación, tenemos:
 
