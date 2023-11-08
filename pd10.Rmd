@@ -2,6 +2,7 @@
 title: "Práctica dirigida 10"
 output:
   pdf_document:
+    latex_engine : xelatex
     toc: yes
     toc_depth: '1'
   html_document:
@@ -14,11 +15,11 @@ output:
     highlight: textmate
     always_allow_html: yes
 editor_options: 
-  markdown: 
     wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
