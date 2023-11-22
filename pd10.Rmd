@@ -1,10 +1,6 @@
 ---
 title: "Práctica dirigida 10"
 output:
-  pdf_document:
-    latex_engine : xelatex
-    toc: yes
-    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
@@ -14,6 +10,10 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
+  pdf_document:
+    latex_engine : xelatex
+    toc: yes
+    toc_depth: '1'
 editor_options: 
     wrap: sentence
 ---
