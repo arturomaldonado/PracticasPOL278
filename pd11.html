@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 11</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="Pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 11</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<div id="regresión-linea-múltiple" class="section level1">
+<h1><strong>Regresión linea múltiple</strong></h1>
+<p>Hasta el momento, nos hemos encontrado en el campo del análisis
+bivariado. Sin embargo, en el mundo social, difícilmente se pueden
+explicar los fenómenos de interés con una sola variable. Incluso si nos
+interesa evaluar el efecto de un a variable en específico sobre un
+fenómeno de estudio, hay muchos otros factores que podrían influir en
+aquello que nos interesa explorar. Por ello, necesitamos recurrir al
+<strong>análisis multivariado</strong> y conocer el concepto de
+<strong>control estadístico</strong>.</p>
+<p>El control estadístico nos permite “eliminar” explicaciones
+alternativas, en tanto se aisla el efecto de otras variables. La idea
+es:</p>
+<ul>
+<li><p>Evaluar si la asociación entre X - Y permanece si se remueve el
+efecto de otra variable, es decir, si se controla por una tercera
+variable.</p></li>
+<li><p>Se analiza la relación entre X - Y para valores similares o
+iguales de una variable Z. De esta manera se elimina la influencia de Z
+en la relación entre X - Y. Es un paso en el establecimiento de X -&gt;
+Y.</p></li>
+<li><p>Si la relación entre X - Y desaparece cuando se controla por Z,
+se dice que la relación era espúrea.</p></li>
+</ul>
+<p>Sobre la regresión lineal múltiple:</p>
+<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
+<hr />
+<p>Seguiremos los siguientes pasos para el análisis:</p>
+<p><img src="pd12_diap2.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="aplicación-práctica" class="section level1">
+<h1>Aplicación práctica</h1>
+<div
+id="factores-que-determinan-el-acceso-a-la-información-en-los-estados"
+class="section level2">
+<h2><strong>Factores que determinan el acceso a la información en los
+Estados</strong></h2>
+<p>El acceso a la información es fundamental para el funcionamiento de
+cualquier Estado democrático, ya que promueve la transparencia, la
+responsabilidad y la participación ciudadana.</p>
+<p>Para poder realizar el análisis se han revisado las siguientes
+fuentes:</p>
+<p><strong>Digital Access Index</strong> El Índice de Acceso Digital es
+utilizado para medir y evaluar el nivel de acceso a las tecnologías
+digitales y a internet. Proporciona una medida de hasta qué punto las
+personas y las comunidades pueden utilizar y beneficiarse de las
+tecnologías digitales.</p>
+<p><strong>Egov-index</strong> El Índice de Gobierno Electrónico es una
+medida que evalúa el nivel de desarrollo y adopción de tecnologías de la
+información y la comunicación (TIC) en el sector público. Este índice se
+utiliza para medir la capacidad de los gobiernos para proporcionar
+servicios en línea, promover la participación ciudadana y utilizar las
+TIC de manera efectiva en la gestión gubernamental.</p>
+<p><strong>Democracy Index</strong> El Índice de Democracia es un índice
+que mide el estado de la democracia en países de todo el mundo. Es
+elaborado por The Economist (EIU) y evalúa el funcionamiento de los
+procesos e instituciones democráticas.</p>
+<p>A partir de la información recolectada se ha creado una base de datos
+llamada Egov.</p>
+<p><img src="PD12_diccionarioEgov.png" width="80%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>library(rio)
+Egov=import(&quot;EGov.xlsx&quot;)
+names(Egov)</code></pre>
+<pre><code>## [1] &quot;pais&quot;                             &quot;participaciónDigital&quot;            
+## [3] &quot;Servicios_Online&quot;                 &quot;Capital_Humano&quot;                  
+## [5] &quot;Telecommunicacion_Infrastructura&quot; &quot;ProcesoElectoral&quot;                
+## [7] &quot;Policulture&quot;                      &quot;accesoInformacion&quot;               
+## [9] &quot;UsuariosInternet&quot;</code></pre>
+<p><strong>No olviden el análisis descriptivo antes de hacer los
+modelos.</strong></p>
+</div>
+<div id="modelo-1" class="section level2">
+<h2><strong>Modelo 1</strong></h2>
+<pre class="r"><code>library(tidyverse)
+
+modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet ,data=Egov)
+summary(modelo1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = accesoInformacion ~ participaciónDigital + Servicios_Online + 
+##     Capital_Humano + Telecommunicacion_Infrastructura + ProcesoElectoral + 
+##     Policulture + UsuariosInternet, data = Egov)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.204651 -0.033054  0.002505  0.032268  0.116256 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      -0.1208398  0.0263792  -4.581 1.13e-05 ***
+## participaciónDigital             -0.0788712  0.0914304  -0.863  0.39004    
+## Servicios_Online                  0.0809775  0.0948445   0.854  0.39491    
+## Capital_Humano                    0.2968634  0.0555961   5.340 4.43e-07 ***
+## Telecommunicacion_Infrastructura  0.3561180  0.0782623   4.550 1.28e-05 ***
+## ProcesoElectoral                  0.0075843  0.0019182   3.954  0.00013 ***
+## Policulture                       0.0139957  0.0043417   3.224  0.00163 ** 
+## UsuariosInternet                  0.0015629  0.0006815   2.293  0.02355 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.06194 on 121 degrees of freedom
+## Multiple R-squared:  0.926,  Adjusted R-squared:  0.9217 
+## F-statistic: 216.3 on 7 and 121 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="interpretamos" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared, por ser un modelo lineal múltiple).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos
+concluir que el modelo explica aproximadamente el 92.2% (0.9217*100) de
+la variabilidad en el acceso a la información (variable dependiente). En
+otras palabras, este valor alto de R cuadrado ajustado indica que el
+modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar
+la relación entre las variables independientes y la variable
+dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice
+nada sobre la significancia estadística de las variables individuales,
+ni sobre la causalidad. Por ello analizaremos también las variables de
+forma independiente en el siguiente paso.</p>
+<p><em>Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un
+R cuadrado de 1 indica que el modelo explica toda la variabilidad de la
+variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de
+la variabilidad de la variable Y.</em></p>
+</div>
+<div id="las-variables-aportan-al-modelo" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Nos damos cuenta que <em>no todas</em> las variables independientes
+tienen un p-value &lt;0.05, es el caso de: participaciónDigital y
+Servicios_Online</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<p>Podemos obtener extraer los coeficientes del modelo:</p>
+<p><em>No olvidar identificar el signo de cada coeficiente, este tendrá
+repercusión en la ecuación y su futura aplicación</em></p>
+<pre class="r"><code>modelo1$coefficients</code></pre>
+<pre><code>##                      (Intercept)             participaciónDigital 
+##                     -0.120839771                     -0.078871158 
+##                 Servicios_Online                   Capital_Humano 
+##                      0.080977535                      0.296863439 
+## Telecommunicacion_Infrastructura                 ProcesoElectoral 
+##                      0.356118022                      0.007584279 
+##                      Policulture                 UsuariosInternet 
+##                      0.013995704                      0.001562898</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = -0.12 + \text{participaciónDigital} \times (-0.078) +
+\text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times
+(0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) +
+\text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times
+(0.013) + \text{UsuariosInternet} \times (0.0015)
+\]</span></p>
+<p>¿Qué sucede si retiro las variables independientes que no aportan al
+modelo 1? Veamos un segundo modelo 👀 .</p>
+</div>
+</div>
+<div id="modelo-2" class="section level2">
+<h2><strong>Modelo 2</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+
+modelo2 = lm(accesoInformacion ~Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
+summary(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = accesoInformacion ~ Capital_Humano + Telecommunicacion_Infrastructura + 
+##     ProcesoElectoral + Policulture + UsuariosInternet, data = Egov)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.205352 -0.037077  0.002991  0.035621  0.111936 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      -0.1220640  0.0262044  -4.658 8.15e-06 ***
+## Capital_Humano                    0.2884448  0.0538523   5.356 4.02e-07 ***
+## Telecommunicacion_Infrastructura  0.3513669  0.0774659   4.536 1.34e-05 ***
+## ProcesoElectoral                  0.0075854  0.0018682   4.060 8.66e-05 ***
+## Policulture                       0.0145801  0.0042686   3.416 0.000863 ***
+## UsuariosInternet                  0.0016876  0.0006405   2.635 0.009498 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.06163 on 123 degrees of freedom
+## Multiple R-squared:  0.9255, Adjusted R-squared:  0.9225 
+## F-statistic: 305.8 on 5 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="interpretamos-1" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-1" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-1" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos
+concluir mi modelo explica aproximadamente el 92.25% (0.9225*100) de la
+variabilidad en el acceso a la información (variable dependiente). E</p>
+</div>
+<div id="las-variables-aportan-al-modelo-1" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li><em>Todas</em> las variables independientes aportan al modelo.</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-1"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<pre class="r"><code>modelo2$coefficients</code></pre>
+<pre><code>##                      (Intercept)                   Capital_Humano 
+##                     -0.122063970                      0.288444800 
+## Telecommunicacion_Infrastructura                 ProcesoElectoral 
+##                      0.351366905                      0.007585449 
+##                      Policulture                 UsuariosInternet 
+##                      0.014580126                      0.001687594</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = -0.12 + \text{Capital\_Humano} \times (0.288) +
+\text{Telecommunicacion\_Infrastructura} \times (0.35) +
+\text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times
+(0.0145) + \text{UsuariosInternet} \times (0.0016)
+\]</span></p>
+<p>Mi modelo ha mejorado?</p>
+<p>Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo
+2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto,
+con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así
+la mejora no ha haya sido sustancial).</p>
+</div>
+</div>
+<div
+id="qué-factores-determinan-la-calidad-de-sueño-del-personal-de-salud-en-pandemia"
+class="section level2">
+<h2><strong>Qué factores determinan la calidad de sueño del personal de
+salud en pandemia</strong></h2>
+<p>La pandemia de COVID-19 tuvo una repercusión significativa en el
+personal de salud en todo el mundo. Los trabajadores de la salud
+estuvieron en la primera línea de batalla, enfrentando desafíos sin
+precedentes. Además de los riesgos físicos, el personal de salud
+enfrentó una carga emocional y psicológica abrumadora. Una de las
+principales preocupaciones era la calidad del sueño del personal de
+salud, pues podía repercutir directamente en la calidad de atención de
+los pacientes.</p>
+<ul>
+<li>Q1: Edad</li>
+<li>Q2: Género</li>
+<li>Q7: ¿Se encentra en la primera línea de atención del Covid-19?</li>
+<li>Q8: ¿Trabaja desde casa?</li>
+<li>Q11: ¿Tiene niños en casa?</li>
+<li>Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?</li>
+</ul>
+<pre class="r"><code>Covid=import(&quot;COVID_pd12.xlsx&quot;)
+names(Covid)</code></pre>
+<pre><code>## [1] &quot;Q1&quot;  &quot;Q2&quot;  &quot;Q7&quot;  &quot;Q8&quot;  &quot;Q11&quot; &quot;Q13&quot;</code></pre>
+<pre class="r"><code>str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : chr  NA NA NA NA ...
+##  $ Q7 : chr  NA NA NA NA ...
+##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
+##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : chr  NA NA NA NA ...
+##  $ Q7 : chr  NA NA NA NA ...
+##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
+##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<p>Reviso las variables dicotómicas Q2,Q7,Q8 y Q11</p>
+<pre class="r"><code>table(Covid$Q2)</code></pre>
+<pre><code>## 
+## Female   Male 
+##    723    185</code></pre>
+<pre class="r"><code>table(Covid$Q7)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 338 116</code></pre>
+<pre class="r"><code>table(Covid$Q8)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 328 582</code></pre>
+<pre class="r"><code>table(Covid$Q11)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 515 360</code></pre>
+<pre class="r"><code>Covid$Q2= factor(ifelse(Covid$Q2==&quot;Male&quot;,1,0))
+Covid$Q7= factor(ifelse(Covid$Q7==&quot;Yes&quot;,1,0))
+Covid$Q8= factor(ifelse(Covid$Q8==&quot;Yes&quot;,1,0))
+Covid$Q11= factor(ifelse(Covid$Q11==&quot;Yes&quot;,1,0))
+str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA 1 1 1 1 1 NA ...
+##  $ Q7 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q8 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 1 2 NA 2 2 2 2 2 NA ...
+##  $ Q11: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 2 2 NA 1 2 2 1 1 NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>Covid$Q1= as.numeric(Covid$Q1)
+Covid$Q13= as.numeric(Covid$Q13)</code></pre>
+<pre class="r"><code>Covid = Covid[complete.cases(Covid), ]</code></pre>
+</div>
+<div id="modelo-3" class="section level2">
+<h2><strong>Modelo 3</strong></h2>
+<p>Hacemos uso de todas las variables de la base de datos. Veamos los
+resultados.</p>
+<pre class="r"><code>modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
+summary(modelo3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Q13 ~ Q1 + Q2 + Q7 + Q8 + Q11, data = Covid)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.5407 -0.8801  0.1046  0.8078 10.7835 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.357909   0.319505  23.029  &lt; 2e-16 ***
+## Q1          -0.005345   0.005906  -0.905  0.36601    
+## Q21          0.205988   0.182598   1.128  0.25992    
+## Q71         -0.814687   0.189035  -4.310 2.04e-05 ***
+## Q81          0.190613   0.163688   1.164  0.24488    
+## Q111        -0.470729   0.148751  -3.165  0.00167 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.491 on 423 degrees of freedom
+## Multiple R-squared:  0.09865,    Adjusted R-squared:  0.08799 
+## F-statistic: 9.259 on 5 and 423 DF,  p-value: 2.224e-08</code></pre>
+</div>
+<div id="interpretamos-2" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-2" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+2.224e-08 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-2" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.08799 , por lo que
+podemos concluir el modelo explica aproximadamente el 8.79% de la
+variabilidad en el promedio de las horas de sueño del personal de salud
+(variable dependiente).</p>
+</div>
+<div id="las-variables-aportan-al-modelo-2" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Esta vez las variables que <strong>sí aportan</strong> al modelo
+son: Q7 y Q11</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<p>Coeficientes:</p>
+<pre class="r"><code>modelo3$coefficients</code></pre>
+<pre><code>##  (Intercept)           Q1          Q21          Q71          Q81         Q111 
+##  7.357908524 -0.005344998  0.205988315 -0.814686704  0.190613180 -0.470728913</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 7.35 + \text{Q1} \times (-0.0053) + \text{Q2} \times (0.20) +
+\text{Q7} \times (-0.81) + \text{Q8} \times (0.19) + \text{Q11} \times
+(-0.47)
+\]</span> <strong>¿Qué sucede si retiramos aquellas variables que no
+aportan al modelo?</strong> Hagamos un siguiente modelo</p>
+</div>
+</div>
+<div id="modelo-4" class="section level2">
+<h2><strong>Modelo 4</strong></h2>
+<pre class="r"><code>modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
+summary(modelo4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Q13 ~ Q7 + Q11, data = Covid)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.2780 -0.9310  0.1802  0.7220 10.7220 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.27799    0.09959  73.078  &lt; 2e-16 ***
+## Q71         -0.88879    0.16560  -5.367 1.32e-07 ***
+## Q111        -0.45821    0.14813  -3.093  0.00211 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.492 on 426 degrees of freedom
+## Multiple R-squared:  0.09138,    Adjusted R-squared:  0.08711 
+## F-statistic: 21.42 on 2 and 426 DF,  p-value: 1.367e-09</code></pre>
+</div>
+<div id="interpretamos-3" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-3" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+1.367e-09 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-3" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.08711 , por lo que
+podemos concluir mi modelo explica aproximadamente el 8.71% de la
+variabilidad en el promedio de las horas de sueño del personal de salud
+(variable dependiente).</p>
+</div>
+<div id="las-variables-aportan-al-modelo-3" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong> 🤔</h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Todas las variables <em>aportan</em> al modelo.</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-3"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<pre class="r"><code>modelo4$coefficients</code></pre>
+<pre><code>## (Intercept)         Q71        Q111 
+##   7.2779936  -0.8887921  -0.4582067</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 7.27  + \text{Q7} \times (-0.88) +  \text{Q11} \times (-0.458)
+\]</span> <strong>¿Qué variable aporta más al modelo?</strong></p>
+<p>Mi modelo ha mejorado?</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
