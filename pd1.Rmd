@@ -20,7 +20,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 ------------------------------------------------------------------------
 
