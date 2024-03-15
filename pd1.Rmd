@@ -72,15 +72,15 @@ Instalar [RStudio](https://posit.co/downloads/)
 
 #### **3.1. Configurar el directorio de trabajo**
 
-R funciona como un entorno temporal de trabajo, esto quiere decir que el usuario va agregando datos y objetos, pero si los análisis no son guardados se deberán repetir las instrucciones para obtener otra vez el resultado. Por esta razón, es preciso configurar una carpeta predeterminada en nuestro ordenador, donde el programa buscará los archivos a ejecutar y guardará los archivos a conservar con cambios.
+R funciona como un entorno temporal de trabajo, lo que quiere decir que el usuario va agregando datos y objetos. Sin embargo, si los análisis no son guardados se deberán repetir las instrucciones para obtener otra vez el resultado. Por esta razón, es preciso configurar una carpeta predeterminada en nuestro ordenador, donde el programa buscará los archivos a ejecutar y guardará los archivos a conservar con cambios.
 
 Para ver nuestro lugar de trabajo actual escribimos el siguiente comando (escriba el código en la consola, ya que si lo ejecuta desde este Rmd, obtendrá el lugar donde se encuentra este archivo):
 
 ```{r}
-getwd()
+getwd() #para saber en qué carpeta está el archivo
 ```
 
-Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú "Session" \> "Set Working Directory" \> "Choose Directory". Esto abrirá una ventana emergente, donde buscaremos la carpeta en la cual vamos a trabajar, la ubicamos y seleccionamos "Open". Para verificar el cambio volvemos a digitar la función **"getwd()"** en la consola.
+Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú **"Session" \> "Set Working Directory" \> "Choose Directory"**. Esto abrirá una ventana emergente, donde buscaremos la carpeta en la cual vamos a trabajar, la ubicamos y seleccionamos "Open". Para verificar el cambio volvemos a digitar la función **"getwd()"** en la consola.
 
 #### **3.2. Sintaxis y objetos en R**
 
@@ -108,7 +108,7 @@ Antes que todo, debemos instalar el paquete escribiendo en la consola: install.p
 
 ```{r}
 library(rio) #Convocamos el paquete   
-data=import("Mosteller.csv") #Utilizamos la función import que creará un objeto en R que contenga la base de datos del archivo "Mosteller.csv" que hemos descargado. Podemos verificar la creación en el environment
+data=import("Mosteller.csv") #Utilizamos la función import (importar) que creará un objeto en R que contenga la base de datos del archivo "Mosteller.csv" que hemos descargado. Podemos verificar la creación en el environment (ventana derecha superior)
 
 class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función "class" y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un "data frame", es el tipo de objeto en R para las bases de datos.
 ```
@@ -165,8 +165,8 @@ Finalmente, los **data frames** nos permite almacenar un conjunto de datos, es d
 ```{r}
 PP2023 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
 PP2023 # Visualice la base de datos
-str(PP2023) # Visualice la estructura de la bbdd
-names(PP2023) #Visualice los nombres de las variables de la bbdd
+str(PP2023) # Visualice la estructura de la BD
+names(PP2023) #Visualice los nombres de las variables de la BD
 ```
 
 Cuando queramos invocar una variable específica de una base de datos utilizaremos **"\$"**, entre la base de datos y la variable que queremos invocar.
@@ -189,13 +189,17 @@ data=import("Mosteller.csv")
 
 Esta base de datos pertenece al siguiente paper <https://pubmed.ncbi.nlm.nih.gov/8528684/> Mosteller (1995) realizó un estudio longitudinal sobre el impacto del tamaño de la clase en los primeros grados escolares, sobre el desempeño estudiantil y el desarrollo personal. Un estudio longitudinal es aquel en el que se hace un seguimiento a participantes a lo largo del tiempo. Este estudio en concreto duró de 1985 a 1989 y en él participaron 11.601 estudiantes. Durante los cuatro años del estudio, los estudiantes fueron asignados aleatoriamente a clases pequeñas, a clases de tamaño normal o a clases de tamaño normal con ayuda. Aunque el programa se detuvo en 1989 después de que la primera clase de jardín de infancia del programa terminara el tercer grado, la recopilación de información (por ejemplo, el rendimiento en los exámenes de octavo grado, el promedio general de la escuela secundaria) continuó hasta el final de la asistencia de los participantes a la escuela secundaria.
 
-¿Por qué son importantes este tipo de estudios? Porque constituyen evidencia para los tomadores de decisión de política pública. Pensemos que esto puede contribuir a definir si la política educativa debe apostar por salones de clases con grupos pequeños o no, pensando en fortalecer las competencias de los estudiantes.
+¿Por qué son importantes este tipo de estudios? Porque constituyen evidencia para los tomadores de decisión de política pública.
 
 No obstante, para esta sesión no vamos a examinar las hipótesis o resultados del trabajo de Mosteller (1995), pero sí vamos a utilizar parte de su base de datos para el análisis descriptivo.
 
 Exploramos las variables que tiene nuestra base de datos:
 
 chr, factor, ordered factor, num, int
+
+chr, factor -> variable nominal
+ordered factor -> variable ordinal
+num, int -> variable numérica
 
 ```{r}
 names(data)
@@ -211,6 +215,8 @@ knitr::include_graphics("diccionario.png")
 #### **4.1. Configuración de las variables**
 
 Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la estructura de las variables y verificar que estén bien "configuradas". Es decir que la escala de la variable coincida con el objeto en R.
+
+Por ejemplo, debemos asegurarnos que una variable categórica no esté configurada como numérica en R, y viceversa.
 
 **De "race"**
 
@@ -242,7 +248,7 @@ table(data$hsgrad)
 str(data$hsgrad)
 ```
 
-**"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer) por lo cual lo dejamos así.
+**"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así.
 
 #### 4.2 Media y mediana
 
@@ -260,14 +266,14 @@ Las variables solicitadas son classtype y hsgrad
 library(DescTools)
 library(tidyverse)
 
-data %>% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media
+data %>% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
 ```
 
 **Para "g4math" podemos:**
 
 ```{r}
 library(DescTools)
-data %>% summarise(mediana = median(g4math)) #este comando nos permitirá calcular la mediana
+data %>% summarise(mediana = median(g4math)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
 ```
 
 ------------------------------------------------------------------------
