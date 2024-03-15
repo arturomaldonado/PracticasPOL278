@@ -596,7 +596,7 @@ Buena.</p>
 <pre class="r"><code>Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
 Ejecucion=factor(Ejecucion) #Lo convertimos en factor
 levels(Ejecucion)=c(&quot;Mala&quot;,&quot;Intermedia&quot;,&quot;Buena&quot;) #asignamos los niveles al factor
-Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal
+Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal (ordered)
 Ejecucion #Visualizamos</code></pre>
 <pre><code>## [1] Buena      Intermedia Intermedia Mala       Intermedia
 ## Levels: Mala &lt; Intermedia &lt; Buena</code></pre>
@@ -690,8 +690,8 @@ configurada como numérica en R, y viceversa.</p>
 ## 1383  211    5    1</code></pre>
 <pre class="r"><code>class(data$race) #Exploramos el formato de la variable</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>data$race = factor(data$race, levels = c(1:6), labels = c(&quot;white&quot;,&quot;black&quot;,&quot;asian&quot;,&quot;hispanic&quot;,&quot;native american&quot;,&quot;others&quot;)) #Otorgamos formato
-table(data$race)</code></pre>
+<pre class="r"><code>data$race = factor(data$race, levels = c(1:6), labels = c(&quot;white&quot;,&quot;black&quot;,&quot;asian&quot;,&quot;hispanic&quot;,&quot;native american&quot;,&quot;others&quot;)) #Otorgamos formato; &quot;factor&quot; quiere decir que se otorga formato de variable categórica
+table(data$race) #tabla de frecuencias</code></pre>
 <pre><code>## 
 ##           white           black           asian        hispanic native american 
 ##            1383             211               5               0               0 
@@ -699,6 +699,13 @@ table(data$race)</code></pre>
 ##               1</code></pre>
 <pre class="r"><code>class(data$race)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
+<p>La tabla anterior se llama <strong>tabla de frecuencias</strong>, y
+nos permite observar cuántas observaciones existen por cada
+variable.</p>
+<p>En el caso anterior, la tabla nos indica que, de todas las personas
+estudiadas, 1383 se identificaron como blancas, 211 como negras, 5 como
+asiáticas y 1 como otra raza. Asimismo, se observa que nadie se
+identificó como nativo hispano ni como americano.</p>
 <p><strong>De “classtype”:</strong></p>
 <pre class="r"><code>class(data$classtype) </code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
@@ -706,13 +713,17 @@ table(data$race)</code></pre>
 <pre><code>## 
 ##   1   2   3 
 ## 481 578 541</code></pre>
-<pre class="r"><code>data$classtype = factor(data$classtype, levels = c(1:3), labels = c(&quot;small&quot;,&quot;regular&quot;,&quot;regular with aid&quot;))
+<pre class="r"><code>data$classtype = factor(data$classtype, levels = c(1:3), labels = c(&quot;small&quot;,&quot;regular&quot;,&quot;regular with aid&quot;)) #&quot;factor&quot; para variable nominal
 str(data$classtype)</code></pre>
 <pre><code>##  Factor w/ 3 levels &quot;small&quot;,&quot;regular&quot;,..: 3 1 2 1 1 1 2 3 2 3 ...</code></pre>
-<pre class="r"><code>table(data$classtype)</code></pre>
+<pre class="r"><code>table(data$classtype) #tabla de frecuencias</code></pre>
 <pre><code>## 
 ##            small          regular regular with aid 
 ##              481              578              541</code></pre>
+<p>Al igual que con la tabla anterior, en este caso la **tabla de
+frecuencia* nos indica que, de los encuestados, 481 pertenecen a una
+clase pequeña, 578 pertenecen a una clase regular y otros 541 pertenecen
+a una clase regular con ayuda.</p>
 <p><strong>De “hsgrad”</strong></p>
 <pre class="r"><code>class(data$hsgrad) </code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
@@ -727,6 +738,9 @@ table(data$hsgrad) </code></pre>
 ##              158             1442</code></pre>
 <pre class="r"><code>str(data$hsgrad)</code></pre>
 <pre><code>##  Factor w/ 2 levels &quot;did not graduate&quot;,..: 2 2 2 2 2 2 2 2 1 2 ...</code></pre>
+<p>En este caso, nuestra tabla nos indica que, de todas las personas
+estudiadas, 1442 personas consiguieron graduarse, mientras que otras 158
+no lo consiguieron.</p>
 <p><strong>“g4math”, “g4reading”, “yearssmall”</strong> son variables
 numéricas y están configuradas como vectores numéricos de números
 enteros (integer), por lo cual lo dejamos así.</p>
