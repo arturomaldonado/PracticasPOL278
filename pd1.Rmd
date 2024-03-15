@@ -156,7 +156,7 @@ También podemos crear un **factor ordenado** para almacenar información de una
 Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
 Ejecucion=factor(Ejecucion) #Lo convertimos en factor
 levels(Ejecucion)=c("Mala","Intermedia","Buena") #asignamos los niveles al factor
-Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal
+Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal (ordered)
 Ejecucion #Visualizamos
 ```
 
@@ -223,20 +223,24 @@ Por ejemplo, debemos asegurarnos que una variable categórica no esté configura
 ```{r}
 table(data$race) #Exploramos frecuencias
 class(data$race) #Exploramos el formato de la variable
-data$race = factor(data$race, levels = c(1:6), labels = c("white","black","asian","hispanic","native american","others")) #Otorgamos formato
-table(data$race)
+data$race = factor(data$race, levels = c(1:6), labels = c("white","black","asian","hispanic","native american","others")) #Otorgamos formato; "factor" quiere decir que se otorga formato de variable categórica
+table(data$race) #tabla de frecuencias
 class(data$race)
 ```
+La tabla anterior se llama **tabla de frecuencias**, y nos permite observar cuántas observaciones existen por cada variable.
+
+En el caso anterior, la tabla nos indica que, de todas las personas estudiadas, 1383 se identificaron como blancas, 211 como negras, 5 como asiáticas y 1 como otra raza. Asimismo, se observa que nadie se identificó como nativo hispano ni como americano.
 
 **De "classtype":**
 
 ```{r}
 class(data$classtype) 
 table(data$classtype)
-data$classtype = factor(data$classtype, levels = c(1:3), labels = c("small","regular","regular with aid"))
+data$classtype = factor(data$classtype, levels = c(1:3), labels = c("small","regular","regular with aid")) #"factor" para variable nominal
 str(data$classtype)
-table(data$classtype)
+table(data$classtype) #tabla de frecuencias
 ```
+Al igual que con la tabla anterior, en este caso la **tabla de frecuencia* nos indica que, de los encuestados, 481 pertenecen a una clase pequeña, 578 pertenecen a una clase regular y otros 541 pertenecen a una clase regular con ayuda.
 
 **De "hsgrad"**
 
@@ -247,6 +251,7 @@ data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c("did not graduate"
 table(data$hsgrad) 
 str(data$hsgrad)
 ```
+En este caso, nuestra tabla nos indica que, de todas las personas estudiadas, 1442 personas consiguieron graduarse, mientras que otras 158 no lo consiguieron.
 
 **"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así.
 
