@@ -409,6 +409,53 @@ library(DescTools)
 data %>% summarise(mediana = median(g4math)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
 ```
 
+**Grafiquemos**
+
+Primero, seleccionemos los datos que queremos utilizar.
+
+```{r}
+para_graficoMath = data %>%
+  group_by(g4math) %>%
+   summarize(Freq=n())
+```
+
+Como nuestra variable (g4math) es numérica, esta vez pediremos un **histograma**. Es similar a un gráfico de barras, solo que esta vez todas las barras se encuentran juntas y no separadas.
+
+```{r}
+library(ggplot2) #no olvidar llamar al paquete
+ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+geom_histogram(stat = "identity") 
+```
+Si lo queremos personalizar :)
+
+```{r}
+ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+geom_histogram(fill ="blue", stat = "identity") +
+  
+ ggtitle("Notas de matemática") +
+  xlab("Puntaje") + ylab("Frecuencia") +
+  theme(panel.background=element_rect(fill = "lightgray", colour = "black"))
+```
+El histograma muestra una **distribución asimétrica sesgada con sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
+
+También podemos calcular un **gráfico de cajas o "boxplot** a partir de la misma información numérica.
+
+```{r}
+ggplot(para_graficoMath, aes(y=Freq)) + 
+geom_boxplot(star = "identity")
+```
+También se puede personalizar
+
+```{r}
+ggplot(para_graficoMath, aes(x = " ", y=Freq)) + 
+geom_boxplot(star = "identity", fill = "yellow", outlier.colour = "orange") +
+  
+  stat_boxplot(geom = "errorbar", width = 0.15)
+```
+Este gráfico permite observar la mediana (línea gruesa dentro de la caja), así como valores atípicos. En este caso, se pueden observar 3 valores atípicos (círculos naranjas).
+
+Los extremos de la caja indican el percentil 25 y el percentil 75. Quiere decir que entre el valor ubicado entre el 25% y 75% de valores se encuentran dentro de la caja. Los "Bigotes" indican los valores debajo del percentil 25 y el percentil 75.
+
 ------------------------------------------------------------------------
 
 #### Ejercicio: Calculemos la media y la mediana de la variable "g4reading"
