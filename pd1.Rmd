@@ -352,7 +352,7 @@ class(data$hsgrad)
 ```{r}
 data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c("did not graduate","did graduate")) #ojo con el orden
 
-str(data$hsgrad)#confirmamos la modificación
+str(data$hsgrad)
 ```
 
 ```{r}

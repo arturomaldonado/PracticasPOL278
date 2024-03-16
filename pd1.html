@@ -807,7 +807,7 @@ geom_bar(stat = &quot;identity&quot;)+
 <pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code>data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c(&quot;did not graduate&quot;,&quot;did graduate&quot;)) #ojo con el orden
 
-str(data$hsgrad)#confirmamos la modificación</code></pre>
+str(data$hsgrad)</code></pre>
 <pre><code>##  Factor w/ 2 levels &quot;did not graduate&quot;,..: 2 2 2 2 2 2 2 2 1 2 ...</code></pre>
 <pre class="r"><code>data %&gt;%
  group_by(hsgrad) %&gt;%
