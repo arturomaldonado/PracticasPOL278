@@ -751,9 +751,6 @@ ayuda del paquete <code>ggplot2</code> . Para ello, antes debemos de
 crear una tabla y crear un objeto, lo llamaremos
 <em>para_grafico</em></p>
 <<<<<<< HEAD
-<pre class="r"><code>para_graficoRace=data %&gt;%
-=======
-<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -770,7 +767,6 @@ crear una tabla y crear un objeto, lo llamaremos
 =======
 <pre class="r"><code>para_grafico=data %&gt;%
 >>>>>>> 80b88726363311b949ea4cb657666114db5530ba
->>>>>>> 39cb9c88e6b64d0e921c9285883fc663e6f6d3a9
  group_by(race) %&gt;%
   summarize(Freq=n())</code></pre>
 <p>Si no contamos con el paquete ggplot lo instalamos insertando el
@@ -778,9 +774,6 @@ siguiente código en un chunk:
 <code>install.packages("ggplot2")</code></p>
 <pre class="r"><code>library(ggplot2)
 <<<<<<< HEAD
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
-=======
-<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -797,15 +790,11 @@ ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) +
 =======
 ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) + 
 >>>>>>> 80b88726363311b949ea4cb657666114db5530ba
->>>>>>> 39cb9c88e6b64d0e921c9285883fc663e6f6d3a9
 geom_bar(stat = &quot;identity&quot;) </code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Podemos personalizar el gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
 <<<<<<< HEAD
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
-=======
-<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -822,16 +811,12 @@ ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) +
 =======
 ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) + 
 >>>>>>> 80b88726363311b949ea4cb657666114db5530ba
->>>>>>> 39cb9c88e6b64d0e921c9285883fc663e6f6d3a9
 geom_bar(stat = &quot;identity&quot;)+
   ggtitle(&quot;Distribución de autopercepción&quot;) +
   xlab(&quot;Race&quot;) + ylab(&quot;Frecuencia&quot;)+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<<<<<<< HEAD
-<p><strong>Variable “classtype”:</strong></p>
-=======
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -846,7 +831,6 @@ geom_bar(stat = &quot;identity&quot;)+
 >>>>>>> 80b88726363311b949ea4cb657666114db5530ba
 <p><strong>De “classtype”:</strong></p>
 >>>>>>> 80b88726363311b949ea4cb657666114db5530ba
->>>>>>> 39cb9c88e6b64d0e921c9285883fc663e6f6d3a9
 <pre class="r"><code>class(data$classtype) </code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code>data %&gt;%
