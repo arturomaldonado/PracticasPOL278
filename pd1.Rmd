@@ -6,7 +6,7 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 4
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: true
@@ -230,7 +230,7 @@ El contenido de cada variable lo podemos ver en la siguiente tabla:
 knitr::include_graphics("diccionario.png")
 ```
 
-### **4.1. Configuración de las variables**
+## 4.1. Formateo de variables y frecuencia
 
 Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la estructura de las variables y verificar que estén bien "configuradas". Es decir que la escala de la variable coincida con el objeto en R.
 
@@ -383,7 +383,7 @@ En este caso, nuestra tabla nos indica que, de todas las personas estudiadas, 14
 
 **"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así 😸.
 
-### 4.2 Media y mediana
+## 4.2 Media y mediana
 
 Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables.
 
@@ -411,6 +411,6 @@ data %>% summarise(mediana = median(g4math)) #calcular la mediana. Al igual que 
 
 ------------------------------------------------------------------------
 
-### Ejercicio: Calculemos la media y la mediana de la variable "g4reading"
+#### Ejercicio: Calculemos la media y la mediana de la variable "g4reading"
 
 <br></br> [Go to page beginning](#beginning)
