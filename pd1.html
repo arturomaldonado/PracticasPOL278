@@ -600,31 +600,31 @@ Ejecucion #Visualizamos</code></pre>
 <pre><code>## [1] Buena      Intermedia Intermedia Mala       Intermedia
 ## Levels: Mala &lt; Intermedia &lt; Buena</code></pre>
 <p>Finalmente, los <strong>data frames</strong> nos permite almacenar un
-conjunto de datos, es decir una base de datos (bbdd) que tiene filas y
-columnas. Creemos la base de datos “PP2021” que contenga todos los
+conjunto de datos, es decir una base de datos (bd) que tiene filas y
+columnas. Creemos la base de datos “PP2024” que contenga todos los
 objetos que hemos creado:</p>
-<pre class="r"><code>PP2023 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
-PP2023 # Visualice la base de datos</code></pre>
+<pre class="r"><code>PP2024 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
+PP2024 # Visualice la base de datos</code></pre>
 <pre><code>##      Prioridad Presupuesto_millones  Ejecucion
 ## 1 reactivación                 9879      Buena
 ## 2    educación                33132 Intermedia
 ## 3        salud                20991 Intermedia
 ## 4        mujer                  690       Mala
 ## 5      pobreza                 5392 Intermedia</code></pre>
-<pre class="r"><code>str(PP2023) # Visualice la estructura de la BD</code></pre>
+<pre class="r"><code>str(PP2024) # Visualice la estructura de la BD</code></pre>
 <pre><code>## &#39;data.frame&#39;:    5 obs. of  3 variables:
 ##  $ Prioridad           : Factor w/ 5 levels &quot;reactivación&quot;,..: 1 2 3 4 5
 ##  $ Presupuesto_millones: num  9879 33132 20991 690 5392
 ##  $ Ejecucion           : Ord.factor w/ 3 levels &quot;Mala&quot;&lt;&quot;Intermedia&quot;&lt;..: 3 2 2 1 2</code></pre>
-<pre class="r"><code>names(PP2023) #Visualice los nombres de las variables de la BD</code></pre>
+<pre class="r"><code>names(PP2024) #Visualice los nombres de las variables de la BD</code></pre>
 <pre><code>## [1] &quot;Prioridad&quot;            &quot;Presupuesto_millones&quot; &quot;Ejecucion&quot;</code></pre>
 <p>Cuando queramos invocar una variable específica de una base de datos
 utilizaremos <strong>“$”</strong>, entre la base de datos y la variable
 que queremos invocar.</p>
-<pre class="r"><code>PP2023$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
+<pre class="r"><code>PP2024$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
 <pre><code>## [1] reactivación educación    salud        mujer        pobreza     
 ## Levels: reactivación educación salud mujer pobreza</code></pre>
-<pre class="r"><code>class(PP2023$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
+<pre class="r"><code>class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
 <hr />
 <p><a id='part4'></a></p>
@@ -633,33 +633,48 @@ que queremos invocar.</p>
 </div>
 <div id="análisis-descriptivo-en-r" class="section level1">
 <h1><strong>4. Análisis descriptivo en R</strong></h1>
+<p>Mosteller (1995)<a href="#fn1" class="footnote-ref"
+id="fnref1"><sup>1</sup></a> realizó un estudio longitudinal sobre el
+impacto del tamaño de la clase en los primeros grados escolares, sobre
+el desempeño estudiantil y el desarrollo personal.</p>
+<p><strong>A tomar en cuenta</strong></p>
+<ul>
+<li>Un estudio longitudinal es aquel en el que se hace un seguimiento a
+participantes a lo largo del tiempo.</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Este estudio en concreto duró de 1985 a 1989 y participaron
+11,601 estudiantes.</p></li>
+<li><p>Durante los cuatro años del estudio, los estudiantes fueron
+asignados aleatoriamente a clases pequeñas, a clases de tamaño normal o
+a clases de tamaño normal con ayuda.</p></li>
+</ul>
+<p>Aunque el programa se detuvo en 1989 después de que la primera clase
+de jardín de infancia del programa terminara el tercer grado, la
+recopilación de información (por ejemplo, el rendimiento en los exámenes
+de octavo grado, el promedio general de la escuela secundaria) continuó
+hasta el final de la asistencia de los participantes a la escuela
+secundaria. <em>Para esta sesión <strong>no</strong> vamos a examinar
+las hipótesis o resultados del trabajo de Mosteller (1995), pero sí
+vamos a utilizar parte de su base de datos para el análisis
+descriptivo</em> 😌</p>
+<blockquote>
+<p><strong>¿Por qué son importantes este tipo de estudios desde las
+ciencias sociales ?</strong></p>
+<p><img src="pd1_kermit.png" title="porq es importante?"
+width="117" /></p>
+</blockquote>
+<p><strong>¡Manos a la obra!</strong></p>
+<p>Importamos nuestra base de datos</p>
 <pre class="r"><code>library(rio)    
 data=import(&quot;Mosteller.csv&quot;) </code></pre>
-<p>Esta base de datos pertenece al siguiente paper <a
-href="https://pubmed.ncbi.nlm.nih.gov/8528684/"
-class="uri">https://pubmed.ncbi.nlm.nih.gov/8528684/</a> Mosteller
-(1995) realizó un estudio longitudinal sobre el impacto del tamaño de la
-clase en los primeros grados escolares, sobre el desempeño estudiantil y
-el desarrollo personal. Un estudio longitudinal es aquel en el que se
-hace un seguimiento a participantes a lo largo del tiempo. Este estudio
-en concreto duró de 1985 a 1989 y en él participaron 11.601 estudiantes.
-Durante los cuatro años del estudio, los estudiantes fueron asignados
-aleatoriamente a clases pequeñas, a clases de tamaño normal o a clases
-de tamaño normal con ayuda. Aunque el programa se detuvo en 1989 después
-de que la primera clase de jardín de infancia del programa terminara el
-tercer grado, la recopilación de información (por ejemplo, el
-rendimiento en los exámenes de octavo grado, el promedio general de la
-escuela secundaria) continuó hasta el final de la asistencia de los
-participantes a la escuela secundaria.</p>
-<p>¿Por qué son importantes este tipo de estudios? Porque constituyen
-evidencia para los tomadores de decisión de política pública.</p>
-<p>No obstante, para esta sesión no vamos a examinar las hipótesis o
-resultados del trabajo de Mosteller (1995), pero sí vamos a utilizar
-parte de su base de datos para el análisis descriptivo.</p>
 <p>Exploramos las variables que tiene nuestra base de datos:</p>
-<p>chr, factor, ordered factor, num, int</p>
-<p>chr, factor -&gt; variable nominal ordered factor -&gt; variable
-ordinal num, int -&gt; variable numérica</p>
+<ul>
+<li><p>chr, factor -&gt; variable nominal</p></li>
+<li><p>ordered factor -&gt; variable ordinal</p></li>
+<li><p>num, int -&gt; variable numérica</p></li>
+</ul>
 <pre class="r"><code>names(data)</code></pre>
 <pre><code>## [1] &quot;race&quot;       &quot;classtype&quot;  &quot;yearssmall&quot; &quot;hsgrad&quot;     &quot;g4math&quot;    
 ## [6] &quot;g4reading&quot;</code></pre>
@@ -673,7 +688,7 @@ ordinal num, int -&gt; variable numérica</p>
 ##  $ g4reading : int  750 725 692 836 725 761 778 665 735 698 ...</code></pre>
 <p>El contenido de cada variable lo podemos ver en la siguiente
 tabla:</p>
-<p><img src="diccionario.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><img src="diccionario.png" width="60%" style="display: block; margin: auto;" /></p>
 <div id="configuración-de-las-variables" class="section level4">
 <h4><strong>4.1. Configuración de las variables</strong></h4>
 <p>Siempre antes de comenzar a realizar nuestro análisis, debemos
@@ -682,29 +697,78 @@ identificar la estructura de las variables y verificar que estén bien
 objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
-<p><strong>De “race”</strong></p>
-<pre class="r"><code>table(data$race) #Exploramos frecuencias</code></pre>
-<pre><code>## 
-##    1    2    3    6 
-## 1383  211    5    1</code></pre>
-<pre class="r"><code>class(data$race) #Exploramos el formato de la variable</code></pre>
+<p><strong>Variable “race”</strong> Exploramos frecuencias</p>
+<pre class="r"><code>library(tidyverse) #no olvidar llamar a la librería</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.3     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter()  masks stats::filter()
+## ✖ lubridate::hms() masks vembedr::hms()
+## ✖ dplyr::lag()     masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>data %&gt;%
+ group_by(race) %&gt;%
+  summarize(Freq=n())</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##    race  Freq
+##   &lt;int&gt; &lt;int&gt;
+## 1     1  1383
+## 2     2   211
+## 3     3     5
+## 4     6     1</code></pre>
+<p>Exploramos el formato de la variable</p>
+<pre class="r"><code>class(data$race) </code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Categorizamos</p>
 <pre class="r"><code>data$race = factor(data$race, levels = c(1:6), labels = c(&quot;white&quot;,&quot;black&quot;,&quot;asian&quot;,&quot;hispanic&quot;,&quot;native american&quot;,&quot;others&quot;)) #Otorgamos formato; &quot;factor&quot; quiere decir que se otorga formato de variable categórica
-table(data$race) #tabla de frecuencias</code></pre>
-<pre><code>## 
-##           white           black           asian        hispanic native american 
-##            1383             211               5               0               0 
-##          others 
-##               1</code></pre>
-<pre class="r"><code>class(data$race)</code></pre>
+
+class(data$race)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>data %&gt;%
+ group_by(race) %&gt;%
+  summarize(Freq=n())</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   race    Freq
+##   &lt;fct&gt;  &lt;int&gt;
+## 1 white   1383
+## 2 black    211
+## 3 asian      5
+## 4 others     1</code></pre>
 <p>La tabla anterior se llama <strong>tabla de frecuencias</strong>, y
 nos permite observar cuántas observaciones existen por cada
 variable.</p>
 <p>En el caso anterior, la tabla nos indica que, de todas las personas
-estudiadas, 1383 se identificaron como blancas, 211 como negras, 5 como
-asiáticas y 1 como otra raza. Asimismo, se observa que nadie se
-identificó como nativo hispano ni como americano.</p>
+estudiadas, 1383 se identificaron como <em>white</em>, 211 como
+<em>black</em>, 5 como <em>asian</em> y 1 como <em>others</em>.
+Asimismo, se observa que nadie se identificó como <em>native
+american</em> ni <em>hispanic</em>.</p>
+<p>Asimismo, podemos explorar las frecuencias de manera gráfica con la
+ayuda del paquete <code>ggplot2</code> . Para ello, antes debemos de
+crear una tabla y crear un objeto, lo llamaremos
+<em>para_grafico</em></p>
+<pre class="r"><code>para_grafico=data %&gt;%
+ group_by(race) %&gt;%
+  summarize(Freq=n())</code></pre>
+<p>Si no contamos con el paquete ggplot lo instalamos insertando el
+siguiente código en un chunk:
+<code>install.packages("ggplot2")</code></p>
+<pre class="r"><code>library(ggplot2)
+ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) + 
+geom_bar(stat = &quot;identity&quot;) </code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Podemos personalizar el gráfico :)</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(para_grafico, aes(x=race, y=Freq, fill=race)) + 
+geom_bar(stat = &quot;identity&quot;)+
+  ggtitle(&quot;Distribución de autopercepción&quot;) +
+  xlab(&quot;Race&quot;) + ylab(&quot;Frecuencia&quot;)+
+  geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
+  theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p><strong>De “classtype”:</strong></p>
 <pre class="r"><code>class(data$classtype) </code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
@@ -757,19 +821,9 @@ estadísticos de tendencia central</li>
 <p>Las variables solicitadas son classtype y hsgrad</p>
 <p><strong>Para “g4math” podemos:</strong></p>
 <pre class="r"><code>library(DescTools)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter()  masks stats::filter()
-## ✖ lubridate::hms() masks vembedr::hms()
-## ✖ dplyr::lag()     masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>data %&gt;% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
+library(tidyverse)
+
+data %&gt;% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
 <pre><code>##      media
 ## 1 712.7094</code></pre>
 <p><strong>Para “g4math” podemos:</strong></p>
@@ -786,6 +840,14 @@ class="section level3">
 “g4reading”</h3>
 <p><br></br> <a href="#beginning">Go to page beginning</a></p>
 </div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p><em>Más información del artículo al siguiente <a
+href="https://pubmed.ncbi.nlm.nih.gov/8528684/">link</a></em><a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 
