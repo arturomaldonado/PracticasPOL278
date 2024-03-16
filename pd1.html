@@ -698,19 +698,9 @@ objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
 <p><strong>Variable “race”</strong> Exploramos frecuencias</p>
-<pre class="r"><code>library(tidyverse) #no olvidar llamar a la librería</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter()  masks stats::filter()
-## ✖ lubridate::hms() masks vembedr::hms()
-## ✖ dplyr::lag()     masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>data %&gt;%
+<pre class="r"><code>library(tidyverse) #no olvidar llamar a la librería
+
+data %&gt;%
  group_by(race) %&gt;%
   summarize(Freq=n())</code></pre>
 <pre><code>## # A tibble: 4 × 2

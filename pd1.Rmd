@@ -238,7 +238,7 @@ Por ejemplo, debemos asegurarnos que una variable categórica no esté configura
 
 **Variable "race"** Exploramos frecuencias
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse) #no olvidar llamar a la librería
 
 data %>%
