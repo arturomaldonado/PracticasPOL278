@@ -888,27 +888,6 @@ geom_histogram(fill =&quot;blue&quot;, stat = &quot;identity&quot;) +
 El histograma muestra una <strong>distribución asimétrica sesgada con
 sesgo negativo o a la izquierda</strong>. Esto quiere decir que existe
 una concentración de datos hacia la derecha.</p>
-<p>También podemos calcular un <strong>gráfico de cajas o
-“boxplot</strong> a partir de la misma información numérica.</p>
-<pre class="r"><code>ggplot(para_graficoMath, aes(y=Freq)) + 
-geom_boxplot(star = &quot;identity&quot;)</code></pre>
-<pre><code>## Warning in geom_boxplot(star = &quot;identity&quot;): Ignoring unknown parameters: `star`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-35-1.png" width="672" />
-También se puede personalizar</p>
-<pre class="r"><code>ggplot(para_graficoMath, aes(x = &quot; &quot;, y=Freq)) + 
-geom_boxplot(star = &quot;identity&quot;, fill = &quot;yellow&quot;, outlier.colour = &quot;orange&quot;) +
-  
-  stat_boxplot(geom = &quot;errorbar&quot;, width = 0.15)</code></pre>
-<pre><code>## Warning in geom_boxplot(star = &quot;identity&quot;, fill = &quot;yellow&quot;, outlier.colour =
-## &quot;orange&quot;): Ignoring unknown parameters: `star`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-36-1.png" width="672" />
-Este gráfico permite observar la mediana (línea gruesa dentro de la
-caja), así como valores atípicos. En este caso, se pueden observar 3
-valores atípicos (círculos naranjas).</p>
-<p>Los extremos de la caja indican el percentil 25 y el percentil 75.
-Quiere decir que entre el valor ubicado entre el 25% y 75% de valores se
-encuentran dentro de la caja. Los “Bigotes” indican los valores debajo
-del percentil 25 y el percentil 75.</p>
 <hr />
 <div
 id="ejercicio-calculemos-la-media-y-la-mediana-de-la-variable-g4reading"

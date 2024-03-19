@@ -438,23 +438,6 @@ geom_histogram(fill ="blue", stat = "identity") +
 ```
 El histograma muestra una **distribución asimétrica sesgada con sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
 
-También podemos calcular un **gráfico de cajas o "boxplot** a partir de la misma información numérica.
-
-```{r}
-ggplot(para_graficoMath, aes(y=Freq)) + 
-geom_boxplot(star = "identity")
-```
-También se puede personalizar
-
-```{r}
-ggplot(para_graficoMath, aes(x = " ", y=Freq)) + 
-geom_boxplot(star = "identity", fill = "yellow", outlier.colour = "orange") +
-  
-  stat_boxplot(geom = "errorbar", width = 0.15)
-```
-Este gráfico permite observar la mediana (línea gruesa dentro de la caja), así como valores atípicos. En este caso, se pueden observar 3 valores atípicos (círculos naranjas).
-
-Los extremos de la caja indican el percentil 25 y el percentil 75. Quiere decir que entre el valor ubicado entre el 25% y 75% de valores se encuentran dentro de la caja. Los "Bigotes" indican los valores debajo del percentil 25 y el percentil 75.
 
 ------------------------------------------------------------------------
 
