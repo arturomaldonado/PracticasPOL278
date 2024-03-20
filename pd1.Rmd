@@ -200,7 +200,7 @@ Aunque el programa se detuvo en 1989 después de que la primera clase de jardín
 
 Para ello, nos planteamos la siguiente pregunta de investigación, que nos guiará durante toda la sesión de hoy:
 
-> **¿Cuáles son las características de los paises de acuerdo a su régimen y ubicación geográfica?**
+> **¿Cuál es el estado de la democracia en el mundo?**
 
 Esta pregunta nos permite realizar un análisis descriptivo. Por ello, la responderemos durante toda la sesión.
 >
@@ -225,19 +225,28 @@ Es necesario saber el tipo de variable que vamos a trabajar. Por ello, exploramo
 names(data)
 str(data)
 ```
-
-# El contenido de cada variable lo podemos observar en el siguiente diccionario de datos:
+El contenido de cada variable lo podemos observar en el siguiente **diccionario de datos**:
 
 -**Pais**: nombre del pais
--**OverallScore**: puntaje promedio del país.
+
+-**Puntaje**: puntaje promedio del país.
+
 -**Rank**: puesto del país en el indice por puntaje promedio.
+
 -**Change_rank_previous_year**: comparación de puesto actual respecto del año anterior.
+
 -**Electoral_process_pluralism**: Puntaje de medición de pluralismo político-electoral.
+
 -**Functioning_government**: puntaje de medición del funcionamiento del gobierno.
+
 -**Political_participation**: puntaje de medición de participación política.
+
 -**Political_culture**: puntaje de medición de la cultura política.
+
 -**Civil_liberties**: puntaje en la medición de libertades civiles.
+
 -**Categorías**: tipo de régimen.
+
 -**Continente**: región a la que pertenece el país analizado.
 
 ## 4.1. Formateo de variables y frecuencia
@@ -246,76 +255,14 @@ Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la e
 
 Por ejemplo, debemos asegurarnos que una variable categórica no esté configurada como numérica en R, y viceversa.
 
-**Variable "Continente"** Exploramos frecuencias
-
-```{r, message=FALSE}
-library(tidyverse) #no olvidar llamar a la librería
-
-data %>%
- group_by(Continente) %>%
-  summarize(Freq=n())
-```
-
-Exploramos el formato de la variable
-
-```{r}
-class(data$Continente) 
-```
-
-Categorizamos como corresponde. En este caso, "continente" es una variable nominal.
-
-```{r}
-class(data$Continente) #comprobamos que se ha recategorizado bien
-```
-
-```{r}
-data %>%
- group_by(Continente) %>%
-  summarize(Freq=n())
-```
-
-La tabla anterior se llama **tabla de frecuencias**, y nos permite observar cuántas observaciones existen por cada variable.
-
-En el caso anterior, la tabla nos indica que, de todos los países que forman parte de este estudio, 28 pertenecen a la región de **Asia y Australasia**, 21 pertenecen a **Europa**, 28 a **Europa del Este**, 23 a **Latinoamérica** y 67 a **África Sub-Sahariana**.
-
-Asimismo, podemos explorar las frecuencias de manera gráfica con la ayuda del paquete `ggplot2` . Para ello, antes debemos de crear una tabla y crear un objeto, lo llamaremos *para_grafico*
-
-```{r}
-
-para_graficoContinente=data %>%
- group_by(Continente) %>%
-  summarize(Freq=n())
-
-```
-
-Si no contamos con el paquete ggplot lo instalamos insertando el siguiente código en un chunk: `install.packages("ggplot2")`
-
-```{r}
-install.packages("ggplot2")
-library(ggplot2)
-ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
-geom_bar(stat = "identity") 
-```
-
-Podemos personalizar el gráfico :)
-
-```{r}
-library(ggplot2)
-ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
-geom_bar(stat = "identity")+
-  ggtitle("Distribución de países por continente") +
-  xlab("Continente") + ylab("Frecuencia")+
-  geom_text(aes(label=round(Freq,1)), vjust=1.30, color="black", size=3)+
-  theme(panel.background=element_rect(fill = "white", colour = "white"))
-```
-
 **Variable "Categorías":**
 
-Al igual que con "Continente", queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión ("Categorías")
+Queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión ("Categorías")
 
 ```{r}
 class(data$Categorías) 
 
+library(tidyverse)
 data %>%
  group_by(Categorías) %>%
   summarize(Freq=n())
@@ -350,7 +297,7 @@ Las demás variables son numéricas y están configuradas como vectores numéric
 
 ## 4.2 Media y mediana
 
-Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables de interés, esto es, el puntaje total (**OversallScore**)
+Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables de interés, esto es, el puntaje total (**Puntaje**)
 
 Antes instalamos algunos paquetes que utilizaremos
 
@@ -361,14 +308,14 @@ Primero, nos piden saber cuál es el promedio de puntaje de todos los países an
 library(DescTools)
 library(tidyverse)
 
-data %>% summarise(media = mean(Overallscore)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
+data %>% summarise(media = mean(Puntaje)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
 ```
 Este resultado quiere decir que el puntaje promedio de todos los países analizados es de 5.29 puntos.
 
 En segundo lugar, nos piden calcular la mediana de los puntajes. Esta medida es más robusta que la media, pues resiste valores extremos.
 ```{r}
 library(DescTools)
-data %>% summarise(mediana = median(Overallscore)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
+data %>% summarise(mediana = median(Puntaje)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
 ```
 Esto quiere decir que, hasta la mitad de países analizados tienen una puntuación de hasta 5.54 puntos.
 
@@ -378,7 +325,7 @@ Primero, seleccionemos los datos que queremos utilizar.
 
 ```{r}
 para_graficoPunt = data %>%
-  group_by(Overallscore) %>%
+  group_by(Puntaje) %>%
    summarize(Freq=n())
 ```
 
@@ -386,43 +333,43 @@ Como nuestra variable (OverallScore) es numérica, esta vez pediremos un **histo
 
 ```{r}
 library(ggplot2) #no olvidar llamar al paquete
-ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
-geom_histogram(stat = "identity") 
+ggplot(para_graficoPunt, aes(x=Puntaje)) + 
+geom_histogram() 
 ```
+
 Si lo queremos personalizar :)
 
 ```{r}
-ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
-geom_histogram(fill ="blue", stat = "identity") +
+ggplot(para_graficoPunt, aes(x=Puntaje)) + 
+geom_histogram(color = "black", fill ="blue") + geom_density(fill = "black", alpha = 0.25) + 
   
- ggtitle("Puntaje promedio por país") +
-  xlab("Puntaje") + ylab("Frecuencia") +
-  theme(panel.background=element_rect(fill = "lightgray", colour = "black"))
+  ggtitle("Puntaje promedio por país")
 ```
-El histograma muestra una **distribución asimétrica sesgada con sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
+
+El histograma muestra una **distribución asimétrica sesgada con ligero sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
 
 También podemos dividir las medias por grupo. Para ello, usamos el comando "group_by".
 ```{r}
 data%>%
   group_by(Continente)%>%
-  summarise(media=mean(Overallscore))
+  summarise(media=mean(Puntaje))
 ```
 
 Podemos realizar la misma operación con la mediana
-------------------------------------------------------------------------
+
 ```{r}
 data%>%
   group_by(Continente)%>%
-  summarise(mediana=median(Overallscore))
+  summarise(mediana=median(Puntaje))
 ```
 
 Y también podemos resumir todo en una misma tabla. Este tipo de tabla se llama **Tabla resumen**
 ```{r}
 data%>%
   group_by(Continente)%>%
-  summarise(media=mean(Overallscore), mediana=median(Overallscore))
+  summarise(media=mean(Puntaje), mediana=median(Puntaje))
 ```
 
-## Ejercicio: Calculemos la media y la mediana de la variable "Overallscore" por tipo de régimen (variable "Categorías")
+## Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
 
 <br></br> [Go to page beginning](#beginning)

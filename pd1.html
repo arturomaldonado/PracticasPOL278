@@ -663,8 +663,7 @@ descriptivo</em> 😌.</p>
 <p>Para ello, nos planteamos la siguiente pregunta de investigación, que
 nos guiará durante toda la sesión de hoy:</p>
 <blockquote>
-<p><strong>¿Cuáles son las características de los paises de acuerdo a su
-régimen y ubicación geográfica?</strong></p>
+<p><strong>¿Cuál es el estado de la democracia en el mundo?</strong></p>
 </blockquote>
 <p>Esta pregunta nos permite realizar un análisis descriptivo. Por ello,
 la responderemos durante toda la sesión. &gt; &gt; <img
@@ -683,7 +682,7 @@ ello, exploramos las variables que tiene nuestra base de datos:</p>
 <li><strong>num, int</strong> -&gt; variable numérica</li>
 </ul>
 <pre class="r"><code>names(data)</code></pre>
-<pre><code>##  [1] &quot;País&quot;                        &quot;Overallscore&quot;               
+<pre><code>##  [1] &quot;País&quot;                        &quot;Puntaje&quot;                    
 ##  [3] &quot;Rank&quot;                        &quot;Change_rank_previous_year&quot;  
 ##  [5] &quot;Electoral_process_pluralism&quot; &quot;Functioning_government&quot;     
 ##  [7] &quot;Political_participation&quot;     &quot;Political_culture&quot;          
@@ -692,7 +691,7 @@ ello, exploramos las variables que tiene nuestra base de datos:</p>
 <pre class="r"><code>str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    167 obs. of  11 variables:
 ##  $ País                       : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Angola&quot; ...
-##  $ Overallscore               : num  0.32 6.41 3.66 3.96 6.85 5.63 8.71 8.2 2.87 2.52 ...
+##  $ Puntaje                    : num  0.32 6.41 3.66 3.96 6.85 5.63 8.71 8.2 2.87 2.52 ...
 ##  $ Rank                       : num  167 64 113 109 50 82 15 20 134 142 ...
 ##  $ Change_rank_previous_year  : num  0 4 0 13 0 7 -6 0 7 2 ...
 ##  $ Electoral_process_pluralism: num  0 7 3.08 4.5 9.17 7.92 10 9.58 0.5 0.42 ...
@@ -702,26 +701,26 @@ ello, exploramos las variables que tiene nuestra base de datos:</p>
 ##  $ Civil_liberties            : num  0.29 7.35 3.82 2.65 7.94 5.29 9.71 8.53 2.65 1.76 ...
 ##  $ Categorías                 : chr  &quot;Authoritarian&quot; &quot;Flawed democracy&quot; &quot;Authoritarian&quot; &quot;Authoritarian&quot; ...
 ##  $ Continente                 : chr  &quot;Asia y Australasia&quot; &quot;Europa del Este&quot; &quot;Sub-Saharan Africa&quot; &quot;Sub-Saharan Africa&quot; ...</code></pre>
-</div>
-<div
-id="el-contenido-de-cada-variable-lo-podemos-observar-en-el-siguiente-diccionario-de-datos"
-class="section level1">
-<h1>El contenido de cada variable lo podemos observar en el siguiente
-diccionario de datos:</h1>
-<p>-<strong>Pais</strong>: nombre del pais
--<strong>OverallScore</strong>: puntaje promedio del país.
--<strong>Rank</strong>: puesto del país en el indice por puntaje
-promedio. -<strong>Change_rank_previous_year</strong>: comparación de
-puesto actual respecto del año anterior.
--<strong>Electoral_process_pluralism</strong>: Puntaje de medición de
-pluralismo político-electoral. -<strong>Functioning_government</strong>:
-puntaje de medición del funcionamiento del gobierno.
--<strong>Political_participation</strong>: puntaje de medición de
-participación política. -<strong>Political_culture</strong>: puntaje de
-medición de la cultura política. -<strong>Civil_liberties</strong>:
-puntaje en la medición de libertades civiles.
--<strong>Categorías</strong>: tipo de régimen.
--<strong>Continente</strong>: región a la que pertenece el país
+<p>El contenido de cada variable lo podemos observar en el siguiente
+<strong>diccionario de datos</strong>:</p>
+<p>-<strong>Pais</strong>: nombre del pais</p>
+<p>-<strong>Puntaje</strong>: puntaje promedio del país.</p>
+<p>-<strong>Rank</strong>: puesto del país en el indice por puntaje
+promedio.</p>
+<p>-<strong>Change_rank_previous_year</strong>: comparación de puesto
+actual respecto del año anterior.</p>
+<p>-<strong>Electoral_process_pluralism</strong>: Puntaje de medición de
+pluralismo político-electoral.</p>
+<p>-<strong>Functioning_government</strong>: puntaje de medición del
+funcionamiento del gobierno.</p>
+<p>-<strong>Political_participation</strong>: puntaje de medición de
+participación política.</p>
+<p>-<strong>Political_culture</strong>: puntaje de medición de la
+cultura política.</p>
+<p>-<strong>Civil_liberties</strong>: puntaje en la medición de
+libertades civiles.</p>
+<p>-<strong>Categorías</strong>: tipo de régimen.</p>
+<p>-<strong>Continente</strong>: región a la que pertenece el país
 analizado.</p>
 <div id="formateo-de-variables-y-frecuencia" class="section level2">
 <h2>4.1. Formateo de variables y frecuencia</h2>
@@ -731,77 +730,23 @@ identificar la estructura de las variables y verificar que estén bien
 objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
-<p><strong>Variable “Continente”</strong> Exploramos frecuencias</p>
-<pre class="r"><code>library(tidyverse) #no olvidar llamar a la librería
-
-data %&gt;%
- group_by(Continente) %&gt;%
-  summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   Continente          Freq
-##   &lt;chr&gt;              &lt;int&gt;
-## 1 Asia y Australasia    28
-## 2 Europa                21
-## 3 Europa del Este       28
-## 4 LatinoAmerica         23
-## 5 Sub-Saharan Africa    67</code></pre>
-<p>Exploramos el formato de la variable</p>
-<pre class="r"><code>class(data$Continente) </code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<p>Categorizamos como corresponde. En este caso, “continente” es una
-variable nominal.</p>
-<pre class="r"><code>class(data$Continente) #comprobamos que se ha recategorizado bien</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>data %&gt;%
- group_by(Continente) %&gt;%
-  summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   Continente          Freq
-##   &lt;chr&gt;              &lt;int&gt;
-## 1 Asia y Australasia    28
-## 2 Europa                21
-## 3 Europa del Este       28
-## 4 LatinoAmerica         23
-## 5 Sub-Saharan Africa    67</code></pre>
-<p>La tabla anterior se llama <strong>tabla de frecuencias</strong>, y
-nos permite observar cuántas observaciones existen por cada
-variable.</p>
-<p>En el caso anterior, la tabla nos indica que, de todos los países que
-forman parte de este estudio, 28 pertenecen a la región de <strong>Asia
-y Australasia</strong>, 21 pertenecen a <strong>Europa</strong>, 28 a
-<strong>Europa del Este</strong>, 23 a <strong>Latinoamérica</strong> y
-67 a <strong>África Sub-Sahariana</strong>.</p>
-<p>Asimismo, podemos explorar las frecuencias de manera gráfica con la
-ayuda del paquete <code>ggplot2</code> . Para ello, antes debemos de
-crear una tabla y crear un objeto, lo llamaremos
-<em>para_grafico</em></p>
-<pre class="r"><code>para_graficoContinente=data %&gt;%
- group_by(Continente) %&gt;%
-  summarize(Freq=n())</code></pre>
-<p>Si no contamos con el paquete ggplot lo instalamos insertando el
-siguiente código en un chunk:
-<code>install.packages("ggplot2")</code></p>
-<pre class="r"><code>install.packages(&quot;ggplot2&quot;)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; is in use and will not be installed</code></pre>
-<pre class="r"><code>library(ggplot2)
-ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
-geom_bar(stat = &quot;identity&quot;) </code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>Podemos personalizar el gráfico :)</p>
-<pre class="r"><code>library(ggplot2)
-ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
-geom_bar(stat = &quot;identity&quot;)+
-  ggtitle(&quot;Distribución de países por continente&quot;) +
-  xlab(&quot;Continente&quot;) + ylab(&quot;Frecuencia&quot;)+
-  geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
-  theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p><strong>Variable “Categorías”:</strong></p>
-<p>Al igual que con “Continente”, queremos saber el tipo de régimen de
-cada país observado. Para ello, realizamos el análisis de la variable en
-cuestión (“Categorías”)</p>
+<p>Queremos saber el tipo de régimen de cada país observado. Para ello,
+realizamos el análisis de la variable en cuestión (“Categorías”)</p>
 <pre class="r"><code>class(data$Categorías) </code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter()  masks stats::filter()
+## ✖ lubridate::hms() masks vembedr::hms()
+## ✖ dplyr::lag()     masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>data %&gt;%
  group_by(Categorías) %&gt;%
   summarize(Freq=n())</code></pre>
@@ -826,7 +771,7 @@ tipo de régimen.</p>
 library(ggplot2)
 ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = &quot;identity&quot;)</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="pd1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Personalicemos el gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
@@ -837,7 +782,7 @@ geom_bar(stat = &quot;identity&quot;)+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   scale_fill_brewer(name=&quot;Tipo de Régimen&quot;,palette=&quot;Pastel1&quot;)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="pd1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Las demás variables son numéricas y están configuradas como vectores
 numéricos de números enteros (integer), por lo cual lo dejamos así
 😸.</p>
@@ -847,7 +792,7 @@ numéricos de números enteros (integer), por lo cual lo dejamos así
 <p>Entonces, una vez configurados adecuadamente nuestros
 <strong>objetos</strong>, pidamos los estadísticos de tendencia central
 para nuestras variables de interés, esto es, el puntaje total
-(<strong>OversallScore</strong>)</p>
+(<strong>Puntaje</strong>)</p>
 <p>Antes instalamos algunos paquetes que utilizaremos</p>
 <ul>
 <li><strong>install.packages(“DescTools”)</strong> para pedir los
@@ -859,7 +804,7 @@ países analizados. Para ello, usamos el comando “mean”, que significa
 <pre class="r"><code>library(DescTools)
 library(tidyverse)
 
-data %&gt;% summarise(media = mean(Overallscore)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
+data %&gt;% summarise(media = mean(Puntaje)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
 <pre><code>##      media
 ## 1 5.293174</code></pre>
 <p>Este resultado quiere decir que el puntaje promedio de todos los
@@ -867,7 +812,7 @@ países analizados es de 5.29 puntos.</p>
 <p>En segundo lugar, nos piden calcular la mediana de los puntajes. Esta
 medida es más robusta que la media, pues resiste valores extremos.</p>
 <pre class="r"><code>library(DescTools)
-data %&gt;% summarise(mediana = median(Overallscore)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.</code></pre>
+data %&gt;% summarise(mediana = median(Puntaje)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.</code></pre>
 <pre><code>##   mediana
 ## 1    5.54</code></pre>
 <p>Esto quiere decir que, hasta la mitad de países analizados tienen una
@@ -875,35 +820,31 @@ puntuación de hasta 5.54 puntos.</p>
 <p><strong>Grafiquemos</strong></p>
 <p>Primero, seleccionemos los datos que queremos utilizar.</p>
 <pre class="r"><code>para_graficoPunt = data %&gt;%
-  group_by(Overallscore) %&gt;%
+  group_by(Puntaje) %&gt;%
    summarize(Freq=n())</code></pre>
 <p>Como nuestra variable (OverallScore) es numérica, esta vez pediremos
 un <strong>histograma</strong>. Es similar a un gráfico de barras, solo
 que esta vez todas las barras se encuentran juntas y no separadas.</p>
 <pre class="r"><code>library(ggplot2) #no olvidar llamar al paquete
-ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
-geom_histogram(stat = &quot;identity&quot;) </code></pre>
-<pre><code>## Warning in geom_histogram(stat = &quot;identity&quot;): Ignoring unknown parameters:
-## `binwidth`, `bins`, and `pad`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-25-1.png" width="672" />
-Si lo queremos personalizar :)</p>
-<pre class="r"><code>ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
-geom_histogram(fill =&quot;blue&quot;, stat = &quot;identity&quot;) +
+ggplot(para_graficoPunt, aes(x=Puntaje)) + 
+geom_histogram() </code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Si lo queremos personalizar :)</p>
+<pre class="r"><code>ggplot(para_graficoPunt, aes(x=Puntaje)) + 
+geom_histogram(color = &quot;black&quot;, fill =&quot;blue&quot;) + geom_density(fill = &quot;black&quot;, alpha = 0.25) + 
   
- ggtitle(&quot;Puntaje promedio por país&quot;) +
-  xlab(&quot;Puntaje&quot;) + ylab(&quot;Frecuencia&quot;) +
-  theme(panel.background=element_rect(fill = &quot;lightgray&quot;, colour = &quot;black&quot;))</code></pre>
-<pre><code>## Warning in geom_histogram(fill = &quot;blue&quot;, stat = &quot;identity&quot;): Ignoring unknown
-## parameters: `binwidth`, `bins`, and `pad`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-26-1.png" width="672" />
-El histograma muestra una <strong>distribución asimétrica sesgada con
-sesgo negativo o a la izquierda</strong>. Esto quiere decir que existe
-una concentración de datos hacia la derecha.</p>
+  ggtitle(&quot;Puntaje promedio por país&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>El histograma muestra una <strong>distribución asimétrica sesgada con
+ligero sesgo negativo o a la izquierda</strong>. Esto quiere decir que
+existe una concentración de datos hacia la derecha.</p>
 <p>También podemos dividir las medias por grupo. Para ello, usamos el
 comando “group_by”.</p>
 <pre class="r"><code>data%&gt;%
   group_by(Continente)%&gt;%
-  summarise(media=mean(Overallscore))</code></pre>
+  summarise(media=mean(Puntaje))</code></pre>
 <pre><code>## # A tibble: 5 × 2
 ##   Continente         media
 ##   &lt;chr&gt;              &lt;dbl&gt;
@@ -912,13 +853,10 @@ comando “group_by”.</p>
 ## 3 Europa del Este     5.39
 ## 4 LatinoAmerica       5.79
 ## 5 Sub-Saharan Africa  4.05</code></pre>
-</div>
-<div id="podemos-realizar-la-misma-operación-con-la-mediana"
-class="section level2">
-<h2>Podemos realizar la misma operación con la mediana</h2>
+<p>Podemos realizar la misma operación con la mediana</p>
 <pre class="r"><code>data%&gt;%
   group_by(Continente)%&gt;%
-  summarise(mediana=median(Overallscore))</code></pre>
+  summarise(mediana=median(Puntaje))</code></pre>
 <pre><code>## # A tibble: 5 × 2
 ##   Continente         mediana
 ##   &lt;chr&gt;                &lt;dbl&gt;
@@ -931,7 +869,7 @@ class="section level2">
 se llama <strong>Tabla resumen</strong></p>
 <pre class="r"><code>data%&gt;%
   group_by(Continente)%&gt;%
-  summarise(media=mean(Overallscore), mediana=median(Overallscore))</code></pre>
+  summarise(media=mean(Puntaje), mediana=median(Puntaje))</code></pre>
 <pre><code>## # A tibble: 5 × 3
 ##   Continente         media mediana
 ##   &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;
@@ -942,10 +880,10 @@ se llama <strong>Tabla resumen</strong></p>
 ## 5 Sub-Saharan Africa  4.05    3.64</code></pre>
 </div>
 <div
-id="ejercicio-calculemos-la-media-y-la-mediana-de-la-variable-overallscore-por-tipo-de-régimen-variable-categorías"
+id="ejercicio-escojan-una-variable-numérica-que-no-hayamos-utilizado-y-hallen-la-mediana-y-la-media-de-dicha-variable-por-continente."
 class="section level2">
-<h2>Ejercicio: Calculemos la media y la mediana de la variable
-“Overallscore” por tipo de régimen (variable “Categorías”)</h2>
+<h2>Ejercicio: Escojan una variable numérica que no hayamos utilizado y
+hallen la mediana y la media de dicha variable, por continente.</h2>
 <p><br></br> <a href="#beginning">Go to page beginning</a></p>
 </div>
 </div>
