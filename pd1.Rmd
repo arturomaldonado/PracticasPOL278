@@ -196,39 +196,49 @@ Mosteller (1995)[^1] realizó un estudio longitudinal sobre el impacto del tama�
 
 -   Durante los cuatro años del estudio, los estudiantes fueron asignados aleatoriamente a clases pequeñas, a clases de tamaño normal o a clases de tamaño normal con ayuda.
 
-Aunque el programa se detuvo en 1989 después de que la primera clase de jardín de infancia del programa terminara el tercer grado, la recopilación de información (por ejemplo, el rendimiento en los exámenes de octavo grado, el promedio general de la escuela secundaria) continuó hasta el final de la asistencia de los participantes a la escuela secundaria. *Para esta sesión **no** vamos a examinar las hipótesis o resultados del trabajo de Mosteller (1995), pero sí vamos a utilizar parte de su base de datos para el análisis descriptivo* 😌
+Aunque el programa se detuvo en 1989 después de que la primera clase de jardín de infancia del programa terminara el tercer grado, la recopilación de información (por ejemplo, el rendimiento en los exámenes de octavo grado, el promedio general de la escuela secundaria) continuó hasta el final de la asistencia de los participantes a la escuela secundaria. *Para esta sesión **no** vamos a examinar las hipótesis o resultados del trabajo de Mosteller (1995), pero sí vamos a utilizar parte de su base de datos para el análisis descriptivo* 😌. 
 
-> **¿Por qué son importantes este tipo de estudios desde las ciencias sociales ?**
+Para ello, nos planteamos la siguiente pregunta de investigación, que nos guiará durante toda la sesión de hoy:
+
+> **¿Cuáles son las características de los paises de acuerdo a su régimen y ubicación geográfica?**
+
+Esta pregunta nos permite realizar un análisis descriptivo. Por ello, la responderemos durante toda la sesión.
 >
 > ![](pd1_kermit.png "porq es importante?"){width="117"}
 
 **¡Manos a la obra!**
 
-Importamos nuestra base de datos
+Lo primero que debemos hacer para responder la pregunta de investigación es saber qué base de datos vamos a utilizar. Luego, importamos nuestra base de datos.
 
 ```{r, results="hide"}
 library(rio)    
-data=import("Mosteller.csv") 
+data=import("DemocracyIndex2022.xlsx") 
 ```
 
-Exploramos las variables que tiene nuestra base de datos:
+Es necesario saber el tipo de variable que vamos a trabajar. Por ello, exploramos las variables que tiene nuestra base de datos:
 
--   chr, factor -\> variable nominal
-
--   ordered factor -\> variable ordinal
-
--   num, int -\> variable numérica
+-   **chr, factor** -\> variable nominal
+-   **ordered factor** -\> variable ordinal
+-   **num, int** -\> variable numérica
 
 ```{r}
 names(data)
 str(data)
 ```
 
-El contenido de cada variable lo podemos ver en la siguiente tabla:
+# El contenido de cada variable lo podemos observar en el siguiente diccionario de datos:
 
-```{r,echo=FALSE, out.width="60%",fig.align="center"}
-knitr::include_graphics("diccionario.png")
-```
+-**Pais**: nombre del pais
+-**OverallScore**: puntaje promedio del país.
+-**Rank**: puesto del país en el indice por puntaje promedio.
+-**Change_rank_previous_year**: comparación de puesto actual respecto del año anterior.
+-**Electoral_process_pluralism**: Puntaje de medición de pluralismo político-electoral.
+-**Functioning_government**: puntaje de medición del funcionamiento del gobierno.
+-**Political_participation**: puntaje de medición de participación política.
+-**Political_culture**: puntaje de medición de la cultura política.
+-**Civil_liberties**: puntaje en la medición de libertades civiles.
+-**Categorías**: tipo de régimen.
+-**Continente**: región a la que pertenece el país analizado.
 
 ## 4.1. Formateo de variables y frecuencia
 
@@ -236,46 +246,44 @@ Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la e
 
 Por ejemplo, debemos asegurarnos que una variable categórica no esté configurada como numérica en R, y viceversa.
 
-**Variable "race"** Exploramos frecuencias
+**Variable "Continente"** Exploramos frecuencias
 
 ```{r, message=FALSE}
 library(tidyverse) #no olvidar llamar a la librería
 
 data %>%
- group_by(race) %>%
+ group_by(Continente) %>%
   summarize(Freq=n())
 ```
 
 Exploramos el formato de la variable
 
 ```{r}
-class(data$race) 
+class(data$Continente) 
 ```
 
-Categorizamos
+Categorizamos como corresponde. En este caso, "continente" es una variable nominal.
 
 ```{r}
-data$race = factor(data$race, levels = c(1:6), labels = c("white","black","asian","hispanic","native american","others")) #Otorgamos formato; "factor" quiere decir que se otorga formato de variable categórica
-
-class(data$race)
+class(data$Continente) #comprobamos que se ha recategorizado bien
 ```
 
 ```{r}
 data %>%
- group_by(race) %>%
+ group_by(Continente) %>%
   summarize(Freq=n())
 ```
 
 La tabla anterior se llama **tabla de frecuencias**, y nos permite observar cuántas observaciones existen por cada variable.
 
-En el caso anterior, la tabla nos indica que, de todas las personas estudiadas, 1383 se identificaron como *white*, 211 como *black*, 5 como *asian* y 1 como *others*. Asimismo, se observa que nadie se identificó como *native american* ni *hispanic*.
+En el caso anterior, la tabla nos indica que, de todos los países que forman parte de este estudio, 28 pertenecen a la región de **Asia y Australasia**, 21 pertenecen a **Europa**, 28 a **Europa del Este**, 23 a **Latinoamérica** y 67 a **África Sub-Sahariana**.
 
 Asimismo, podemos explorar las frecuencias de manera gráfica con la ayuda del paquete `ggplot2` . Para ello, antes debemos de crear una tabla y crear un objeto, lo llamaremos *para_grafico*
 
 ```{r}
 
-para_graficoRace=data %>%
- group_by(race) %>%
+para_graficoContinente=data %>%
+ group_by(Continente) %>%
   summarize(Freq=n())
 
 ```
@@ -283,8 +291,9 @@ para_graficoRace=data %>%
 Si no contamos con el paquete ggplot lo instalamos insertando el siguiente código en un chunk: `install.packages("ggplot2")`
 
 ```{r}
+install.packages("ggplot2")
 library(ggplot2)
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
+ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
 geom_bar(stat = "identity") 
 ```
 
@@ -292,155 +301,128 @@ Podemos personalizar el gráfico :)
 
 ```{r}
 library(ggplot2)
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
+ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
 geom_bar(stat = "identity")+
-  ggtitle("Distribución de autopercepción") +
-  xlab("Race") + ylab("Frecuencia")+
+  ggtitle("Distribución de países por continente") +
+  xlab("Continente") + ylab("Frecuencia")+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color="black", size=3)+
   theme(panel.background=element_rect(fill = "white", colour = "white"))
 ```
 
-**Variable "classtype":**
+**Variable "Categorías":**
+
+Al igual que con "Continente", queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión ("Categorías")
 
 ```{r}
-class(data$classtype) 
+class(data$Categorías) 
 
 data %>%
- group_by(classtype) %>%
+ group_by(Categorías) %>%
   summarize(Freq=n())
 ```
+Se observa que, de los países analizados en el índice de la democtracia, 59 países son coniderados como **Autoritarismo**, 36 como **Regímenes híbridos**, 48 como **Democracia imperfecta** y solo 24 como **Democracia Plena**.
 
+Creemos un gráfico de barras para visualizar mejor los países por tipo de régimen.
 ```{r}
-data$classtype = factor(data$classtype, levels = c(1:3), labels = c("small","regular","regular with aid"))#"factor" para variable nominal
-
-str(data$classtype)
-
-```
-
-```{r}
-data %>%
- group_by(classtype) %>%
+para_graficoReg=data %>%
+ group_by(Categorías) %>%
   summarize(Freq=n())#tabla de frecuencias
+
+library(ggplot2)
+ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
+geom_bar(stat = "identity")
 ```
 
-Al igual que con la tabla anterior, en este caso la \*\*tabla de frecuencia\* nos indica que, de los encuestados, 481 pertenecen a una clase pequeña, 578 pertenecen a una clase regular y otros 541 pertenecen a una clase regular con ayuda. También lo podemos ver en gráfico con el paquete ggplot2
-
-```{r}
-para_graficoClass=data %>%
- group_by(classtype) %>%
-  summarize(Freq=n())#tabla de frecuencias
-```
-
+Personalicemos el gráfico :)
 ```{r}
 library(ggplot2)
-ggplot(para_graficoClass, aes(x=classtype, y=Freq, fill=classtype)) + 
+ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = "identity")+
   
-  ggtitle("Distribución de tipo de clase") +
-  xlab("Tipo de clase") + ylab("Frecuencia")+
+  ggtitle("Distribución de países por tipo de régimen") +
+  xlab("Tipo de régimen") + ylab("Frecuencia")+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color="black", size=3)+
-  scale_fill_brewer(name="Tipo de Clase",palette="Pastel1")+
+  scale_fill_brewer(name="Tipo de Régimen",palette="Pastel1")+
   theme(panel.background=element_rect(fill = "white", colour = "white"))
 ```
 
-**De "hsgrad"**
-
-```{r}
-class(data$hsgrad)
-```
-
-```{r}
-data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c("did not graduate","did graduate")) #ojo con el orden
-
-str(data$hsgrad)
-```
-
-```{r}
-data %>%
- group_by(hsgrad) %>%
-  summarize(Freq=n())#tabla de frecuencias
-```
-
-```{r}
-para_graficoHs=data %>%
- group_by(hsgrad) %>%
-  summarize(Freq=n())#tabla de frecuencias
-```
-
-```{r}
-library(ggplot2)
-ggplot(para_graficoHs, aes(x=hsgrad, y=Freq, fill=hsgrad)) + 
-geom_bar(stat = "identity")+
-  
-  ggtitle("Distribución de graduados") +
-  xlab("Tipo de clase") + ylab("Frecuencia")+
-  scale_fill_brewer(name=" ",palette="Dark2")+
-  geom_text(aes(label=round(Freq,1)), vjust=1.30, color="black", size=3)+
-  theme(panel.background=element_rect(fill = "white", colour = "white"))
-```
-
-En este caso, nuestra tabla nos indica que, de todas las personas estudiadas, 1442 personas consiguieron graduarse, mientras que otras 158 no lo consiguieron.
-
-**"g4math", "g4reading", "yearssmall"** son variables numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así 😸.
+Las demás variables son numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así 😸.
 
 ## 4.2 Media y mediana
 
-Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables.
+Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables de interés, esto es, el puntaje total (**OversallScore**)
 
 Antes instalamos algunos paquetes que utilizaremos
 
 -   **install.packages("DescTools")** para pedir los estadísticos de tendencia central
 
-Las variables solicitadas son classtype y hsgrad
-
-**Para "g4math" podemos:**
-
+Primero, nos piden saber cuál es el promedio de puntaje de todos los países analizados. Para ello, usamos el comando "mean", que significa "media o promedio".
 ```{r}
 library(DescTools)
 library(tidyverse)
 
-data %>% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
+data %>% summarise(media = mean(Overallscore)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
 ```
+Este resultado quiere decir que el puntaje promedio de todos los países analizados es de 5.29 puntos.
 
-**Para "g4math" podemos:**
-
+En segundo lugar, nos piden calcular la mediana de los puntajes. Esta medida es más robusta que la media, pues resiste valores extremos.
 ```{r}
 library(DescTools)
-data %>% summarise(mediana = median(g4math)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
+data %>% summarise(mediana = median(Overallscore)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
 ```
+Esto quiere decir que, hasta la mitad de países analizados tienen una puntuación de hasta 5.54 puntos.
 
 **Grafiquemos**
 
 Primero, seleccionemos los datos que queremos utilizar.
 
 ```{r}
-para_graficoMath = data %>%
-  group_by(g4math) %>%
+para_graficoPunt = data %>%
+  group_by(Overallscore) %>%
    summarize(Freq=n())
 ```
 
-Como nuestra variable (g4math) es numérica, esta vez pediremos un **histograma**. Es similar a un gráfico de barras, solo que esta vez todas las barras se encuentran juntas y no separadas.
+Como nuestra variable (OverallScore) es numérica, esta vez pediremos un **histograma**. Es similar a un gráfico de barras, solo que esta vez todas las barras se encuentran juntas y no separadas.
 
 ```{r}
 library(ggplot2) #no olvidar llamar al paquete
-ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
 geom_histogram(stat = "identity") 
 ```
 Si lo queremos personalizar :)
 
 ```{r}
-ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
 geom_histogram(fill ="blue", stat = "identity") +
   
- ggtitle("Notas de matemática") +
+ ggtitle("Puntaje promedio por país") +
   xlab("Puntaje") + ylab("Frecuencia") +
   theme(panel.background=element_rect(fill = "lightgray", colour = "black"))
 ```
 El histograma muestra una **distribución asimétrica sesgada con sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
 
+También podemos dividir las medias por grupo. Para ello, usamos el comando "group_by".
+```{r}
+data%>%
+  group_by(Continente)%>%
+  summarise(media=mean(Overallscore))
+```
 
+Podemos realizar la misma operación con la mediana
 ------------------------------------------------------------------------
+```{r}
+data%>%
+  group_by(Continente)%>%
+  summarise(mediana=median(Overallscore))
+```
 
-#### Ejercicio: Calculemos la media y la mediana de la variable "g4reading"
+Y también podemos resumir todo en una misma tabla. Este tipo de tabla se llama **Tabla resumen**
+```{r}
+data%>%
+  group_by(Continente)%>%
+  summarise(media=mean(Overallscore), mediana=median(Overallscore))
+```
+
+## Ejercicio: Calculemos la media y la mediana de la variable "Overallscore" por tipo de régimen (variable "Categorías")
 
 <br></br> [Go to page beginning](#beginning)

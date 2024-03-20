@@ -659,37 +659,70 @@ hasta el final de la asistencia de los participantes a la escuela
 secundaria. <em>Para esta sesión <strong>no</strong> vamos a examinar
 las hipótesis o resultados del trabajo de Mosteller (1995), pero sí
 vamos a utilizar parte de su base de datos para el análisis
-descriptivo</em> 😌</p>
+descriptivo</em> 😌.</p>
+<p>Para ello, nos planteamos la siguiente pregunta de investigación, que
+nos guiará durante toda la sesión de hoy:</p>
 <blockquote>
-<p><strong>¿Por qué son importantes este tipo de estudios desde las
-ciencias sociales ?</strong></p>
-<p><img src="pd1_kermit.png" title="porq es importante?"
-width="117" /></p>
+<p><strong>¿Cuáles son las características de los paises de acuerdo a su
+régimen y ubicación geográfica?</strong></p>
 </blockquote>
+<p>Esta pregunta nos permite realizar un análisis descriptivo. Por ello,
+la responderemos durante toda la sesión. &gt; &gt; <img
+src="pd1_kermit.png" title="porq es importante?" width="117" /></p>
 <p><strong>¡Manos a la obra!</strong></p>
-<p>Importamos nuestra base de datos</p>
+<p>Lo primero que debemos hacer para responder la pregunta de
+investigación es saber qué base de datos vamos a utilizar. Luego,
+importamos nuestra base de datos.</p>
 <pre class="r"><code>library(rio)    
-data=import(&quot;Mosteller.csv&quot;) </code></pre>
-<p>Exploramos las variables que tiene nuestra base de datos:</p>
+data=import(&quot;DemocracyIndex2022.xlsx&quot;) </code></pre>
+<p>Es necesario saber el tipo de variable que vamos a trabajar. Por
+ello, exploramos las variables que tiene nuestra base de datos:</p>
 <ul>
-<li><p>chr, factor -&gt; variable nominal</p></li>
-<li><p>ordered factor -&gt; variable ordinal</p></li>
-<li><p>num, int -&gt; variable numérica</p></li>
+<li><strong>chr, factor</strong> -&gt; variable nominal</li>
+<li><strong>ordered factor</strong> -&gt; variable ordinal</li>
+<li><strong>num, int</strong> -&gt; variable numérica</li>
 </ul>
 <pre class="r"><code>names(data)</code></pre>
-<pre><code>## [1] &quot;race&quot;       &quot;classtype&quot;  &quot;yearssmall&quot; &quot;hsgrad&quot;     &quot;g4math&quot;    
-## [6] &quot;g4reading&quot;</code></pre>
+<pre><code>##  [1] &quot;País&quot;                        &quot;Overallscore&quot;               
+##  [3] &quot;Rank&quot;                        &quot;Change_rank_previous_year&quot;  
+##  [5] &quot;Electoral_process_pluralism&quot; &quot;Functioning_government&quot;     
+##  [7] &quot;Political_participation&quot;     &quot;Political_culture&quot;          
+##  [9] &quot;Civil_liberties&quot;             &quot;Categorías&quot;                 
+## [11] &quot;Continente&quot;</code></pre>
 <pre class="r"><code>str(data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    1600 obs. of  6 variables:
-##  $ race      : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ classtype : int  3 1 2 1 1 1 2 3 2 3 ...
-##  $ yearssmall: int  0 4 0 4 4 4 0 0 0 0 ...
-##  $ hsgrad    : int  1 1 1 1 1 1 1 1 0 1 ...
-##  $ g4math    : int  711 709 698 740 771 709 698 673 744 731 ...
-##  $ g4reading : int  750 725 692 836 725 761 778 665 735 698 ...</code></pre>
-<p>El contenido de cada variable lo podemos ver en la siguiente
-tabla:</p>
-<p><img src="diccionario.png" width="60%" style="display: block; margin: auto;" /></p>
+<pre><code>## &#39;data.frame&#39;:    167 obs. of  11 variables:
+##  $ País                       : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Angola&quot; ...
+##  $ Overallscore               : num  0.32 6.41 3.66 3.96 6.85 5.63 8.71 8.2 2.87 2.52 ...
+##  $ Rank                       : num  167 64 113 109 50 82 15 20 134 142 ...
+##  $ Change_rank_previous_year  : num  0 4 0 13 0 7 -6 0 7 2 ...
+##  $ Electoral_process_pluralism: num  0 7 3.08 4.5 9.17 7.92 10 9.58 0.5 0.42 ...
+##  $ Functioning_government     : num  0.07 6.43 2.5 3.21 5 5.71 8.57 7.14 2.86 2.71 ...
+##  $ Political_participation    : num  0 5 3.89 4.44 7.78 6.11 7.78 8.89 3.33 3.33 ...
+##  $ Political_culture          : num  1.25 6.25 5 5 4.38 3.13 7.5 6.88 5 4.38 ...
+##  $ Civil_liberties            : num  0.29 7.35 3.82 2.65 7.94 5.29 9.71 8.53 2.65 1.76 ...
+##  $ Categorías                 : chr  &quot;Authoritarian&quot; &quot;Flawed democracy&quot; &quot;Authoritarian&quot; &quot;Authoritarian&quot; ...
+##  $ Continente                 : chr  &quot;Asia y Australasia&quot; &quot;Europa del Este&quot; &quot;Sub-Saharan Africa&quot; &quot;Sub-Saharan Africa&quot; ...</code></pre>
+</div>
+<div
+id="el-contenido-de-cada-variable-lo-podemos-observar-en-el-siguiente-diccionario-de-datos"
+class="section level1">
+<h1>El contenido de cada variable lo podemos observar en el siguiente
+diccionario de datos:</h1>
+<p>-<strong>Pais</strong>: nombre del pais
+-<strong>OverallScore</strong>: puntaje promedio del país.
+-<strong>Rank</strong>: puesto del país en el indice por puntaje
+promedio. -<strong>Change_rank_previous_year</strong>: comparación de
+puesto actual respecto del año anterior.
+-<strong>Electoral_process_pluralism</strong>: Puntaje de medición de
+pluralismo político-electoral. -<strong>Functioning_government</strong>:
+puntaje de medición del funcionamiento del gobierno.
+-<strong>Political_participation</strong>: puntaje de medición de
+participación política. -<strong>Political_culture</strong>: puntaje de
+medición de la cultura política. -<strong>Civil_liberties</strong>:
+puntaje en la medición de libertades civiles.
+-<strong>Categorías</strong>: tipo de régimen.
+-<strong>Continente</strong>: región a la que pertenece el país
+analizado.</p>
 <div id="formateo-de-variables-y-frecuencia" class="section level2">
 <h2>4.1. Formateo de variables y frecuencia</h2>
 <p>Siempre antes de comenzar a realizar nuestro análisis, debemos
@@ -698,204 +731,222 @@ identificar la estructura de las variables y verificar que estén bien
 objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
-<p><strong>Variable “race”</strong> Exploramos frecuencias</p>
+<p><strong>Variable “Continente”</strong> Exploramos frecuencias</p>
 <pre class="r"><code>library(tidyverse) #no olvidar llamar a la librería
 
 data %&gt;%
- group_by(race) %&gt;%
+ group_by(Continente) %&gt;%
   summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##    race  Freq
-##   &lt;int&gt; &lt;int&gt;
-## 1     1  1383
-## 2     2   211
-## 3     3     5
-## 4     6     1</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Continente          Freq
+##   &lt;chr&gt;              &lt;int&gt;
+## 1 Asia y Australasia    28
+## 2 Europa                21
+## 3 Europa del Este       28
+## 4 LatinoAmerica         23
+## 5 Sub-Saharan Africa    67</code></pre>
 <p>Exploramos el formato de la variable</p>
-<pre class="r"><code>class(data$race) </code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-<p>Categorizamos</p>
-<pre class="r"><code>data$race = factor(data$race, levels = c(1:6), labels = c(&quot;white&quot;,&quot;black&quot;,&quot;asian&quot;,&quot;hispanic&quot;,&quot;native american&quot;,&quot;others&quot;)) #Otorgamos formato; &quot;factor&quot; quiere decir que se otorga formato de variable categórica
-
-class(data$race)</code></pre>
-<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(data$Continente) </code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>Categorizamos como corresponde. En este caso, “continente” es una
+variable nominal.</p>
+<pre class="r"><code>class(data$Continente) #comprobamos que se ha recategorizado bien</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>data %&gt;%
- group_by(race) %&gt;%
+ group_by(Continente) %&gt;%
   summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##   race    Freq
-##   &lt;fct&gt;  &lt;int&gt;
-## 1 white   1383
-## 2 black    211
-## 3 asian      5
-## 4 others     1</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Continente          Freq
+##   &lt;chr&gt;              &lt;int&gt;
+## 1 Asia y Australasia    28
+## 2 Europa                21
+## 3 Europa del Este       28
+## 4 LatinoAmerica         23
+## 5 Sub-Saharan Africa    67</code></pre>
 <p>La tabla anterior se llama <strong>tabla de frecuencias</strong>, y
 nos permite observar cuántas observaciones existen por cada
 variable.</p>
-<p>En el caso anterior, la tabla nos indica que, de todas las personas
-estudiadas, 1383 se identificaron como <em>white</em>, 211 como
-<em>black</em>, 5 como <em>asian</em> y 1 como <em>others</em>.
-Asimismo, se observa que nadie se identificó como <em>native
-american</em> ni <em>hispanic</em>.</p>
+<p>En el caso anterior, la tabla nos indica que, de todos los países que
+forman parte de este estudio, 28 pertenecen a la región de <strong>Asia
+y Australasia</strong>, 21 pertenecen a <strong>Europa</strong>, 28 a
+<strong>Europa del Este</strong>, 23 a <strong>Latinoamérica</strong> y
+67 a <strong>África Sub-Sahariana</strong>.</p>
 <p>Asimismo, podemos explorar las frecuencias de manera gráfica con la
 ayuda del paquete <code>ggplot2</code> . Para ello, antes debemos de
 crear una tabla y crear un objeto, lo llamaremos
 <em>para_grafico</em></p>
-<pre class="r"><code>para_graficoRace=data %&gt;%
- group_by(race) %&gt;%
+<pre class="r"><code>para_graficoContinente=data %&gt;%
+ group_by(Continente) %&gt;%
   summarize(Freq=n())</code></pre>
 <p>Si no contamos con el paquete ggplot lo instalamos insertando el
 siguiente código en un chunk:
 <code>install.packages("ggplot2")</code></p>
+<pre class="r"><code>install.packages(&quot;ggplot2&quot;)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; is in use and will not be installed</code></pre>
 <pre class="r"><code>library(ggplot2)
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
+ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
 geom_bar(stat = &quot;identity&quot;) </code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="pd1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Podemos personalizar el gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(para_graficoRace, aes(x=race, y=Freq, fill=race)) + 
+ggplot(para_graficoContinente, aes(x=Continente, y=Freq, fill=Continente)) + 
 geom_bar(stat = &quot;identity&quot;)+
-  ggtitle(&quot;Distribución de autopercepción&quot;) +
-  xlab(&quot;Race&quot;) + ylab(&quot;Frecuencia&quot;)+
+  ggtitle(&quot;Distribución de países por continente&quot;) +
+  xlab(&quot;Continente&quot;) + ylab(&quot;Frecuencia&quot;)+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p><strong>Variable “classtype”:</strong></p>
-<pre class="r"><code>class(data$classtype) </code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><strong>Variable “Categorías”:</strong></p>
+<p>Al igual que con “Continente”, queremos saber el tipo de régimen de
+cada país observado. Para ello, realizamos el análisis de la variable en
+cuestión (“Categorías”)</p>
+<pre class="r"><code>class(data$Categorías) </code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>data %&gt;%
- group_by(classtype) %&gt;%
+ group_by(Categorías) %&gt;%
   summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 3 × 2
-##   classtype  Freq
-##       &lt;int&gt; &lt;int&gt;
-## 1         1   481
-## 2         2   578
-## 3         3   541</code></pre>
-<pre class="r"><code>data$classtype = factor(data$classtype, levels = c(1:3), labels = c(&quot;small&quot;,&quot;regular&quot;,&quot;regular with aid&quot;))#&quot;factor&quot; para variable nominal
+<pre><code>## # A tibble: 4 × 2
+##   Categorías        Freq
+##   &lt;chr&gt;            &lt;int&gt;
+## 1 Authoritarian       59
+## 2 Flawed democracy    48
+## 3 Full democracy      24
+## 4 Hybrid regime       36</code></pre>
+<p>Se observa que, de los países analizados en el índice de la
+democtracia, 59 países son coniderados como
+<strong>Autoritarismo</strong>, 36 como <strong>Regímenes
+híbridos</strong>, 48 como <strong>Democracia imperfecta</strong> y solo
+24 como <strong>Democracia Plena</strong>.</p>
+<p>Creemos un gráfico de barras para visualizar mejor los países por
+tipo de régimen.</p>
+<pre class="r"><code>para_graficoReg=data %&gt;%
+ group_by(Categorías) %&gt;%
+  summarize(Freq=n())#tabla de frecuencias
 
-str(data$classtype)</code></pre>
-<pre><code>##  Factor w/ 3 levels &quot;small&quot;,&quot;regular&quot;,..: 3 1 2 1 1 1 2 3 2 3 ...</code></pre>
-<pre class="r"><code>data %&gt;%
- group_by(classtype) %&gt;%
-  summarize(Freq=n())#tabla de frecuencias</code></pre>
-<pre><code>## # A tibble: 3 × 2
-##   classtype         Freq
-##   &lt;fct&gt;            &lt;int&gt;
-## 1 small              481
-## 2 regular            578
-## 3 regular with aid   541</code></pre>
-<p>Al igual que con la tabla anterior, en este caso la **tabla de
-frecuencia* nos indica que, de los encuestados, 481 pertenecen a una
-clase pequeña, 578 pertenecen a una clase regular y otros 541 pertenecen
-a una clase regular con ayuda. También lo podemos ver en gráfico con el
-paquete ggplot2</p>
-<pre class="r"><code>para_graficoClass=data %&gt;%
- group_by(classtype) %&gt;%
-  summarize(Freq=n())#tabla de frecuencias</code></pre>
+library(ggplot2)
+ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
+geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p><img src="pd1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Personalicemos el gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(para_graficoClass, aes(x=classtype, y=Freq, fill=classtype)) + 
+ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = &quot;identity&quot;)+
   
-  ggtitle(&quot;Distribución de tipo de clase&quot;) +
-  xlab(&quot;Tipo de clase&quot;) + ylab(&quot;Frecuencia&quot;)+
+  ggtitle(&quot;Distribución de países por tipo de régimen&quot;) +
+  xlab(&quot;Tipo de régimen&quot;) + ylab(&quot;Frecuencia&quot;)+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
-  scale_fill_brewer(name=&quot;Tipo de Clase&quot;,palette=&quot;Pastel1&quot;)+
+  scale_fill_brewer(name=&quot;Tipo de Régimen&quot;,palette=&quot;Pastel1&quot;)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p><strong>De “hsgrad”</strong></p>
-<pre class="r"><code>class(data$hsgrad)</code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>data$hsgrad = factor(data$hsgrad, levels = c(0:1), labels = c(&quot;did not graduate&quot;,&quot;did graduate&quot;)) #ojo con el orden
-
-str(data$hsgrad)</code></pre>
-<pre><code>##  Factor w/ 2 levels &quot;did not graduate&quot;,..: 2 2 2 2 2 2 2 2 1 2 ...</code></pre>
-<pre class="r"><code>data %&gt;%
- group_by(hsgrad) %&gt;%
-  summarize(Freq=n())#tabla de frecuencias</code></pre>
-<pre><code>## # A tibble: 2 × 2
-##   hsgrad            Freq
-##   &lt;fct&gt;            &lt;int&gt;
-## 1 did not graduate   158
-## 2 did graduate      1442</code></pre>
-<pre class="r"><code>para_graficoHs=data %&gt;%
- group_by(hsgrad) %&gt;%
-  summarize(Freq=n())#tabla de frecuencias</code></pre>
-<pre class="r"><code>library(ggplot2)
-ggplot(para_graficoHs, aes(x=hsgrad, y=Freq, fill=hsgrad)) + 
-geom_bar(stat = &quot;identity&quot;)+
-  
-  ggtitle(&quot;Distribución de graduados&quot;) +
-  xlab(&quot;Tipo de clase&quot;) + ylab(&quot;Frecuencia&quot;)+
-  scale_fill_brewer(name=&quot; &quot;,palette=&quot;Dark2&quot;)+
-  geom_text(aes(label=round(Freq,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
-  theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
-<p>En este caso, nuestra tabla nos indica que, de todas las personas
-estudiadas, 1442 personas consiguieron graduarse, mientras que otras 158
-no lo consiguieron.</p>
-<p><strong>“g4math”, “g4reading”, “yearssmall”</strong> son variables
-numéricas y están configuradas como vectores numéricos de números
-enteros (integer), por lo cual lo dejamos así 😸.</p>
+<p><img src="pd1_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Las demás variables son numéricas y están configuradas como vectores
+numéricos de números enteros (integer), por lo cual lo dejamos así
+😸.</p>
 </div>
 <div id="media-y-mediana" class="section level2">
 <h2>4.2 Media y mediana</h2>
 <p>Entonces, una vez configurados adecuadamente nuestros
 <strong>objetos</strong>, pidamos los estadísticos de tendencia central
-para nuestras variables.</p>
+para nuestras variables de interés, esto es, el puntaje total
+(<strong>OversallScore</strong>)</p>
 <p>Antes instalamos algunos paquetes que utilizaremos</p>
 <ul>
 <li><strong>install.packages(“DescTools”)</strong> para pedir los
 estadísticos de tendencia central</li>
 </ul>
-<p>Las variables solicitadas son classtype y hsgrad</p>
-<p><strong>Para “g4math” podemos:</strong></p>
+<p>Primero, nos piden saber cuál es el promedio de puntaje de todos los
+países analizados. Para ello, usamos el comando “mean”, que significa
+“media o promedio”.</p>
 <pre class="r"><code>library(DescTools)
 library(tidyverse)
 
-data %&gt;% summarise(media = mean(g4math)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
+data %&gt;% summarise(media = mean(Overallscore)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
 <pre><code>##      media
-## 1 712.7094</code></pre>
-<p><strong>Para “g4math” podemos:</strong></p>
+## 1 5.293174</code></pre>
+<p>Este resultado quiere decir que el puntaje promedio de todos los
+países analizados es de 5.29 puntos.</p>
+<p>En segundo lugar, nos piden calcular la mediana de los puntajes. Esta
+medida es más robusta que la media, pues resiste valores extremos.</p>
 <pre class="r"><code>library(DescTools)
-data %&gt;% summarise(mediana = median(g4math)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.</code></pre>
+data %&gt;% summarise(mediana = median(Overallscore)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.</code></pre>
 <pre><code>##   mediana
-## 1     712</code></pre>
+## 1    5.54</code></pre>
+<p>Esto quiere decir que, hasta la mitad de países analizados tienen una
+puntuación de hasta 5.54 puntos.</p>
 <p><strong>Grafiquemos</strong></p>
 <p>Primero, seleccionemos los datos que queremos utilizar.</p>
-<pre class="r"><code>para_graficoMath = data %&gt;%
-  group_by(g4math) %&gt;%
+<pre class="r"><code>para_graficoPunt = data %&gt;%
+  group_by(Overallscore) %&gt;%
    summarize(Freq=n())</code></pre>
-<p>Como nuestra variable (g4math) es numérica, esta vez pediremos un
-<strong>histograma</strong>. Es similar a un gráfico de barras, solo que
-esta vez todas las barras se encuentran juntas y no separadas.</p>
+<p>Como nuestra variable (OverallScore) es numérica, esta vez pediremos
+un <strong>histograma</strong>. Es similar a un gráfico de barras, solo
+que esta vez todas las barras se encuentran juntas y no separadas.</p>
 <pre class="r"><code>library(ggplot2) #no olvidar llamar al paquete
-ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
 geom_histogram(stat = &quot;identity&quot;) </code></pre>
 <pre><code>## Warning in geom_histogram(stat = &quot;identity&quot;): Ignoring unknown parameters:
 ## `binwidth`, `bins`, and `pad`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-33-1.png" width="672" />
+<p><img src="pd1_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 Si lo queremos personalizar :)</p>
-<pre class="r"><code>ggplot(para_graficoMath, aes(x=g4math, y=Freq)) + 
+<pre class="r"><code>ggplot(para_graficoPunt, aes(x=Overallscore, y=Freq)) + 
 geom_histogram(fill =&quot;blue&quot;, stat = &quot;identity&quot;) +
   
- ggtitle(&quot;Notas de matemática&quot;) +
+ ggtitle(&quot;Puntaje promedio por país&quot;) +
   xlab(&quot;Puntaje&quot;) + ylab(&quot;Frecuencia&quot;) +
   theme(panel.background=element_rect(fill = &quot;lightgray&quot;, colour = &quot;black&quot;))</code></pre>
 <pre><code>## Warning in geom_histogram(fill = &quot;blue&quot;, stat = &quot;identity&quot;): Ignoring unknown
 ## parameters: `binwidth`, `bins`, and `pad`</code></pre>
-<p><img src="pd1_files/figure-html/unnamed-chunk-34-1.png" width="672" />
+<p><img src="pd1_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 El histograma muestra una <strong>distribución asimétrica sesgada con
 sesgo negativo o a la izquierda</strong>. Esto quiere decir que existe
 una concentración de datos hacia la derecha.</p>
-<hr />
-<div
-id="ejercicio-calculemos-la-media-y-la-mediana-de-la-variable-g4reading"
-class="section level4">
-<h4>Ejercicio: Calculemos la media y la mediana de la variable
-“g4reading”</h4>
-<p><br></br> <a href="#beginning">Go to page beginning</a></p>
+<p>También podemos dividir las medias por grupo. Para ello, usamos el
+comando “group_by”.</p>
+<pre class="r"><code>data%&gt;%
+  group_by(Continente)%&gt;%
+  summarise(media=mean(Overallscore))</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Continente         media
+##   &lt;chr&gt;              &lt;dbl&gt;
+## 1 Asia y Australasia  5.46
+## 2 Europa              8.36
+## 3 Europa del Este     5.39
+## 4 LatinoAmerica       5.79
+## 5 Sub-Saharan Africa  4.05</code></pre>
 </div>
+<div id="podemos-realizar-la-misma-operación-con-la-mediana"
+class="section level2">
+<h2>Podemos realizar la misma operación con la mediana</h2>
+<pre class="r"><code>data%&gt;%
+  group_by(Continente)%&gt;%
+  summarise(mediana=median(Overallscore))</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Continente         mediana
+##   &lt;chr&gt;                &lt;dbl&gt;
+## 1 Asia y Australasia    6.10
+## 2 Europa                8.28
+## 3 Europa del Este       6.28
+## 4 LatinoAmerica         6.34
+## 5 Sub-Saharan Africa    3.64</code></pre>
+<p>Y también podemos resumir todo en una misma tabla. Este tipo de tabla
+se llama <strong>Tabla resumen</strong></p>
+<pre class="r"><code>data%&gt;%
+  group_by(Continente)%&gt;%
+  summarise(media=mean(Overallscore), mediana=median(Overallscore))</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   Continente         media mediana
+##   &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Asia y Australasia  5.46    6.10
+## 2 Europa              8.36    8.28
+## 3 Europa del Este     5.39    6.28
+## 4 LatinoAmerica       5.79    6.34
+## 5 Sub-Saharan Africa  4.05    3.64</code></pre>
+</div>
+<div
+id="ejercicio-calculemos-la-media-y-la-mediana-de-la-variable-overallscore-por-tipo-de-régimen-variable-categorías"
+class="section level2">
+<h2>Ejercicio: Calculemos la media y la mediana de la variable
+“Overallscore” por tipo de régimen (variable “Categorías”)</h2>
+<p><br></br> <a href="#beginning">Go to page beginning</a></p>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">
