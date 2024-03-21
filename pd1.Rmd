@@ -335,12 +335,17 @@ geom_histogram()
 Si lo queremos personalizar :)
 
 ```{r}
+
 data %>%
-ggplot(aes(x=Puntaje)) + geom_histogram() +
-geom_histogram(color = "black", fill ="blue") +
-geom_text(stat = 'bin', aes(y = ..count.., label = ..count..), vjust = -0.5, size = 3, color = "black", bins = 30 , vjust = -10, size = 2, color = "black", bins = 30)+
-   ggtitle("Puntaje promedio por país")+
-theme(panel.background=element_rect(fill = "white", colour = "white"))
+  ggplot(aes(x = Puntaje)) + 
+  geom_histogram(color = "black", fill = "blue") +
+  geom_text(stat = 'bin', aes(y = stat(count), label = stat(count)), vjust = -0.5, size = 3, color = "black", bins = 30) +
+  ggtitle("Puntaje promedio por país") +
+  theme(panel.background = element_rect(fill = "white", colour = "white")) +
+  scale_y_continuous(breaks = seq(0, 14, by = 2), 
+                     labels = seq(0, 14, by = 2))
+
+
  
 ```
 
