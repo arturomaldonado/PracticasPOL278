@@ -387,6 +387,15 @@ data%>%
   summarise(media=mean(Puntaje), mediana=median(Puntaje))
 ```
 
-##### Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
+#### Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
+
+
+<br></br>
+
+</style>
+
+<a href="https://raw.githubusercontent.com/arturomaldonado/PracticasPOL278/main/pd1.Rmd" download="NombreDeTuScript.R">
+  <button>Descargar Práctica Dirigida 1</button>
+</a>
 
 <br></br> [Go to page beginning](#beginning)
