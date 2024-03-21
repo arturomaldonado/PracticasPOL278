@@ -94,7 +94,7 @@ str(data)
 names(data) #revisamos los nombres
 ```
 
-## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica?
+## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica?**
 
 **Explicar el proceso. Antuané**
 
@@ -239,7 +239,7 @@ data = data %>%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 
 ```
 
-#### **4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre  mujeres y hombres?**
+## **4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre  mujeres y hombres?** 🤔
 
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear
 
