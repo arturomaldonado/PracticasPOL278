@@ -198,11 +198,13 @@ class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data
 ¿Cuál es el estado de la democracia en el mundo?
 </div>
 
-insertar foto de la caratula del informe 22
+![](Portada DI_2022.png)
 
-AÑADIR BREVE DESCRIPCIÓN DE LA BD, explicar su composisción y link de informe final
+El índice de democracia (Democracy Index) es un índice que mide la calidad de la democracia en el mundo. Mide diversas categorías como libertades civiles, cultura política, pluralismo electoral, etc. A partir de estas variables, se obtiene un puntaje promedio, el cual determina el puesto del país a nivel mundial, así como el tipo de régimen que tiene cada uno.
 
-EDITAR: Para ello, nos planteamos la siguiente pregunta de investigación, que nos guiará durante toda la sesión de hoy:
+En esta ocasión, usaremos la base de datos del informe de 2022, publicado por The Economist Inteligence Unit (EIU). El link es el que se muestra a continuación: **"https://www.eiu.com/n/campaigns/democracy-index-2022/"**
+
+Ahora, toca responder la pregunta de investigación.
 
 **¡Manos a la obra!**
 
