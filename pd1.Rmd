@@ -184,13 +184,25 @@ class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data
 
 # **4. Análisis descriptivo en R**
 
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+
+<div class="custom-text">
+¿Cuál es el estado de la democracia en el mundo?
+</div>
+
+insertar foto de la caratula del informe 22
+
 AÑADIR BREVE DESCRIPCIÓN DE LA BD, explicar su composisción y link de informe final
 
 EDITAR: Para ello, nos planteamos la siguiente pregunta de investigación, que nos guiará durante toda la sesión de hoy:
-
-> **¿Cuál es el estado de la democracia en el mundo?**
-
-![](pd1_kermit.png "porq es importante?"){width="117"}
 
 **¡Manos a la obra!**
 
@@ -236,7 +248,7 @@ El contenido de cada variable lo podemos observar en el siguiente **diccionario 
 
 -   **Continente**: región a la que pertenece el país analizado.
 
-## 4.1. Formateo de variables y frecuencia
+## **4.1. ¿Cuál es la distribución de países por régimen?**
 
 Siempre antes de comenzar a realizar nuestro análisis, debemos identificar la estructura de las variables y verificar que estén bien *configuradas*. Es decir que la escala de la variable coincida con el objeto en R.
 
@@ -244,9 +256,7 @@ Por ejemplo, debemos asegurarnos que una variable categórica no esté configura
 
 **Variable "Categorías":**
 
-| ¿Cuál es la frecuencia de cada régimen en la muestra de países?
-
-Queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión ("Categorías")
+Queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión `Categorías`
 
 ```{r}
 class(data$Categorías) 
@@ -287,7 +297,7 @@ geom_bar(stat = "identity")+
 
 Las demás variables son numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así 😸.
 
-## 4.2 Media y mediana
+## **4.2 ¿Cuál es la distribución de países por puntaje?**
 
 Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables de interés.
 
@@ -308,7 +318,7 @@ data %>% summarise(media = mean(Puntaje)) #este comando nos permitirá calcular 
 
 Este resultado quiere decir que el **puntaje promedio** de todos los países analizados es de 5.29 puntos.
 
-En segundo lugar, nos piden calcular la mediana de los puntajes. Esta medida es más robusta que la media, pues resiste valores extremos.
+En segundo lugar, calculamos la mediana de los puntajes. Esta medida es más robusta que la media, pues resiste valores extremos.
 
 ```{r}
 library(DescTools)
@@ -338,13 +348,15 @@ Si lo queremos personalizar :)
 
 data %>%
   ggplot(aes(x = Puntaje)) + 
-  geom_histogram(color = "black", fill = "blue") +
-  geom_text(stat = 'bin', aes(y = stat(count), label = stat(count)), vjust = -0.5, size = 3, color = "black", bins = 30) +
+  geom_histogram(color = "blue", fill = "#90EE90", bins = 30) +
+  geom_text(stat = 'bin', aes(y = stat(count), label = stat(count)), vjust = -0.5, size = 3, color = "black") +
   ggtitle("Puntaje promedio por país") +
-  theme(panel.background = element_rect(fill = "white", colour = "white")) +
-  scale_y_continuous(breaks = seq(0, 14, by = 2), 
-                     labels = seq(0, 14, by = 2))
-
+  
+  scale_y_continuous(breaks = seq(0, 12, by = 2), labels = seq(0, 12, by = 2)) +
+  expand_limits(y = 12) +
+  geom_vline(xintercept =  mean(data$Puntaje, na.rm = TRUE), color = "red", linetype = "dashed", size = 1) + # Línea de la media
+  geom_vline(xintercept = median(data$Puntaje, na.rm = TRUE), color = "blue", linetype = "dashed", size = 1) + # Línea de la mediana
+  theme_minimal()
 
  
 ```
@@ -375,6 +387,6 @@ data%>%
   summarise(media=mean(Puntaje), mediana=median(Puntaje))
 ```
 
-## Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
+##### Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
 
 <br></br> [Go to page beginning](#beginning)

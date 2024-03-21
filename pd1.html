@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 1</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -638,15 +638,23 @@ la variable que queremos invocar.</p>
 </div>
 <div id="análisis-descriptivo-en-r" class="section level1">
 <h1><strong>4. Análisis descriptivo en R</strong></h1>
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+<div class="custom-text">
+<p>¿Cuál es el estado de la democracia en el mundo?</p>
+</div>
+<p>insertar foto de la caratula del informe 22</p>
 <p>AÑADIR BREVE DESCRIPCIÓN DE LA BD, explicar su composisción y link de
 informe final</p>
 <p>EDITAR: Para ello, nos planteamos la siguiente pregunta de
 investigación, que nos guiará durante toda la sesión de hoy:</p>
-<blockquote>
-<p><strong>¿Cuál es el estado de la democracia en el mundo?</strong></p>
-</blockquote>
-<p><img src="pd1_kermit.png" title="porq es importante?"
-width="117" /></p>
 <p><strong>¡Manos a la obra!</strong></p>
 <p>Importemos nuestra base de datos.</p>
 <pre class="r"><code>library(rio)    
@@ -701,8 +709,10 @@ libertades civiles.</p></li>
 <li><p><strong>Continente</strong>: región a la que pertenece el país
 analizado.</p></li>
 </ul>
-<div id="formateo-de-variables-y-frecuencia" class="section level2">
-<h2>4.1. Formateo de variables y frecuencia</h2>
+<div id="cuál-es-la-distribución-de-países-por-régimen"
+class="section level2">
+<h2><strong>4.1. ¿Cuál es la distribución de países por
+régimen?</strong></h2>
 <p>Siempre antes de comenzar a realizar nuestro análisis, debemos
 identificar la estructura de las variables y verificar que estén bien
 <em>configuradas</em>. Es decir que la escala de la variable coincida
@@ -710,18 +720,17 @@ con el objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
 <p><strong>Variable “Categorías”:</strong></p>
-<div class="line-block">¿Cuál es la frecuencia de cada régimen en la
-muestra de países?</div>
 <p>Queremos saber el tipo de régimen de cada país observado. Para ello,
-realizamos el análisis de la variable en cuestión (“Categorías”)</p>
+realizamos el análisis de la variable en cuestión
+<code>Categorías</code></p>
 <pre class="r"><code>class(data$Categorías) </code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
 ## ✔ purrr     1.0.2     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter()  masks stats::filter()
@@ -768,8 +777,10 @@ geom_bar(stat = &quot;identity&quot;)+
 numéricos de números enteros (integer), por lo cual lo dejamos así
 😸.</p>
 </div>
-<div id="media-y-mediana" class="section level2">
-<h2>4.2 Media y mediana</h2>
+<div id="cuál-es-la-distribución-de-países-por-puntaje"
+class="section level2">
+<h2><strong>4.2 ¿Cuál es la distribución de países por
+puntaje?</strong></h2>
 <p>Entonces, una vez configurados adecuadamente nuestros
 <strong>objetos</strong>, pidamos los estadísticos de tendencia central
 para nuestras variables de interés.</p>
@@ -790,8 +801,8 @@ data %&gt;% summarise(media = mean(Puntaje)) #este comando nos permitirá calcul
 ## 1 5.293174</code></pre>
 <p>Este resultado quiere decir que el <strong>puntaje promedio</strong>
 de todos los países analizados es de 5.29 puntos.</p>
-<p>En segundo lugar, nos piden calcular la mediana de los puntajes. Esta
-medida es más robusta que la media, pues resiste valores extremos.</p>
+<p>En segundo lugar, calculamos la mediana de los puntajes. Esta medida
+es más robusta que la media, pues resiste valores extremos.</p>
 <pre class="r"><code>library(DescTools)
 data %&gt;% summarise(mediana = median(Puntaje)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.</code></pre>
 <pre><code>##   mediana
@@ -817,12 +828,20 @@ geom_histogram() </code></pre>
 <p>Si lo queremos personalizar :)</p>
 <pre class="r"><code>data %&gt;%
   ggplot(aes(x = Puntaje)) + 
-  geom_histogram(color = &quot;black&quot;, fill = &quot;blue&quot;) +
-  geom_text(stat = &#39;bin&#39;, aes(y = stat(count), label = stat(count)), vjust = -0.5, size = 3, color = &quot;black&quot;, bins = 30) +
+  geom_histogram(color = &quot;blue&quot;, fill = &quot;#90EE90&quot;, bins = 30) +
+  geom_text(stat = &#39;bin&#39;, aes(y = stat(count), label = stat(count)), vjust = -0.5, size = 3, color = &quot;black&quot;) +
   ggtitle(&quot;Puntaje promedio por país&quot;) +
-  theme(panel.background = element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) +
-  scale_y_continuous(breaks = seq(0, 14, by = 2), 
-                     labels = seq(0, 14, by = 2))</code></pre>
+  
+  scale_y_continuous(breaks = seq(0, 12, by = 2), labels = seq(0, 12, by = 2)) +
+  expand_limits(y = 12) +
+  geom_vline(xintercept =  mean(data$Puntaje, na.rm = TRUE), color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la media
+  geom_vline(xintercept = median(data$Puntaje, na.rm = TRUE), color = &quot;blue&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la mediana
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
 <pre><code>## Warning: `stat(count)` was deprecated in ggplot2 3.4.0.
 ## ℹ Please use `after_stat(count)` instead.
 ## This warning is displayed once every 8 hours.
@@ -871,13 +890,13 @@ se llama <strong>Tabla resumen</strong></p>
 ## 3 Europa del Este     5.39    6.28
 ## 4 LatinoAmerica       5.79    6.34
 ## 5 Sub-Saharan Africa  4.05    3.64</code></pre>
-</div>
 <div
 id="ejercicio-escojan-una-variable-numérica-que-no-hayamos-utilizado-y-hallen-la-mediana-y-la-media-de-dicha-variable-por-continente."
-class="section level2">
-<h2>Ejercicio: Escojan una variable numérica que no hayamos utilizado y
-hallen la mediana y la media de dicha variable, por continente.</h2>
+class="section level5">
+<h5>Ejercicio: Escojan una variable numérica que no hayamos utilizado y
+hallen la mediana y la media de dicha variable, por continente.</h5>
 <p><br></br> <a href="#beginning">Go to page beginning</a></p>
+</div>
 </div>
 </div>
 
