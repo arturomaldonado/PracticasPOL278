@@ -515,13 +515,17 @@ diez).</p></li>
 paquete “rio”, el cual es un paquete versátil que nos permite importar
 datos de diversas extensiones (dta, sav, csv, xls, etc.)</p>
 <p>Antes que todo, debemos instalar el paquete escribiendo en la
-consola: install.packages(“rio”)</p>
+consola: <code>install.packages("rio")</code></p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
-data=import(&quot;Mosteller.csv&quot;) #Utilizamos la función import (importar) que creará un objeto en R que contenga la base de datos del archivo &quot;Mosteller.csv&quot; que hemos descargado. Podemos verificar la creación en el environment (ventana derecha superior)
+data=import(&quot;DemocracyIndex2022.xlsx&quot;) #Utilizamos la función import (importar) que creará un objeto  que contenga la base de datos del archivo &quot;DemocracyIndex2022.xlsx&quot; la cual hemos descargado. 
+
+#Podemos verificar la creación en el environment (ventana derecha superior)
 
 class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función &quot;class&quot; y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un &quot;data frame&quot;, es el tipo de objeto en R para las bases de datos.</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>¿Qué otro tipo de objetos existen?</p>
+<div id="qué-otro-tipo-de-objetos-existen" class="section level5">
+<h5>¿Qué otro tipo de objetos existen? 🤔</h5>
+</div>
 </div>
 <div id="tipos-de-objetos-en-r" class="section level4">
 <h4><strong>3.3. Tipos de objetos en R</strong></h4>
@@ -633,32 +637,6 @@ que queremos invocar.</p>
 </div>
 <div id="análisis-descriptivo-en-r" class="section level1">
 <h1><strong>4. Análisis descriptivo en R</strong></h1>
-<p>Mosteller (1995)<a href="#fn1" class="footnote-ref"
-id="fnref1"><sup>1</sup></a> realizó un estudio longitudinal sobre el
-impacto del tamaño de la clase en los primeros grados escolares, sobre
-el desempeño estudiantil y el desarrollo personal.</p>
-<p><strong>A tomar en cuenta</strong></p>
-<ul>
-<li>Un estudio longitudinal es aquel en el que se hace un seguimiento a
-participantes a lo largo del tiempo.</li>
-</ul>
-<!-- -->
-<ul>
-<li><p>Este estudio en concreto duró de 1985 a 1989 y participaron
-11,601 estudiantes.</p></li>
-<li><p>Durante los cuatro años del estudio, los estudiantes fueron
-asignados aleatoriamente a clases pequeñas, a clases de tamaño normal o
-a clases de tamaño normal con ayuda.</p></li>
-</ul>
-<p>Aunque el programa se detuvo en 1989 después de que la primera clase
-de jardín de infancia del programa terminara el tercer grado, la
-recopilación de información (por ejemplo, el rendimiento en los exámenes
-de octavo grado, el promedio general de la escuela secundaria) continuó
-hasta el final de la asistencia de los participantes a la escuela
-secundaria. <em>Para esta sesión <strong>no</strong> vamos a examinar
-las hipótesis o resultados del trabajo de Mosteller (1995), pero sí
-vamos a utilizar parte de su base de datos para el análisis
-descriptivo</em> 😌.</p>
 <p>Para ello, nos planteamos la siguiente pregunta de investigación, que
 nos guiará durante toda la sesión de hoy:</p>
 <blockquote>
@@ -702,31 +680,33 @@ ello, exploramos las variables que tiene nuestra base de datos:</p>
 ##  $ Continente                 : chr  &quot;Asia y Australasia&quot; &quot;Europa del Este&quot; &quot;Sub-Saharan Africa&quot; &quot;Sub-Saharan Africa&quot; ...</code></pre>
 <p>El contenido de cada variable lo podemos observar en el siguiente
 <strong>diccionario de datos</strong>:</p>
-<p>-<strong>Pais</strong>: nombre del pais</p>
-<p>-<strong>Puntaje</strong>: puntaje promedio del país.</p>
-<p>-<strong>Rank</strong>: puesto del país en el indice por puntaje
-promedio.</p>
-<p>-<strong>Change_rank_previous_year</strong>: comparación de puesto
-actual respecto del año anterior.</p>
-<p>-<strong>Electoral_process_pluralism</strong>: Puntaje de medición de
-pluralismo político-electoral.</p>
-<p>-<strong>Functioning_government</strong>: puntaje de medición del
-funcionamiento del gobierno.</p>
-<p>-<strong>Political_participation</strong>: puntaje de medición de
-participación política.</p>
-<p>-<strong>Political_culture</strong>: puntaje de medición de la
-cultura política.</p>
-<p>-<strong>Civil_liberties</strong>: puntaje en la medición de
-libertades civiles.</p>
-<p>-<strong>Categorías</strong>: tipo de régimen.</p>
-<p>-<strong>Continente</strong>: región a la que pertenece el país
-analizado.</p>
+<ul>
+<li><p><strong>Pais</strong>: nombre del pais</p></li>
+<li><p><strong>Puntaje</strong>: puntaje promedio del país.</p></li>
+<li><p><strong>Rank</strong>: puesto del país en el indice por puntaje
+promedio.</p></li>
+<li><p><strong>Change_rank_previous_year</strong>: comparación de puesto
+actual respecto del año anterior.</p></li>
+<li><p><strong>Electoral_process_pluralism</strong>: Puntaje de medición
+de pluralismo político-electoral.</p></li>
+<li><p><strong>Functioning_government</strong>: Puntaje de medición del
+funcionamiento del gobierno.</p></li>
+<li><p><strong>Political_participation</strong>: puntaje de medición de
+participación política.</p></li>
+<li><p><strong>Political_culture</strong>: puntaje de medición de la
+cultura política.</p></li>
+<li><p><strong>Civil_liberties</strong>: puntaje en la medición de
+libertades civiles.</p></li>
+<li><p><strong>Categorías</strong>: tipo de régimen.</p></li>
+<li><p><strong>Continente</strong>: región a la que pertenece el país
+analizado.</p></li>
+</ul>
 <div id="formateo-de-variables-y-frecuencia" class="section level2">
 <h2>4.1. Formateo de variables y frecuencia</h2>
 <p>Siempre antes de comenzar a realizar nuestro análisis, debemos
 identificar la estructura de las variables y verificar que estén bien
-“configuradas”. Es decir que la escala de la variable coincida con el
-objeto en R.</p>
+<em>configuradas</em>. Es decir que la escala de la variable coincida
+con el objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
 <p><strong>Variable “Categorías”:</strong></p>
@@ -771,7 +751,7 @@ library(ggplot2)
 ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = &quot;identity&quot;)</code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Personalicemos el gráfico :)</p>
+<p>Adaptemos el diseño del gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = &quot;identity&quot;)+
@@ -885,14 +865,6 @@ class="section level2">
 hallen la mediana y la media de dicha variable, por continente.</h2>
 <p><br></br> <a href="#beginning">Go to page beginning</a></p>
 </div>
-</div>
-<div class="footnotes footnotes-end-of-document">
-<hr />
-<ol>
-<li id="fn1"><p><em>Más información del artículo al siguiente <a
-href="https://pubmed.ncbi.nlm.nih.gov/8528684/">link</a></em><a
-href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
 
 
