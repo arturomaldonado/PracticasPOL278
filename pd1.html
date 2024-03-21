@@ -519,7 +519,7 @@ consola: <code>install.packages("rio")</code></p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
 data=import(&quot;DemocracyIndex2022.xlsx&quot;) #Utilizamos la función import (importar) que creará un objeto  que contenga la base de datos del archivo &quot;DemocracyIndex2022.xlsx&quot; la cual hemos descargado. 
 
-#Podemos verificar la creación en el environment (ventana derecha superior)
+#Podemos verificar la creación del objeto en el environment (ventana derecha superior)
 
 class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función &quot;class&quot; y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un &quot;data frame&quot;, es el tipo de objeto en R para las bases de datos.</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
@@ -571,9 +571,10 @@ categóricas, etc).</p></td>
 </tbody>
 </table>
 <p>Los <strong>vectores numéricos</strong> se crean a través de la
-función <strong>concatenar “c()”</strong>. Vamos a crear un vector que
-contenga los montos en millones de soles del presupuesto del Estado
-asignado a las 5 prioridades para el 2021</p>
+función <strong><em>concatenar</em></strong>
+<strong><code>c()</code></strong>. Vamos a crear un vector que contenga
+los montos en millones de soles del presupuesto del Estado asignado a
+las 5 prioridades para el 2021</p>
 <pre class="r"><code>Presupuesto_millones=c(9879, 33132, 20991, 690, 5392) #creamos el vector (verifiquemos en el environment)
 Presupuesto_millones #invocamos el vector para visualizar su contenido</code></pre>
 <pre><code>## [1]  9879 33132 20991   690  5392</code></pre>
@@ -594,8 +595,8 @@ almacenar información de una variable categórica ordinal. Es casi la
 misma ruta, solo que añadiremos una función más para convertir el factor
 en ordinal. Creemos un factor ordinal ficticio que contenga el nivel de
 ejecución que el Estado ha mostrado en las categorías presupuestales
-correspondientes a las prioridades, donde 1=Mala, 2=Intermedia y 3=
-Buena.</p>
+correspondientes a las prioridades, donde <em>1=Mala, 2=Intermedia y 3=
+Buena.</em></p>
 <pre class="r"><code>Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
 Ejecucion=factor(Ejecucion) #Lo convertimos en factor
 levels(Ejecucion)=c(&quot;Mala&quot;,&quot;Intermedia&quot;,&quot;Buena&quot;) #asignamos los niveles al factor
@@ -623,12 +624,12 @@ PP2024 # Visualice la base de datos</code></pre>
 <pre class="r"><code>names(PP2024) #Visualice los nombres de las variables de la BD</code></pre>
 <pre><code>## [1] &quot;Prioridad&quot;            &quot;Presupuesto_millones&quot; &quot;Ejecucion&quot;</code></pre>
 <p>Cuando queramos invocar una variable específica de una base de datos
-utilizaremos <strong>“$”</strong>, entre la base de datos y la variable
-que queremos invocar.</p>
+utilizaremos <strong><code>$</code></strong>, entre la base de datos y
+la variable que queremos invocar.</p>
 <pre class="r"><code>PP2024$Prioridad #invocamos la variable prioridad de la base de datos</code></pre>
 <pre><code>## [1] reactivación educación    salud        mujer        pobreza     
 ## Levels: reactivación educación salud mujer pobreza</code></pre>
-<pre class="r"><code>class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la bbdd</code></pre>
+<pre class="r"><code>class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data frame</code></pre>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
 <hr />
 <p><a id='part4'></a></p>
@@ -637,18 +638,17 @@ que queremos invocar.</p>
 </div>
 <div id="análisis-descriptivo-en-r" class="section level1">
 <h1><strong>4. Análisis descriptivo en R</strong></h1>
-<p>Para ello, nos planteamos la siguiente pregunta de investigación, que
-nos guiará durante toda la sesión de hoy:</p>
+<p>AÑADIR BREVE DESCRIPCIÓN DE LA BD, explicar su composisción y link de
+informe final</p>
+<p>EDITAR: Para ello, nos planteamos la siguiente pregunta de
+investigación, que nos guiará durante toda la sesión de hoy:</p>
 <blockquote>
 <p><strong>¿Cuál es el estado de la democracia en el mundo?</strong></p>
 </blockquote>
-<p>Esta pregunta nos permite realizar un análisis descriptivo. Por ello,
-la responderemos durante toda la sesión. &gt; &gt; <img
-src="pd1_kermit.png" title="porq es importante?" width="117" /></p>
+<p><img src="pd1_kermit.png" title="porq es importante?"
+width="117" /></p>
 <p><strong>¡Manos a la obra!</strong></p>
-<p>Lo primero que debemos hacer para responder la pregunta de
-investigación es saber qué base de datos vamos a utilizar. Luego,
-importamos nuestra base de datos.</p>
+<p>Importemos nuestra base de datos.</p>
 <pre class="r"><code>library(rio)    
 data=import(&quot;DemocracyIndex2022.xlsx&quot;) </code></pre>
 <p>Es necesario saber el tipo de variable que vamos a trabajar. Por
@@ -710,6 +710,8 @@ con el objeto en R.</p>
 <p>Por ejemplo, debemos asegurarnos que una variable categórica no esté
 configurada como numérica en R, y viceversa.</p>
 <p><strong>Variable “Categorías”:</strong></p>
+<div class="line-block">¿Cuál es la frecuencia de cada régimen en la
+muestra de países?</div>
 <p>Queremos saber el tipo de régimen de cada país observado. Para ello,
 realizamos el análisis de la variable en cuestión (“Categorías”)</p>
 <pre class="r"><code>class(data$Categorías) </code></pre>
@@ -753,7 +755,7 @@ geom_bar(stat = &quot;identity&quot;)</code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Adaptemos el diseño del gráfico :)</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
+ggplot(para_graficoReg, aes(reorder(x=Categorías,-Freq), y=Freq, fill=Categorías)) + 
 geom_bar(stat = &quot;identity&quot;)+
   
   ggtitle(&quot;Distribución de países por tipo de régimen&quot;) +
@@ -770,24 +772,24 @@ numéricos de números enteros (integer), por lo cual lo dejamos así
 <h2>4.2 Media y mediana</h2>
 <p>Entonces, una vez configurados adecuadamente nuestros
 <strong>objetos</strong>, pidamos los estadísticos de tendencia central
-para nuestras variables de interés, esto es, el puntaje total
-(<strong>Puntaje</strong>)</p>
-<p>Antes instalamos algunos paquetes que utilizaremos</p>
+para nuestras variables de interés.</p>
+<p>Antes instalamos los paquetes que utilizaremos</p>
 <ul>
-<li><strong>install.packages(“DescTools”)</strong> para pedir los
-estadísticos de tendencia central</li>
+<li><strong><code>install.packages("DescTools")</code></strong> para
+pedir los estadísticos de tendencia central</li>
 </ul>
-<p>Primero, nos piden saber cuál es el promedio de puntaje de todos los
-países analizados. Para ello, usamos el comando “mean”, que significa
-“media o promedio”.</p>
+<div class="line-block">¿Cuál es el promedio del puntaje de todos los
+países analizados?</div>
+<p>Para ello, usamos el comando <code>mean</code> que significa “media o
+promedio”.</p>
 <pre class="r"><code>library(DescTools)
 library(tidyverse)
 
 data %&gt;% summarise(media = mean(Puntaje)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda</code></pre>
 <pre><code>##      media
 ## 1 5.293174</code></pre>
-<p>Este resultado quiere decir que el puntaje promedio de todos los
-países analizados es de 5.29 puntos.</p>
+<p>Este resultado quiere decir que el <strong>puntaje promedio</strong>
+de todos los países analizados es de 5.29 puntos.</p>
 <p>En segundo lugar, nos piden calcular la mediana de los puntajes. Esta
 medida es más robusta que la media, pues resiste valores extremos.</p>
 <pre class="r"><code>library(DescTools)
@@ -796,25 +798,38 @@ data %&gt;% summarise(mediana = median(Puntaje)) #calcular la mediana. Al igual 
 ## 1    5.54</code></pre>
 <p>Esto quiere decir que, hasta la mitad de países analizados tienen una
 puntuación de hasta 5.54 puntos.</p>
-<p><strong>Grafiquemos</strong></p>
-<p>Primero, seleccionemos los datos que queremos utilizar.</p>
-<pre class="r"><code>para_graficoPunt = data %&gt;%
-  group_by(Puntaje) %&gt;%
-   summarize(Freq=n())</code></pre>
-<p>Como nuestra variable (OverallScore) es numérica, esta vez pediremos
-un <strong>histograma</strong>. Es similar a un gráfico de barras, solo
-que esta vez todas las barras se encuentran juntas y no separadas.</p>
+<p><strong>Grafiquemos</strong> 🎨</p>
+<p>Como la variable <code>Puntaje</code> es numérica, esta vez pediremos
+un <strong>histograma</strong>.</p>
+<pre class="r"><code>names(data)</code></pre>
+<pre><code>##  [1] &quot;País&quot;                        &quot;Puntaje&quot;                    
+##  [3] &quot;Rank&quot;                        &quot;Change_rank_previous_year&quot;  
+##  [5] &quot;Electoral_process_pluralism&quot; &quot;Functioning_government&quot;     
+##  [7] &quot;Political_participation&quot;     &quot;Political_culture&quot;          
+##  [9] &quot;Civil_liberties&quot;             &quot;Categorías&quot;                 
+## [11] &quot;Continente&quot;</code></pre>
 <pre class="r"><code>library(ggplot2) #no olvidar llamar al paquete
-ggplot(para_graficoPunt, aes(x=Puntaje)) + 
+data %&gt;%
+ggplot(aes(x=Puntaje)) + 
 geom_histogram() </code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Si lo queremos personalizar :)</p>
-<pre class="r"><code>ggplot(para_graficoPunt, aes(x=Puntaje)) + 
-geom_histogram(color = &quot;black&quot;, fill =&quot;blue&quot;) + geom_density(fill = &quot;black&quot;, alpha = 0.25) + 
-  
-  ggtitle(&quot;Puntaje promedio por país&quot;)</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre class="r"><code>data %&gt;%
+ggplot(aes(x=Puntaje)) + geom_histogram() +
+geom_histogram(color = &quot;black&quot;, fill =&quot;blue&quot;) +
+geom_text(stat = &#39;bin&#39;, aes(y = ..count.., label = ..count..), vjust = -0.5, size = 3, color = &quot;black&quot;, bins = 30 , vjust = -10, size = 2, color = &quot;black&quot;, bins = 30)+
+   ggtitle(&quot;Puntaje promedio por país&quot;)+
+theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
+<pre><code>## Warning: Duplicated aesthetics after name standardisation: vjust, size, colour,
+## and bins</code></pre>
+<pre><code>## Warning: The dot-dot notation (`..count..`) was deprecated in ggplot2 3.4.0.
+## ℹ Please use `after_stat(count)` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="pd1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>El histograma muestra una <strong>distribución asimétrica sesgada con
 ligero sesgo negativo o a la izquierda</strong>. Esto quiere decir que
