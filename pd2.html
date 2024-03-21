@@ -421,6 +421,8 @@ class="section level2">
 </div>
 <div id="importancia-de-visualización-de-datos" class="section level1">
 <h1><strong>3.Importancia de visualización de datos</strong></h1>
+<p>*AÑADIR COMENTARIOS SOBRE OTRAS FORMAS DE GENERAR GRÁFICOS EN BASE AL
+MANEJO DE DATOS MASIVOS. Antuané*</p>
 <p>Hay una infinidad de gráficos a los que se puede recurrir dependiendo
 del interés de la investigadora o el investigador. Aquí hay algunos
 ejemplos útiles: <a href="https://www.data-to-viz.com/"
@@ -444,11 +446,16 @@ class="uri">https://www.data-to-viz.com/caveat/pie.html</a></p>
 <p><img src="pd2_datavis.png" width="90%" style="display: block; margin: auto;" /></p>
 <div id="gráficos-por-tipo-de-variables" class="section level3">
 <h3><strong>Gráficos por tipo de variables:</strong></h3>
+<p><strong>Añadir ejemplos de gráficos al lado de la tabla.
+Antuané</strong></p>
 <p><img src="pd2_GrafTipoVar.png" width="60%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="análisis-descriptivo" class="section level1">
 <h1><strong>4.Análisis descriptivo</strong></h1>
+<blockquote>
+<p>¿Cuál es la percepción de desigualdad en el Perú el 2022?</p>
+</blockquote>
 <p>Carguemos la data <em>Enades_subset.dta</em>.</p>
 <p>Hoy trabajaremos con algunas de las variables que forman parte de la
 Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue
@@ -489,6 +496,11 @@ str(data)</code></pre>
 <pre><code>##  [1] &quot;edad&quot;       &quot;sexo&quot;       &quot;zona1&quot;      &quot;p03_1&quot;      &quot;p04&quot;       
 ##  [6] &quot;p05&quot;        &quot;d_educ&quot;     &quot;d_salud&quot;    &quot;d_trabajo&quot;  &quot;d_justicia&quot;
 ## [11] &quot;p13&quot;</code></pre>
+<div id="cuál-es-el-porcentaje-de-percepción-de-desigualdad-económica"
+class="section level2">
+<h2>4.1 ¿Cuál es el porcentaje de percepción de desigualdad
+económica?</h2>
+<p><strong>Explicar el proceso. Antuané</strong></p>
 <div id="análisis-de-una-variable-ordinal" class="section level3">
 <h3><strong>Análisis de una variable ordinal</strong></h3>
 <pre class="r"><code>library(dplyr)</code></pre>
@@ -553,7 +565,7 @@ los encuestados/as menores de 30 años.</p>
 ## 2 Algo     93      21.6 
 ## 3 Poco     67      15.5 
 ## 4 Nada      7       1.62</code></pre>
-<p>Grafiquemos los resultados con <em>ggplot2</em></p>
+<p>Grafiquemos los resultados con <em><code>ggplot2</code></em></p>
 <p>Nuestra variable es categórica, por lo tanto realizaremos el gráfico
 acorde:</p>
 <pre class="r"><code>library(ggplot2)
@@ -590,10 +602,10 @@ directo.</p>
 comercio podría ser un indicador proxy para el porcentaje de dueñas de
 negocios o ejecutivas.</p>
 </div>
-<div id="indicador-aditivo" class="section level2">
-<h2><strong>Indicador Aditivo</strong></h2>
-<div id="pasos-para-construir-un-indicador" class="section level3">
-<h3><strong>Pasos para construir un indicador:</strong></h3>
+<div id="indicador-aditivo" class="section level3">
+<h3><strong>Indicador Aditivo</strong></h3>
+<div id="pasos-para-construir-un-indicador" class="section level4">
+<h4>Pasos para construir un indicador:</h4>
 <ol style="list-style-type: decimal">
 <li>Verificar que las variables que construyan el indicador correspondan
 al concepto que se desea medir. <em>Ejemplo: Si deseo mejor Satisfacción
@@ -613,12 +625,13 @@ desea el índice de 0 a 10.</li>
 </ol>
 <p>Construiremos un indicador aditivos de percepción de desigualdad en
 el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para
-ello usaremos a las variables p11_1,p11_2,p11_3 y p11_4. Estas variables
-responden a la pregunta de qué tan desigual es el acceso a la eduación,
-salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El
-indicador que queremos crear es de percepción de desigualdad, por tanto
-el mayor valor debería ser mayor desigualdad. Las variables modificadas
-se llaman d_educ, d_salud, d_trabajo y d_justicia.</p>
+ello usaremos a las variables d_educ, d_salud_, d_trabajo y d_justicia.
+Estas variables responden a la pregunta de qué tan desigual es el acceso
+a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3-
+nada desigual. El indicador que queremos crear es de percepción de
+desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las
+variables modificadas se llaman d_educ, d_salud, d_trabajo y
+d_justicia.</p>
 <p>Para poder crear el indicador, necesitamos que todas las variables a
 usar sean numéricas porque las tendremos que sumar.</p>
 <pre class="r"><code>str(data)#Podemos notar que las variables que usaremos son de tipo caracter.</code></pre>
@@ -661,8 +674,11 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <pre class="r"><code>data = data %&gt;%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 </code></pre>
 </div>
-<div id="análisis-de-variables-numéricas" class="section level3">
-<h3>Análisis de variables numéricas</h3>
+<div
+id="cuál-es-la-diferencia-de-la-percepción-de-desigualdad-entre-mujeres-y-hombres"
+class="section level4">
+<h4><strong>4.2 ¿Cuál es la diferencia de la percepción de desigualdad
+entre mujeres y hombres?</strong></h4>
 <p>Ahora, veamos algunas medidas de tendencia central, distribución y
 dispersión para el caso de variables numéricas. Trabajaremos con el
 indicador que acabamos de crear</p>
@@ -697,6 +713,7 @@ hombres.</p>
 <p><img src="pd2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p><strong>Ejercicio:</strong> Analice descriptivos y elabore el gráfico
 correspondiente para la variable p03_1</p>
+</div>
 </div>
 </div>
 </div>
@@ -750,7 +767,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

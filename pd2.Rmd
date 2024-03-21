@@ -6,7 +6,7 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 1
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: true
@@ -47,6 +47,8 @@ knitr::include_graphics("pd2_MedTipoVar.png")
 
 # **3.Importancia de visualización de datos**
 
+\*AÑADIR COMENTARIOS SOBRE OTRAS FORMAS DE GENERAR GRÁFICOS EN BASE AL MANEJO DE DATOS MASIVOS. Antuané\*
+
 Hay una infinidad de gráficos a los que se puede recurrir dependiendo del interés de la investigadora o el investigador. Aquí hay algunos ejemplos útiles: <https://www.data-to-viz.com/>
 
 > ¿Por qué es importante la visualización de datos?
@@ -63,11 +65,15 @@ knitr::include_graphics("pd2_datavis.png")
 
 ### **Gráficos por tipo de variables:**
 
+**Añadir ejemplos de gráficos al lado de la tabla. Antuané**
+
 ```{r,echo=FALSE, out.width="60%",fig.align="center"}
 knitr::include_graphics("pd2_GrafTipoVar.png") 
 ```
 
 # **4.Análisis descriptivo**
+
+> ¿Cuál es la percepción de desigualdad en el Perú el 2022?
 
 Carguemos la data *Enades_subset.dta*.
 
@@ -87,6 +93,10 @@ str(data)
 ```{r}
 names(data) #revisamos los nombres
 ```
+
+## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica?
+
+**Explicar el proceso. Antuané**
 
 ### **Análisis de una variable ordinal**
 
@@ -142,7 +152,7 @@ data %>%
   mutate(Porcentaje = (Freq / sum(Freq))*100)
 ```
 
-Grafiquemos los resultados con *ggplot2*
+Grafiquemos los resultados con *`ggplot2`*
 
 Nuestra variable es categórica, por lo tanto realizaremos el gráfico acorde:
 
@@ -179,9 +189,9 @@ Un indicador proxy es una medición o señal indirecto que aproxima o representa
 
 Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
 
-## **Indicador Aditivo**
+### **Indicador Aditivo**
 
-### **Pasos para construir un indicador:**
+#### Pasos para construir un indicador:
 
 1.  Verificar que las variables que construyan el indicador correspondan al concepto que se desea medir. *Ejemplo: Si deseo mejor Satisfacción del Usuario, las preguntas deben ser sobre ello.*
 2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
@@ -191,7 +201,7 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
 7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
 
-Construiremos un indicador aditivos de percepción de desigualdad en el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables p11_1,p11_2,p11_3 y p11_4. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
+Construiremos un indicador aditivos de percepción de desigualdad en el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables d_educ, d_salud\_, d_trabajo y d_justicia. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
 
 Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
 
@@ -229,7 +239,7 @@ data = data %>%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 
 ```
 
-### Análisis de variables numéricas
+#### **4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre  mujeres y hombres?**
 
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear
 
