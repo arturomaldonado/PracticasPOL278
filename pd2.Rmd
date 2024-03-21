@@ -39,6 +39,8 @@ knitr::include_graphics("pd2_medVar.png")
 
 ### **Medición por tipo de variables:**
 
+CAMBIAR FORMA DE TABLA LIZ
+
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("pd2_MedTipoVar.png") 
 ```
@@ -47,7 +49,9 @@ knitr::include_graphics("pd2_MedTipoVar.png")
 
 Hay una infinidad de gráficos a los que se puede recurrir dependiendo del interés de la investigadora o el investigador. Aquí hay algunos ejemplos útiles: <https://www.data-to-viz.com/>
 
-¿Por qué es importante la visualización de datos? Graficar data ayuda a contar historias y, sobre todo, *dar un sentido* a los cientos, miles, o incluso millones, de filas de datos que con las que podríamos eventualmente trabajar, facilitando la comprensión de la información.
+> ¿Por qué es importante la visualización de datos?
+
+Graficar data ayuda a contar historias y, sobre todo, *dar un sentido* a los cientos, miles, o incluso millones, de filas de datos que con las que podríamos eventualmente trabajar, facilitando la comprensión de la información.
 
 En tanto la finalidad de la visualización de datos es ayudar a una mejor comprensión de la información, hay que tener cuidado con algunos gráficos como, por ejemplo, el gráfico de sectores o *pie chart*. A pesar de que la variable que estamos analizando permita utilizar este gráfico, hay buenas razones para no usarlo, y por qué es muchas veces mejor un gráfico de barras: <https://www.data-to-viz.com/caveat/pie.html>
 
@@ -138,7 +142,8 @@ data %>%
 
 Grafiquemos los resultados con *ggplot2*
 
-Nuestra variable es categórica, por lo tanto realizaremos el gráfico acorde: 
+Nuestra variable es categórica, por lo tanto realizaremos el gráfico acorde:
+
 ```{r}
 library(ggplot2)
 library(taylor) #opcional (una ventaja de que R sea software libre)
