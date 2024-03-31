@@ -128,7 +128,6 @@ Otorguemosle etiquetas y categorizemosla como factor:
 data$p04 = factor(data$p04, levels = c(1:4), labels = c("Mucho","Algo","Poco","Nada"),ordered = TRUE) #Le otorogamos las etiquetas de Mucho, Algo, Poco y Nada
 ```
 
-Revisemos que el cambio se haya realizado correctamente correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2. commando summarize/summarise de dplyr
 Revisemos que el cambio se haya realizado correctamente. Para hacerlo tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2. commando summarize/summarise de dplyr (Para esta última forma recordemos que se debe convocar a la libreria dplyr)
 
 ```{r}

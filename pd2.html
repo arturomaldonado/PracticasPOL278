@@ -529,14 +529,10 @@ revisemos los niveles antes de categorizarla correctamente.</p>
 ## 818 247 250  75</code></pre>
 <p>Otorguemosle etiquetas y categorizemosla como factor:</p>
 <pre class="r"><code>data$p04 = factor(data$p04, levels = c(1:4), labels = c(&quot;Mucho&quot;,&quot;Algo&quot;,&quot;Poco&quot;,&quot;Nada&quot;),ordered = TRUE) #Le otorogamos las etiquetas de Mucho, Algo, Poco y Nada</code></pre>
-<p>Revisemos que el cambio se haya realizado correctamente
-correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas,
-1. comando table (que revisamos anteriormente), y 2. commando
-summarize/summarise de dplyr Revisemos que el cambio se haya realizado
-correctamente. Para hacerlo tenemos dos formas, 1. comando table (que
-revisamos anteriormente), y 2. commando summarize/summarise de dplyr
-(Para esta última forma recordemos que se debe convocar a la libreria
-dplyr)</p>
+<p>Revisemos que el cambio se haya realizado correctamente. Para hacerlo
+tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2.
+commando summarize/summarise de dplyr (Para esta última forma recordemos
+que se debe convocar a la libreria dplyr)</p>
 <pre class="r"><code>data %&gt;%
  group_by(p04) %&gt;%
   summarize(Freq=n())</code></pre>
