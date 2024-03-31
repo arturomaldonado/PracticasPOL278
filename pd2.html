@@ -13,7 +13,11 @@
 
 <title>Práctica dirigida 2</title>
 
+<<<<<<< HEAD
 <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+=======
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+>>>>>>> b82245c87053647ceab7adc650946d75d3e4a833
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +33,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -499,6 +503,7 @@ str(data)</code></pre>
 id="cuál-es-el-porcentaje-de-percepción-de-desigualdad-económica-en-el-perú"
 class="section level2">
 <h2><strong>4.1 ¿Cuál es el porcentaje de percepción de desigualdad
+<<<<<<< HEAD
 económica en el Perú?</strong></h2>
 <p>Usaremos la pregunta P04: ¿Qué tan desigual cree que es el Perú
 económicamente?</p>
@@ -508,9 +513,18 @@ económicamente?</p>
 <li><p>3:Poco</p></li>
 <li><p>4:Nada</p></li>
 </ul>
+=======
+económica?</strong></h2>
+<p><strong>Explicar el proceso. Antuané</strong></p>
+>>>>>>> b82245c87053647ceab7adc650946d75d3e4a833
 <div id="análisis-de-una-variable-ordinal" class="section level3">
 <h3><strong>Análisis de una variable ordinal</strong></h3>
-<pre class="r"><code>library(dplyr)</code></pre>
+<p>Pasos para analizar una variable ordinal 1. Identificar el tipo de
+variable (Es decir, como lo esta identificando RStudio) 2. Convertimos
+la variable al tipo que necesitamos 3. Elaboramos un gráfico que nos
+permita ver preliminarmente los datos de la variable. 4. Elaboramos un
+gráfico que vaya acorde a la variable ordinal (gráfico de barras)</p>
+<pre class="r"><code>library(dplyr) #Convocamos el paquete</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -520,6 +534,7 @@ económicamente?</p>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>#comprobamos el tipo de dato que analizaremos
+#Primero analizaremos el tipo de dato que analizaremos
 class(data$p04)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>Del diccionario de datos, sabemos que esta variable es
@@ -529,10 +544,19 @@ las respuestas recogidas en la encuesta.</p>
 <pre><code>## 
 ##   1   2   3   4 
 ## 818 247 250  75</code></pre>
+<<<<<<< HEAD
 <p>💥 Otorguemosle etiquetas y categorizemosla como factor:</p>
 <pre class="r"><code>data$p04 = factor(data$p04, levels = c(1:4), labels = c(&quot;Mucho&quot;,&quot;Algo&quot;,&quot;Poco&quot;,&quot;Nada&quot;),ordered = TRUE)</code></pre>
 <p>Revisemos que el cambio se haya realizado correctamente usando el
 comando summarise del paquete <code>dplyr</code></p>
+=======
+<p>Otorguemosle etiquetas y categorizemosla como factor:</p>
+<pre class="r"><code>data$p04 = factor(data$p04, levels = c(1:4), labels = c(&quot;Mucho&quot;,&quot;Algo&quot;,&quot;Poco&quot;,&quot;Nada&quot;),ordered = TRUE) #Le otorogamos las etiquetas de Mucho, Algo, Poco y Nada</code></pre>
+<p>Revisemos que el cambio se haya realizado correctamente. Para hacerlo
+tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2.
+commando summarize/summarise de dplyr (Para esta última forma recordemos
+que se debe convocar a la libreria dplyr)</p>
+>>>>>>> b82245c87053647ceab7adc650946d75d3e4a833
 <pre class="r"><code>data %&gt;%
  group_by(p04) %&gt;%
   summarise(Freq=n())</code></pre>
@@ -702,7 +726,11 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <div
 id="cuál-es-la-diferencia-de-la-percepción-de-desigualdad-entre-mujeres-y-hombres"
 class="section level2">
+<<<<<<< HEAD
 <h2><strong>4.3 ¿Cuál es la diferencia de la percepción de desigualdad
+=======
+<h2><strong>4.2 ¿Cuál es la diferencia de la percepción de desigualdad
+>>>>>>> b82245c87053647ceab7adc650946d75d3e4a833
 entre mujeres y hombres?</strong> 🤔</h2>
 <p>Ahora, veamos algunas medidas de tendencia central, distribución y
 dispersión para el caso de variables numéricas. Trabajaremos con el
@@ -736,9 +764,14 @@ hombres.</p>
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<<<<<<< HEAD
 <p>EXPLICACIÓN DEL BOXPLOT. Antuané</p>
 <p><strong>Ejercicio para casa:</strong> Analice descriptivos y elabore
 el gráfico correspondiente para la variable p03_1</p>
+=======
+<p><strong>Ejercicio:</strong> Analice descriptivos y elabore el gráfico
+correspondiente para la variable p03_1</p>
+>>>>>>> b82245c87053647ceab7adc650946d75d3e4a833
 </div>
 </div>
 
