@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 2</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -400,10 +400,10 @@ div.tocify {
 <p><img src="logoPUCP.png" width="30%" /></p>
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
 <div
-id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2023---2"
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
 class="section level2">
 <h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
-2023 - 2 <br></h2>
+2024 - 1 <br></h2>
 <hr />
 </div>
 <div id="qué-es-el-análisis-descriptivo" class="section level1">
@@ -446,17 +446,15 @@ class="uri">https://www.data-to-viz.com/caveat/pie.html</a></p>
 <p><img src="pd2_datavis.png" width="90%" style="display: block; margin: auto;" /></p>
 <div id="gráficos-por-tipo-de-variables" class="section level3">
 <h3><strong>Gráficos por tipo de variables:</strong></h3>
-<p><strong>Añadir ejemplos de gráficos al lado de la tabla.
-Antuané</strong></p>
 <p><img src="pd2_GrafTipoVar.png" width="60%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="análisis-descriptivo" class="section level1">
 <h1><strong>4.Análisis descriptivo</strong></h1>
 <blockquote>
-<p>¿Cuál es la percepción de desigualdad en el Perú el 2022?</p>
+<p>¿Cuál es la percepción de desigualdad en el Perú el 2022? 🤔</p>
 </blockquote>
-<p>Carguemos la data <em>Enades_subset.dta</em>.</p>
+<p>INTRODUCIT LA DATA, QUE ESTÉ SIMILAR AL FORMATO DE LA PD1.</p>
 <p>Hoy trabajaremos con algunas de las variables que forman parte de la
 Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue
 elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice
@@ -464,6 +462,7 @@ su nombre, esta encuesta busca ahondar en la percepción de las
 diferentes formas de desigualdad en el Perú e incorpora indicadores que
 permiten medir la magnitud de brechas sociales y políticas como género,
 clase, etc.</p>
+<p>Carguemos la data <em>Enades_subset.dta</em>.</p>
 <p><img src="Diccionario-enades.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
 data=import(&quot;Enades_subset.dta&quot;) 
@@ -496,11 +495,19 @@ str(data)</code></pre>
 <pre><code>##  [1] &quot;edad&quot;       &quot;sexo&quot;       &quot;zona1&quot;      &quot;p03_1&quot;      &quot;p04&quot;       
 ##  [6] &quot;p05&quot;        &quot;d_educ&quot;     &quot;d_salud&quot;    &quot;d_trabajo&quot;  &quot;d_justicia&quot;
 ## [11] &quot;p13&quot;</code></pre>
-<div id="cuál-es-el-porcentaje-de-percepción-de-desigualdad-económica"
+<div
+id="cuál-es-el-porcentaje-de-percepción-de-desigualdad-económica-en-el-perú"
 class="section level2">
-<h2>4.1 ¿Cuál es el porcentaje de percepción de desigualdad
-económica?</h2>
-<p><strong>Explicar el proceso. Antuané</strong></p>
+<h2><strong>4.1 ¿Cuál es el porcentaje de percepción de desigualdad
+económica en el Perú?</strong></h2>
+<p>Usaremos la pregunta P04: ¿Qué tan desigual cree que es el Perú
+económicamente?</p>
+<ul>
+<li><p>1:Mucho</p></li>
+<li><p>2:Algo</p></li>
+<li><p>3:Poco</p></li>
+<li><p>4:Nada</p></li>
+</ul>
 <div id="análisis-de-una-variable-ordinal" class="section level3">
 <h3><strong>Análisis de una variable ordinal</strong></h3>
 <pre class="r"><code>library(dplyr)</code></pre>
@@ -515,21 +522,20 @@ económica?</h2>
 <pre class="r"><code>#comprobamos el tipo de dato que analizaremos
 class(data$p04)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<p>Del diccionario de datos, sabemos que esta variable es una ordinal,
-revisemos los niveles antes de categorizarla correctamente.</p>
+<p>Del diccionario de datos, sabemos que esta variable es
+<strong>ordinal</strong>, revisemos si los niveles tienen coherencia con
+las respuestas recogidas en la encuesta.</p>
 <pre class="r"><code>table(data$p04) #Veamos los niveles de la variable</code></pre>
 <pre><code>## 
 ##   1   2   3   4 
 ## 818 247 250  75</code></pre>
-<p>Otorguemosle etiquetas y categorizemosla como factor:</p>
+<p>💥 Otorguemosle etiquetas y categorizemosla como factor:</p>
 <pre class="r"><code>data$p04 = factor(data$p04, levels = c(1:4), labels = c(&quot;Mucho&quot;,&quot;Algo&quot;,&quot;Poco&quot;,&quot;Nada&quot;),ordered = TRUE)</code></pre>
-<p>Revisemos que el cambio se haya realizado correctamente
-correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas,
-1. comando table (que revisamos anteriormente), y 2. commando
-summarize/summarise de dplyr</p>
+<p>Revisemos que el cambio se haya realizado correctamente usando el
+comando summarise del paquete <code>dplyr</code></p>
 <pre class="r"><code>data %&gt;%
  group_by(p04) %&gt;%
-  summarize(Freq=n())</code></pre>
+  summarise(Freq=n())</code></pre>
 <pre><code>## # A tibble: 4 × 2
 ##   p04    Freq
 ##   &lt;ord&gt; &lt;int&gt;
@@ -538,17 +544,27 @@ summarize/summarise de dplyr</p>
 ## 3 Poco    250
 ## 4 Nada     75</code></pre>
 <p>A primera vista, la tabla nos indica que la mayoría de los
-encuestados (868) opina que hay mucha desigualdad económica en el país.
+encuestados (818) opina que hay mucha desigualdad económica en el país.
 Pero, ¿cuánto sería eso en porcentaje?</p>
 <p>Podemos realizar una tabla de frecuencias y porcentajes agregando una
 linea al comando anterior. Para poder graficar los resultados de las
 tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta
-tabla resumen, asignemosle el nombre de <em>para_grafico</em> para así
-luego llamarla al graficar.</p>
+tabla resumen, asignemosle el nombre de
+<em><code>para_grafico</code></em> para así luego llamarla al
+graficar.</p>
 <pre class="r"><code>para_grafico=data %&gt;%
  group_by(p04) %&gt;%
   summarize(Freq=n()) %&gt;%
-   mutate(Porcentaje = (Freq / sum(Freq))*100)</code></pre>
+   mutate(Porcentaje = (Freq / sum(Freq))*100)
+
+para_grafico</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   p04    Freq Porcentaje
+##   &lt;ord&gt; &lt;int&gt;      &lt;dbl&gt;
+## 1 Mucho   818      58.8 
+## 2 Algo    247      17.8 
+## 3 Poco    250      18.0 
+## 4 Nada     75       5.40</code></pre>
 <p>Afirmamos que más del 50% de los encuestados percibe que el país es
 muy desigual económicamente.</p>
 <p>Podemos analizar cómo cambia esto si solo seleccionamos los casos de
@@ -588,6 +604,14 @@ gustos.</p>
 <p>El ejercicio de análisis descriptivo con variables numéricas lo
 realizaremos con un indicador aditivo que crearemos a continuación.</p>
 </div>
+</div>
+<div
+id="cuál-es-la-percepción-de-la-desigualdad-en-calidad-de-vida-en-el-perú"
+class="section level2">
+<h2><strong>4.2 ¿Cuál es la percepción de la desigualdad en calidad de
+vida en el Perú?</strong></h2>
+<p>HACER INTRO SOBRE CALIDAD DE VIDA Y LA ELECCIÓN DE LAS VARIABLES DE
+LA ENCUESTA</p>
 <div id="indicador-proxy" class="section level3">
 <h3><strong>Indicador Proxy</strong></h3>
 <p>También llamado indicador indirecto, se usa ante la imposibilidad de
@@ -624,14 +648,13 @@ mínimo, con ello, se va a obtener valores entre 0 y 1.</li>
 desea el índice de 0 a 10.</li>
 </ol>
 <p>Construiremos un indicador aditivos de percepción de desigualdad en
-el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para
-ello usaremos a las variables d_educ, d_salud_, d_trabajo y d_justicia.
-Estas variables responden a la pregunta de qué tan desigual es el acceso
-a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3-
-nada desigual. El indicador que queremos crear es de percepción de
-desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las
-variables modificadas se llaman d_educ, d_salud, d_trabajo y
-d_justicia.</p>
+calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
+las variables d_educ, d_salud_, d_trabajo y d_justicia. Estas variables
+responden a la pregunta de qué tan desigual es el acceso a la eduación,
+salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El
+indicador que queremos crear es de percepción de desigualdad, por tanto
+el mayor valor debería ser mayor desigualdad. Las variables modificadas
+se llaman d_educ, d_salud, d_trabajo y d_justicia.</p>
 <p>Para poder crear el indicador, necesitamos que todas las variables a
 usar sean numéricas porque las tendremos que sumar.</p>
 <pre class="r"><code>str(data)#Podemos notar que las variables que usaremos son de tipo caracter.</code></pre>
@@ -674,14 +697,16 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <pre class="r"><code>data = data %&gt;%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 </code></pre>
 </div>
+</div>
+</div>
 <div
 id="cuál-es-la-diferencia-de-la-percepción-de-desigualdad-entre-mujeres-y-hombres"
-class="section level4">
-<h4><strong>4.2 ¿Cuál es la diferencia de la percepción de desigualdad
-entre mujeres y hombres?</strong></h4>
+class="section level2">
+<h2><strong>4.3 ¿Cuál es la diferencia de la percepción de desigualdad
+entre mujeres y hombres?</strong> 🤔</h2>
 <p>Ahora, veamos algunas medidas de tendencia central, distribución y
 dispersión para el caso de variables numéricas. Trabajaremos con el
-indicador que acabamos de crear</p>
+indicador que acabamos de crear: <code>indicador</code></p>
 <p>Exploremos la variable. Veamos medidas de tendencia central y de
 dispersión. Recordemos que va del 0 al 100.</p>
 <pre class="r"><code>data%&gt;%
@@ -696,7 +721,7 @@ dispersión. Recordemos que va del 0 al 100.</p>
 <pre class="r"><code>data$sexo = factor(data$sexo, levels = c(1:2), labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;))</code></pre>
 <pre class="r"><code>data %&gt;%
  group_by(sexo) %&gt;%
-  summarize(Media=mean(indicador)) </code></pre>
+  summarise(Media=mean(indicador)) </code></pre>
 <pre><code>## # A tibble: 2 × 2
 ##   sexo   Media
 ##   &lt;fct&gt;  &lt;dbl&gt;
@@ -711,10 +736,9 @@ hombres.</p>
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-<p><strong>Ejercicio:</strong> Analice descriptivos y elabore el gráfico
-correspondiente para la variable p03_1</p>
-</div>
-</div>
+<p>EXPLICACIÓN DEL BOXPLOT. Antuané</p>
+<p><strong>Ejercicio para casa:</strong> Analice descriptivos y elabore
+el gráfico correspondiente para la variable p03_1</p>
 </div>
 </div>
 

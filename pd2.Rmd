@@ -21,7 +21,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 ------------------------------------------------------------------------
 
@@ -65,19 +65,19 @@ knitr::include_graphics("pd2_datavis.png")
 
 ### **Gráficos por tipo de variables:**
 
-**Añadir ejemplos de gráficos al lado de la tabla. Antuané**
-
 ```{r,echo=FALSE, out.width="60%",fig.align="center"}
 knitr::include_graphics("pd2_GrafTipoVar.png") 
 ```
 
 # **4.Análisis descriptivo**
 
-> ¿Cuál es la percepción de desigualdad en el Perú el 2022?
+> ¿Cuál es la percepción de desigualdad en el Perú el 2022? 🤔
 
-Carguemos la data *Enades_subset.dta*.
+INTRODUCIT LA DATA, QUE ESTÉ SIMILAR AL FORMATO DE LA PD1.
 
 Hoy trabajaremos con algunas de las variables que forman parte de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice su nombre, esta encuesta busca ahondar en la percepción de las diferentes formas de desigualdad en el Perú e incorpora indicadores que permiten medir la magnitud de brechas sociales y políticas como género, clase, etc.
+
+Carguemos la data *Enades_subset.dta*.
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 knitr::include_graphics("Diccionario-enades.png") 
@@ -94,9 +94,17 @@ str(data)
 names(data) #revisamos los nombres
 ```
 
-## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica?**
+## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?**
 
-**Explicar el proceso. Antuané**
+Usaremos la pregunta P04: ¿Qué tan desigual cree que es el Perú económicamente?
+
+-   1:Mucho
+
+-   2:Algo
+
+-   3:Poco
+
+-   4:Nada
 
 ### **Análisis de una variable ordinal**
 
@@ -109,35 +117,37 @@ library(dplyr)
 class(data$p04)
 ```
 
-Del diccionario de datos, sabemos que esta variable es una ordinal, revisemos los niveles antes de categorizarla correctamente.
+Del diccionario de datos, sabemos que esta variable es **ordinal**, revisemos si los niveles tienen coherencia con las respuestas recogidas en la encuesta.
 
 ```{r}
 table(data$p04) #Veamos los niveles de la variable
 ```
 
-Otorguemosle etiquetas y categorizemosla como factor:
+💥 Otorguemosle etiquetas y categorizemosla como factor:
 
 ```{r}
 data$p04 = factor(data$p04, levels = c(1:4), labels = c("Mucho","Algo","Poco","Nada"),ordered = TRUE)
 ```
 
-Revisemos que el cambio se haya realizado correctamente correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2. commando summarize/summarise de dplyr
+Revisemos que el cambio se haya realizado correctamente usando el comando summarise del paquete `dplyr`
 
 ```{r}
 data %>%
  group_by(p04) %>%
-  summarize(Freq=n())
+  summarise(Freq=n())
 ```
 
-A primera vista, la tabla nos indica que la mayoría de los encuestados (868) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería eso en porcentaje?
+A primera vista, la tabla nos indica que la mayoría de los encuestados (818) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería eso en porcentaje?
 
-Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen, asignemosle el nombre de *para_grafico* para así luego llamarla al graficar.
+Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen, asignemosle el nombre de *`para_grafico`* para así luego llamarla al graficar.
 
 ```{r}
 para_grafico=data %>%
  group_by(p04) %>%
   summarize(Freq=n()) %>%
    mutate(Porcentaje = (Freq / sum(Freq))*100)
+
+para_grafico
 ```
 
 Afirmamos que más del 50% de los encuestados percibe que el país es muy desigual económicamente.
@@ -181,6 +191,10 @@ ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) +
 
 El ejercicio de análisis descriptivo con variables numéricas lo realizaremos con un indicador aditivo que crearemos a continuación.
 
+## **4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?**
+
+HACER INTRO SOBRE CALIDAD DE VIDA Y LA ELECCIÓN DE LAS VARIABLES DE LA ENCUESTA
+
 ### **Indicador Proxy**
 
 También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
@@ -201,7 +215,7 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
 7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
 
-Construiremos un indicador aditivos de percepción de desigualdad en el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables d_educ, d_salud\_, d_trabajo y d_justicia. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
+Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables d_educ, d_salud\_, d_trabajo y d_justicia. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
 
 Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
 
@@ -239,9 +253,9 @@ data = data %>%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 
 ```
 
-## **4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre  mujeres y hombres?** 🤔
+## **4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?** 🤔
 
-Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear
+Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear: `indicador`
 
 Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Recordemos que va del 0 al 100.
 
@@ -263,7 +277,7 @@ data$sexo = factor(data$sexo, levels = c(1:2), labels = c("Hombre","Mujer"))
 ```{r}
 data %>%
  group_by(sexo) %>%
-  summarize(Media=mean(indicador)) 
+  summarise(Media=mean(indicador)) 
 ```
 
 La tabla nos indica que las encuestadas mujeres perciben ligeramente una mayor desigualdad en los derechos y servicios, a comparación de los hombres.
@@ -278,4 +292,6 @@ ggplot(data, aes(x=sexo, y=indicador, color=sexo)) +
 
 ```
 
-**Ejercicio:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
+EXPLICACIÓN DEL BOXPLOT. Antuané
+
+**Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
