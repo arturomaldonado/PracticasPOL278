@@ -37,30 +37,22 @@ knitr::include_graphics("pd2_QSAnalisisDesc.png")
 knitr::include_graphics("pd2_medVar.png") 
 ```
 
-### **Medición por tipo de variables:**
-
-CAMBIAR FORMA DE TABLA LIZ
-
-```{r,echo=FALSE, out.width="50%",fig.align="center"}
-knitr::include_graphics("pd2_MedTipoVar.png") 
-```
 
 # **3.Importancia de visualización de datos**
 
+
+
+```{r,echo=FALSE, out.width="90%",fig.align="center"}
+knitr::include_graphics("pd2_datavis.png") 
+```
 \*AÑADIR COMENTARIOS SOBRE OTRAS FORMAS DE GENERAR GRÁFICOS EN BASE AL MANEJO DE DATOS MASIVOS. Antuané\*
 
 Hay una infinidad de gráficos a los que se puede recurrir dependiendo del interés de la investigadora o el investigador. Aquí hay algunos ejemplos útiles: <https://www.data-to-viz.com/>
 
 > ¿Por qué es importante la visualización de datos?
 
+- Mejor comprensión de la información, hay que tener cuidado con algunos gráficos como, por ejemplo, el gráfico de sectores o *pie chart*. A pesar de que la variable que estamos analizando permita utilizar este gráfico, hay buenas razones para no usarlo, y por qué es muchas veces mejor un gráfico de barras: <https://www.data-to-viz.com/caveat/pie.html>
 
-Graficar información ayuda a contar historias y, sobre todo, *dar un sentido* a los cientos, miles, o incluso millones de filas de datos que con las que podríamos eventualmente trabajar, facilitando la comprensión de la información.
-
-En tanto la finalidad de la visualización de datos es ayudar a una mejor comprensión de la información, hay que tener cuidado con algunos gráficos como, por ejemplo, el gráfico de sectores o *pie chart*. A pesar de que la variable que estamos analizando permita utilizar este gráfico, hay buenas razones para no usarlo, y por qué es muchas veces mejor un gráfico de barras: <https://www.data-to-viz.com/caveat/pie.html>
-
-```{r,echo=FALSE, out.width="90%",fig.align="center"}
-knitr::include_graphics("pd2_datavis.png") 
-```
 LIZ:**colocar algo de data story telling**
 
 ### **Gráficos por tipo de variables:**
