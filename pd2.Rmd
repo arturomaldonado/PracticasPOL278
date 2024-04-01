@@ -95,7 +95,9 @@ names(data) #revisamos las variables
 
 ## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?**
 
-Usaremos la pregunta P04: ¿Qué tan desigual cree que es el Perú económicamente?
+Usaremos la variable **P04**:
+
+`¿Qué tan desigual cree que es el Perú económicamente?`
 
 De acuerdo al diccionario de datos encontramos cuatro posibles respuestas
 
@@ -303,5 +305,9 @@ ggplot(data, aes(x=sexo, y=indicador, color=sexo)) +
   theme_classic()
 
 ```
+
+Análisis: Como podemos ver en el gráfico la disperción de los datos es muy similar en el grupo de hombre y mujeres. Los valores atípicos (outliers) se muestran como puntos individuales fuera de la caja. La línea que vemos dentro de la caja nos señala la mediana, al comparar las dos líneas se aprecia que la mediana es similar.
+
+En resumen, el boxplot es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
 
 **Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
