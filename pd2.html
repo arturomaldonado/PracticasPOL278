@@ -413,37 +413,24 @@ class="section level2">
 <div id="nivel-de-medida-de-una-variable" class="section level1">
 <h1><strong>2.Nivel de medida de una variable</strong></h1>
 <p><img src="pd2_medVar.png" width="50%" style="display: block; margin: auto;" /></p>
-<div id="medición-por-tipo-de-variables" class="section level3">
-<h3><strong>Medición por tipo de variables:</strong></h3>
-<p>CAMBIAR FORMA DE TABLA LIZ</p>
-<p><img src="pd2_MedTipoVar.png" width="50%" style="display: block; margin: auto;" /></p>
-</div>
 </div>
 <div id="importancia-de-visualización-de-datos" class="section level1">
 <h1><strong>3.Importancia de visualización de datos</strong></h1>
-<p>*AÑADIR COMENTARIOS SOBRE OTRAS FORMAS DE GENERAR GRÁFICOS EN BASE AL
-MANEJO DE DATOS MASIVOS. Antuané*</p>
-<p>Hay una infinidad de gráficos a los que se puede recurrir dependiendo
-del interés de la investigadora o el investigador. Aquí hay algunos
-ejemplos útiles: <a href="https://www.data-to-viz.com/"
-class="uri">https://www.data-to-viz.com/</a></p>
-<blockquote>
-<p>¿Por qué es importante la visualización de datos?</p>
-</blockquote>
-<p>Graficar información ayuda a contar historias y, sobre todo, <em>dar
-un sentido</em> a los cientos, miles, o incluso millones de filas de
-datos que con las que podríamos eventualmente trabajar, facilitando la
-comprensión de la información.</p>
-<p>En tanto la finalidad de la visualización de datos es ayudar a una
-mejor comprensión de la información, hay que tener cuidado con algunos
-gráficos como, por ejemplo, el gráfico de sectores o <em>pie chart</em>.
-A pesar de que la variable que estamos analizando permita utilizar este
-gráfico, hay buenas razones para no usarlo, y por qué es muchas veces
-mejor un gráfico de barras: <a
+<p>Debido al crecimiento de la big data en los últimos años surgieron
+nuevas necesidades para comprender los análisis masivos de datos de una
+forma simple y escalable. Es entonces cuando se dirige la atención a
+desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos
+a continuación), tanto softwares como librerías de código abierto, tal
+es el caso de ggplot2 en R.</p>
+<p><img src="pd2_herramientas.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Este interés por desarrollar técnicas de análisis masivo de datos y
+la comunicación de resultados cada vez más amigables y apta para todos
+los públicos dio pie a nuevas especialidades dentro de la ciencia de
+datos, como por ejemplo el data story telling</p>
+<p><img src="pd2_datavis.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>COLOCAR COMO PIE DE PÁGINA <a
 href="https://www.data-to-viz.com/caveat/pie.html"
 class="uri">https://www.data-to-viz.com/caveat/pie.html</a></p>
-<p><img src="pd2_datavis.png" width="90%" style="display: block; margin: auto;" />
-LIZ:<strong>colocar algo de data story telling</strong></p>
 <div id="gráficos-por-tipo-de-variables" class="section level3">
 <h3><strong>Gráficos por tipo de variables:</strong></h3>
 <p><img src="pd2_GrafTipoVar.png" width="60%" style="display: block; margin: auto;" /></p>
@@ -451,18 +438,26 @@ LIZ:<strong>colocar algo de data story telling</strong></p>
 </div>
 <div id="análisis-descriptivo" class="section level1">
 <h1><strong>4.Análisis descriptivo</strong></h1>
-<blockquote>
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+<div class="custom-text">
 <p>¿Cuál es la percepción de desigualdad en el Perú el 2022? 🤔</p>
-</blockquote>
-<p>INTRODUCIT LA DATA, QUE ESTÉ SIMILAR AL FORMATO DE LA PD1.</p>
-<p>Hoy trabajaremos con algunas de las variables que forman parte de la
-Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue
-elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice
-su nombre, esta encuesta busca ahondar en la percepción de las
-diferentes formas de desigualdad en el Perú e incorpora indicadores que
-permiten medir la magnitud de brechas sociales y políticas como género,
-clase, etc.</p>
-<p>Carguemos la data <em>Enades_subset.dta</em>.</p>
+</div>
+<p>Para dar respuesta a la pregunta de investigación que guiara la
+práctica dirigida analizaremos algunas de las variables que forman parte
+de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022,
+que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. La
+encuesta busca ahondar en la percepción de las diferentes formas de
+desigualdad en el Perú e incorpora indicadores que permiten medir la
+magnitud de brechas sociales y políticas como género, clase, entre
+otros.</p>
 <p><img src="Diccionario-enades.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
 data=import(&quot;Enades_subset.dta&quot;) 
@@ -491,7 +486,7 @@ str(data)</code></pre>
 ##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%-9s&quot;
 ##  $ p13       : num  1 2 1 2 1 2 1 2 1 1 ...
 ##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%10.0g&quot;</code></pre>
-<pre class="r"><code>names(data) #revisamos los nombres</code></pre>
+<pre class="r"><code>names(data) #revisamos las variables</code></pre>
 <pre><code>##  [1] &quot;edad&quot;       &quot;sexo&quot;       &quot;zona1&quot;      &quot;p03_1&quot;      &quot;p04&quot;       
 ##  [6] &quot;p05&quot;        &quot;d_educ&quot;     &quot;d_salud&quot;    &quot;d_trabajo&quot;  &quot;d_justicia&quot;
 ## [11] &quot;p13&quot;</code></pre>
@@ -502,6 +497,8 @@ class="section level2">
 económica en el Perú?</strong></h2>
 <p>Usaremos la pregunta P04: ¿Qué tan desigual cree que es el Perú
 económicamente?</p>
+<p>De acuerdo al diccionario de datos encontramos cuatro posibles
+respuestas</p>
 <ul>
 <li><p>1:Mucho</p></li>
 <li><p>2:Algo</p></li>
@@ -510,11 +507,11 @@ económicamente?</p>
 </ul>
 <div id="análisis-de-una-variable-ordinal" class="section level3">
 <h3><strong>Análisis de una variable ordinal</strong></h3>
-<p>Pasos para analizar una variable ordinal 1. Identificar el tipo de
-variable (Es decir, como lo esta identificando RStudio) 2. Convertimos
-la variable al tipo que necesitamos 3. Elaboramos un gráfico que nos
-permita ver preliminarmente los datos de la variable. 4. Elaboramos un
-gráfico que vaya acorde a la variable ordinal (gráfico de barras)</p>
+<p>Pasos para analizar una variable ordinal A. Identificar el tipo de
+variable (str, class) B. Convertimos la variable al tipo de dato que
+necesitamos dependiendo el caso C. Elaboramos un objeto que nos permita
+ver preliminarmente los datos de la variable. D. Elaboramos un gráfico
+que vaya acorde a la variable ordinal (gráfico de barras)</p>
 <pre class="r"><code>library(dplyr) #Convocamos el paquete</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -525,7 +522,6 @@ gráfico que vaya acorde a la variable ordinal (gráfico de barras)</p>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>#comprobamos el tipo de dato que analizaremos
-#Primero analizaremos el tipo de dato que analizaremos
 class(data$p04)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>Del diccionario de datos, sabemos que esta variable es
@@ -536,18 +532,13 @@ las respuestas recogidas en la encuesta.</p>
 ##   1   2   3   4 
 ## 818 247 250  75</code></pre>
 <p>💥 Otorguemosle etiquetas y categorizemosla como factor:</p>
-<pre class="r"><code>data$p04 = factor(data$p04, levels = c(1:4), labels = c(&quot;Mucho&quot;,&quot;Algo&quot;,&quot;Poco&quot;,&quot;Nada&quot;),ordered = TRUE) #Le otorogamos las etiquetas de Mucho, Algo, Poco y Nada</code></pre>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD Revisemos que el cambio se haya
-realizado correctamente usando el comando summarise del paquete
-<code>dplyr</code> ======= Revisemos que el cambio se haya realizado
-correctamente. Para hacerlo tenemos dos formas, 1. comando table (que
-revisamos anteriormente), y 2. commando summarize/summarise de dplyr
-(Para esta última forma recordemos que se debe convocar a la libreria
-dplyr) &gt;&gt;&gt;&gt;&gt;&gt;&gt;
-b82245c87053647ceab7adc650946d75d3e4a833</p>
+<pre class="r"><code>data = data %&gt;%
+ mutate(p04 = factor(p04, levels = 1:4, labels = c(&quot;Mucho&quot;, &quot;Algo&quot;, &quot;Poco&quot;, &quot;Nada&quot;), ordered = TRUE))</code></pre>
+<p>Revisemos que el cambio se haya realizado correctamente usando el
+comando summarise del paquete <code>dplyr</code></p>
 <pre class="r"><code>data %&gt;%
  group_by(p04) %&gt;%
-  summarise(Freq=n())</code></pre>
+ summarise(Freq=n())</code></pre>
 <pre><code>## # A tibble: 4 × 2
 ##   p04    Freq
 ##   &lt;ord&gt; &lt;int&gt;
@@ -557,17 +548,17 @@ b82245c87053647ceab7adc650946d75d3e4a833</p>
 ## 4 Nada     75</code></pre>
 <p>A primera vista, la tabla nos indica que la mayoría de los
 encuestados (818) opina que hay mucha desigualdad económica en el país.
-Pero, ¿cuánto sería eso en porcentaje?</p>
+Pero, ¿cuánto sería dicho resultado en porcentaje?</p>
 <p>Podemos realizar una tabla de frecuencias y porcentajes agregando una
-linea al comando anterior. Para poder graficar los resultados de las
-tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta
-tabla resumen, asignemosle el nombre de
-<em><code>para_grafico</code></em> para así luego llamarla al
+linea al comando anterior. Asimismo, para poder graficar los resultados
+de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con
+esta tabla resumen y asignemosle el nombre
+<em><code>para_grafico</code></em> para posteriormente llamarla al
 graficar.</p>
 <pre class="r"><code>para_grafico=data %&gt;%
  group_by(p04) %&gt;%
-  summarize(Freq=n()) %&gt;%
-   mutate(Porcentaje = (Freq / sum(Freq))*100)
+ summarize(Freq=n()) %&gt;%
+ mutate(Porcentaje = (Freq / sum(Freq))*100)
 
 para_grafico</code></pre>
 <pre><code>## # A tibble: 4 × 3
@@ -579,8 +570,8 @@ para_grafico</code></pre>
 ## 4 Nada     75       5.40</code></pre>
 <p>Afirmamos que más del 50% de los encuestados percibe que el país es
 muy desigual económicamente.</p>
-<p>Podemos analizar cómo cambia esto si solo seleccionamos los casos de
-los encuestados/as menores de 30 años.</p>
+<p>También podemos analizar cómo cambia esto si solo seleccionamos los
+casos de los encuestados/as menores de 30 años.</p>
 <pre class="r"><code>data %&gt;%
   filter(edad&lt;30)%&gt;%
   group_by(p04) %&gt;%
@@ -610,7 +601,6 @@ gustos.</p>
   xlab(&quot;¿Qué tan desigual cree que\n es el Perú económicamente&quot;) + ylab(&quot;Porcentaje&quot;)+
   geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) +
-  #scale_fill_brewer(palette=&quot;Dark2&quot;)
   scale_fill_taylor_d(album=&quot;Lover&quot;) #&quot;Fearless (Taylor&#39;s Version)&quot;</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>El ejercicio de análisis descriptivo con variables numéricas lo
@@ -622,8 +612,14 @@ id="cuál-es-la-percepción-de-la-desigualdad-en-calidad-de-vida-en-el-perú"
 class="section level2">
 <h2><strong>4.2 ¿Cuál es la percepción de la desigualdad en calidad de
 vida en el Perú?</strong></h2>
-<p>HACER INTRO SOBRE CALIDAD DE VIDA Y LA ELECCIÓN DE LAS VARIABLES DE
-LA ENCUESTA</p>
+<p>Para dar un acercamiento a la percepción de la desigualdad en cuanto
+a la calidad de vida en el Perú se ha considerado cuatro variables:</p>
+<ul>
+<li>d_educ</li>
+<li>d_salud</li>
+<li>d_trabajo</li>
+<li>d_justicia</li>
+</ul>
 <div id="indicador-proxy" class="section level3">
 <h3><strong>Indicador Proxy</strong></h3>
 <p>También llamado indicador indirecto, se usa ante la imposibilidad de
@@ -653,7 +649,7 @@ satisfecho”</em></li>
 proceder a sumarlas, si no lo están, proceder a recodificarlas para
 luego sumar.</li>
 <li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
-<li>Restar a todos los valores el valor mínimo.</li>
+<li>Restar el valor mínimo a la suma de todos los valores.</li>
 <li>Al resultado de lo anterior, dividir por el nuevo máximo menos el
 mínimo, con ello, se va a obtener valores entre 0 y 1.</li>
 <li>Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se
@@ -697,7 +693,9 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <pre><code>##  [1] &quot;edad&quot;       &quot;sexo&quot;       &quot;zona1&quot;      &quot;p03_1&quot;      &quot;p04&quot;       
 ##  [6] &quot;p05&quot;        &quot;d_educ&quot;     &quot;d_salud&quot;    &quot;d_trabajo&quot;  &quot;d_justicia&quot;
 ## [11] &quot;p13&quot;</code></pre>
-<pre class="r"><code>data[7:10] = lapply(data[7:10],as.numeric) #podemos usar lapply para recodificar más de una variable a la vez</code></pre>
+<pre class="r"><code>data[7:10] &lt;- lapply(data[7:10], as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
+
+#ejemplo usando dplyr: data = data %&gt;%  mutate(across(7:10, as.numeric))</code></pre>
 <p>Recordemos los pasos para crear un índice aditivo:</p>
 <pre><code>*((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*</code></pre>
 <pre class="r"><code>data=data %&gt;%
@@ -707,7 +705,7 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    4.00   10.00   11.00   10.64   12.00   12.00</code></pre>
 <pre class="r"><code>data = data %&gt;%
- mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 </code></pre>
+ mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100</code></pre>
 </div>
 </div>
 </div>
@@ -730,7 +728,8 @@ dispersión. Recordemos que va del 0 al 100.</p>
 <pre><code>##     Media Mediana Desviacion Minimo Maximo
 ## 1 83.0036    87.5   18.63232      0    100</code></pre>
 <p>Podemos analizar la respuesta según el sexo de los encuestados</p>
-<pre class="r"><code>data$sexo = factor(data$sexo, levels = c(1:2), labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;))</code></pre>
+<pre class="r"><code>data = data %&gt;%
+ mutate(sexo = factor(sexo, levels = 1:2, labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;)))</code></pre>
 <pre class="r"><code>data %&gt;%
  group_by(sexo) %&gt;%
   summarise(Media=mean(indicador)) </code></pre>
@@ -748,7 +747,6 @@ hombres.</p>
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-<p>EXPLICACIÓN DEL BOXPLOT. Antuané</p>
 <p><strong>Ejercicio para casa:</strong> Analice descriptivos y elabore
 el gráfico correspondiente para la variable p03_1</p>
 </div>
