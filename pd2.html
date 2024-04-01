@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 2</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -420,17 +420,15 @@ class="section level2">
 nuevas necesidades para comprender los análisis masivos de datos de una
 forma simple y escalable. Es entonces cuando se dirige la atención a
 desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos
-a continuación), tanto softwares como librerías de código abierto, tal
-es el caso de ggplot2 en R.</p>
+a continuación), tanto softwares como librerías de código abierto<a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, tal es el
+caso de ggplot2 en R.</p>
 <p><img src="pd2_herramientas.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Este interés por desarrollar técnicas de análisis masivo de datos y
 la comunicación de resultados cada vez más amigables y apta para todos
 los públicos dio pie a nuevas especialidades dentro de la ciencia de
 datos, como por ejemplo el data story telling</p>
 <p><img src="pd2_datavis.png" width="90%" style="display: block; margin: auto;" /></p>
-<p>COLOCAR COMO PIE DE PÁGINA <a
-href="https://www.data-to-viz.com/caveat/pie.html"
-class="uri">https://www.data-to-viz.com/caveat/pie.html</a></p>
 <div id="gráficos-por-tipo-de-variables" class="section level3">
 <h3><strong>Gráficos por tipo de variables:</strong></h3>
 <p><img src="pd2_GrafTipoVar.png" width="60%" style="display: block; margin: auto;" /></p>
@@ -493,8 +491,8 @@ str(data)</code></pre>
 <div
 id="cuál-es-el-porcentaje-de-percepción-de-desigualdad-económica-en-el-perú"
 class="section level2">
-<h2><strong>4.1 ¿Cuál es el porcentaje de percepción de desigualdad
-económica en el Perú?</strong></h2>
+<h2>4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en
+el Perú?</h2>
 <p>Usaremos la variable <strong>P04</strong>:</p>
 <p><code>¿Qué tan desigual cree que es el Perú económicamente?</code></p>
 <p>De acuerdo al diccionario de datos encontramos cuatro posibles
@@ -610,16 +608,8 @@ realizaremos con un indicador aditivo que crearemos a continuación.</p>
 <div
 id="cuál-es-la-percepción-de-la-desigualdad-en-calidad-de-vida-en-el-perú"
 class="section level2">
-<h2><strong>4.2 ¿Cuál es la percepción de la desigualdad en calidad de
-vida en el Perú?</strong></h2>
-<p>Para dar un acercamiento a la percepción de la desigualdad en cuanto
-a la calidad de vida en el Perú se ha considerado cuatro variables:</p>
-<ul>
-<li>d_educ</li>
-<li>d_salud</li>
-<li>d_trabajo</li>
-<li>d_justicia</li>
-</ul>
+<h2>4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en
+el Perú?</h2>
 <div id="indicador-proxy" class="section level3">
 <h3><strong>Indicador Proxy</strong></h3>
 <p>También llamado indicador indirecto, se usa ante la imposibilidad de
@@ -630,9 +620,6 @@ estudio.</p>
 <p>Un indicador proxy es una medición o señal indirecto que aproxima o
 representa un fenómeno en la ausencia de una medición o señal
 directo.</p>
-<p>Por ejemplo, el número de miembros femeninos de una cámara de
-comercio podría ser un indicador proxy para el porcentaje de dueñas de
-negocios o ejecutivas.</p>
 </div>
 <div id="indicador-aditivo" class="section level3">
 <h3><strong>Indicador Aditivo</strong></h3>
@@ -657,14 +644,18 @@ desea el índice de 0 a 10.</li>
 </ol>
 <p>Construiremos un indicador aditivos de percepción de desigualdad en
 calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
-las variables d_educ, d_salud_, d_trabajo y d_justicia. Estas variables
-responden a la pregunta de qué tan desigual es el acceso a la eduación,
-salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El
-indicador que queremos crear es de percepción de desigualdad, por tanto
-el mayor valor debería ser mayor desigualdad. Las variables modificadas
-se llaman d_educ, d_salud, d_trabajo y d_justicia.</p>
-<p>Para poder crear el indicador, necesitamos que todas las variables a
-usar sean numéricas porque las tendremos que sumar.</p>
+las variables <code>d_educ</code>, <code>d_salud</code>,
+<code>d_trabajo</code> y <code>d_justicia</code>, junto a sus respuestas
+tres respuestas:</p>
+<ul>
+<li><p>1: Nada desigual</p></li>
+<li><p>2: Poco desigual</p></li>
+<li><p>3: Muy desigual</p></li>
+</ul>
+<p>El indicador que queremos crear es de percepción de desigualdad, por
+tanto mayor valor debería significar mayor desigualdad.</p>
+<p>🗨️ Para poder crear el indicador, necesitamos que todas las variables
+a usar sean numéricas porque las tendremos que sumar.</p>
 <pre class="r"><code>str(data)#Podemos notar que las variables que usaremos son de tipo caracter.</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1390 obs. of  11 variables:
 ##  $ edad      : num  49 60 32 64 19 41 23 19 20 23 ...
@@ -712,8 +703,8 @@ usar sean numéricas porque las tendremos que sumar.</p>
 <div
 id="cuál-es-la-diferencia-de-la-percepción-de-desigualdad-entre-mujeres-y-hombres"
 class="section level2">
-<h2><strong>4.3 ¿Cuál es la diferencia de la percepción de desigualdad
-entre mujeres y hombres?</strong> 🤔</h2>
+<h2>4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre
+mujeres y hombres? 🤔</h2>
 <p>Ahora, veamos algunas medidas de tendencia central, distribución y
 dispersión para el caso de variables numéricas. Trabajaremos con el
 indicador que acabamos de crear: <code>indicador</code></p>
@@ -747,18 +738,27 @@ hombres.</p>
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
-<p>Análisis: Como podemos ver en el gráfico la disperción de los datos
-es muy similar en el grupo de hombre y mujeres. Los valores atípicos
-(outliers) se muestran como puntos individuales fuera de la caja. La
-línea que vemos dentro de la caja nos señala la mediana, al comparar las
-dos líneas se aprecia que la mediana es similar.</p>
-<p>En resumen, el boxplot es herramienta gráfica que proporciona un
-resumen visual de la distribución de un conjunto de datos, mostrando la
-mediana, los cuartiles, los valores atípicos y la variabilidad de los
-datos.</p>
+<p>➡️ Análisis: Como podemos ver en el gráfico la disperción de los
+datos es muy similar en el grupo de hombre y mujeres. Los valores
+atípicos (<em>outliers</em>) se muestran como puntos individuales fuera
+de la caja. La línea que vemos dentro de la caja nos señala la
+<em>mediana</em>, al comparar las dos líneas se aprecia que la mediana
+es similar.</p>
+<p>En resumen, el <code>boxplot</code> es herramienta gráfica que
+proporciona un resumen visual de la distribución de un conjunto de
+datos, mostrando la mediana, los cuartiles, los valores atípicos y la
+variabilidad de los datos.</p>
 <p><strong>Ejercicio para casa:</strong> Analice descriptivos y elabore
 el gráfico correspondiente para la variable p03_1</p>
 </div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://www.data-to-viz.com/caveat/pie.html"
+class="uri">https://www.data-to-viz.com/caveat/pie.html</a><a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

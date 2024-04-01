@@ -39,7 +39,9 @@ knitr::include_graphics("pd2_medVar.png")
 
 # **3.Importancia de visualización de datos**
 
-Debido al crecimiento de la big data en los últimos años surgieron nuevas necesidades para comprender los análisis masivos de datos de una forma simple y escalable. Es entonces cuando se dirige la atención a desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos a continuación), tanto softwares como librerías de código abierto, tal es el caso de ggplot2 en R.
+Debido al crecimiento de la big data en los últimos años surgieron nuevas necesidades para comprender los análisis masivos de datos de una forma simple y escalable. Es entonces cuando se dirige la atención a desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos a continuación), tanto softwares como librerías de código abierto[^1], tal es el caso de ggplot2 en R.
+
+[^1]: <https://www.data-to-viz.com/caveat/pie.html>
 
 ```{r,echo=FALSE, out.width="90%",fig.align="center"}
 knitr::include_graphics("pd2_herramientas.png") 
@@ -50,8 +52,6 @@ Este interés por desarrollar técnicas de análisis masivo de datos y la comuni
 ```{r,echo=FALSE, out.width="90%",fig.align="center"}
 knitr::include_graphics("pd2_datavis.png") 
 ```
-
-COLOCAR COMO PIE DE PÁGINA <https://www.data-to-viz.com/caveat/pie.html>
 
 ### **Gráficos por tipo de variables:**
 
@@ -93,7 +93,7 @@ str(data)
 names(data) #revisamos las variables
 ```
 
-## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?**
+## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?
 
 Usaremos la variable **P04**:
 
@@ -196,22 +196,13 @@ ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) +
 
 El ejercicio de análisis descriptivo con variables numéricas lo realizaremos con un indicador aditivo que crearemos a continuación.
 
-## **4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?**
-
-Para dar un acercamiento a la percepción de la desigualdad en cuanto a la calidad de vida en el Perú se ha considerado cuatro variables:
-
--   d_educ
--   d_salud
--   d_trabajo
--   d_justicia
+## 4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?
 
 ### **Indicador Proxy**
 
 También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
 
 Un indicador proxy es una medición o señal indirecto que aproxima o representa un fenómeno en la ausencia de una medición o señal directo.
-
-Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
 
 ### **Indicador Aditivo**
 
@@ -225,9 +216,17 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
 7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
 
-Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables d_educ, d_salud\_, d_trabajo y d_justicia. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
+Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`, junto a sus respuestas tres respuestas:
 
-Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
+-   1: Nada desigual
+
+-   2: Poco desigual
+
+-   3: Muy desigual
+
+El indicador que queremos crear es de percepción de desigualdad, por tanto mayor valor debería significar mayor desigualdad.
+
+🗨️ Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
 
 ```{r}
 str(data)#Podemos notar que las variables que usaremos son de tipo caracter.
@@ -265,7 +264,7 @@ data = data %>%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100
 ```
 
-## **4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?** 🤔
+## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres? 🤔
 
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear: `indicador`
 
@@ -306,8 +305,8 @@ ggplot(data, aes(x=sexo, y=indicador, color=sexo)) +
 
 ```
 
-Análisis: Como podemos ver en el gráfico la disperción de los datos es muy similar en el grupo de hombre y mujeres. Los valores atípicos (outliers) se muestran como puntos individuales fuera de la caja. La línea que vemos dentro de la caja nos señala la mediana, al comparar las dos líneas se aprecia que la mediana es similar.
+➡️ Análisis: Como podemos ver en el gráfico la disperción de los datos es muy similar en el grupo de hombre y mujeres. Los valores atípicos (*outliers*) se muestran como puntos individuales fuera de la caja. La línea que vemos dentro de la caja nos señala la *mediana*, al comparar las dos líneas se aprecia que la mediana es similar.
 
-En resumen, el boxplot es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
+En resumen, el `boxplot` es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
 
 **Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
