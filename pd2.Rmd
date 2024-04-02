@@ -216,15 +216,10 @@ Un indicador proxy es una medición o señal indirecto que aproxima o representa
 2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
 3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
 4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar el valor mínimo a la suma de todos los valores.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
-7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
+5.  Aplicar la función rescale con el rango específico.
 
 Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
 
-$((varSuma - minSuma)/(maxSuma-minSuma))*valorIndice$
-
-**valorIndice**: *valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 
@@ -250,15 +245,17 @@ Revisamos mínimo y máximo
 ```{r}
 summary(data$suma)
 ```
-
+Creamos el indicador de 0 al 100
 ```{r}
-data= data %>%
- mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100
+library(scales)
+data = data %>%
+  mutate(indicador = rescale(suma, to = c(0, 100)))
 ```
 
 ```{r}
 summary(data$indicador)
 ```
+
 
 ## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?
 

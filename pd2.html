@@ -626,20 +626,12 @@ satisfecho”</em></li>
 proceder a sumarlas, si no lo están, proceder a recodificarlas para
 luego sumar.</li>
 <li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
-<li>Restar el valor mínimo a la suma de todos los valores.</li>
-<li>Al resultado de lo anterior, dividir por el nuevo máximo menos el
-mínimo, con ello, se va a obtener valores entre 0 y 1.</li>
-<li>Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se
-desea el índice de 0 a 10.</li>
+<li>Aplicar la función rescale con el rango específico.</li>
 </ol>
 <p>Construiremos un indicador aditivos de percepción de desigualdad en
 calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
 las variables <code>d_educ</code>, <code>d_salud</code>,
 <code>d_trabajo</code> y <code>d_justicia</code>.</p>
-<p><span class="math inline">\(((varSuma -
-minSuma)/(maxSuma-minSuma))*valorIndice\)</span></p>
-<p><strong>valorIndice</strong>: <em>valor al que quiere que llegue el
-índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).</em></p>
 <p><img src="pd2_tablita.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>El indicador que queremos crear es de percepción de desigualdad, por
 tanto mayor valor debería significar mayor desigualdad.</p>
@@ -666,8 +658,10 @@ verificamos el tipo de dato de cada variable.</p>
 <pre class="r"><code>summary(data$suma)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   4.000   4.000   5.000   5.358   6.000  12.000</code></pre>
-<pre class="r"><code>data= data %&gt;%
- mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100</code></pre>
+<p>Creamos el indicador de 0 al 100</p>
+<pre class="r"><code>library(scales)
+data = data %&gt;%
+  mutate(indicador = rescale(suma, to = c(0, 100)))</code></pre>
 <pre class="r"><code>summary(data$indicador)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    0.00    0.00   12.50   16.98   25.00  100.00</code></pre>
