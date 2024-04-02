@@ -84,13 +84,13 @@ knitr::include_graphics("Diccionario-enades.png")
 
 ```{r,warning=FALSE}
 library(rio) #Convocamos el paquete   
-data=import("Enades_subset.dta") 
-
-str(data)
+data=import("ENADES_2022_final.dta") 
+df = data[, c("edad", "sexo", "zona1", "p03_1", "p04", "p05", "p06", "p11_1", "p11_2", "p11_3", "p11_4", "p13" )]
+str(df)
 ```
 
 ```{r}
-names(data) #revisamos las variables
+names(df) #revisamos las variables
 ```
 
 ## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?
@@ -119,28 +119,32 @@ library(dplyr) #Convocamos el paquete
 
 ```{r}
 #comprobamos el tipo de dato que analizaremos
-class(data$p04)
+class(df$p04)
 ```
 
 Del diccionario de datos, sabemos que esta variable es **ordinal**, revisemos si los niveles tienen coherencia con las respuestas recogidas en la encuesta.
 
 ```{r}
-table(data$p04) #Veamos los niveles de la variable
+table(df$p04) #Veamos los niveles de la variable
 ```
 
 💥 Otorguemosle etiquetas y categorizemosla como factor:
 
 ```{r}
-data = data %>%
+df = df %>%
  mutate(p04 = factor(p04, levels = 1:4, labels = c("Mucho", "Algo", "Poco", "Nada"), ordered = TRUE))
 ```
 
 Revisemos que el cambio se haya realizado correctamente usando el comando summarise del paquete `dplyr`
 
 ```{r}
-data %>%
+df %>%
  group_by(p04) %>%
  summarise(Freq=n())
+```
+
+```{r}
+df <- na.omit(df)
 ```
 
 A primera vista, la tabla nos indica que la mayoría de los encuestados (818) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería dicho resultado en porcentaje?
@@ -148,7 +152,7 @@ A primera vista, la tabla nos indica que la mayoría de los encuestados (818) op
 Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Asimismo, para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen y asignemosle el nombre *`para_grafico`* para posteriormente llamarla al graficar.
 
 ```{r}
-para_grafico=data %>%
+para_grafico=df %>%
  group_by(p04) %>%
  summarize(Freq=n()) %>%
  mutate(Porcentaje = (Freq / sum(Freq))*100)
@@ -161,7 +165,7 @@ Afirmamos que más del 50% de los encuestados percibe que el país es muy desigu
 También podemos analizar cómo cambia esto si solo seleccionamos los casos de los encuestados/as menores de 30 años.
 
 ```{r}
-data %>%
+df %>%
   filter(edad<30)%>%
   group_by(p04) %>%
   summarize(Freq=n()) %>%
@@ -229,14 +233,29 @@ El indicador que queremos crear es de percepción de desigualdad, por tanto mayo
 🗨️ Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
 
 ```{r}
-str(data)#Podemos notar que las variables que usaremos son de tipo caracter.
+df = df %>%
+ mutate(p11_1 = factor(p11_1, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
+ mutate(p11_2 = factor(p11_2, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
+ mutate(p11_3 = factor(p11_3, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
+  mutate(p11_4 = factor(p11_4, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE))
+  
+str(df)  
+
+```
+
+```{r}
+df <- na.omit(df)
+```
+
+```{r}
+table(df$p11_1)
 ```
 
 Recategorizemos nuestras variables a numéricas:
 
 ```{r}
-names(data)
-data[7:10] <- lapply(data[7:10], as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
+names(df)
+df[8:11] <- lapply(df[8:11], as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
 
 #ejemplo usando dplyr: data = data %>%  mutate(across(7:10, as.numeric))
 ```
@@ -248,19 +267,19 @@ Recordemos los pasos para crear un índice aditivo:
 ```
 
 ```{r}
-data=data %>%
-  mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)
+df=df %>%
+  mutate(suma = p11_1 + p11_2 + p11_3 + p11_4)
 
 ```
 
 Revisamos mínimo y máximo
 
 ```{r}
-summary(data$suma)
+summary(df$suma)
 ```
 
 ```{r}
-data = data %>%
+df= df %>%
  mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100
 ```
 
@@ -271,7 +290,7 @@ Ahora, veamos algunas medidas de tendencia central, distribución y dispersión 
 Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Recordemos que va del 0 al 100.
 
 ```{r}
-data%>%
+df%>%
   summarise(Media = mean(indicador), 
             Mediana = median(indicador),
             Desviacion = sd(indicador),
@@ -282,13 +301,13 @@ data%>%
 Podemos analizar la respuesta según el sexo de los encuestados
 
 ```{r}
-data = data %>%
+df = df %>%
  mutate(sexo = factor(sexo, levels = 1:2, labels = c("Hombre","Mujer")))
 
 ```
 
 ```{r}
-data %>%
+df %>%
  group_by(sexo) %>%
   summarise(Media=mean(indicador)) 
 ```
@@ -298,7 +317,7 @@ La tabla nos indica que las encuestadas mujeres perciben ligeramente una mayor d
 Podemos visualizarlo mejor con un gráfico
 
 ```{r}
-ggplot(data, aes(x=sexo, y=indicador, color=sexo)) + 
+ggplot(df, aes(x=sexo, y=indicador, color=sexo)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()
@@ -308,5 +327,26 @@ ggplot(data, aes(x=sexo, y=indicador, color=sexo)) +
 ➡️ Análisis: Como podemos ver en el gráfico la disperción de los datos es muy similar en el grupo de hombre y mujeres. Los valores atípicos (*outliers*) se muestran como puntos individuales fuera de la caja. La línea que vemos dentro de la caja nos señala la *mediana*, al comparar las dos líneas se aprecia que la mediana es similar.
 
 En resumen, el `boxplot` es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
+
+```{r}
+table (df$p06)
+```
+
+```{r}
+df = df %>%
+ mutate(p06 = factor(p06, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
+
+```
+
+```{r}
+df <- na.omit(df)
+```
+
+```{r}
+ggplot(df, aes(x=p06, y=indicador, color=sexo)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  theme_classic()
+```
 
 **Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
