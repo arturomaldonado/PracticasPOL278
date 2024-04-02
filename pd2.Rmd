@@ -84,13 +84,13 @@ knitr::include_graphics("Diccionario-enades.png")
 
 ```{r,warning=FALSE}
 library(rio) #Convocamos el paquete   
-data=import("ENADES_2022_final.dta") 
-df = data[, c("edad", "sexo", "zona1", "p03_1", "p04", "p05", "p06", "p11_1", "p11_2", "p11_3", "p11_4", "p13" )]
-str(df)
+data=import("Enades_2022.xlsx") 
+
+str(data)
 ```
 
 ```{r}
-names(df) #revisamos las variables
+names(data) #revisamos las variables
 ```
 
 ## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?
@@ -113,46 +113,44 @@ De acuerdo al diccionario de datos encontramos cuatro posibles respuestas
 
 Pasos para analizar una variable ordinal A. Identificar el tipo de variable (str, class) B. Convertimos la variable al tipo de dato que necesitamos dependiendo el caso C. Elaboramos un objeto que nos permita ver preliminarmente los datos de la variable. D. Elaboramos un gráfico que vaya acorde a la variable ordinal (gráfico de barras)
 
-```{r,warning=FALSE}
+```{r,warning=FALSE, message=FALSE}
 library(dplyr) #Convocamos el paquete
 ```
 
 ```{r}
 #comprobamos el tipo de dato que analizaremos
-class(df$p04)
+class(data$p04)
 ```
 
 Del diccionario de datos, sabemos que esta variable es **ordinal**, revisemos si los niveles tienen coherencia con las respuestas recogidas en la encuesta.
 
 ```{r}
-table(df$p04) #Veamos los niveles de la variable
+data %>%
+ group_by(p04) %>%
+ summarise(Freq=n()) #Veamos los niveles de la variable
 ```
 
-💥 Otorguemosle etiquetas y categorizemosla como factor:
+💥 Otorguemosle etiquetas y categoricemosla como factor:
 
 ```{r}
-df = df %>%
+data = data %>%
  mutate(p04 = factor(p04, levels = 1:4, labels = c("Mucho", "Algo", "Poco", "Nada"), ordered = TRUE))
 ```
 
 Revisemos que el cambio se haya realizado correctamente usando el comando summarise del paquete `dplyr`
 
 ```{r}
-df %>%
+data %>%
  group_by(p04) %>%
  summarise(Freq=n())
 ```
 
-```{r}
-df <- na.omit(df)
-```
-
-A primera vista, la tabla nos indica que la mayoría de los encuestados (818) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería dicho resultado en porcentaje?
+A primera vista, la tabla nos indica que la mayoría de los encuestados (794) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería dicho resultado en porcentaje?
 
 Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Asimismo, para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen y asignemosle el nombre *`para_grafico`* para posteriormente llamarla al graficar.
 
 ```{r}
-para_grafico=df %>%
+para_grafico=data %>%
  group_by(p04) %>%
  summarize(Freq=n()) %>%
  mutate(Porcentaje = (Freq / sum(Freq))*100)
@@ -165,7 +163,7 @@ Afirmamos que más del 50% de los encuestados percibe que el país es muy desigu
 También podemos analizar cómo cambia esto si solo seleccionamos los casos de los encuestados/as menores de 30 años.
 
 ```{r}
-df %>%
+data %>%
   filter(edad<30)%>%
   group_by(p04) %>%
   summarize(Freq=n()) %>%
@@ -178,23 +176,25 @@ Nuestra variable es categórica, por lo tanto realizaremos el gráfico acorde:
 
 ```{r}
 library(ggplot2)
-library(taylor) #opcional (una ventaja de que R sea software libre)
 
 ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
 geom_bar(stat = "identity") 
 ```
 
-Este es un gráfico básico, pero podemos personalizarlo según nuestros gustos.
+Este es un gráfico básico, pero podemos personalizarlo[^2] según nuestros gustos.
+
+[^2]: <https://cran.r-project.org/web/packages/tayloRswift/readme/README.html>
 
 ```{r}
+library(tayloRswift) #opcional (una ventaja de que R sea software libre)
 
 ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
   geom_bar(stat = "identity")  +
   ggtitle("Percepción de desigualdad económica") +
-  xlab("¿Qué tan desigual cree que\n es el Perú económicamente") + ylab("Porcentaje")+
+  xlab("¿Qué tan desigual cree que es el Perú económicamente") + ylab("Porcentaje")+
   geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="black", size=3)+
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
-  scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
+  scale_fill_taylor(palette = "Red") #fearless, speakNow, Red
 
 ```
 
@@ -216,81 +216,55 @@ Un indicador proxy es una medición o señal indirecto que aproxima o representa
 2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
 3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
 4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar el valor mínimo a la suma de todos los valores.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
-7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
+5.  Aplicar la función rescale con el rango específico.
 
-Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`, junto a sus respuestas tres respuestas:
+Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
 
--   1: Nada desigual
 
--   2: Poco desigual
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
 
--   3: Muy desigual
+knitr::include_graphics("pd2_tablita.png") 
+```
 
 El indicador que queremos crear es de percepción de desigualdad, por tanto mayor valor debería significar mayor desigualdad.
 
-🗨️ Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
+🗨️ Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar. Entonces, primero verificamos el tipo de dato de cada variable.
 
 ```{r}
-df = df %>%
- mutate(p11_1 = factor(p11_1, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
- mutate(p11_2 = factor(p11_2, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
- mutate(p11_3 = factor(p11_3, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE)) %>%
-  mutate(p11_4 = factor(p11_4, levels = 1:3, labels = c("Nada desigual", "Poco desigual", "Muy desigual"), ordered = TRUE))
-  
-str(df)  
-
+str(data)
 ```
 
 ```{r}
-df <- na.omit(df)
-```
-
-```{r}
-table(df$p11_1)
-```
-
-Recategorizemos nuestras variables a numéricas:
-
-```{r}
-names(df)
-df[8:11] <- lapply(df[8:11], as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
-
-#ejemplo usando dplyr: data = data %>%  mutate(across(7:10, as.numeric))
-```
-
-Recordemos los pasos para crear un índice aditivo:
-
-```         
-*((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
-```
-
-```{r}
-df=df %>%
-  mutate(suma = p11_1 + p11_2 + p11_3 + p11_4)
+data=data %>%
+  mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)
 
 ```
 
 Revisamos mínimo y máximo
 
 ```{r}
-summary(df$suma)
+summary(data$suma)
+```
+Creamos el indicador de 0 al 100
+```{r}
+library(scales)
+data = data %>%
+  mutate(indicador = rescale(suma, to = c(0, 100)))
 ```
 
 ```{r}
-df= df %>%
- mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 100, lo multiplicamos por 100
+summary(data$indicador)
 ```
 
-## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres? 🤔
+
+## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?
 
 Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear: `indicador`
 
 Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Recordemos que va del 0 al 100.
 
 ```{r}
-df%>%
+data%>%
   summarise(Media = mean(indicador), 
             Mediana = median(indicador),
             Desviacion = sd(indicador),
@@ -301,13 +275,13 @@ df%>%
 Podemos analizar la respuesta según el sexo de los encuestados
 
 ```{r}
-df = df %>%
+data = data %>%
  mutate(sexo = factor(sexo, levels = 1:2, labels = c("Hombre","Mujer")))
 
 ```
 
 ```{r}
-df %>%
+data %>%
  group_by(sexo) %>%
   summarise(Media=mean(indicador)) 
 ```
@@ -317,9 +291,9 @@ La tabla nos indica que las encuestadas mujeres perciben ligeramente una mayor d
 Podemos visualizarlo mejor con un gráfico
 
 ```{r}
-ggplot(df, aes(x=sexo, y=indicador, color=sexo)) + 
+ggplot(data, aes(x=sexo, y=indicador, color=sexo)) + 
   geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.4) +#para agregar los casos como puntos
   theme_classic()
 
 ```
@@ -329,23 +303,34 @@ ggplot(df, aes(x=sexo, y=indicador, color=sexo)) +
 En resumen, el `boxplot` es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
 
 ```{r}
-table (df$p06)
+data %>%
+ group_by(clase) %>%
+ summarise(Freq=n())
+```
+
+## 4.4 ¿Cuál es la diferencia de la percepción de desigualdad entre *clases*?
+
+```{r}
+data = data %>%
+ mutate(clase = factor(clase, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
+
 ```
 
 ```{r}
-df = df %>%
- mutate(p06 = factor(p06, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
-
+data%>%
+  group_by(clase) %>%
+  summarise(Media = mean(indicador), 
+            Mediana = median(indicador),
+            Desviacion = sd(indicador),
+            Minimo = min(indicador),
+            Maximo = max(indicador))
 ```
 
 ```{r}
-df <- na.omit(df)
-```
-
-```{r}
-ggplot(df, aes(x=p06, y=indicador, color=sexo)) + 
+ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
+  scale_color_taylor(palette ="lover") +
   theme_classic()
 ```
 
