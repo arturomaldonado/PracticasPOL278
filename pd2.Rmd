@@ -220,7 +220,6 @@ Un indicador proxy es una medición o señal indirecto que aproxima o representa
 
 Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
 
-
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 
 knitr::include_graphics("pd2_tablita.png") 
@@ -245,17 +244,21 @@ Revisamos mínimo y máximo
 ```{r}
 summary(data$suma)
 ```
+
 Creamos el indicador de 0 al 100
+
 ```{r}
 library(scales)
 data = data %>%
   mutate(indicador = rescale(suma, to = c(0, 100)))
+
+
 ```
 
 ```{r}
 summary(data$indicador)
-```
 
+```
 
 ## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?
 
@@ -330,8 +333,12 @@ data%>%
 ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
-  scale_color_taylor(palette ="lover") +
+  scale_color_taylor(palette ="fearless") +
   theme_classic()
 ```
+
+➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy similar en el grupo de clase social Media baja y Baja. Por otro lado, en el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor (la caja es mucho más grande). Los *outliers* se muestran como puntos individuales fuera de la caja, los puntos más alejados se encuentran en el grupo de clase Baja.
+
+***Ejercicio en clase:*** Brinde tres observaciones más sobre el gráfico anterior.
 
 **Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1

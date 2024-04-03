@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 2</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -751,9 +751,17 @@ class="section level2">
 <pre class="r"><code>ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
-  scale_color_taylor(palette =&quot;lover&quot;) +
+  scale_color_taylor(palette =&quot;fearless&quot;) +
   theme_classic()</code></pre>
 <p><img src="pd2_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy
+similar en el grupo de clase social Media baja y Baja. Por otro lado, en
+el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor
+(la caja es mucho más grande). Los <em>outliers</em> se muestran como
+puntos individuales fuera de la caja, los puntos más alejados se
+encuentran en el grupo de clase Baja.</p>
+<p><strong><em>Ejercicio en clase:</em></strong> Brinde tres
+observaciones más sobre el gráfico anterior.</p>
 <p><strong>Ejercicio para casa:</strong> Analice descriptivos y elabore
 el gráfico correspondiente para la variable p03_1</p>
 </div>
