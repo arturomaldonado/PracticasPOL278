@@ -84,7 +84,7 @@ knitr::include_graphics("Diccionario-enades.png")
 
 ```{r,warning=FALSE}
 library(rio) #Convocamos el paquete   
-data=import("Enades_2022.xlsx") 
+data=import("Enades_2022_final.xlsx") 
 
 str(data)
 ```

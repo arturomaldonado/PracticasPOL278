@@ -458,7 +458,7 @@ magnitud de brechas sociales y políticas como género, clase, entre
 otros.</p>
 <p><img src="Diccionario-enades.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(rio) #Convocamos el paquete   
-data=import(&quot;Enades_2022.xlsx&quot;) 
+data=import(&quot;Enades_2022_final.xlsx&quot;) 
 
 str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    1353 obs. of  12 variables:
@@ -469,10 +469,10 @@ str(data)</code></pre>
 ##  $ p04       : num  3 1 1 3 1 1 1 2 2 1 ...
 ##  $ p05       : num  3 1 1 1 1 1 1 1 3 1 ...
 ##  $ clase     : num  2 2 3 2 2 2 4 3 2 4 ...
-##  $ d_educ    : num  2 2 1 2 1 2 1 1 2 1 ...
-##  $ d_salud   : num  1 1 1 2 1 1 2 1 2 1 ...
-##  $ d_trabajo : num  2 1 1 2 1 1 2 1 2 1 ...
-##  $ d_justicia: num  1 1 1 2 1 1 2 2 3 1 ...
+##  $ d_educ    : num  2 2 3 2 3 2 3 3 2 3 ...
+##  $ d_salud   : num  3 3 3 2 3 3 2 3 2 3 ...
+##  $ d_trabajo : num  2 3 3 2 3 3 2 3 2 3 ...
+##  $ d_justicia: num  3 3 3 2 3 3 2 2 1 3 ...
 ##  $ p13       : num  1 2 1 2 1 2 1 2 1 1 ...</code></pre>
 <pre class="r"><code>names(data) #revisamos las variables</code></pre>
 <pre><code>##  [1] &quot;edad&quot;       &quot;sexo&quot;       &quot;zona1&quot;      &quot;p03_1&quot;      &quot;p04&quot;       
@@ -647,24 +647,24 @@ verificamos el tipo de dato de cada variable.</p>
 ##  $ p04       : Ord.factor w/ 4 levels &quot;Mucho&quot;&lt;&quot;Algo&quot;&lt;..: 3 1 1 3 1 1 1 2 2 1 ...
 ##  $ p05       : num  3 1 1 1 1 1 1 1 3 1 ...
 ##  $ clase     : num  2 2 3 2 2 2 4 3 2 4 ...
-##  $ d_educ    : num  2 2 1 2 1 2 1 1 2 1 ...
-##  $ d_salud   : num  1 1 1 2 1 1 2 1 2 1 ...
-##  $ d_trabajo : num  2 1 1 2 1 1 2 1 2 1 ...
-##  $ d_justicia: num  1 1 1 2 1 1 2 2 3 1 ...
+##  $ d_educ    : num  2 2 3 2 3 2 3 3 2 3 ...
+##  $ d_salud   : num  3 3 3 2 3 3 2 3 2 3 ...
+##  $ d_trabajo : num  2 3 3 2 3 3 2 3 2 3 ...
+##  $ d_justicia: num  3 3 3 2 3 3 2 2 1 3 ...
 ##  $ p13       : num  1 2 1 2 1 2 1 2 1 1 ...</code></pre>
 <pre class="r"><code>data=data %&gt;%
   mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)</code></pre>
 <p>Revisamos mínimo y máximo</p>
 <pre class="r"><code>summary(data$suma)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   4.000   4.000   5.000   5.358   6.000  12.000</code></pre>
+##    4.00   10.00   11.00   10.64   12.00   12.00</code></pre>
 <p>Creamos el indicador de 0 al 100</p>
 <pre class="r"><code>library(scales)
 data = data %&gt;%
   mutate(indicador = rescale(suma, to = c(0, 100)))</code></pre>
 <pre class="r"><code>summary(data$indicador)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    0.00    0.00   12.50   16.98   25.00  100.00</code></pre>
+##    0.00   75.00   87.50   83.02  100.00  100.00</code></pre>
 </div>
 </div>
 </div>
@@ -685,7 +685,7 @@ dispersión. Recordemos que va del 0 al 100.</p>
             Minimo = min(indicador),
             Maximo = max(indicador))</code></pre>
 <pre><code>##      Media Mediana Desviacion Minimo Maximo
-## 1 16.98078    12.5   18.64847      0    100</code></pre>
+## 1 83.01922    87.5   18.64847      0    100</code></pre>
 <p>Podemos analizar la respuesta según el sexo de los encuestados</p>
 <pre class="r"><code>data = data %&gt;%
  mutate(sexo = factor(sexo, levels = 1:2, labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;)))</code></pre>
@@ -695,8 +695,8 @@ dispersión. Recordemos que va del 0 al 100.</p>
 <pre><code>## # A tibble: 2 × 2
 ##   sexo   Media
 ##   &lt;fct&gt;  &lt;dbl&gt;
-## 1 Hombre  17.3
-## 2 Mujer   16.7</code></pre>
+## 1 Hombre  82.7
+## 2 Mujer   83.3</code></pre>
 <p>La tabla nos indica que las encuestadas mujeres perciben ligeramente
 una mayor desigualdad en los derechos y servicios, a comparación de los
 hombres.</p>
@@ -744,10 +744,10 @@ class="section level2">
 <pre><code>## # A tibble: 4 × 6
 ##   clase      Media Mediana Desviacion Minimo Maximo
 ##   &lt;ord&gt;      &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Alta        33.3    25         32.6      0    100
-## 2 Media alta  21.0    12.5       21.1      0    100
-## 3 Media baja  16.1    12.5       17.6      0    100
-## 4 Baja        15.6    12.5       17.9      0    100</code></pre>
+## 1 Alta        66.7    75         32.6      0    100
+## 2 Media alta  79.0    87.5       21.1      0    100
+## 3 Media baja  83.9    87.5       17.6      0    100
+## 4 Baja        84.4    87.5       17.9      0    100</code></pre>
 <pre class="r"><code>ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
