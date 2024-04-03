@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "FAQ"
 output:
   html_document:
     toc: yes
@@ -37,31 +37,31 @@ Si ya guardaste tu Rmd, R seleccionará por default el directorio de trabajo la 
 
 Si la función no es del paquete de base de R (funciones como "names()", "str()" o "summary()"), es necesario llamar al paquete para poder usar la función. Aquí podrás revisar los paquetes usados en clase y las funciones que contienen.
 
-+-----------+---------------------------+
-| Paquete   | Función                   |
-+===========+===========================+
-| rio       | import                    |
-+-----------+---------------------------+
-| dplyr     | filter                    |
-|           |                           |
-|           | mutate                    |
-|           |                           |
-|           | summarise/summarize       |
-|           |                           |
-|           | group_by                  |
-|           |                           |
-|           | count                     |
-+-----------+---------------------------+
-| ggplot2   | ggplot() + geom_bar       |
-|           |                           |
-|           | ggplot() + geom_histogram |
-|           |                           |
-|           | ggplot() + geom_boxplot   |
-|           |                           |
-|           | ggplot() + geom_point     |
-+-----------+---------------------------+
-| Desctools | median                    |
-+-----------+---------------------------+
++-------------+---------------------------+
+| Paquete     | Función                   |
++=============+===========================+
+| rio         | import                    |
++-------------+---------------------------+
+| dplyr       | filter                    |
+|             |                           |
+|             | mutate                    |
+|             |                           |
+|             | summarise/summarize       |
+|             |                           |
+|             | group_by                  |
+|             |                           |
+|             | count                     |
++-------------+---------------------------+
+| ggplot2     | ggplot() + geom_bar       |
+|             |                           |
+|             | ggplot() + geom_histogram |
+|             |                           |
+|             | ggplot() + geom_boxplot   |
+|             |                           |
+|             | ggplot() + geom_point     |
++-------------+---------------------------+
+| Desctools   | median                    |
++-------------+---------------------------+
 
 *Nota: ggplot2 y dplyr son parte del mundo de tidyverse, en ese caso si vas a usar ambos paquetes basta con que llames a tidyverse para que ambos se carguen.*
 
