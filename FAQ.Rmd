@@ -1,0 +1,96 @@
+---
+title: "FAQ"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 4
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: true
+    output: pdf_document
+---
+
+<center><img src=" " width="200"/></center>
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+
+------------------------------------------------------------------------
+
+# **Preguntas frecuentes ❓**
+
+## **¿Por qué no se importa mi base de datos? 👩‍💻👨‍💻**
+
+Si no has guardado tu Rmd, no olvides indicar tu directorio de trabajo (Session/Set working directory/Choose directory). En ese directorio debe estar guardada tu base de datos.
+
+Si ya guardaste tu Rmd, R seleccionará por default el directorio de trabajo la carpeta en la que se encuentra tu Rmd; por lo que tu base de datos debe estar guardada ahí.
+
+## **¿Por qué no puedo usar cierta función?**
+
+Si la función no es del paquete de base de R (funciones como "names()", "str()" o "summary()"), es necesario llamar al paquete para poder usar la función. Aquí podrás revisar los paquetes usados en clase y las funciones que contienen.
+
++-------------+---------------------------+
+| Paquete     | Función                   |
++=============+===========================+
+| rio         | import                    |
++-------------+---------------------------+
+| dplyr       | filter                    |
+|             |                           |
+|             | mutate                    |
+|             |                           |
+|             | summarise/summarize       |
+|             |                           |
+|             | group_by                  |
+|             |                           |
+|             | count                     |
++-------------+---------------------------+
+| ggplot2     | ggplot() + geom_bar       |
+|             |                           |
+|             | ggplot() + geom_histogram |
+|             |                           |
+|             | ggplot() + geom_boxplot   |
+|             |                           |
+|             | ggplot() + geom_point     |
++-------------+---------------------------+
+| Desctools   | median                    |
++-------------+---------------------------+
+
+*Nota: ggplot2 y dplyr son parte del mundo de tidyverse, en ese caso si vas a usar ambos paquetes basta con que llames a tidyverse para que ambos se carguen.*
+
+**🛑Importante 🛑**
+
+Recuerda que el paquete se llama con library(nombredelpaquete)
+
+💡No olvides que no basta con instalar el paquete, es necesario llamarlo después. Además, es suficiente con instalar una vez el paquete en nuestras computadoras.
+
+## **¿Por qué no aparece una data que he creado en R?**
+
+Revisa que hayas guardado esa data en un objeto, en caso contrario no podrás referirte a el ni llamarlo posteriormente en tu código.
+
+*En este caso no estoy guardando la data en ningún objeto:*
+
+```{r,eval = F}
+data %>%
+  select(Var1, Var2)
+```
+
+*En este si, estoy creando el objeto "minidata" que es un dataframe a partir de data:*
+
+```{r,eval = F}
+minidata = data %>%
+  select(Var1, Var2)
+```
+
+## **¿Por qué me sale error en mi código?**
+
+Revisa que tu data o variable esté bien escrito y con las mayúsculas y minúsculas como corresponden. No es lo mismo decir "library" que "Library".
+
+Chequea que hayas cerrado todos los paréntesis o corchetes que se abrieron.
