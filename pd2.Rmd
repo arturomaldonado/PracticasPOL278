@@ -337,7 +337,7 @@ ggplot(data, aes(x=clase, y=indicador, color=clase)) +
   theme_classic()
 ```
 
-➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy similar en el grupo de clase social Media baja y Baja. Por otro lado, en el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor (la caja es mucho más grande). Los *outliers* se muestran como puntos individuales fuera de la caja, los puntos más alejados se encuentran en el grupo de clase Baja.
+➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy similar en el grupo de clase social Media baja y Baja. Por otro lado, en el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor (la caja es mucho más grande). Los *outliers* se muestran como puntos individuales más allá del bigote de la caja, los puntos más alejados se encuentran en el grupo de clase Baja.
 
 ***Ejercicio en clase:*** Brinde tres observaciones más sobre el gráfico anterior.
 
