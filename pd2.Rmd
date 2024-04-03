@@ -6,7 +6,7 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 3
+    toc_depth: 4
     theme: cosmo
     highlight: textmate
     always_allow_html: true
@@ -21,7 +21,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 ------------------------------------------------------------------------
 
@@ -37,27 +37,17 @@ knitr::include_graphics("pd2_QSAnalisisDesc.png")
 knitr::include_graphics("pd2_medVar.png") 
 ```
 
-### **Medición por tipo de variables:**
-
-CAMBIAR FORMA DE TABLA LIZ
-
-```{r,echo=FALSE, out.width="50%",fig.align="center"}
-knitr::include_graphics("pd2_MedTipoVar.png") 
-```
-
 # **3.Importancia de visualización de datos**
 
-\*AÑADIR COMENTARIOS SOBRE OTRAS FORMAS DE GENERAR GRÁFICOS EN BASE AL MANEJO DE DATOS MASIVOS. Antuané\*
+Debido al crecimiento de la big data en los últimos años surgieron nuevas necesidades para comprender los análisis masivos de datos de una forma simple y escalable. Es entonces cuando se dirige la atención a desarrollar nuevas técnicas gráficas en distintas plataformas (ejemplos a continuación), tanto softwares como librerías de código abierto[^1], tal es el caso de ggplot2 en R.
 
-Hay una infinidad de gráficos a los que se puede recurrir dependiendo del interés de la investigadora o el investigador. Aquí hay algunos ejemplos útiles: <https://www.data-to-viz.com/>
+[^1]: <https://www.data-to-viz.com/caveat/pie.html>
 
-> ¿Por qué es importante la visualización de datos?
+```{r,echo=FALSE, out.width="90%",fig.align="center"}
+knitr::include_graphics("pd2_herramientas.png") 
+```
 
-LIZ:**colocar algo de data story telling**
-
-Graficar data ayuda a contar historias y, sobre todo, *dar un sentido* a los cientos, miles, o incluso millones, de filas de datos que con las que podríamos eventualmente trabajar, facilitando la comprensión de la información.
-
-En tanto la finalidad de la visualización de datos es ayudar a una mejor comprensión de la información, hay que tener cuidado con algunos gráficos como, por ejemplo, el gráfico de sectores o *pie chart*. A pesar de que la variable que estamos analizando permita utilizar este gráfico, hay buenas razones para no usarlo, y por qué es muchas veces mejor un gráfico de barras: <https://www.data-to-viz.com/caveat/pie.html>
+Este interés por desarrollar técnicas de análisis masivo de datos y la comunicación de resultados cada vez más amigables y apta para todos los públicos dio pie a nuevas especialidades dentro de la ciencia de datos, como por ejemplo el data story telling
 
 ```{r,echo=FALSE, out.width="90%",fig.align="center"}
 knitr::include_graphics("pd2_datavis.png") 
@@ -65,19 +55,28 @@ knitr::include_graphics("pd2_datavis.png")
 
 ### **Gráficos por tipo de variables:**
 
-**Añadir ejemplos de gráficos al lado de la tabla. Antuané**
-
 ```{r,echo=FALSE, out.width="60%",fig.align="center"}
 knitr::include_graphics("pd2_GrafTipoVar.png") 
 ```
 
 # **4.Análisis descriptivo**
 
-> ¿Cuál es la percepción de desigualdad en el Perú el 2022?
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+```
+::: custom-text
+¿Cuál es la percepción de desigualdad en el Perú el 2022? 🤔
+:::
 
-Carguemos la data *Enades_subset.dta*.
-
-Hoy trabajaremos con algunas de las variables que forman parte de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo dice su nombre, esta encuesta busca ahondar en la percepción de las diferentes formas de desigualdad en el Perú e incorpora indicadores que permiten medir la magnitud de brechas sociales y políticas como género, clase, etc.
+Para dar respuesta a la pregunta de investigación que guiara la práctica dirigida analizaremos algunas de las variables que forman parte de la Encuesta Nacional de Percepción de Desigualdades - ENADES 2022, que fue elaborada por Instituto de Estudios Peruanos (IEP) y Oxfam. La encuesta busca ahondar en la percepción de las diferentes formas de desigualdad en el Perú e incorpora indicadores que permiten medir la magnitud de brechas sociales y políticas como género, clase, entre otros.
 
 ```{r,echo=FALSE, out.width="100%",fig.align="center"}
 knitr::include_graphics("Diccionario-enades.png") 
@@ -85,23 +84,37 @@ knitr::include_graphics("Diccionario-enades.png")
 
 ```{r,warning=FALSE}
 library(rio) #Convocamos el paquete   
-data=import("Enades_subset.dta") 
+data=import("Enades_2022_final.xlsx") 
 
 str(data)
 ```
 
 ```{r}
-names(data) #revisamos los nombres
+names(data) #revisamos las variables
 ```
 
-## **4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica?**
+## 4.1 ¿Cómo se distribuye (%)la percepción de desigualdad económica en el Perú?
 
-**Explicar el proceso. Antuané**
+Usaremos la variable **P04**:
+
+`¿Qué tan desigual cree que es el Perú económicamente?`
+
+De acuerdo al diccionario de datos encontramos cuatro posibles respuestas
+
+-   1:Mucho
+
+-   2:Algo
+
+-   3:Poco
+
+-   4:Nada
 
 ### **Análisis de una variable ordinal**
 
-```{r,warning=FALSE}
-library(dplyr)
+Pasos para analizar una variable ordinal A. Identificar el tipo de variable (str, class) B. Convertimos la variable al tipo de dato que necesitamos dependiendo el caso C. Elaboramos un objeto que nos permita ver preliminarmente los datos de la variable. D. Elaboramos un gráfico que vaya acorde a la variable ordinal (gráfico de barras)
+
+```{r,warning=FALSE, message=FALSE}
+library(dplyr) #Convocamos el paquete
 ```
 
 ```{r}
@@ -109,40 +122,45 @@ library(dplyr)
 class(data$p04)
 ```
 
-Del diccionario de datos, sabemos que esta variable es una ordinal, revisemos los niveles antes de categorizarla correctamente.
-
-```{r}
-table(data$p04) #Veamos los niveles de la variable
-```
-
-Otorguemosle etiquetas y categorizemosla como factor:
-
-```{r}
-data$p04 = factor(data$p04, levels = c(1:4), labels = c("Mucho","Algo","Poco","Nada"),ordered = TRUE)
-```
-
-Revisemos que el cambio se haya realizado correctamente correctamente. Para hacerlo, nuevamente Para hacerlo tenemos dos formas, 1. comando table (que revisamos anteriormente), y 2. commando summarize/summarise de dplyr
+Del diccionario de datos, sabemos que esta variable es **ordinal**, revisemos si los niveles tienen coherencia con las respuestas recogidas en la encuesta.
 
 ```{r}
 data %>%
  group_by(p04) %>%
-  summarize(Freq=n())
+ summarise(Freq=n()) #Veamos los niveles de la variable
 ```
 
-A primera vista, la tabla nos indica que la mayoría de los encuestados (868) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería eso en porcentaje?
+💥 Otorguemosle etiquetas y categoricemosla como factor:
 
-Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen, asignemosle el nombre de *para_grafico* para así luego llamarla al graficar.
+```{r}
+data = data %>%
+ mutate(p04 = factor(p04, levels = 1:4, labels = c("Mucho", "Algo", "Poco", "Nada"), ordered = TRUE))
+```
+
+Revisemos que el cambio se haya realizado correctamente usando el comando summarise del paquete `dplyr`
+
+```{r}
+data %>%
+ group_by(p04) %>%
+ summarise(Freq=n())
+```
+
+A primera vista, la tabla nos indica que la mayoría de los encuestados (794) opina que hay mucha desigualdad económica en el país. Pero, ¿cuánto sería dicho resultado en porcentaje?
+
+Podemos realizar una tabla de frecuencias y porcentajes agregando una linea al comando anterior. Asimismo, para poder graficar los resultados de las tablas, tendremos que almacenarlas en un objeto. Trabajemos con esta tabla resumen y asignemosle el nombre *`para_grafico`* para posteriormente llamarla al graficar.
 
 ```{r}
 para_grafico=data %>%
  group_by(p04) %>%
-  summarize(Freq=n()) %>%
-   mutate(Porcentaje = (Freq / sum(Freq))*100)
+ summarize(Freq=n()) %>%
+ mutate(Porcentaje = (Freq / sum(Freq))*100)
+
+para_grafico
 ```
 
 Afirmamos que más del 50% de los encuestados percibe que el país es muy desigual económicamente.
 
-Podemos analizar cómo cambia esto si solo seleccionamos los casos de los encuestados/as menores de 30 años.
+También podemos analizar cómo cambia esto si solo seleccionamos los casos de los encuestados/as menores de 30 años.
 
 ```{r}
 data %>%
@@ -158,36 +176,37 @@ Nuestra variable es categórica, por lo tanto realizaremos el gráfico acorde:
 
 ```{r}
 library(ggplot2)
-library(taylor) #opcional (una ventaja de que R sea software libre)
 
 ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
 geom_bar(stat = "identity") 
 ```
 
-Este es un gráfico básico, pero podemos personalizarlo según nuestros gustos.
+Este es un gráfico básico, pero podemos personalizarlo[^2] según nuestros gustos.
+
+[^2]: <https://cran.r-project.org/web/packages/tayloRswift/readme/README.html>
 
 ```{r}
+library(tayloRswift) #opcional (una ventaja de que R sea software libre)
 
 ggplot(para_grafico, aes(x=p04, y=Porcentaje, fill=p04)) + 
   geom_bar(stat = "identity")  +
   ggtitle("Percepción de desigualdad económica") +
-  xlab("¿Qué tan desigual cree que\n es el Perú económicamente") + ylab("Porcentaje")+
+  xlab("¿Qué tan desigual cree que es el Perú económicamente") + ylab("Porcentaje")+
   geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="black", size=3)+
   theme(panel.background=element_rect(fill = "white", colour = "white")) +
-  #scale_fill_brewer(palette="Dark2")
-  scale_fill_taylor_d(album="Lover") #"Fearless (Taylor's Version)"
+  scale_fill_taylor(palette = "Red") #fearless, speakNow, Red
 
 ```
 
 El ejercicio de análisis descriptivo con variables numéricas lo realizaremos con un indicador aditivo que crearemos a continuación.
+
+## 4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?
 
 ### **Indicador Proxy**
 
 También llamado indicador indirecto, se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio.
 
 Un indicador proxy es una medición o señal indirecto que aproxima o representa un fenómeno en la ausencia de una medición o señal directo.
-
-Por ejemplo, el número de miembros femeninos de una cámara de comercio podría ser un indicador proxy para el porcentaje de dueñas de negocios o ejecutivas.
 
 ### **Indicador Aditivo**
 
@@ -197,29 +216,21 @@ Por ejemplo, el número de miembros femeninos de una cámara de comercio podría
 2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
 3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
 4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar a todos los valores el valor mínimo.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo menos el mínimo, con ello, se va a obtener valores entre 0 y 1.
-7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
+5.  Aplicar la función rescale con el rango específico.
 
-Construiremos un indicador aditivos de percepción de desigualdad en el acceso a servicios y derechos en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables d_educ, d_salud\_, d_trabajo y d_justicia. Estas variables responden a la pregunta de qué tan desigual es el acceso a la eduación, salud, trabajo y justicia; siendo 1-muy desigual y 3- nada desigual. El indicador que queremos crear es de percepción de desigualdad, por tanto el mayor valor debería ser mayor desigualdad. Las variables modificadas se llaman d_educ, d_salud, d_trabajo y d_justicia.
+Construiremos un indicador aditivos de percepción de desigualdad en calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
 
-Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar.
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
 
-```{r}
-str(data)#Podemos notar que las variables que usaremos son de tipo caracter.
+knitr::include_graphics("pd2_tablita.png") 
 ```
 
-Recategorizemos nuestras variables a numéricas:
+El indicador que queremos crear es de percepción de desigualdad, por tanto mayor valor debería significar mayor desigualdad.
+
+🗨️ Para poder crear el indicador, necesitamos que todas las variables a usar sean numéricas porque las tendremos que sumar. Entonces, primero verificamos el tipo de dato de cada variable.
 
 ```{r}
-names(data)
-data[7:10] = lapply(data[7:10],as.numeric) #podemos usar lapply para recodificar más de una variable a la vez
-```
-
-Recordemos los pasos para crear un índice aditivo:
-
-```         
-*((var_suma - mín_de_suma)/(máx_de_suma-mín de suma)))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
+str(data)
 ```
 
 ```{r}
@@ -234,14 +245,24 @@ Revisamos mínimo y máximo
 summary(data$suma)
 ```
 
+Creamos el indicador de 0 al 100
+
 ```{r}
+library(scales)
 data = data %>%
- mutate(indicador = ((suma-4)/(12-4))*100) #Como queremos que el indicador vaya del 0 al 10, lo multiplicamos por 10 
+  mutate(indicador = rescale(suma, to = c(0, 100)))
+
+
 ```
 
-## **4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre  mujeres y hombres?** 🤔
+```{r}
+summary(data$indicador)
 
-Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear
+```
+
+## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre mujeres y hombres?
+
+Ahora, veamos algunas medidas de tendencia central, distribución y dispersión para el caso de variables numéricas. Trabajaremos con el indicador que acabamos de crear: `indicador`
 
 Exploremos la variable. Veamos medidas de tendencia central y de dispersión. Recordemos que va del 0 al 100.
 
@@ -257,13 +278,15 @@ data%>%
 Podemos analizar la respuesta según el sexo de los encuestados
 
 ```{r}
-data$sexo = factor(data$sexo, levels = c(1:2), labels = c("Hombre","Mujer"))
+data = data %>%
+ mutate(sexo = factor(sexo, levels = 1:2, labels = c("Hombre","Mujer")))
+
 ```
 
 ```{r}
 data %>%
  group_by(sexo) %>%
-  summarize(Media=mean(indicador)) 
+  summarise(Media=mean(indicador)) 
 ```
 
 La tabla nos indica que las encuestadas mujeres perciben ligeramente una mayor desigualdad en los derechos y servicios, a comparación de los hombres.
@@ -273,9 +296,49 @@ Podemos visualizarlo mejor con un gráfico
 ```{r}
 ggplot(data, aes(x=sexo, y=indicador, color=sexo)) + 
   geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.4) +#para agregar los casos como puntos
   theme_classic()
 
 ```
 
-**Ejercicio:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
+➡️ Análisis: Como podemos ver en el gráfico la disperción de los datos es muy similar en el grupo de hombre y mujeres. Los valores atípicos (*outliers*) se muestran como puntos individuales fuera de la caja. La línea que vemos dentro de la caja nos señala la *mediana*, al comparar las dos líneas se aprecia que la mediana es similar.
+
+En resumen, el `boxplot` es herramienta gráfica que proporciona un resumen visual de la distribución de un conjunto de datos, mostrando la mediana, los cuartiles, los valores atípicos y la variabilidad de los datos.
+
+```{r}
+data %>%
+ group_by(clase) %>%
+ summarise(Freq=n())
+```
+
+## 4.4 ¿Cuál es la diferencia de la percepción de desigualdad entre *clases*?
+
+```{r}
+data = data %>%
+ mutate(clase = factor(clase, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
+
+```
+
+```{r}
+data%>%
+  group_by(clase) %>%
+  summarise(Media = mean(indicador), 
+            Mediana = median(indicador),
+            Desviacion = sd(indicador),
+            Minimo = min(indicador),
+            Maximo = max(indicador))
+```
+
+```{r}
+ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
+  scale_color_taylor(palette ="fearless") +
+  theme_classic()
+```
+
+➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy similar en el grupo de clase social Media baja y Baja. Por otro lado, en el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor (la caja es mucho más grande). Los *outliers* se muestran como puntos individuales más allá del bigote de la caja, los puntos más alejados se encuentran en el grupo de clase Baja.
+
+***Ejercicio en clase:*** Brinde tres observaciones más sobre el gráfico anterior.
+
+**Ejercicio para casa:** Analice descriptivos y elabore el gráfico correspondiente para la variable p03_1
