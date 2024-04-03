@@ -9,16 +9,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="AMN" />
 
-<meta name="date" content="2023-04-13" />
 
-<title>Prácticas POL278</title>
+<title>FAQ.knit</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -31,11 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -223,6 +224,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -230,6 +294,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -298,7 +372,7 @@ $(document).ready(function () {
   <a href="pd13.html">Práctica 13</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="FAQ.html">FAQ</a>
 </li>
 <li>
   <a href="https://github.com/arturomaldonado/PracticasPOL278">
@@ -315,21 +389,114 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Prácticas POL278</h1>
-<h4 class="author">AMN</h4>
-<h4 class="date">2023-04-13</h4>
 
 </div>
 
 
-<div id="prácticas-pol278" class="section level2">
-<h2>Prácticas POL278</h2>
-<p>Esta es la web de las prácticas dirigidas del curso Estadística para
-el Análisis Político 1.</p>
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
+<div
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+class="section level2">
+<h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2024 - 1 <br></h2>
+<hr />
+</div>
+<div id="preguntas-frecuentes" class="section level1">
+<h1><strong>Preguntas frecuentes ❓</strong></h1>
+<div id="por-qué-no-se-importa-mi-base-de-datos" class="section level2">
+<h2><strong>¿Por qué no se importa mi base de datos? 👩‍💻👨‍💻</strong></h2>
+<p>Si no has guardado tu Rmd, no olvides indicar tu directorio de
+trabajo (Session/Set working directory/Choose directory). En ese
+directorio debe estar guardada tu base de datos.</p>
+<p>Si ya guardaste tu Rmd, R seleccionará por default el directorio de
+trabajo la carpeta en la que se encuentra tu Rmd; por lo que tu base de
+datos debe estar guardada ahí.</p>
+</div>
+<div id="por-qué-no-puedo-usar-cierta-función" class="section level2">
+<h2><strong>¿Por qué no puedo usar cierta función?</strong></h2>
+<p>Si la función no es del paquete de base de R (funciones como
+“names()”, “str()” o “summary()”), es necesario llamar al paquete para
+poder usar la función. Aquí podrás revisar los paquetes usados en clase
+y las funciones que contienen.</p>
+<table style="width:56%;">
+<colgroup>
+<col width="16%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Paquete</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rio</td>
+<td>import</td>
+</tr>
+<tr class="even">
+<td>dplyr</td>
+<td><p>filter</p>
+<p>mutate</p>
+<p>summarise/summarize</p>
+<p>group_by</p>
+<p>count</p></td>
+</tr>
+<tr class="odd">
+<td>ggplot2</td>
+<td><p>ggplot() + geom_bar</p>
+<p>ggplot() + geom_histogram</p>
+<p>ggplot() + geom_boxplot</p>
+<p>ggplot() + geom_point</p></td>
+</tr>
+<tr class="even">
+<td>Desctools</td>
+<td>median</td>
+</tr>
+</tbody>
+</table>
+<p><em>Nota: ggplot2 y dplyr son parte del mundo de tidyverse, en ese
+caso si vas a usar ambos paquetes basta con que llames a tidyverse para
+que ambos se carguen.</em></p>
+<p><strong>🛑Importante 🛑</strong></p>
+<p>Recuerda que el paquete se llama con library(nombredelpaquete)</p>
+<p>💡No olvides que no basta con instalar el paquete, es necesario
+llamarlo después. Además, es suficiente con instalar una vez el paquete
+en nuestras computadoras.</p>
+</div>
+<div id="por-qué-no-aparece-una-data-que-he-creado-en-r"
+class="section level2">
+<h2><strong>¿Por qué no aparece una data que he creado en
+R?</strong></h2>
+<p>Revisa que hayas guardado esa data en un objeto, en caso contrario no
+podrás referirte a el ni llamarlo posteriormente en tu código.</p>
+<p><em>En este caso no estoy guardando la data en ningún
+objeto:</em></p>
+<pre class="r"><code>data %&gt;%
+  select(Var1, Var2)</code></pre>
+<p><em>En este si, estoy creando el objeto “minidata” que es un
+dataframe a partir de data:</em></p>
+<pre class="r"><code>minidata = data %&gt;%
+  select(Var1, Var2)</code></pre>
+</div>
+<div id="por-qué-me-sale-error-en-mi-código" class="section level2">
+<h2><strong>¿Por qué me sale error en mi código?</strong></h2>
+<p>Revisa que tu data o variable esté bien escrito y con las mayúsculas
+y minúsculas como corresponden. No es lo mismo decir “library” que
+“Library”.</p>
+<p>Chequea que hayas cerrado todos los paréntesis o corchetes que se
+abrieron.</p>
+</div>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -362,6 +529,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

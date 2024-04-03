@@ -36,7 +36,7 @@ navbar:
       href: pd12.html
     - text: "Práctica 13"
       href: pd13.html
-    - text: "About"
-      href: about.html
+    - text: "FAQ"
+      href: FAQ.html
     - icon: fab fa-github
       href: https://github.com/arturomaldonado/PracticasPOL278
