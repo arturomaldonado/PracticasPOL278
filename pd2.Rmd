@@ -93,7 +93,7 @@ str(data)
 names(data) #revisamos las variables
 ```
 
-## 4.1 ¿Cuál es el porcentaje de percepción de desigualdad económica en el Perú?
+## 4.1 ¿Cómo se distribuye (%)la percepción de desigualdad económica en el Perú?
 
 Usaremos la variable **P04**:
 
