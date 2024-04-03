@@ -184,6 +184,7 @@ class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data
 
 # **4. Análisis descriptivo en R**
 
+```{=html}
 <style>
 .custom-text {
   color: #00688B;
@@ -193,16 +194,16 @@ class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data
   font-size: 22px;
 }
 </style>
-
-<div class="custom-text">
+```
+::: custom-text
 ¿Cuál es el estado de la democracia en el mundo?
-</div>
+:::
 
-![](Portada DI_2022.png)
+![](Portada%20DI_2022.png)
 
 El índice de democracia (Democracy Index) es un índice que mide la calidad de la democracia en el mundo. Mide diversas categorías como libertades civiles, cultura política, pluralismo electoral, etc. A partir de estas variables, se obtiene un puntaje promedio, el cual determina el puesto del país a nivel mundial, así como el tipo de régimen que tiene cada uno.
 
-En esta ocasión, usaremos la base de datos del informe de 2022, publicado por The Economist Inteligence Unit (EIU). El link es el que se muestra a continuación: **"https://www.eiu.com/n/campaigns/democracy-index-2022/"**
+En esta ocasión, usaremos la base de datos del informe de 2022, publicado por The Economist Inteligence Unit (EIU). El link es el que se muestra a continuación: **"<https://www.eiu.com/n/campaigns/democracy-index-2022/>"**
 
 Ahora, toca responder la pregunta de investigación.
 
@@ -259,6 +260,8 @@ Por ejemplo, debemos asegurarnos que una variable categórica no esté configura
 **Variable "Categorías":**
 
 Queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión `Categorías`
+
+
 
 ```{r}
 class(data$Categorías) 
@@ -391,13 +394,10 @@ data%>%
 
 #### Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
 
-
 <br></br>
 
 </style>
 
-<a href="https://raw.githubusercontent.com/arturomaldonado/PracticasPOL278/main/pd1.Rmd" download="NombreDeTuScript.R">
-  <button>Descargar Práctica Dirigida 1</button>
-</a>
+<a href="https://raw.githubusercontent.com/arturomaldonado/PracticasPOL278/main/pd1.Rmd" download="NombreDeTuScript.R"> <button>Descargar Práctica Dirigida 1</button> </a>
 
 <br></br> [Go to page beginning](#beginning)
