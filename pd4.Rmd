@@ -53,11 +53,11 @@ knitr::include_graphics("IC.png")
 
 ### Conceptualización e Importancia
 
- - Los intervalos de confianza ofrecen una manera de estimar, con alta probabilidad, un rango de valores en el que se encuentra el valor poblacional (o parámetro) de una determinada variable.
- - El intervalo de confianza describe la variabilidad entre la medida obtenida en un estudio y la medida real de la población (el valor real).
- - Un intervalo de confianza de 90%/95%/99% nos indica que dentro del rango dado se encuentra el valor real de un parámetro con 90%/95%/99% de certeza. 
- - Existe una relación inversa entre la amplitud del IC y el tamaño muestral: mientras más pequeño es el n, más amplio es el IC. A mayor n, el IC es más estrecho. 
- - Gracias al IC podemos determinar si la estimación es representativa de la población.
+-   Los intervalos de confianza ofrecen una manera de estimar, con alta probabilidad, un rango de valores en el que se encuentra el valor poblacional (o parámetro) de una determinada variable.
+-   El intervalo de confianza describe la variabilidad entre la medida obtenida en un estudio y la medida real de la población (el valor real).
+-   Un intervalo de confianza de 90%/95%/99% nos indica que dentro del rango dado se encuentra el valor real de un parámetro con 90%/95%/99% de certeza.
+-   Existe una relación inversa entre la amplitud del IC y el tamaño muestral: mientras más pequeño es el n, más amplio es el IC. A mayor n, el IC es más estrecho.
+-   Gracias al IC podemos determinar si la estimación es representativa de la población.
 
 ### Sobre el nivel de confianza...
 
@@ -82,7 +82,7 @@ knitr::include_graphics("ICmedia.png")
 
 *Hallemos el intervalo de confianza para la media de la variable "ABros4".*
 
-El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
+El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación"El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
 
 ```{r}
 class(data$ABros4) #Revisemos que nuestra variale esté bien clasificada
@@ -111,7 +111,7 @@ knitr::include_graphics("ICprop.png")
 
 *Hallemos el intervalo de confianza para la proporción de las personas que opinan que hay mucha desigualdad económica en el Perú.*
 
-Para ello trabajaremos con la variable p04_1. Esta variable contiene la información de la pregunta P04 recodificada, de tal forma que 1 es "Mucho" y 0 es "Algo/Poco/Nada". 
+Para ello trabajaremos con la variable p04_1. Esta variable contiene la información de la pregunta P04 recodificada, de tal forma que 1 es "Mucho" y 0 es "Algo/Poco/Nada".
 
 Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxtio y del total de casos.
 

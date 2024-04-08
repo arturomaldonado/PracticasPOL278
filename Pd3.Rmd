@@ -6,15 +6,11 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 1
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
-```
 
 <center><img src=" " width="200"/></center>
 
@@ -24,9 +20,43 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
-# **E-Government Survey 2022: The Future of Digital Government**
+# **1.Intervalos de confianza**
+
+Con este tema, comenzaremos a enfocarnos en la estadística inferencial. El objetivo de esta es determinar una aproximación del parámetro poblacional a partir de la data de una muestra representativa.
+
+Revisemos algunos conceptos:
+
+-   **Estimador puntual:** un número que es nuestra predicción del parámetro
+
+-   **Intervalo de confianza:** un intervalo de números basado en la distribución de la data observada de la muestra dentro de la cual se cree que estaría el parámetro poblacional.
+
+    *IC = estimador puntual +-/margen de error*
+
+-   **Nivel de confianza:** es la probabilidad de que el parámetro se encuentre en ese intervalo.
+
+-   **Margen de error:** mide qué tan precisa es la estimación del parámetro.
+
+-   **Error de muestreo:** diferencia entre el valor calculado de un estadístico y valor real de un parámetro de la población.
+
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("IC.png") 
+```
+
+### Conceptualización e Importancia
+
+-   Los intervalos de confianza ofrecen una manera de estimar, con alta probabilidad, un rango de valores en el que se encuentra el valor poblacional (o parámetro) de una determinada variable.
+-   El intervalo de confianza describe la variabilidad entre la medida obtenida en un estudio y la medida real de la población (el valor real).
+-   Un intervalo de confianza de 90%/95%/99% nos indica que dentro del rango dado se encuentra el valor real de un parámetro con 90%/95%/99% de certeza.
+-   Existe una relación inversa entre la amplitud del IC y el tamaño muestral: mientras más pequeño es el n, más amplio es el IC. A mayor n, el IC es más estrecho.
+-   Gracias al IC podemos determinar si la estimación es representativa de la población.
+
+### Sobre el nivel de confianza...
+
+Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
+
+#### **La data de hoy: E-Government Survey 2022: The Future of Digital Government**
 
 La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha publicado cada dos años por el Departamento de Asuntos Económicos y Sociales de las Naciones Unidas desde 2001. La Encuesta evalúa el estado de desarrollo del gobierno electrónico de todos los Estados miembros de las Naciones Unidas y, durante este tiempo, ha establecido un conjunto de datos y análisis exhaustivos.
 
@@ -38,215 +68,141 @@ knitr::include_graphics("PD3_egov22.png")
 
 Carguemos la data *egov2022.xlsx*
 
-```{r}
-library(tidyverse)#Convocamos el paquete
-library(rio)    
+```{r, warning=F}
+library(dplyr) #Para summarise, mutate, group_by...
+library(rio) #para importar la data
+library(lsr) #para ciMean
+library(ggplot2) #para graficar
 data=import("egov2022.xlsx") 
 ```
 
--   "Country Name" : Nombre del país\
+| Nombre         | Descripción                                                                          |
+|--------------------|----------------------------------------------------|
+| Pais           | Nombre del país                                                                      |
+| E_gov          | Indicador de gobernanza digital (0-100)                                              |
+| E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
+| Online_service | Servicios en línea otorgado por el Estado (0-100)                                    |
+| Human_cap      | Miembros del Estado especializados en el tema (0-100)                                |
+| Tele_infra     | Índice de capacidad de redes de telecomunicaciones como acceso a internet 5G (0-100) |
+| Region         | Continente donde pertenece cada país                                                 |
 
--   "E-Government Index" : Puntaje final de la encuesta\
+## Pregunta: ¿Cuál es el estado de la gobernanza digital de los países?
 
--   "E-Participation Index" : Transparencia y acceso a la información, participación ciudadana en línea\
+## **1.1 Intervalo de confianza para una proporción**
 
--   "Online Service Index" : Servicios en línea otorgado por el Estado\
+Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles: votó/no votó; sí/no, etc.
 
--   "Human Capital Index" : Miembros del Estado especializados en el tema\
+Recordemos la fórmula para hallar el intervalo de confianza para una proporción
 
--   "Telecommunication Infrastructure Index" : índice de capacidad de redes de telecomunicaciones como acceso a internet 5g.
-
--   "region" : Continente donde pertenece cada país
-
-# **1.Recordando el análisis descriptivo**
-
--   **Moda**: Nominales, ordinales y numéricas
--   **Mediana**: Ordinales y numéricas
--   **Media**: Numéricas
-
-Vemos las variables 🧐
-
-```{r}
-names(data)
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("ICprop.png") 
 ```
 
-Revisamos la estructura de la bd
+Para este ejercicio responderemos a la pregunta:
+
+## ¿Qué proporción de países tienen un nivel de transparencia y participación ciudadana en línea alto?
+
+Para ello, hallaremos el intervalo de confianza para la proporción de países que tienen un nivel de transparencia y participación ciudadana en línea es mayor a 70.
+
+Según el diccionario de datos, la variable que mide la transparencia y acceso a la información, participación ciudadana en línea (E_part) es numérica. Necesitamos crear una nueva variable que sea dicotómica y que tenga como punto de corte 70, la llamaremos "E_part_alto". Es decir, todos los países que tengan un valor en E_gov mayor a 70 será "Alto" y los que no será "No alto".
+
+Lograremos esto con el comando ifelse. Este comando tiene 3 argumentos: condición, valor si se cumple la condición, valor cuando no se cumple la condición. Veamos como se aplica a continuación:
 
 ```{r}
-str(data)
+data = data %>% 
+  mutate(E_part_alto = ifelse(E_part > 70, "Alto","No alto"))
 ```
 
-Podemos ver que casi todas las variables son numéricas, excepto la variable *region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla.
+Ahora que hemos tenemos una variable dicotómica que indique el nivel de transparencia y participación ciudadana en línea, podemos calcular el intervalo para la proporción de países con ese indicador alto.
+
+Debemos realizar una tabla de frecuencias, y luego de identificar el n del caso de éxito y el total ingresamos los valores en el prop.test.
+
+-   Tabla de frecuencias:
+
+Agrupando por "E_part_alto", realizamos un conteo.
 
 ```{r}
-data|>
- group_by(region)|>
-  summarize(Freq=n())
+  data %>% 
+  group_by(E_part_alto) %>% 
+  summarise(Freq=n())
 ```
+
+El número casos de éxito es **36** y el total es **36+145.** Reemplacemos esos valores en el prop.test. Primero indicamos los casos de éxito y luego el total de casos.
 
 ```{r}
-data$region=as.factor(data$region)
-str(data) #comprobamos
+ic_prop  = prop.test(36,181)
+ic_prop #llamamos a ic_prop para visualizar los resultados
 ```
 
-# **2. Análisis del E-Gov Index**
+Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de países con un nivel alto de participación ciudadana y transparencia online oscila entre 14.5% y 26.7%.
 
--   **E-Government Index**: Variable numérica
+## **1.2 Intervalo de confianza para una media**
 
-Revisamos *solo* la media del E-Egov Index
+En este caso, responderemos a la pregunta:
+
+## En general, ¿cuál es el promedio del indicador de gobernanza digital de los países?
+
+Para ello, hallaremos el intervalo de confianza para la media de países según el indicador de gobernanza digital. Este indicador va de 0 a 100, donde 0 es el menor puntaje y 100 es mayor puntaje.
 
 ```{r}
-data |>
-  summarise(mean(`E-Government Index`))
+class(data$E_gov) #Revisemos que nuestra variale esté bien clasificada (que sea numérica)
+
+data %>% 
+  summarise(media = mean(E_gov), #Revisemos estadísticas de la variable E_gov
+            desv = sd(E_gov),
+            min = min(E_gov),
+            max = max(E_gov)) 
 ```
 
-Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos?
+**ciMean**, del paquete **lsr**, es la función que calcula el intervalo de confianza de una media.
 
 ```{r}
-data |>
-  summarise(Mínimo=min(`E-Government Index`), 
-            Mediana= median(`E-Government Index`), 
-            Desviación=sd(`E-Government Index`),
-            Media= mean(`E-Government Index`),
-            Máximo= max(`E-Government Index`))
+ic_media = data %>% 
+  summarise(media = mean(E_gov, na.rm=T), #con el último argumento indicamos no tomar en consideracion los valores perdidos (NA)
+            liminf = ciMean(E_gov, na.rm=T)[1],
+            limsup = ciMean(E_gov, na.rm=T)[2])
+ic_media
 ```
 
--   ¿Cuál es el puntaje más bajo y el máximo?
+Nuestra media poblacional se encuentra entre 55.28 y 62.31. Esto quiere decir que la estimación del intervalo indica que tenemos un 95% de certeza de que el valor poblacional del indicador de gobernanza digital se encuentra entre 55.3 y 62.3.
 
--   ¿Cuál es el rango? (*max-min*)
+## **1.3 Intervalo de confianza para una media según grupo**
 
--   **Desviación estándar (*sd*)**: *La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central.*
+Veamos un nivel más de análisis:
 
--   ¿Hay mucha variabilidad en los datos? *sd*
-
-## **Visualización**
-
-Histograma de E-Gov
+## ¿El indicador de gobernanza digital es igual en todos los continentes?
 
 ```{r}
-library(ggplot2)
-data |>
-  ggplot(aes(x=`E-Government Index`))+
-  geom_histogram(fill = "blue",
-    color = "black",
-    bins = 30,
-    alpha = 0.7)+
-  xlab("E-Government Index") +
-  ylab("Frecuencia")+
-   theme_minimal()
+ic_grupo = data %>% 
+  group_by(Region) %>% 
+  summarise(Media = mean(E_gov, na.rm=T),
+            liminf = ciMean(E_gov, na.rm=T)[1],
+            limsup = ciMean(E_gov, na.rm=T)[2]
+            )
+ic_grupo
 ```
 
-Histograma de E-Gov + mediana (rojo) + media (verde)
+Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional, la media del índice de gobierno digital en Europa es mayor al resto de continentes (el intervalo de confianza va entre 81 y 87). Por el contrario, África es el continente con menor índice de gobierno digital de todos los evaluados.
+
+Grafiquemos nuestros resultados.
 
 ```{r}
-data |>
-ggplot(aes(x=`E-Government Index`))+
-  geom_histogram(fill = "blue",
-    color = "black",
-    bins = 30,
-    alpha = 0.7)+
-  geom_vline(xintercept = median(data$`E-Government Index`), color = "red")+
-  geom_vline(xintercept = mean(data$`E-Government Index`), color = "green")+
-  xlab("E-Government Index") +
-  ylab("Frecuencia")+
-  theme_light()
+
+ggplot(ic_grupo, aes(x= Region, y =Media)) +
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width = 0.2)+
+   geom_text(aes(label=paste(round(Media, 2))), size=4)+
+  xlab("Continente") + ylab("Índice de Gobierno Digital")+
+  ylim(20, 100)
 ```
 
-Observamos la línea de la media y la mediana casi sobrepuestas ¿qué nos dice esto? -\> Simetría
+¿Qué podemos extraer del gráfico?
 
-### Cuartiles y diagrama de cajas
+# Ejercicios:
 
-```{r}
-data |> 
-  summarise(CuartilesEgov = quantile(`E-Government Index`))
-```
+1.  Halla el intervalo de confianza para la proporción de países que cuentan un puntaje en servicios estatales (Online_service) bajo (menor a 25).
 
-¿Cómo ubicamos los cuartiles en el diagrama de cajas?
+    *Hint:* Usar ifelse, cuando Online_service sea menor a 25 será "Bajo", cuando es mayor o igual será "No bajo".
 
-```{r}
-data |> 
-  ggplot(aes(y=`E-Government Index`))+
-  geom_boxplot()+
-  ylab("E-Government Index")
-```
+2.  Crea la variable Region2. Cuando la region sea "Asia", se mantiene como "Asia", todo lo demás (Africa, Americas, Europe, Oceania) será "No Asia". ¿Existe una diferencia en el indicador de infraestructura en telecomunicaciones (Tele_infra) si el país está en Asia.
 
-### **Análisis por regiones**
-
-¿Cuál es la importancia de analizar por regiones?
-
-Si queremos ver solo una región, en este caso África
-
-```{r}
-data |> 
-  filter(region =="Africa") |>
-  summarise(mean(`E-Government Index`))
-```
-
-E-gov por regiones :)
-
-```{r}
-data |>
- group_by(region) |>
-  summarize(Media=mean(`E-Government Index`)) 
-```
-
-
-```{r}
-library(ggplot2)
-library(dplyr)
-data |>
-  ggplot(aes(x=`E-Government Index`))+
-  geom_histogram()+
-  facet_wrap(~region)+
-  xlab("E-Gov Index")+
-  ylab("Frecuencia")
-```
-
-
-Analicemos los resultados 😼
-
-**Descriptivos por región**
-
-```{r}
-data |>
-  filter(region == "Asia") |>
-  summarise(Mínimo=min(`E-Government Index`), 
-            Mediana= median(`E-Government Index`), 
-            Desviación=sd(`E-Government Index`),
-            Media= mean(`E-Government Index`),
-            Máximo= max(`E-Government Index`))
-```
-
-```{r}
- data |>
-  group_by(region)|>
-  summarise(Mínimo=min(`E-Government Index`), 
-            Mediana= median(`E-Government Index`), 
-            Desviación=sd(`E-Government Index`),
-            Media= mean(`E-Government Index`),
-            Máximo= max(`E-Government Index`))
-```
-Comparo los resultsdos y los ubico en mi diagrama de cajas
-```{r}
-library(ggplot2)
-library(dplyr)
- data |>
-ggplot(aes(x=region, y=`E-Government Index`, color=region)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
-  theme_classic()
-```
-
-
-Si deseo un subset solamente de los países que están por encima de la media ¿cuántos países son?
-
-```{r}
-MayorMedia=data |>
-  filter(`E-Government Index` > mean(`E-Government Index`)) 
-```
-
-Ejercicios 👾 :
-
--   Realizar los estadísticos descriptivos del Online Service Index.
--   Relizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones.
--   Relizar diagrama de cajas del E-Participation Index por región.
+3.  Realizar un gráfico de barras de error para la pregunta anterior
