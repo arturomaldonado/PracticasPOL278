@@ -437,8 +437,8 @@ library(rio)
 data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <table>
 <colgroup>
-<col width="29%" />
-<col width="70%" />
+<col width="30%" />
+<col width="69%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -546,9 +546,9 @@ ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
 </ul>
 <p>Revisamos <em>solo</em> la media del E_gov</p>
 <pre class="r"><code>data  %&gt;% 
-  summarise(mean(E_gov))</code></pre>
-<pre><code>##   mean(E_gov)
-## 1    58.79558</code></pre>
+  summarise(media=mean(E_gov))</code></pre>
+<pre><code>##      media
+## 1 58.79558</code></pre>
 <p>Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos
 comentar de los datos obtenidos?</p>
 <pre class="r"><code>data  %&gt;% 

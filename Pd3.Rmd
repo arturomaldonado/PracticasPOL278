@@ -47,7 +47,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|---------------------|---------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -112,7 +112,7 @@ Revisamos *solo* la media del E_gov
 
 ```{r}
 data  %>% 
-  summarise(mean(E_gov))
+  summarise(media=mean(E_gov))
 ```
 
 Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos?
