@@ -437,8 +437,8 @@ library(rio)
 data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <table>
 <colgroup>
-<col width="27%" />
-<col width="72%" />
+<col width="29%" />
+<col width="70%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -474,6 +474,10 @@ línea (0 - 100)</td>
 internet 5G (0-100)</td>
 </tr>
 <tr class="odd">
+<td>Alto_teleinfra</td>
+<td>¿El país tiene un índice de infraestructura mayor a 80? Si/No</td>
+</tr>
+<tr class="even">
 <td>Region</td>
 <td>Continente donde pertenece cada país</td>
 </tr>
@@ -490,13 +494,14 @@ internet 5G (0-100)</td>
 </ul>
 <p>Revisamos la estructura de la base de datos y sus variables</p>
 <pre class="r"><code>str(data)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    181 obs. of  7 variables:
+<pre><code>## &#39;data.frame&#39;:    181 obs. of  8 variables:
 ##  $ Pais          : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
 ##  $ E_gov         : num  21 74 54 71 33 59 83 73 96 90 ...
 ##  $ E_part        : num  19 76 23 38 17 42 65 58 99 77 ...
 ##  $ Online_service: num  28 82 37 51 47 42 81 72 94 88 ...
 ##  $ Human_cap     : num  35 80 70 76 46 81 92 79 100 91 ...
 ##  $ Tele_infra    : num  19 60 61 88 20 60 73 69 88 85 ...
+##  $ Alto_teleinfra: chr  &quot;No&quot; &quot;No&quot; &quot;No&quot; &quot;Si&quot; ...
 ##  $ Region        : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...</code></pre>
 <p>Podemos ver que casi todas las variables son numéricas, excepto la
 variable <em>Region</em> que se muestra como texto, pero es categórica.
@@ -522,6 +527,20 @@ class(data$Region) #Comprobamos</code></pre>
 class="section level3">
 <h3><strong>¿Cuál es el estado de la gobernanza digital de los
 países?</strong></h3>
+<ul>
+<li><strong>¿El país tiene un nivel alto de infraestructura en
+telecomunicaciones? (</strong>Alto_teleinfra) : Variable categórica</li>
+</ul>
+<p>Realicemos una tabla de frecuencias de la variable:</p>
+<pre class="r"><code>para_grafico= data %&gt;%
+  group_by(Alto_teleinfra) %&gt;% 
+  summarise(Freq=n())</code></pre>
+<p>¿Qué nos indica la tabla? En este caso, ¿cuál sería la moda?</p>
+<p>Revisemos en un gráfico:</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
+  geom_bar(stat = &quot;identity&quot;)+ xlab(&quot;Alto nivel de infraestructura en telecomunicaciones&quot;)+ylab(&quot;Frecuencia&quot;)</code></pre>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ul>
 <li><strong>E-Government Index</strong>: Variable numérica</li>
 </ul>
@@ -554,8 +573,7 @@ números alrededor de un número central.</em></p></li>
 <div id="visualización" class="section level2">
 <h2><strong>Visualización</strong></h2>
 <p>Histograma de E-Gov</p>
-<pre class="r"><code>library(ggplot2)
-data %&gt;%
+<pre class="r"><code>data %&gt;%
   ggplot(aes(x=E_gov))+
   geom_histogram(fill = &quot;blue&quot;,
     color = &quot;black&quot;,
@@ -564,7 +582,7 @@ data %&gt;%
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
    theme_minimal()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Histograma de E-Gov + mediana (rojo) + media (verde)</p>
 <pre class="r"><code>data %&gt;%
 ggplot(aes(x=E_gov))+
@@ -577,9 +595,7 @@ ggplot(aes(x=E_gov))+
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Observamos la línea de la media y la mediana casi sobrepuestas ¿qué
-nos dice esto? -&gt; Simetría</p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <div id="cuartiles-y-diagrama-de-cajas" class="section level3">
 <h3>Cuartiles y diagrama de cajas</h3>
 <pre class="r"><code>data %&gt;% 
@@ -595,7 +611,7 @@ nos dice esto? -&gt; Simetría</p>
   ggplot(aes(y=E_gov))+
   geom_boxplot()+
   ylab(&quot;E-Government Index&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 </div>
 <div
@@ -621,7 +637,7 @@ los países?</strong></h2>
   facet_wrap(~Region)+
   xlab(&quot;E-Gov Index&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Analicemos los resultados 😼</p>
 <p><strong>Descriptivos por región</strong></p>
 <pre class="r"><code> data %&gt;%
@@ -645,7 +661,7 @@ ggplot(aes(x=Region, y=E_gov, color=Region)) +
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
   theme_classic()</code></pre>
-<p><img src="Pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Si deseo un subset solamente de los países que están por encima de la
 media ¿cuántos países son?</p>
 <pre class="r"><code>MayorMedia=data %&gt;%

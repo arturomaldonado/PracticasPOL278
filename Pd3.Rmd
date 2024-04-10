@@ -47,13 +47,14 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
 | Online_service | Servicios en línea otorgado por el Estado (0-100)                                    |
 | Human_cap      | Miembros del Estado especializados en el tema (0-100)                                |
 | Tele_infra     | Índice de capacidad de redes de telecomunicaciones como acceso a internet 5G (0-100) |
+| Alto_teleinfra | ¿El país tiene un índice de infraestructura mayor a 80? Si/No                        |
 | Region         | Continente donde pertenece cada país                                                 |
 
 # **1.Recordando el análisis descriptivo**
@@ -84,6 +85,26 @@ class(data$Region) #Comprobamos
 # **2. Aplicación en R**
 
 ### **¿Cuál es el estado de la gobernanza digital de los países?**
+
+-   **¿El país tiene un nivel alto de infraestructura en telecomunicaciones? (**Alto_teleinfra) : Variable categórica
+
+Realicemos una tabla de frecuencias de la variable:
+
+```{r}
+para_grafico= data %>%
+  group_by(Alto_teleinfra) %>% 
+  summarise(Freq=n())
+```
+
+¿Qué nos indica la tabla? En este caso, ¿cuál sería la moda?
+
+Revisemos en un gráfico:
+
+```{r}
+library(ggplot2)
+ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
+  geom_bar(stat = "identity")+ xlab("Alto nivel de infraestructura en telecomunicaciones")+ylab("Frecuencia")
+```
 
 -   **E-Government Index**: Variable numérica
 
@@ -118,7 +139,6 @@ data  %>%
 Histograma de E-Gov
 
 ```{r}
-library(ggplot2)
 data %>%
   ggplot(aes(x=E_gov))+
   geom_histogram(fill = "blue",
@@ -145,8 +165,6 @@ ggplot(aes(x=E_gov))+
   ylab("Frecuencia")+
   theme_light()
 ```
-
-Observamos la línea de la media y la mediana casi sobrepuestas ¿qué nos dice esto? -\> Simetría
 
 ### Cuartiles y diagrama de cajas
 
