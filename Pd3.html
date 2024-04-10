@@ -437,8 +437,8 @@ library(rio)
 data=import(&quot;egov2022.xlsx&quot;) </code></pre>
 <table>
 <colgroup>
-<col width="26%" />
-<col width="73%" />
+<col width="27%" />
+<col width="72%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -656,7 +656,7 @@ media ¿cuántos países son?</p>
   summarise(mean(E_gov))</code></pre>
 <pre><code>##   mean(E_gov)
 ## 1    36.28846</code></pre>
-<p>También podemos graficar solo para el caso de una región.</p>
+<p>O los estadísticos de los países de Asia</p>
 <pre class="r"><code>data %&gt;%
   filter(Region == &quot;Asia&quot;) %&gt;%
   summarise(Mínimo=min(E_gov), 

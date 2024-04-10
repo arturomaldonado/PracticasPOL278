@@ -47,7 +47,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|-------------------|-----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -222,7 +222,7 @@ data %>%
   summarise(mean(E_gov))
 ```
 
-También podemos graficar solo para el caso de una región.
+O los estadísticos de los países de Asia
 
 ```{r}
 data %>%
