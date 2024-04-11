@@ -255,5 +255,6 @@ data %>%
 # **3. Ejercicios 👾 :**
 
 -   Realizar los estadísticos descriptivos del Online Service Index (Online_Service).
--   Realizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones.
+-   Realizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones (Tele_infra).
 -   Realizar diagrama de cajas del E-Participation Index (E_part) por región.
+-   Según si tiene alto nivel de infraestructura en telecomunicaciones (Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y luego genera un gráfico que los muestre.
