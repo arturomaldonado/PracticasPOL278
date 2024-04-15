@@ -79,15 +79,18 @@ knitr::include_graphics("ICprop.png")
 
 *Hallemos el intervalo de confianza para la proporción de las personas que están satisfechas con el transporte público en Lima.*
 
-Para ello trabajaremos con la variable satis_transporte. expolicacion de donde sale satis_transporte (EG6B)
+Para ello trabajaremos con la variable satis_transporte expolicacion de donde sale satis_transporte (EG6B)
 
 Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
 
+Carguemos la data *Limacomovamos.xlsx*
+
 ```{r}
-table(data$p04_1)#realizamos una tabla de frecuencias
-x = 868 #almacenamos en "x" la frecuencia de nuestro caso de éxito
-n = 868 + 625 #almacenamos en "n" el total de casos
+library(dplyr)#Convocamos el paquete
+library(rio)    
+data=import("Limacomovamos.xlsx") 
 ```
+
 
 Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
@@ -100,7 +103,6 @@ CORREGIR Esto quiere decir que tenemos un 95% de certeza de que, en la població
 
 # **2.Intervalos de confianza para una media**
 
-Carguemos la data *Limacomovamos.xlsx*
 
 METER TEXTO DE LIMA COMO VAMOS
 
@@ -109,6 +111,24 @@ library(rio) #Convocamos el paquete
 data=import("Limacomovamos.xlsx") 
 names(data)
 ```
+
+
+```{r}
+num_satisfecho = sum(data$satis_transporte == "Satisfecho")
+num_no_satisfecho = sum(data$satis_transporte == "No satisfecho")
+total = nrow(data)
+# Calculamos el intervalo de confianza al 95% para la proporción de "Satisfecho"
+resultado_no_satisfecho = prop.test(num_no_satisfecho, total)
+print(resultado_no_satisfecho)
+```
+
+
+```{r}
+data %>%
+  prop.test(satis_transporte, total)
+```
+
+
 
 AÑADIR DICCIONARIO DE DATOS
 
