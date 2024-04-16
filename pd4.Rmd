@@ -83,14 +83,10 @@ Para ello trabajaremos con la variable satis_transporte expolicacion de donde sa
 
 Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
 
-Carguemos la data *Limacomovamos.xlsx*
-
 ```{r}
-library(dplyr)#Convocamos el paquete
-library(rio)    
-data=import("Limacomovamos.xlsx") 
+x = 868 #almacenamos en "x" la frecuencia de nuestro caso de éxito
+n = 868 + 625 #almacenamos en "n" el total de casos
 ```
-
 
 Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
@@ -103,34 +99,20 @@ CORREGIR Esto quiere decir que tenemos un 95% de certeza de que, en la població
 
 # **2.Intervalos de confianza para una media**
 
+Carguemos la data *Limacomovamos.xlsx*
 
-METER TEXTO DE LIMA COMO VAMOS
+Lima Cómo Vamos es un observatorio ciudadano que realiza seguimiento y evaluación a los cambios producidos en la calidad de vida de los habitantes de Lima Metropolitana.
 
 ```{r}
+library(dplyr)
 library(rio) #Convocamos el paquete   
-data=import("Limacomovamos.xlsx") 
+data=import("Limacomovamos-pd4.xlsx") 
 names(data)
 ```
 
-
-```{r}
-num_satisfecho = sum(data$satis_transporte == "Satisfecho")
-num_no_satisfecho = sum(data$satis_transporte == "No satisfecho")
-total = nrow(data)
-# Calculamos el intervalo de confianza al 95% para la proporción de "Satisfecho"
-resultado_no_satisfecho = prop.test(num_no_satisfecho, total)
-print(resultado_no_satisfecho)
+```{r,echo=FALSE, out.width="80%"}
+knitr::include_graphics("DiccionarioLCV.png") 
 ```
-
-
-```{r}
-data %>%
-  prop.test(satis_transporte, total)
-```
-
-
-
-AÑADIR DICCIONARIO DE DATOS
 
 Recordemos la fórmula para hallar el intervalo de confianza para una media es
 
@@ -138,11 +120,9 @@ Recordemos la fórmula para hallar el intervalo de confianza para una media es
 knitr::include_graphics("ICmedia.png") 
 ```
 
-¿Cuanto gastan los residentes de lima en t
+### ¿Cuánto gastan los residentes de lima en transporte?
 
 *Hallemos el intervalo de confianza para la media de la variable "PE10A".*
-
-El enunciado de la pregunta es indicar "En promedio, ¿cuánto gasta su hogar en Transporte?".
 
 ```{r}
 class(data$PE10A) #Revisemos que nuestra variable esté bien clasificada
@@ -163,27 +143,27 @@ CORREGIR Nuestra media poblacional se encuentra entre 7.54 y 7.83. Esto quiere d
 
 Hallemos el intervalo de confianza para el gasto en trasporte en promedio (PE10A) según estrato de lima (ESTRATOS_IOP).
 
+### 1. Crearemos una tabla con la media, máximo y mínimo de la variable PE10A, en base al grupo de ESTRATOS_IOP.
+
 ```{r}
 ic_grupo = data %>% 
-  dplyr::group_by(p04_1) %>% 
-  dplyr::summarise(Media = mean(ABros4, na.rm=T),
-            min = ciMean(ABros4, na.rm=T)[1],
-            max = ciMean(ABros4, na.rm=T)[2]
+  dplyr::group_by(ESTRATOS_IOP) %>% 
+  dplyr::summarise(Media = mean(PE10A, na.rm=T),
+            min = ciMean(PE10A, na.rm=T)[1],
+            max = ciMean(PE10A, na.rm=T)[2]
             )
 ic_grupo
 ```
 
-CORREGIR Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media del grupo que considera que hay mucha desigualdad en el Perú está de acuerdo en mayor medida con que el Estado debe implementar políticas firmes para reducir la desigualdad, a comparación de lo que no se consideran que hay mucha desigualdad.
-
-Grafiquemos nuestros resultados.
+### 2. Grafiquemos los resultados 
 
 ```{r}
 library(ggplot2)
-ggplot(ic_grupo, aes(x= p04_1, y =Media)) +
+ggplot(ic_grupo, aes(x= ESTRATOS_IOP, y =Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Considera que hay ... desigualdad en el Perú") + ylab("Nivel de acuerdo con que se necesitan \n políticas firmes para reducir brechas")+
-  ylim(7, 8.5)
+  xlab("Estratificación IOP") + ylab("Promedio del gasto en transporte")+
+  ylim(130, 40)
 ```
 
 ¿Qué podemos extraer del gráfico?
