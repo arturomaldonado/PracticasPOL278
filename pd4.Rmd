@@ -63,9 +63,26 @@ knitr::include_graphics("IC.png")
 
 Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
 
+**Aplicación**
+
+Carguemos la data "Limacomovamos-pd4.xlsx"
+
+Lima como vamos es una encuesta realizada a ciudadanos de Lima y Callao con la finalidad de conocer su percepción acerca de la movilidad, ambiente, seguridad ciudadana, espacios de recreación, cultura y satisfacción con la ciudad. Pueden encontrar más información acerca de esta base [aquí](https://www.limacomovamos.org/data/).
+
+Para esta sesión se usará una versión subseteada de años anteriores que contiene a las variables:
+
+```{r, echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4-diccionario.png") 
+```
+
+```{r}
+library(rio) #Convocamos el paquete   
+data=import("Limacomovamos-pd4.xlsx") 
+```
+
 En esta sesión responderemos a la pregunta:
 
-## ¿Cuál es el estado del transporte en Lima según sus residentes?
+### ¿Cuál es el estado del transporte en Lima según sus residentes?
 
 # **1.Intervalos de confianza para una proporción**
 
@@ -79,40 +96,33 @@ knitr::include_graphics("ICprop.png")
 
 *Hallemos el intervalo de confianza para la proporción de las personas que están satisfechas con el transporte público en Lima.*
 
-Para ello trabajaremos con la variable satis_transporte expolicacion de donde sale satis_transporte (EG6B)
+Para ello trabajaremos con la variable satis_transporte, que tiene dos valores posibles: Satisfecho y no satisfecho.
 
-Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
+Para poder encontrar el intervalo de confianza para la proporción de ciudadanos de Lima y Callao satisfechos con el sistema de transporte, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
 
 ```{r}
-x = 868 #almacenamos en "x" la frecuencia de nuestro caso de éxito
-n = 868 + 625 #almacenamos en "n" el total de casos
+table(data$satis_transporte)#realizamos una tabla de frecuencias
+```
+
+```{r}
+x = 194 #almacenamos en "x" la frecuencia de nuestro caso de éxito (satisfecho)
+n = 194 + 3544 #almacenamos en "n" el total de casos
 ```
 
 Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
-```{r}
+```{r, results='hide'}
 ic_prop = prop.test(x,n)
 ic_prop #llamamos a ic_prop para visualizar los resultados
 ```
 
-CORREGIR Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de personas que considera que existe mucha desigualdad en el Perú oscila entre el 55.6% y 60.6% .
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4resultprop.png") 
+```
+
+Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de ciudadanos de Lima y Callao satisfechos con el sistema de transporte oscila entre el 4.5% y 5.9% .
 
 # **2.Intervalos de confianza para una media**
-
-Carguemos la data *Limacomovamos.xlsx*
-
-Lima Cómo Vamos es un observatorio ciudadano que realiza seguimiento y evaluación a los cambios producidos en la calidad de vida de los habitantes de Lima Metropolitana.
-
-```{r}
-library(dplyr)
-library(rio) #Convocamos el paquete   
-data=import("Limacomovamos-pd4.xlsx") 
-names(data)
-```
-
-```{r,echo=FALSE, out.width="80%"}
-knitr::include_graphics("DiccionarioLCV.png") 
-```
 
 Recordemos la fórmula para hallar el intervalo de confianza para una media es
 
@@ -120,9 +130,11 @@ Recordemos la fórmula para hallar el intervalo de confianza para una media es
 knitr::include_graphics("ICmedia.png") 
 ```
 
-### ¿Cuánto gastan los residentes de lima en transporte?
+### ¿Cuánto gastan los residentes de Lima en transporte?
 
 *Hallemos el intervalo de confianza para la media de la variable "PE10A".*
+
+El enunciado de la pregunta es indicar "En promedio, ¿cuánto gasta su hogar en Transporte?".
 
 ```{r}
 class(data$PE10A) #Revisemos que nuestra variable esté bien clasificada
@@ -137,41 +149,52 @@ ic_media = ciMean(data$PE10A, na.rm = TRUE) #con el último argumento indicamos 
 ic_media
 ```
 
-CORREGIR Nuestra media poblacional se encuentra entre 7.54 y 7.83. Esto quiere decir que la estimación del intervalo indica que tenemos un 95% de certeza de que el valor poblacional del nivel de acuerdo con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" se encuentra entre 7.5 y 7.8.
-
 # **3.Intervalo de confianza de una media según grupo**
+
+### ¿De qué manera la zona de Lima en la que vive la persona se relaciona con su gasto en transporte?
 
 Hallemos el intervalo de confianza para el gasto en trasporte en promedio (PE10A) según estrato de lima (ESTRATOS_IOP).
 
-### 1. Crearemos una tabla con la media, máximo y mínimo de la variable PE10A, en base al grupo de ESTRATOS_IOP.
+Agreguemos etiquetas a la categórica
+
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4-estratos.png") 
+```
+
+```{r}
+library(dplyr)
+data = data %>% 
+  mutate(ESTRATOS_IOP=factor(ESTRATOS_IOP, levels = (1:4), labels = c("Lima Centro","Lima Este","Lima Norte", "Lima Sur")))
+```
+
+1\. Crearemos una tabla con la media, máximo y mínimo de la variable PE10A, en base al grupo de ESTRATOS_IOP.
 
 ```{r}
 ic_grupo = data %>% 
   dplyr::group_by(ESTRATOS_IOP) %>% 
   dplyr::summarise(Media = mean(PE10A, na.rm=T),
             min = ciMean(PE10A, na.rm=T)[1],
-            max = ciMean(PE10A, na.rm=T)[2]
-            )
+            max = ciMean(PE10A, na.rm=T)[2])
 ic_grupo
 ```
 
-### 2. Grafiquemos los resultados 
+Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media del grupo que los residentes de Lima Centro y Lima Norte gastan más en transporte que los de Lima Este.
+
+Grafiquemos nuestros resultados.
 
 ```{r}
 library(ggplot2)
 ggplot(ic_grupo, aes(x= ESTRATOS_IOP, y =Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Estratificación IOP") + ylab("Promedio del gasto en transporte")+
-  ylim(130, 40)
+  xlab("Zona de Lima") + ylab("Promedio del gasto en transporte")+
+  ylim(30, 140) #indicamos los límites del eje y
 ```
 
-¿Qué podemos extraer del gráfico?
+Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra interpretación anterior?
 
-## Ejercicio
+# **Ejercicio**
 
-ARREGLAR PREGUNTAS - Trabajemos con la variable p03_1: nivel de acuerdo con la frase "En el Perú todos tienen iguales oportunidades para salir de la pobreza", va del 1 (muy en desacuerdo) al 10 (muy de acuerdo)
-
--   ¿Cuál es el intervalo de confianza de la media de la variable?
-
--   ¿ Cuál es la diferencia del intervalo de confianza de la media según región natural? (variable region)
+1.  Calcular el intervalo de confianza de la media para los años que llevan viviendo en Lima/Callao los residentes de Lima/Callao (EG2OTRO). Interprete
+2.  Muestra un gráfico que los intervalos de confianza para la media de EG2OTRO según nivel socio económico (NSE_IOP). Interprete
+3.  A partir de la variable EG2OTRO, se creó "Añoslima". Que tiene dos grupos "Más de 50 años" o "De 50 años a menos". Calcula el intervalo de confianza para la proporción de la variable "Añoslima" e interpreta.
