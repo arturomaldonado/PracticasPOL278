@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 2</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -339,7 +339,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="Pd3.html">Práctica 3</a>
+  <a href="pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -517,7 +517,7 @@ las respuestas recogidas en la encuesta.</p>
 ## 2     2   242
 ## 3     3   244
 ## 4     4    73</code></pre>
-<p>💥 Otorguemosle etiquetas y categoricemosla como factor:</p>
+<p>💥 Etiquetamos y categorizamos como factor:</p>
 <pre class="r"><code>data = data %&gt;%
  mutate(p04 = factor(p04, levels = 1:4, labels = c(&quot;Mucho&quot;, &quot;Algo&quot;, &quot;Poco&quot;, &quot;Nada&quot;), ordered = TRUE))</code></pre>
 <p>Revisemos que el cambio se haya realizado correctamente usando el

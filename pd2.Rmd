@@ -130,7 +130,7 @@ data %>%
  summarise(Freq=n()) #Veamos los niveles de la variable
 ```
 
-💥 Otorguemosle etiquetas y categoricemosla como factor:
+💥  Etiquetamos y categorizamos como factor:
 
 ```{r}
 data = data %>%
