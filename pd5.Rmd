@@ -28,9 +28,9 @@ knitr::include_graphics("logoPUCP.png")
 
 # **Inseguridad ciudadana**
 
-Dentro de la inestabilidad que se vive en el Perú actualmente, una de las preocupaciones principales es la crisis de inseguridad ciudadana. A pesar de que se han realizado diversos intentos por mitigar la criminalidad, esta ha ido calando a todo nivel, desde robos a mano armada, extorsiones, entre otros.
+Dentro de la inestabilidad que se vive en el Perú actualmente una de las preocupaciones principales es la crisis de inseguridad ciudadana. A pesar de que se han realizado diversos intentos por mitigar la criminalidad, esta ha ido calando a todo nivel, desde robos a mano armada, extorsiones, entre otros.
 
-En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que respondan a las preocupaciones de las personas, de acuerdo al estrato y a nivel regional. Para ello se responderá la siguiente pregunta de investigación:
+En tanto, es relevante analizar las percepciones ciudadanas sobre la Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que respondan a las preocupaciones de las personas de acuerdo al estrato y a nivel regional. Para ello se responderá la siguiente pregunta de investigación:
 
 ```{=html}
 <style>
