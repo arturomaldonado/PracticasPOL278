@@ -44,7 +44,7 @@ En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Naci
 </style>
 ```
 ::: custom-text
-¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en las distintas categorías de estratos y regiones en el 2023? 🤔
+¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en las distintas categorías de estratos sociodemográficos y regiones en el 2023? 🤔
 :::
 
 ```{r,echo=FALSE, out.width="30%",fig.align="center"}
@@ -105,7 +105,9 @@ names(data)
 
 **Indicador proxy**
 
-**Indicador aditivo**
+Un indicador proxy es una variable que se utiliza para inferir el valor de otra variable que es difícil de medir o observar directamente. En otras palabras, un indicador proxy actúa como un sustituto o un representante indirecto de la variable de interés.
+
+Creamos un indicador aditivo a partir de las siguientes variables:
 
 | Nombre de variable |                                                                                     Etiqueta                                                                                      |
 |:---------------:|:-----------------------------------------------------:|
@@ -116,8 +118,7 @@ names(data)
 |     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
 |        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
 |    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-|      ESTRATO       |                                                                 Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E                                                                  |
-|     REGIONNATU     |                                                                    Región Natural 1:Costa, 2: Sierra, 3: Selva                                                                    |
+
 
 ### Recordemos los pasos para construir un indicador:
 
@@ -125,7 +126,7 @@ names(data)
 2.  Revisar el sentido de las categorías en el cuestionario/diccionario
 3.  Si las categorías están en el correcto sentido, proceder a sumarlas; si no lo están, proceder a recodificarlas para luego sumar. **Recuerda que para sumarlas deben ser variables tipo numéricas.**
 4.  Realizar suma de las variables a analizar
-5.  Aplicar la función rescale con el rango específico
+5.  Aplicar la función `rescale` con el rango específico
 
 Ya habíamos revisado previamente que las variables si están como numéricas.
 
@@ -161,7 +162,7 @@ ic_media
 
 Nuestra media poblacional se encuentra entre 51.19 y 51.50. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la *percepción de la calidad del labor de la PNP* se encuentra entre 51.19 y 51.50. Lo que se encuentra muy cercano al punto medio del indicador.
 
-## 3.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre estratos económicos?
+## 3.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre estratos sociodemográficos?
 
 ```{r}
 data = data %>%
@@ -183,7 +184,7 @@ library(ggplot2)
 ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Estrato socioeconómico") + ylab("Promedio de percepción de la \n calidad de la PNP")+
+  xlab("Estrato sociodemográfico") + ylab("Promedio de percepción de la \n calidad de la PNP")+
   ylim(50, 53.5) 
 ```
 

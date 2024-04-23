@@ -428,8 +428,8 @@ investigación:</p>
 </style>
 <div class="custom-text">
 <p>¿Existe diferencia de percepciones sobre la calidad del servicio de
-la PNP en las distintas categorías de estratos y regiones en el 2023?
-🤔</p>
+la PNP en las distintas categorías de estratos sociodemográficos y
+regiones en el 2023? 🤔</p>
 </div>
 <p><img src="pd5_poli.png" width="30%" style="display: block; margin: auto;" /></p>
 <p>Para poder responder a la pregunta se realizó una búsqueda de base de
@@ -547,7 +547,12 @@ names(data)</code></pre>
 class="section level2">
 <h2>1. ¿Cómo defino calidad del servicio de la PNP?</h2>
 <p><strong>Indicador proxy</strong></p>
-<p><strong>Indicador aditivo</strong></p>
+<p>Un indicador proxy es una variable que se utiliza para inferir el
+valor de otra variable que es difícil de medir o observar directamente.
+En otras palabras, un indicador proxy actúa como un sustituto o un
+representante indirecto de la variable de interés.</p>
+<p>Creamos un indicador aditivo a partir de las siguientes
+variables:</p>
 <table>
 <colgroup>
 <col width="23%" />
@@ -600,14 +605,6 @@ prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno</td>
 Nacional del Perú en relación a: tratar a las personas sin distinción
 alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno</td>
 </tr>
-<tr class="even">
-<td align="center">ESTRATO</td>
-<td align="center">Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E</td>
-</tr>
-<tr class="odd">
-<td align="center">REGIONNATU</td>
-<td align="center">Región Natural 1:Costa, 2: Sierra, 3: Selva</td>
-</tr>
 </tbody>
 </table>
 <div id="recordemos-los-pasos-para-construir-un-indicador"
@@ -622,7 +619,7 @@ si no lo están, proceder a recodificarlas para luego sumar.
 <strong>Recuerda que para sumarlas deben ser variables tipo
 numéricas.</strong></li>
 <li>Realizar suma de las variables a analizar</li>
-<li>Aplicar la función rescale con el rango específico</li>
+<li>Aplicar la función <code>rescale</code> con el rango específico</li>
 </ol>
 <p>Ya habíamos revisado previamente que las variables si están como
 numéricas.</p>
@@ -658,10 +655,10 @@ entre 51.19 y 51.50. Lo que se encuentra muy cercano al punto medio del
 indicador.</p>
 </div>
 <div
-id="existe-diferencia-de-medias-en-cuanto-a-la-percepción-de-la-calidad-de-la-pnp-entre-estratos-económicos"
+id="existe-diferencia-de-medias-en-cuanto-a-la-percepción-de-la-calidad-de-la-pnp-entre-estratos-sociodemográficos"
 class="section level2">
 <h2>3.¿Existe diferencia de medias en cuanto a la percepción de la
-calidad de la PNP entre estratos económicos?</h2>
+calidad de la PNP entre estratos sociodemográficos?</h2>
 <pre class="r"><code>data = data %&gt;%
  mutate(ESTRATO = factor(ESTRATO, levels = 1:5, labels = c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;), ordered = TRUE))</code></pre>
 <pre class="r"><code>icmedia_estrato = data%&gt;%
@@ -683,7 +680,7 @@ icmedia_estrato</code></pre>
 ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab(&quot;Estrato socioeconómico&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la PNP&quot;)+
+  xlab(&quot;Estrato sociodemográfico&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la PNP&quot;)+
   ylim(50, 53.5) </code></pre>
 <p><img src="pd5_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
