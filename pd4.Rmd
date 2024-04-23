@@ -27,7 +27,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 # **1.Intervalos de confianza**
 
@@ -61,45 +61,30 @@ knitr::include_graphics("IC.png")
 
 ### Sobre el nivel de confianza...
 
-Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cáldulo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
+Si tenemos un nivel de confianza de 95%, quiere decir que si realizamos 100 veces el mismo procedimiento de muestreo y calculamos los estadísticos de interés, 95 veces obtendremos los resultados en el intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un 99% de confianza. Al momento de decidir el nivel de confianza debemos tener presente una regla: a mayor nivel de confianza, menor será la precisión ya que el intervalo es más amplio.
 
-# **2.Intervalos de confianza para una media**
+**Aplicación**
 
-Carguemos la data *ENADES2022.dta*
+Carguemos la data "Limacomovamos-pd4.xlsx"
 
-La Encuesta Nacional de Percepción de Desigualdades o ENADES ha sido elaborada por el Instituto de Estudios Peruanos (IEP) y Oxfam. Como lo indica su nombre, este estudio se enfoca en analizar la percepción de diferentes formas de desigualdad en el país. Esta incluye indicadores que permiten medir la magnitud de brechas sociales y políticas: diferencias de género, clase y relaciones étnico raciales, y dimensiones subjetivas de desigualdad y sus vínculos con orientaciones políticas. En este caso, nuestra unidad de análisis sería cada persona que completó la encuesta.
+Lima como vamos es una encuesta realizada a ciudadanos de Lima y Callao con la finalidad de conocer su percepción acerca de la movilidad, ambiente, seguridad ciudadana, espacios de recreación, cultura y satisfacción con la ciudad. Pueden encontrar más información acerca de esta base [aquí](https://www.limacomovamos.org/data/).
+
+Para esta sesión se usará una versión subseteada de años anteriores que contiene a las variables:
+
+```{r, echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4-diccionario.png") 
+```
 
 ```{r}
 library(rio) #Convocamos el paquete   
-data=import("ENADES-2022.dta") 
+data=import("Limacomovamos-pd4.xlsx") 
 ```
 
-Recordemos la fórmula para hallar el intervalo de confianza para una media es
+En esta sesión responderemos a la pregunta:
 
-```{r,echo=FALSE, out.width="50%",fig.align="center"}
-knitr::include_graphics("ICmedia.png") 
-```
+### ¿Cuál es el estado del transporte en Lima según sus residentes?
 
-*Hallemos el intervalo de confianza para la media de la variable "ABros4".*
-
-El enunciado de la pregunta es indicar en una escala de 1 a 10, donde 1 significa "Muy en desacuerdo" y 10 significa "Muy de acuerdo, ¿qué tan de acuerdo o en desacuerdo se encuentra con la afirmación"El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres".
-
-```{r}
-class(data$ABros4) #Revisemos que nuestra variale esté bien clasificada
-```
-
-**ciMean**, del paquete **lsr**, es la función que calcula el intervalo de confianza de una media.
-
-```{r}
-library(lsr)
-ic_media = ciMean(data$ABros4, na.rm = TRUE) #con el último argumento indicamos no tomar en consideracion los valores perdidos (NA)
-
-ic_media
-```
-
-Nuestra media poblacional se encuentra entre 7.54 y 7.83. Esto quiere decir que la estimación del intervalo indica que tenemos un 95% de certeza de que el valor poblacional del nivel de acuerdo con la afirmación "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" se encuentra entre 7.5 y 7.8.
-
-# **3.Intervalos de confianza para una proporción**
+# **1.Intervalos de confianza para una proporción**
 
 Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles: votó/no votó; sí/no, etc.
 
@@ -109,60 +94,107 @@ Recordemos la fórmula para hallar el intervalo de confianza para una proporció
 knitr::include_graphics("ICprop.png") 
 ```
 
-*Hallemos el intervalo de confianza para la proporción de las personas que opinan que hay mucha desigualdad económica en el Perú.*
+*Hallemos el intervalo de confianza para la proporción de las personas que están satisfechas con el transporte público en Lima.*
 
-Para ello trabajaremos con la variable p04_1. Esta variable contiene la información de la pregunta P04 recodificada, de tal forma que 1 es "Mucho" y 0 es "Algo/Poco/Nada".
+Para ello trabajaremos con la variable satis_transporte, que tiene dos valores posibles: Satisfecho y no satisfecho.
 
-Para poder encontrar el intervalo de confianza para la proporción de personas que opinan que hay mucha desigualdad en Perú, necesitamos tener muy claro la frecuencia de nuestro caso de éxtio y del total de casos.
+Para poder encontrar el intervalo de confianza para la proporción de ciudadanos de Lima y Callao satisfechos con el sistema de transporte, necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del total de casos.
 
 ```{r}
-table(data$p04_1)#realizamos una tabla de frecuencias
-x = 868 #almacenamos en "x" la frecuencia de nuestro caso de éxito
-n = 868 + 625 #almacenamos en "n" el total de casos
+table(data$satis_transporte)#realizamos una tabla de frecuencias
+```
+
+```{r}
+x = 194 #almacenamos en "x" la frecuencia de nuestro caso de éxito (satisfecho)
+n = 194 + 3544 #almacenamos en "n" el total de casos
 ```
 
 Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
 
-```{r}
+```{r, results='hide'}
 ic_prop = prop.test(x,n)
 ic_prop #llamamos a ic_prop para visualizar los resultados
 ```
 
-Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de personas que considera que existe mucha desigualdad en el Perú oscila entre el 55.6% y 60.6% .
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4resultprop.png") 
+```
+
+Esto quiere decir que tenemos un 95% de certeza de que, en la población, el porcentaje de ciudadanos de Lima y Callao satisfechos con el sistema de transporte oscila entre el 4.5% y 5.9% .
+
+# **2.Intervalos de confianza para una media**
+
+Recordemos la fórmula para hallar el intervalo de confianza para una media es
+
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("ICmedia.png") 
+```
+
+### ¿Cuánto gastan los residentes de Lima en transporte?
+
+*Hallemos el intervalo de confianza para la media de la variable "PE10A".*
+
+El enunciado de la pregunta es indicar "En promedio, ¿cuánto gasta su hogar en Transporte?".
+
+```{r}
+class(data$PE10A) #Revisemos que nuestra variable esté bien clasificada
+```
+
+**ciMean**, del paquete **lsr**, es la función que calcula el intervalo de confianza de una media.
+
+```{r}
+library(lsr)
+ic_media = ciMean(data$PE10A, na.rm = TRUE) #con el último argumento indicamos no tomar en consideracion los valores perdidos (NA)
+
+ic_media
+```
 
 # **3.Intervalo de confianza de una media según grupo**
 
-Hallemos el intervalo de confianza para el nivel de acuerdo con que "El Estado peruano debe implementar políticas firmes para reducir la desigualdad de ingresos entre ricos y pobres" según si considera que existe mucha desigualdad o no en el Perú.
+### ¿De qué manera la zona de Lima en la que vive la persona se relaciona con su gasto en transporte?
+
+Hallemos el intervalo de confianza para el gasto en trasporte en promedio (PE10A) según estrato de lima (ESTRATOS_IOP).
+
+Agreguemos etiquetas a la categórica
+
+```{r,echo=FALSE, out.width="50%",fig.align="center"}
+knitr::include_graphics("pd4-estratos.png") 
+```
 
 ```{r}
-ic_grupo = data |>
-  dplyr::group_by(p04_1) |>
-  dplyr::summarise(Media = mean(ABros4, na.rm=T),
-            min = ciMean(ABros4, na.rm=T)[1],
-            max = ciMean(ABros4, na.rm=T)[2]
-            )
+library(dplyr)
+data = data %>% 
+  mutate(ESTRATOS_IOP=factor(ESTRATOS_IOP, levels = (1:4), labels = c("Lima Centro","Lima Este","Lima Norte", "Lima Sur")))
+```
+
+1\. Crearemos una tabla con la media, máximo y mínimo de la variable PE10A, en base al grupo de ESTRATOS_IOP.
+
+```{r}
+ic_grupo = data %>% 
+  dplyr::group_by(ESTRATOS_IOP) %>% 
+  dplyr::summarise(Media = mean(PE10A, na.rm=T),
+            min = ciMean(PE10A, na.rm=T)[1],
+            max = ciMean(PE10A, na.rm=T)[2])
 ic_grupo
 ```
 
-Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media del grupo que considera que hay mucha desigualdad en el Perú está de acuerdo en mayor medida con que el Estado debe implementar políticas firmes para reducir la desigualdad, a comparación de lo que no se consideran que hay mucha desigualdad.
+Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media del grupo que los residentes de Lima Centro y Lima Norte gastan más en transporte que los de Lima Este.
 
 Grafiquemos nuestros resultados.
 
 ```{r}
 library(ggplot2)
-ggplot(ic_grupo, aes(x= p04_1, y =Media)) +
+ggplot(ic_grupo, aes(x= ESTRATOS_IOP, y =Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Considera que hay ... desigualdad en el Perú") + ylab("Nivel de acuerdo con que se necesitan \n políticas firmes para reducir brechas")+
-  ylim(7, 8.5)
+  xlab("Zona de Lima") + ylab("Promedio del gasto en transporte")+
+  ylim(30, 140) #indicamos los límites del eje y
 ```
 
-¿Qué podemos extraer del gráfico?
+Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra interpretación anterior?
 
-## Ejercicio
+# **Ejercicio**
 
-Trabajemos con la variable p03_1: nivel de acuerdo con la frase "En el Perú todos tienen iguales oportunidades para salir de la pobreza", va del 1 (muy en desacuerdo) al 10 (muy de acuerdo)
-
--   ¿Cuál es el intervalo de confianza de la media de la variable?
-
--   ¿ Cuál es la diferencia del intervalo de confianza de la media según región natural? (variable region)
+1.  Calcular el intervalo de confianza de la media para los años que llevan viviendo en Lima/Callao los residentes de Lima/Callao (EG2OTRO). Interprete
+2.  Muestra un gráfico que los intervalos de confianza para la media de EG2OTRO según nivel socio económico (NSE_IOP). Interprete
+3.  A partir de la variable EG2OTRO, se creó "Añoslima". Que tiene dos grupos "Más de 50 años" o "De 50 años a menos". Calcula el intervalo de confianza para la proporción de la variable "Añoslima" e interpreta.
