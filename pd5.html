@@ -432,7 +432,23 @@ la PNP en las distintas categorías de estratos y regiones en el 2023?
 🤔</p>
 </div>
 <p><img src="pd5_poli.png" width="30%" style="display: block; margin: auto;" /></p>
-<p>FALTA:colocar info de la base de datos</p>
+<p>Para poder responder a la pregunta se realizó una búsqueda de base de
+datos que recolecten información sobre delincuencia. Se optó por la <a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>ENAPRES se viene ejecutando desde el año 2010 en el área urbana y
+rural de los 24 Departamentos y la Provincia Constitucional del Callao,
+como parte de las investigaciones que realiza el Instituto Nacional de
+Estadística e Informática (INEI) en coordinación con el Ministerio de
+Economía y Finanzas (MEF) y los diferentes Ministerios y organismos del
+sector público.</p>
+<p>La Encuesta tiene como propósito fundamental generar información
+estadística actualizada para la construcción de indicadores que facilite
+el seguimiento y evaluación de los diferentes Programas Presupuestales
+desarrollados por el Ministerio de Economía y Finanzas en el sector
+público en el marco del Presupuesto por Resultados; y de esta manera,
+contribuir al diseño y orientación de políticas públicas para el
+mejoramiento de las condiciones de vida de la población</p>
+<p><img src="pd5_ena.png" width="20%" style="display: block; margin: auto;" /></p>
 <p>Llamemos a los paquetes</p>
 <pre class="r"><code>library(rio)
 library(lsr)
@@ -442,8 +458,8 @@ library(ggplot2)</code></pre>
 <pre class="r"><code>data=import(&quot;ENAPRES_2023.xlsx&quot;)</code></pre>
 <table>
 <colgroup>
-<col width="20%" />
-<col width="79%" />
+<col width="23%" />
+<col width="76%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -534,8 +550,8 @@ class="section level2">
 <p><strong>Indicador aditivo</strong></p>
 <table>
 <colgroup>
-<col width="20%" />
-<col width="79%" />
+<col width="23%" />
+<col width="76%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -635,11 +651,11 @@ certeza del 95%?</h2>
 ic_media</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 51.19168 51.50612</code></pre>
-<p>Nuestra media poblacional se encuentra entre 4.9 y 5. Esto quiere
-decir que tenemos una certeza del 95% de que el valor poblacional de la
-<strong>percepción de facilidad de labor docente</strong> se encuentra
-entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del
-indicador (5).</p>
+<p>Nuestra media poblacional se encuentra entre 51.19 y 51.50. Esto
+quiere decir que tenemos una certeza del 95% de que el valor poblacional
+de la <em>percepción de la calidad del labor de la PNP</em> se encuentra
+entre 51.19 y 51.50. Lo que se encuentra muy cercano al punto medio del
+indicador.</p>
 </div>
 <div
 id="existe-diferencia-de-medias-en-cuanto-a-la-percepción-de-la-calidad-de-la-pnp-entre-estratos-económicos"
@@ -669,7 +685,7 @@ ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Estrato socioeconómico&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la PNP&quot;)+
   ylim(50, 53.5) </code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div
 id="existe-diferencia-de-medias-en-cuanto-a-la-percepción-de-la-calidad-de-la-pnp-entre-regiones-naturales"
@@ -696,7 +712,7 @@ icmedia_region</code></pre>
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Región&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la policía&quot;)+
   ylim(50.5, 52.5) </code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 </div>
 <div id="solucionario-pc1" class="section level1">
@@ -706,10 +722,11 @@ library(ggplot2)
 library(rio)
 
 data &lt;- import(&quot;Renamu-PC1.xlsx&quot;)</code></pre>
-<p>Pregunta 1 1.1 Calcula cuál es la frecuencia de recojo de residuos
-sólidos (P40_1) más común entre los distritos de Lima y Callao,
-interpreta los resultados y responde a la pregunta ¿todos los distritos
-recogen la basura diariamente?</p>
+<p><strong>Pregunta 1</strong></p>
+<p>1.1 Calcula cuál es la frecuencia de recojo de residuos sólidos
+(P40_1) más común entre los distritos de Lima y Callao, interpreta los
+resultados y responde a la pregunta ¿todos los distritos recogen la
+basura diariamente?</p>
 <pre class="r"><code>paragrafico &lt;- data %&gt;% 
   mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c(&quot;Diaria&quot;,&quot;Interdiaria&quot;,&quot;Dos veces por semana&quot;,&quot;Una vez por semana&quot;))) %&gt;% 
   group_by(P40_1) %&gt;% 
@@ -726,10 +743,11 @@ paragrafico</code></pre>
 de residuos sólidos (P40_1)</p>
 <pre class="r"><code>ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat=&quot;identity&quot;)</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Pregunta 2 2.1 Calcula los estadísticos descriptivos para la variable
-que “Cantidad promedio diaria de residuos sólidos (basura) en
-kilogramos” (P41_1). Interprete los resultados</p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><strong>Pregunta 2</strong></p>
+<p>2.1 Calcula los estadísticos descriptivos para la variable que
+“Cantidad promedio diaria de residuos sólidos (basura) en kilogramos”
+(P41_1). Interprete los resultados</p>
 <pre class="r"><code>data %&gt;% 
   summarise(media = mean(P41_1),
             mediana = median(P41_1),
@@ -747,13 +765,22 @@ interprete y responda a la pregunta ¿cuál sería la mejor medida de
 tendencia central para representar a la variable?</p>
 <pre class="r"><code>ggplot(data,aes(x = P41_1))+
   geom_histogram()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>2.3 Genere un gráfico que muestre los cuartiles de la variable
 “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen
 diferencias entre las zonas? Interprete los resultados</p>
 <pre class="r"><code>ggplot(data, aes(x=Zona, y=P41_1))+
   geom_boxplot()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Mayor información en: <a
+href="http://proyecto.inei.gob.pe/enapres/"
+class="uri">http://proyecto.inei.gob.pe/enapres/</a><a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

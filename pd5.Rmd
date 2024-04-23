@@ -28,10 +28,10 @@ knitr::include_graphics("logoPUCP.png")
 
 # **Inseguridad ciudadana**
 
-Dentro de la inestabilidad que se vive en el Perú actualmente, una de las preocupaciones principales es la crisis de inseguridad ciudadana. A pesar de que se han realizado diversos intentos por mitigar la criminalidad, esta ha ido calando a todo nivel, desde robos a mano armada, extorsiones, entre otros. 
+Dentro de la inestabilidad que se vive en el Perú actualmente, una de las preocupaciones principales es la crisis de inseguridad ciudadana. A pesar de que se han realizado diversos intentos por mitigar la criminalidad, esta ha ido calando a todo nivel, desde robos a mano armada, extorsiones, entre otros.
 
-En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que respondan a las preocupaciones de las personas, de acuerdo al estrato y a nivel regional. Para ello se responderá la siguiente pregunta de investigación: 
- 
+En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que respondan a las preocupaciones de las personas, de acuerdo al estrato y a nivel regional. Para ello se responderá la siguiente pregunta de investigación:
+
 ```{=html}
 <style>
 .custom-text {
@@ -51,7 +51,17 @@ En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Naci
 knitr::include_graphics("pd5_poli.png") 
 ```
 
-FALTA:colocar info de la base de datos
+Para poder responder a la pregunta se realizó una búsqueda de base de datos que recolecten información sobre delincuencia. Se optó por la [^1].
+
+[^1]: Mayor información en: <http://proyecto.inei.gob.pe/enapres/>
+
+ENAPRES se viene ejecutando desde el año 2010 en el área urbana y rural de los 24 Departamentos y la Provincia Constitucional del Callao, como parte de las investigaciones que realiza el Instituto Nacional de Estadística e Informática (INEI) en coordinación con el Ministerio de Economía y Finanzas (MEF) y los diferentes Ministerios y organismos del sector público.
+
+La Encuesta tiene como propósito fundamental generar información estadística actualizada para la construcción de indicadores que facilite el seguimiento y evaluación de los diferentes Programas Presupuestales desarrollados por el Ministerio de Economía y Finanzas en el sector público en el marco del Presupuesto por Resultados; y de esta manera, contribuir al diseño y orientación de políticas públicas para el mejoramiento de las condiciones de vida de la población
+
+```{r,echo=FALSE, out.width="20%",fig.align="center"}
+knitr::include_graphics("pd5_ena.png") 
+```
 
 Llamemos a los paquetes
 
@@ -62,26 +72,23 @@ library(dplyr)
 library(ggplot2)
 ```
 
-
 Importemos la base de datos
 
 ```{r}
 data=import("ENAPRES_2023.xlsx")
 ```
 
-| Nombre de variable |                                                                Etiqueta                                                                |
-|:-------------:|:-------------------------------------------------------:|
-|      vigilancia    | ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena |
-|      confianza_pnp | En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante|
-|      comisaria     | En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio? |
-|      atencion      | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      seguridad     | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      info          | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno| 
-|      trato_igual   | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      ESTRATO       | Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E |
-|      REGIONNATU    | Región Natural 1:Costa, 2: Sierra, 3: Selva |
-
-
+| Nombre de variable |                                                                                     Etiqueta                                                                                      |
+|:---------------:|:-----------------------------------------------------:|
+|     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
+|   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
+|     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
+|      atencion      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
+|     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
+|        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
+|    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
+|      ESTRATO       |                                                                 Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E                                                                  |
+|     REGIONNATU     |                                                                    Región Natural 1:Costa, 2: Sierra, 3: Selva                                                                    |
 
 ```{r}
 summary(data)
@@ -100,18 +107,17 @@ names(data)
 
 **Indicador aditivo**
 
-
-| Nombre de variable |                                                                Etiqueta                                                                |
-|:-------------:|:-------------------------------------------------------:|
-|      vigilancia    | ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena |
-|      confianza_pnp | En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante|
-|      comisaria     | En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio? |
-|      atencion      | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      seguridad     | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      info          | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno| 
-|      trato_igual   | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
-|      ESTRATO       | Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E |
-|      REGIONNATU    | Región Natural 1:Costa, 2: Sierra, 3: Selva |
+| Nombre de variable |                                                                                     Etiqueta                                                                                      |
+|:---------------:|:-----------------------------------------------------:|
+|     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
+|   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
+|     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
+|      atencion      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
+|     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
+|        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
+|    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
+|      ESTRATO       |                                                                 Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E                                                                  |
+|     REGIONNATU     |                                                                    Región Natural 1:Costa, 2: Sierra, 3: Selva                                                                    |
 
 ### Recordemos los pasos para construir un indicador:
 
@@ -130,12 +136,12 @@ data=data%>%
    mutate(suma=(confianza_pnp+comisaria+atencion+seguridad+info+trato_igual+vigilancia))
 ```
 
-
 ```{r}
 summary(data$suma)
 ```
 
 Creamos el indicador
+
 ```{r}
 library(scales)
 data=data%>% 
@@ -153,10 +159,10 @@ ic_media = ciMean(data$indicador,na.rm = TRUE)
 ic_media
 ```
 
-Nuestra media poblacional se encuentra entre 4.9 y 5. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la **percepción de facilidad de labor docente** se encuentra entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del indicador (5).
-
+Nuestra media poblacional se encuentra entre 51.19 y 51.50. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la *percepción de la calidad del labor de la PNP* se encuentra entre 51.19 y 51.50. Lo que se encuentra muy cercano al punto medio del indicador.
 
 ## 3.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre estratos económicos?
+
 ```{r}
 data = data %>%
  mutate(ESTRATO = factor(ESTRATO, levels = 1:5, labels = c("A","B","C","D","E"), ordered = TRUE))
@@ -171,6 +177,7 @@ icmedia_estrato = data%>%
 
 icmedia_estrato
 ```
+
 ```{r}
 library(ggplot2)
 ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
@@ -207,7 +214,6 @@ ggplot(icmedia_region, aes(x = REGIONNATU, y=Media)) +
 
 # **Solucionario PC1**
 
-
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -216,7 +222,9 @@ library(rio)
 data <- import("Renamu-PC1.xlsx")
 ```
 
-Pregunta 1 1.1 Calcula cuál es la frecuencia de recojo de residuos sólidos (P40_1) más común entre los distritos de Lima y Callao, interpreta los resultados y responde a la pregunta ¿todos los distritos recogen la basura diariamente?
+**Pregunta 1**
+
+1.1 Calcula cuál es la frecuencia de recojo de residuos sólidos (P40_1) más común entre los distritos de Lima y Callao, interpreta los resultados y responde a la pregunta ¿todos los distritos recogen la basura diariamente?
 
 ```{r}
 paragrafico <- data %>% 
@@ -227,12 +235,16 @@ paragrafico
 ```
 
 1.2 Usa el gráfico pertinente para visualizar la frecuencia de recojo de residuos sólidos (P40_1)
+
 ```{r}
 ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat="identity")
 ```
 
-Pregunta 2 2.1 Calcula los estadísticos descriptivos para la variable que “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos” (P41_1). Interprete los resultados
+**Pregunta 2**
+
+2.1 Calcula los estadísticos descriptivos para la variable que “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos” (P41_1). Interprete los resultados
+
 ```{r}
 data %>% 
   summarise(media = mean(P41_1),
@@ -247,6 +259,7 @@ data %>%
 ```
 
 2.2 Use el gráfico pertinente para visualizar a la variable P41_1, interprete y responda a la pregunta ¿cuál sería la mejor medida de tendencia central para representar a la variable?
+
 ```{r}
 ggplot(data,aes(x = P41_1))+
   geom_histogram()
@@ -258,6 +271,3 @@ ggplot(data,aes(x = P41_1))+
 ggplot(data, aes(x=Zona, y=P41_1))+
   geom_boxplot()
 ```
-
-
-
