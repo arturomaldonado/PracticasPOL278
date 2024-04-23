@@ -405,10 +405,18 @@ class="section level2">
 </center>
 <p><img src="logoPUCP.png" width="30%" /></p>
 </div>
-<div id="intervalos-de-confianza-para-la-media" class="section level1">
-<h1><strong>Intervalos de confianza para la media</strong></h1>
-<p>FALTA:Contextualizar la importancia de analizar temas relacionados
-con la criminalidad y eficacia de la policía.</p>
+<div id="inseguridad-ciudadana" class="section level1">
+<h1><strong>Inseguridad ciudadana</strong></h1>
+<p>Dentro de la inestabilidad que se vive en el Perú actualmente, una de
+las preocupaciones principales es la crisis de inseguridad ciudadana. A
+pesar de que se han realizado diversos intentos por mitigar la
+criminalidad, esta ha ido calando a todo nivel, desde robos a mano
+armada, extorsiones, entre otros.</p>
+<p>En tanto es relevante analizar las percepciones ciudadanas sobre la
+Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que
+respondan a las preocupaciones de las personas, de acuerdo al estrato y
+a nivel regional. Para ello se responderá la siguiente pregunta de
+investigación:</p>
 <style>
 .custom-text {
   color: #00688B;
@@ -423,6 +431,7 @@ con la criminalidad y eficacia de la policía.</p>
 la PNP en las distintas categorías de estratos y regiones en el 2023?
 🤔</p>
 </div>
+<p><img src="pd5_poli.png" width="30%" style="display: block; margin: auto;" /></p>
 <p>FALTA:colocar info de la base de datos</p>
 <p>Llamemos a los paquetes</p>
 <pre class="r"><code>library(rio)
@@ -660,7 +669,7 @@ ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Estrato socioeconómico&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la PNP&quot;)+
   ylim(50, 53.5) </code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div
 id="existe-diferencia-de-medias-en-cuanto-a-la-percepción-de-la-calidad-de-la-pnp-entre-regiones-naturales"
@@ -687,7 +696,7 @@ icmedia_region</code></pre>
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Región&quot;) + ylab(&quot;Promedio de percepción de la \n calidad de la policía&quot;)+
   ylim(50.5, 52.5) </code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
 <div id="solucionario-pc1" class="section level1">
@@ -717,7 +726,7 @@ paragrafico</code></pre>
 de residuos sólidos (P40_1)</p>
 <pre class="r"><code>ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat=&quot;identity&quot;)</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Pregunta 2 2.1 Calcula los estadísticos descriptivos para la variable
 que “Cantidad promedio diaria de residuos sólidos (basura) en
 kilogramos” (P41_1). Interprete los resultados</p>
@@ -738,13 +747,13 @@ interprete y responda a la pregunta ¿cuál sería la mejor medida de
 tendencia central para representar a la variable?</p>
 <pre class="r"><code>ggplot(data,aes(x = P41_1))+
   geom_histogram()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>2.3 Genere un gráfico que muestre los cuartiles de la variable
 “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen
 diferencias entre las zonas? Interprete los resultados</p>
 <pre class="r"><code>ggplot(data, aes(x=Zona, y=P41_1))+
   geom_boxplot()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 
 
