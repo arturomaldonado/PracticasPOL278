@@ -157,7 +157,7 @@ data %>%
 ggplot(aes(x=E_gov))+
   geom_histogram(fill = "blue",
     color = "black",
-    bins = 30,
+    bins = 50,
     alpha = 0.7)+
   geom_vline(xintercept = median(data$E_gov), color = "red")+
   geom_vline(xintercept = mean(data$E_gov), color = "green")+
@@ -165,8 +165,18 @@ ggplot(aes(x=E_gov))+
   ylab("Frecuencia")+
   theme_light()
 ```
+```{r}
+summary(data$E_gov)
+```
 
 ### Cuartiles y diagrama de cajas
+
+
+```{r}
+data %>% 
+  filter(Region=="Africa")%>% 
+  summarise(CuartilesEgov = quantile(E_gov))
+```
 
 ```{r}
 data %>% 
