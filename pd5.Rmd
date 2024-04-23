@@ -51,7 +51,7 @@ En tanto es relevante analizar las percepciones ciudadanas sobre la Policia Naci
 knitr::include_graphics("pd5_poli.png") 
 ```
 
-Para poder responder a la pregunta se realizó una búsqueda de base de datos que recolecten información sobre delincuencia. Se optó por la [^1].
+Para poder responder a la pregunta se realizó una búsqueda de base de datos que recolecten información sobre delincuencia. Se optó por la Encuesta Nacional de Programas Presupuestales - ENAPRES [^1].
 
 [^1]: Mayor información en: <http://proyecto.inei.gob.pe/enapres/>
 
@@ -79,7 +79,7 @@ data=import("ENAPRES_2023.xlsx")
 ```
 
 | Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:---------------:|:-----------------------------------------------------:|
+|:----------------:|:----------------------------------------------------:|
 |     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
 |   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
 |     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
@@ -110,7 +110,7 @@ Un indicador proxy es una variable que se utiliza para inferir el valor de otra 
 Creamos un indicador aditivo a partir de las siguientes variables:
 
 | Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:---------------:|:-----------------------------------------------------:|
+|:----------------:|:----------------------------------------------------:|
 |     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
 |   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
 |     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
@@ -118,7 +118,6 @@ Creamos un indicador aditivo a partir de las siguientes variables:
 |     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
 |        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
 |    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-
 
 ### Recordemos los pasos para construir un indicador:
 
