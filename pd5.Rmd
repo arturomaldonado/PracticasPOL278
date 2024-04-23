@@ -26,8 +26,9 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 knitr::include_graphics("logoPUCP.png") 
 ```
 
-# Intervalos de confianza para la media
+# **Intervalos de confianza para la media**
 
+FALTA:Contextualizar la importancia de analizar temas relacionados con la criminalidad y eficacia de la policía. 
 ```{=html}
 <style>
 .custom-text {
@@ -40,8 +41,10 @@ knitr::include_graphics("logoPUCP.png")
 </style>
 ```
 ::: custom-text
-¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en los distintos niveles de estratos y regiones en el 2023? 🤔
+¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en las distintas categorías de estratos y regiones en el 2023? 🤔
 :::
+
+FALTA:colocar info de la base de datos
 
 Llamemos a los paquetes
 
@@ -52,37 +55,56 @@ library(dplyr)
 library(ggplot2)
 ```
 
+
 Importemos la base de datos
 
 ```{r}
-data=import("Endo-2021-sub.sav")
+data=import("ENAPRES_2023.xlsx")
 ```
 
-FALTA
-```{r,echo=FALSE, out.width="80%"}
-knitr::include_graphics("diccionario-endo.png") 
+| Nombre de variable |                                                                Etiqueta                                                                |
+|:-------------:|:-------------------------------------------------------:|
+|      vigilancia    | ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena |
+|      confianza_pnp | En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante|
+|      comisaria     | En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio? |
+|      atencion      | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      seguridad     | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      info          | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno| 
+|      trato_igual   | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      ESTRATO       | Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E |
+|      REGIONNATU    | Región Natural 1:Costa, 2: Sierra, 3: Selva |
+
+
+
+```{r}
+summary(data)
 ```
 
-Revisemos nuestra base
+Revisemos la bd
 
 ```{r, include=TRUE, eval=FALSE}
 str(data)
 names(data)
 ```
 
-## **1. ¿Cómo defino calidad del servicio de la PNP?**
+## 1. ¿Cómo defino calidad del servicio de la PNP?
 
 **Indicador proxy**
 
-Para el intervalo de confianza para la media crearemos el indicador: **percepción de facilidad de labor docente, este indicador debe ir del 0 al 10**. Para ello nos basaremos en cinco variables que responden a "En una escala del 1 al 4, donde 1 es"Muy difícil" y 4 - "Muy fácil ¿Qué tan facil o difícil es realizar las siguientes actividades vinculadas al quehacer docente?"
+**Indicador aditivo**
+
 
 | Nombre de variable |                                                                Etiqueta                                                                |
 |:-------------:|:-------------------------------------------------------:|
-|      P1_27_A       |                       ¿Qué tan fácil o difícil es comunicarse y retroalimentar y motivar a las y los estudiante                        |
-|      P1_27_B       |                                   ¿Atender los problemas socioemocionales de las y los estudiantes?                                    |
-|      P1_27_C       | ¿Virtualizar la enseñanza, adaptando y/o complementando las sesiones de "Aprendo en casa", según necesidades de las y los estudiantes? |
-|      P1_27_D       |                                 ¿Coordinar y responder a la demanda de los padres y madres de familia?                                 |
-|      P1_27_E       |                ¿Planificar actividades bajo el enfoque por competencias del Currículo Nacional de la Educación Básica?                 |
+|      vigilancia    | ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena |
+|      confianza_pnp | En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante|
+|      comisaria     | En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio? |
+|      atencion      | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      seguridad     | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      info          | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno| 
+|      trato_igual   | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno|
+|      ESTRATO       | Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E |
+|      REGIONNATU    | Región Natural 1:Costa, 2: Sierra, 3: Selva |
 
 ### Recordemos los pasos para construir un indicador:
 
@@ -95,28 +117,29 @@ Para el intervalo de confianza para la media crearemos el indicador: **percepci�
 Ya habíamos revisado previamente que las variables si están como numéricas.
 
 ```{r}
-data = data %>%
-  mutate(suma=P1_27_A+P1_27_B+P1_27_C+P1_27_D+P1_27_E) #creamos la suma 
-summary(data$suma) #identifico mínimo y máximo
+library(tidyverse)
 
+data=data%>% 
+   mutate(suma=(confianza_pnp+comisaria+atencion+seguridad+info+trato_igual+vigilancia))
+```
+
+
+```{r}
+summary(data$suma)
 ```
 
 Creamos el indicador
-
 ```{r}
-
 library(scales)
-data = data %>%
-  mutate(indicador = ((suma-5)/15)*10) #le restamos el mínimo y dividimos entre 20-5
-
-
-#Lo multiplicamos por 10 porque queremos que vaya hasta 10
-
-  summary(data$indicador)#revisamos que se haya creado bien el indicador
-
+data=data%>% 
+  mutate(indicador = rescale(suma, to = c(0, 100)))
 ```
 
-## **2. ¿Cuál es la media de la calidad del servicio de la PNP a una certeza del 95%?**
+```{r}
+summary(data$indicador)
+```
+
+## 2. ¿Cuál es la media de la calidad del servicio de la PNP a una certeza del 95%?
 
 ```{r}
 ic_media = ciMean(data$indicador,na.rm = TRUE)
@@ -125,95 +148,109 @@ ic_media
 
 Nuestra media poblacional se encuentra entre 4.9 y 5. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la **percepción de facilidad de labor docente** se encuentra entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del indicador (5).
 
-# **3.¿Existen diferencias entre las medias de los niveles de estratos económicos?**
 
-Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles.
-
-*Hallemos el intervalo de confianza para la proporción de los docentes que tienen una ocupación adicional que genere ingresos (P1_16 1-Si, 2-No).*
-
-Necesitamos tener muy claro la frecuencia de nuestro caso de éxito (1) y del total de casos.
-
+## 3.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre estratos económicos?
 ```{r}
-table(data$P1_16)
+data = data %>%
+ mutate(ESTRATO = factor(ESTRATO, levels = 1:5, labels = c("A","B","C","D","E"), ordered = TRUE))
 ```
 
-*Nuestro caso de éxito es haber recibido este tipo de apoyo, por lo tanto el primer argumento que ingresaremos en el prop.test es 2471. Por otro lado, el total de casos es 2471 + 16436. Con eso claro, procedamos a calcular el intervalo de confianza.*
-
 ```{r}
-x = 2471 #almacenamos en "x" la frecuencia de nuestro caso de éxito
-n = 2471 + 16436 #almacenamos en "n" el total de casos
+icmedia_estrato = data%>%
+  group_by(ESTRATO)%>%
+  summarise(Media = mean(indicador, na.rm=T),
+            min = ciMean(indicador, na.rm=T)[1],
+            max = ciMean(indicador, na.rm=T)[2])
+
+icmedia_estrato
+```
+```{r}
+library(ggplot2)
+ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
+  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+   geom_text(aes(label=paste(round(Media, 2))), size=4)+
+  xlab("Estrato socioeconómico") + ylab("Promedio de percepción de la \n calidad de la PNP")+
+  ylim(50, 53.5) 
 ```
 
-Hallamos el invervalo de confianza para una proporción con el comando **prop.test**
-
-```{r}
-ic_prop = prop.test(x,n)
-ic_prop #llamamos a ic_prop para visualizar los resultados
-```
-
-Lo que hallamos nos permite afirmar con un 95% de confianza que, a nivel poblacional, el porcentaje de docentes que cuentan con una ocupación adicional que genera ingresos se encuentra entre 12.6% y 13.6%.
-
-# **#3.¿Existen diferencias entre las medias de los niveles de estratos económicos?**
-
-Hallemos el intervalo de confianza para el indicador de percepción de facilidad de labor docente, según el dominio geográfico. En este caso, queremos comparar según si son de la costa, sierra o selva. Para ello debemos dejar fuera a los casos de Lima Metropolitana y crear una nueva variable (region) que se base en dominio geográfico y realizar los siguientes cambios si es costa norte, coste centro o costa sur que se convierta en costa, si es selva que siga siendo selva y si es sierra norte, sierra centro o sierra sur que se convierta en sierra.
+## 4.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre regiones naturales?
 
 ```{r}
 data = data %>%
-  filter(!(dominio_geografico == "LIMA METROPOLITANA"))%>%
-  mutate(region = case_when(dominio_geografico == "COSTA NORTE"|dominio_geografico == "COSTA CENTRO"| dominio_geografico == "COSTA SUR" ~ "COSTA",
-                            dominio_geografico == "SELVA" ~ "SELVA",
-                            dominio_geografico == "SIERRA NORTE"|dominio_geografico == "SIERRA CENTRO"| dominio_geografico == "SIERRA SUR" ~ "SIERRA"))
-
+ mutate(REGIONNATU = factor(REGIONNATU, levels = 1:3, labels = c("Costa","Sierra","Selva"), ordered = TRUE))
 ```
 
 ```{r}
-#VERSIÓN CORTA
-#data = data %>%
-#  filter(!(dominio_geografico == "LIMA METROPOLITANA"))%>%
-#  mutate(region = case_when(dominio_geografico %in% c("COSTA NORTE","COSTA CENTRO","COSTA SUR") ~ "COSTA",
-#                            dominio_geografico == "SELVA" ~ "SELVA",
-#                            T ~ "SIERRA"))
-```
-
-Revisemos que nuestros datos se hayan asignado bien
-
-```{r}
-table(data$dominio_geografico)
-table(data$region)
-```
-
-Ahora si procedemos a calcular el intervalo de confianza para la media del indicador de percepción de facilidad de labor docente según region.
-
-```{r}
-ic_grupo = data %>%
-  group_by(region) %>%
+icmedia_region = data%>%
+  group_by(REGIONNATU)%>%
   summarise(Media = mean(indicador, na.rm=T),
             min = ciMean(indicador, na.rm=T)[1],
-            max = ciMean(indicador, na.rm=T)[2]
-            )
-ic_grupo
+            max = ciMean(indicador, na.rm=T)[2])
+
+icmedia_region
 ```
 
-Según nuestra tabla, podemos afirmar que hay un 95% de probabilidad de que a nivel poblacional la media de los docentes de la sierra perciben una menor facilidad en sus labores. Mientras que los de la costa perciben sus labores como más sencillas. Veamos el gráfico para complementar esta afirmación.
-
 ```{r}
-ggplot(ic_grupo, aes(x= region, y =Media)) +
+ggplot(icmedia_region, aes(x = REGIONNATU, y=Media)) +
   geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Región") + ylab("Indicador de percepción de facilidad de labor docente")+
-  theme_bw()
+  xlab("Región") + ylab("Promedio de percepción de la \n calidad de la policía")+
+  ylim(50.5, 52.5) 
 ```
 
-Debemos que buscar traslape entre las barras, en este caso podemos reafirmar que los docentes de la sierra perciben una menor facilidad en sus labores a comparación de los de la selva o costa. Por otro lado, los docentes de la selva, perciben mayor facilidad que los de la sierra, pero menor que los de la costa. A pesar de estar muy cercanas sus barras, sabemos que no hay traslape por la anterior tabla. Esta nos indicaba que el límite superior de selva es de 5.11; mientras que el límite inferior de costa es de 5.12.
+# **Solucionario PC1**
 
-## Ejercicio
-
-1.  Calcular el intervalo de confianza para la media de la variable que mide el tiempo invertido en preparar las clase y labores administrativas de lunes a viernes (P1_9_A_LV_MIN)
 
 ```{r}
-str(data$P1_9_A_LV_MIN)
+library(dplyr)
+library(ggplot2)
+library(rio)
+
+data <- import("Renamu-PC1.xlsx")
 ```
 
-2.  Calcular el intervalo de confianza para la proporción de personas que recibieron apoyo psicológico y/o emocional (P1_13)
+Pregunta 1 1.1 Calcula cuál es la frecuencia de recojo de residuos sólidos (P40_1) más común entre los distritos de Lima y Callao, interpreta los resultados y responde a la pregunta ¿todos los distritos recogen la basura diariamente?
 
-3.  Calcula el intervalo de confianza para la media de la variable P1_9_A_LV_MIN según sexo (P1_1)
+```{r}
+paragrafico <- data %>% 
+  mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c("Diaria","Interdiaria","Dos veces por semana","Una vez por semana"))) %>% 
+  group_by(P40_1) %>% 
+  summarise(Freq=n())
+paragrafico
+```
+
+1.2 Usa el gráfico pertinente para visualizar la frecuencia de recojo de residuos sólidos (P40_1)
+```{r}
+ggplot(paragrafico, aes(x=P40_1,y=Freq))+
+  geom_bar(stat="identity")
+```
+
+Pregunta 2 2.1 Calcula los estadísticos descriptivos para la variable que “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos” (P41_1). Interprete los resultados
+```{r}
+data %>% 
+  summarise(media = mean(P41_1),
+            mediana = median(P41_1),
+            sd = sd(P41_1),
+            var = var(P41_1),
+            max=max(P41_1),
+            min=min(P41_1),
+            Q1=quantile(P41_1)[2],
+            Q2=quantile(P41_1)[3],
+            Q3=quantile(P41_1)[4])
+```
+
+2.2 Use el gráfico pertinente para visualizar a la variable P41_1, interprete y responda a la pregunta ¿cuál sería la mejor medida de tendencia central para representar a la variable?
+```{r}
+ggplot(data,aes(x = P41_1))+
+  geom_histogram()
+```
+
+2.3 Genere un gráfico que muestre los cuartiles de la variable “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen diferencias entre las zonas? Interprete los resultados
+
+```{r}
+ggplot(data, aes(x=Zona, y=P41_1))+
+  geom_boxplot()
+```
+
+
+
