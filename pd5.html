@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 5</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -339,7 +339,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="Pd3.html">Práctica 3</a>
+  <a href="pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -372,7 +372,7 @@ div.tocify {
   <a href="pd13.html">Práctica 13</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="FAQ.html">FAQ</a>
 </li>
 <li>
   <a href="https://github.com/arturomaldonado/PracticasPOL278">
@@ -394,37 +394,49 @@ div.tocify {
 </div>
 
 
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
+<div
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+class="section level2">
+<h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2024 - 1 <br></h2>
 <center>
 <img src=" " width="200"/>
 </center>
 <p><img src="logoPUCP.png" width="30%" /></p>
-<div id="revisemos-lo-avanzado-sobre-estadística-inferencial"
-class="section level1">
-<h1><strong>Revisemos lo avanzado sobre estadística
-inferencial</strong></h1>
-<p>En esta sesión repasaremos lo revisado hasta el momento sobre
-intervalos de confianza; así como también, recordaremos cómo crear un
-indicador.</p>
-<p>Hoy emplearemos algunas variables de la Encuesta Nacional de Docentes
-ENDO 2020, realizada por el Ministerio de Educación. Esta encuesta
-pretende recoger información acerca de los docentes y sus característica
-sociodemográficas, económicas, sus percepciones, condiciones de trabajo,
-y más. Si quieres conocer más acerca de esta encuesta ingresa al
-siguiente <a href="#id_0">link</a>.</p>
-<p>Llamemos a los paquetes que usaremos</p>
+</div>
+<div id="intervalos-de-confianza-para-la-media" class="section level1">
+<h1>Intervalos de confianza para la media</h1>
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+<div class="custom-text">
+<p>¿Existe diferencia de percepciones sobre la calidad del servicio de
+la PNP en los distintos niveles de estratos y regiones en el 2023?
+🤔</p>
+</div>
+<p>Llamemos a los paquetes</p>
 <pre class="r"><code>library(rio)
 library(lsr)
 library(dplyr)
 library(ggplot2)</code></pre>
 <p>Importemos la base de datos</p>
 <pre class="r"><code>data=import(&quot;Endo-2021-sub.sav&quot;)</code></pre>
-<p><img src="diccionario-endo.png" width="80%" /></p>
+<p>FALTA <img src="diccionario-endo.png" width="80%" /></p>
 <p>Revisemos nuestra base</p>
 <pre class="r"><code>str(data)
 names(data)</code></pre>
-</div>
-<div id="intervalo-de-confianza-para-la-media" class="section level1">
-<h1><strong>1. Intervalo de confianza para la media:</strong></h1>
+<div id="cómo-defino-calidad-del-servicio-de-la-pnp"
+class="section level2">
+<h2><strong>1. ¿Cómo defino calidad del servicio de la
+PNP?</strong></h2>
+<p><strong>Indicador proxy</strong></p>
 <p>Para el intervalo de confianza para la media crearemos el indicador:
 <strong>percepción de facilidad de labor docente, este indicador debe ir
 del 0 al 10</strong>. Para ello nos basaremos en cinco variables que
@@ -482,12 +494,8 @@ cuestionario/diccionario</li>
 si no lo están, proceder a recodificarlas para luego sumar.
 <strong>Recuerda que para sumarlas deben ser variables tipo
 numéricas.</strong></li>
-<li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
-<li>Restar a todos los valores el mínimo.</li>
-<li>Al resultado, dividir por el máximo menos el mínimo (según lo
-identificado anteriormente) para obtener valores entre 0 y 1.</li>
-<li>Multiplicar por el número que será el nuevo máximo. Ej: si queremos
-que el indice vaya de 0 a 100, multiplicar por 100, etc.</li>
+<li>Realizar suma de las variables a analizar</li>
+<li>Aplicar la función rescale con el rango específico</li>
 </ol>
 <p>Ya habíamos revisado previamente que las variables si están como
 numéricas.</p>
@@ -496,24 +504,25 @@ numéricas.</p>
 summary(data$suma) #identifico mínimo y máximo</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     5.0    11.0    13.0    13.1    15.0    20.0</code></pre>
-<p>Procedo a crear el indicador</p>
-<pre class="r"><code>data = data %&gt;%
+<p>Creamos el indicador</p>
+<pre class="r"><code>library(scales)
+data = data %&gt;%
   mutate(indicador = ((suma-5)/15)*10) #le restamos el mínimo y dividimos entre 20-5
+
+
 #Lo multiplicamos por 10 porque queremos que vaya hasta 10
+
   summary(data$indicador)#revisamos que se haya creado bien el indicador</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   4.000   5.333   5.401   6.667  10.000</code></pre>
-<div id="dato-adicional" class="section level4">
-<h4><em>Dato adicional:</em></h4>
-<p>Si queremos cambiar la escala de nuestro indicador podemos usar la
-función rescale, como primer argumento indicamos la variable (indicador)
-a reescalar y como segundo argumento los límites de la nueva escala: de
-0 a 50, de 0 a 100, etc.</p>
-<pre class="r"><code>library(scales)
-data$ind_reescalado = rescale(data$indicador, to = c(0,50))</code></pre>
-<p>Ahora que hemos creado nuestro indicador, procedemos a calcular el
-intervalo de confianza para su media.</p>
-<pre class="r"><code>ic_media = ciMean(data$indicador)
+</div>
+</div>
+<div
+id="cuál-es-la-media-de-la-calidad-del-servicio-de-la-pnp-a-una-certeza-del-95"
+class="section level2">
+<h2><strong>2. ¿Cuál es la media de la calidad del servicio de la PNP a
+una certeza del 95%?</strong></h2>
+<pre class="r"><code>ic_media = ciMean(data$indicador,na.rm = TRUE)
 ic_media</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 5.376506 5.425983</code></pre>
@@ -524,10 +533,11 @@ entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del
 indicador (5).</p>
 </div>
 </div>
-</div>
-<div id="intervalos-de-confianza-para-una-proporción"
+<div
+id="existen-diferencias-entre-las-medias-de-los-niveles-de-estratos-económicos"
 class="section level1">
-<h1><strong>2.Intervalos de confianza para una proporción</strong></h1>
+<h1><strong>3.¿Existen diferencias entre las medias de los niveles de
+estratos económicos?</strong></h1>
 <p>Tengamos en consideración que para poder hallar el intervalo de
 confianza para una proporción debemos determinar nuestro caso de éxito.
 Asimismo, para hallar el intervalo de confianza para una proporción
@@ -568,10 +578,11 @@ nivel poblacional, el porcentaje de docentes que cuentan con una
 ocupación adicional que genera ingresos se encuentra entre 12.6% y
 13.6%.</p>
 </div>
-<div id="intervalo-de-confianza-de-una-media-según-grupo"
+<div
+id="existen-diferencias-entre-las-medias-de-los-niveles-de-estratos-económicos-1"
 class="section level1">
-<h1><strong>3.Intervalo de confianza de una media según
-grupo</strong></h1>
+<h1><strong>#3.¿Existen diferencias entre las medias de los niveles de
+estratos económicos?</strong></h1>
 <p>Hallemos el intervalo de confianza para el indicador de percepción de
 facilidad de labor docente, según el dominio geográfico. En este caso,
 queremos comparar según si son de la costa, sierra o selva. Para ello
@@ -628,7 +639,7 @@ complementar esta afirmación.</p>
    geom_text(aes(label=paste(round(Media, 2))), size=4)+
   xlab(&quot;Región&quot;) + ylab(&quot;Indicador de percepción de facilidad de labor docente&quot;)+
   theme_bw()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Debemos que buscar traslape entre las barras, en este caso podemos
 reafirmar que los docentes de la sierra perciben una menor facilidad en
 sus labores a comparación de los de la selva o costa. Por otro lado, los
@@ -640,9 +651,14 @@ límite inferior de costa es de 5.12.</p>
 <div id="ejercicio" class="section level2">
 <h2>Ejercicio</h2>
 <ol style="list-style-type: decimal">
-<li><p>Calcular el intervalo de confianza para la media de la variable
-que mide el tiempo invertido en preparar las clase y labores
-administrativas de lunes a viernes (P1_9_A_LV_MIN)</p></li>
+<li>Calcular el intervalo de confianza para la media de la variable que
+mide el tiempo invertido en preparar las clase y labores administrativas
+de lunes a viernes (P1_9_A_LV_MIN)</li>
+</ol>
+<pre class="r"><code>str(data$P1_9_A_LV_MIN)</code></pre>
+<pre><code>##  num [1:16595] 0 0 0 0 0 0 0 0 0 0 ...
+##  - attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li><p>Calcular el intervalo de confianza para la proporción de personas
 que recibieron apoyo psicológico y/o emocional (P1_13)</p></li>
 <li><p>Calcula el intervalo de confianza para la media de la variable
@@ -700,7 +716,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

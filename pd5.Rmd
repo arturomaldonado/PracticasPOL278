@@ -6,7 +6,7 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 1
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
@@ -16,19 +16,34 @@ output:
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
 knitr::include_graphics("logoPUCP.png") 
 ```
 
-# **Revisemos lo avanzado sobre estadística inferencial**
+# Intervalos de confianza para la media
 
-En esta sesión repasaremos lo revisado hasta el momento sobre intervalos de confianza; así como también, recordaremos cómo crear un indicador.
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+```
+::: custom-text
+¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en los distintos niveles de estratos y regiones en el 2023? 🤔
+:::
 
-Hoy emplearemos algunas variables de la Encuesta Nacional de Docentes ENDO 2020, realizada por el Ministerio de Educación. Esta encuesta pretende recoger información acerca de los docentes y sus característica sociodemográficas, económicas, sus percepciones, condiciones de trabajo, y más. Si quieres conocer más acerca de esta encuesta ingresa al siguiente [link](#0).
-
-Llamemos a los paquetes que usaremos
+Llamemos a los paquetes
 
 ```{r}
 library(rio)
@@ -43,6 +58,7 @@ Importemos la base de datos
 data=import("Endo-2021-sub.sav")
 ```
 
+FALTA
 ```{r,echo=FALSE, out.width="80%"}
 knitr::include_graphics("diccionario-endo.png") 
 ```
@@ -54,7 +70,9 @@ str(data)
 names(data)
 ```
 
-# **1. Intervalo de confianza para la media:**
+## **1. ¿Cómo defino calidad del servicio de la PNP?**
+
+**Indicador proxy**
 
 Para el intervalo de confianza para la media crearemos el indicador: **percepción de facilidad de labor docente, este indicador debe ir del 0 al 10**. Para ello nos basaremos en cinco variables que responden a "En una escala del 1 al 4, donde 1 es"Muy difícil" y 4 - "Muy fácil ¿Qué tan facil o difícil es realizar las siguientes actividades vinculadas al quehacer docente?"
 
@@ -71,10 +89,8 @@ Para el intervalo de confianza para la media crearemos el indicador: **percepci�
 1.  Verificar que las variables correspondan al concepto.
 2.  Revisar el sentido de las categorías en el cuestionario/diccionario
 3.  Si las categorías están en el correcto sentido, proceder a sumarlas; si no lo están, proceder a recodificarlas para luego sumar. **Recuerda que para sumarlas deben ser variables tipo numéricas.**
-4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar a todos los valores el mínimo.
-6.  Al resultado, dividir por el máximo menos el mínimo (según lo identificado anteriormente) para obtener valores entre 0 y 1.
-7.  Multiplicar por el número que será el nuevo máximo. Ej: si queremos que el indice vaya de 0 a 100, multiplicar por 100, etc.
+4.  Realizar suma de las variables a analizar
+5.  Aplicar la función rescale con el rango específico
 
 Ya habíamos revisado previamente que las variables si están como numéricas.
 
@@ -85,39 +101,31 @@ summary(data$suma) #identifico mínimo y máximo
 
 ```
 
-Procedo a crear el indicador
+Creamos el indicador
 
 ```{r}
+
+library(scales)
 data = data %>%
   mutate(indicador = ((suma-5)/15)*10) #le restamos el mínimo y dividimos entre 20-5
-<<<<<<< HEAD
-#Lo multiplicamos por 10 porque queremos que vaya hasta 0 al 10
-=======
+
+
 #Lo multiplicamos por 10 porque queremos que vaya hasta 10
->>>>>>> ee5e6a199300472be30e2caf43bce0d11f5b4665
+
   summary(data$indicador)#revisamos que se haya creado bien el indicador
 
 ```
 
-#### *Dato adicional:*
-
-Si queremos cambiar la escala de nuestro indicador podemos usar la función rescale, como primer argumento indicamos la variable (indicador) a reescalar y como segundo argumento los límites de la nueva escala: de 0 a 50, de 0 a 100, etc.
-
-```{r, include = T, eval = F}
-library(scales)
-data$ind_reescalado = rescale(data$indicador, to = c(0,10))
-```
-
-Ahora que hemos creado nuestro indicador, procedemos a calcular el intervalo de confianza para su media.
+## **2. ¿Cuál es la media de la calidad del servicio de la PNP a una certeza del 95%?**
 
 ```{r}
-ic_media = ciMean(data$indicador)
+ic_media = ciMean(data$indicador,na.rm = TRUE)
 ic_media
 ```
 
 Nuestra media poblacional se encuentra entre 4.9 y 5. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la **percepción de facilidad de labor docente** se encuentra entre 4.9 y 5. Lo que se encuentra muy cercano al punto medio del indicador (5).
 
-# **2.Intervalos de confianza para una proporción**
+# **3.¿Existen diferencias entre las medias de los niveles de estratos económicos?**
 
 Tengamos en consideración que para poder hallar el intervalo de confianza para una proporción debemos determinar nuestro caso de éxito. Asimismo, para hallar el intervalo de confianza para una proporción nuestra variable debe ser categórica y debe representar una variable dicotómica; es decir, una variable con solo dos categorías posibles.
 
@@ -145,7 +153,7 @@ ic_prop #llamamos a ic_prop para visualizar los resultados
 
 Lo que hallamos nos permite afirmar con un 95% de confianza que, a nivel poblacional, el porcentaje de docentes que cuentan con una ocupación adicional que genera ingresos se encuentra entre 12.6% y 13.6%.
 
-# **3.Intervalo de confianza de una media según grupo**
+# **#3.¿Existen diferencias entre las medias de los niveles de estratos económicos?**
 
 Hallemos el intervalo de confianza para el indicador de percepción de facilidad de labor docente, según el dominio geográfico. En este caso, queremos comparar según si son de la costa, sierra o selva. Para ello debemos dejar fuera a los casos de Lima Metropolitana y crear una nueva variable (region) que se base en dominio geográfico y realizar los siguientes cambios si es costa norte, coste centro o costa sur que se convierta en costa, si es selva que siga siendo selva y si es sierra norte, sierra centro o sierra sur que se convierta en sierra.
 
