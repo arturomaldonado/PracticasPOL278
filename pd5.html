@@ -661,7 +661,7 @@ class="section level2">
 <h2>3.¿Existe diferencia de medias en cuanto a la percepción de la
 calidad de la PNP entre estratos sociodemográficos?</h2>
 <pre class="r"><code>data = data %&gt;%
- mutate(ESTRATO = factor(ESTRATO, levels = 1:5, labels = c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;), ordered = TRUE))</code></pre>
+ mutate(ESTRATO = factor(ESTRATO, labels = c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;), ordered = TRUE))</code></pre>
 <pre class="r"><code>icmedia_estrato = data%&gt;%
   group_by(ESTRATO)%&gt;%
   summarise(Media = mean(indicador, na.rm=T),

@@ -165,7 +165,7 @@ Nuestra media poblacional se encuentra entre 51.19 y 51.50. Esto quiere decir qu
 
 ```{r}
 data = data %>%
- mutate(ESTRATO = factor(ESTRATO, levels = 1:5, labels = c("A","B","C","D","E"), ordered = TRUE))
+ mutate(ESTRATO = factor(ESTRATO, labels = c("A","B","C","D","E"), ordered = TRUE))
 ```
 
 ```{r}
