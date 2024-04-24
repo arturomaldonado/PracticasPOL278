@@ -459,8 +459,8 @@ library(ggplot2)</code></pre>
 <pre class="r"><code>data=import(&quot;ENAPRES_2023.xlsx&quot;)</code></pre>
 <table>
 <colgroup>
-<col width="26%" />
-<col width="73%" />
+<col width="29%" />
+<col width="70%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -556,8 +556,8 @@ representante indirecto de la variable de interés.</p>
 variables:</p>
 <table>
 <colgroup>
-<col width="26%" />
-<col width="73%" />
+<col width="29%" />
+<col width="70%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -712,6 +712,44 @@ icmedia_region</code></pre>
   ylim(50.5, 52.5) </code></pre>
 <p><img src="pd5_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
+<div
+id="cuál-es-la-proporción-de-personas-con-mucha-confianza-en-la-pnp"
+class="section level2">
+<h2>5.¿Cuál es la proporción de personas con mucha confianza en la PNP
+?</h2>
+<p>Para responder a la pregunta calcularemos el <em>intervalo de
+confianza para una proporción</em>. Primero se tiene que definir qué es
+tener mucha confianza en la PNP, para ello crearemos una variable
+<em>dicotómica</em> a partir de <code>confianza_pnp</code></p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(
+    confianza_dico = case_when(
+      confianza_pnp==1|confianza_pnp==2 ~ 1,
+      confianza_pnp==3|confianza_pnp==4 ~ 2))</code></pre>
+<p>ponemos etiquetas</p>
+<pre class="r"><code>data = data %&gt;%
+  mutate(confianza_dico = factor(confianza_dico, levels = 1:2, labels = c(&quot;Poca&quot;,&quot;Mucha&quot;), ordered = TRUE))
+table(data$confianza_dico)</code></pre>
+<pre><code>## 
+##  Poca Mucha 
+##  8625  6365</code></pre>
+<p>Caso de éxito 💥</p>
+<pre class="r"><code>casos_exi = 6365 #almacenamos en &quot;casos_exi&quot; la frecuencia de nuestro caso de éxito (Mucha confianza)
+total = 6365 + 8625 #almacenamos en &quot;total&quot; el total de casos</code></pre>
+<pre class="r"><code>ic_prop = prop.test(casos_exi,total)
+ic_prop #llamamos a ic_prop para visualizar los resultados</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  casos_exi out of total, null probability 0.5
+## X-squared = 340.43, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.4166908 0.4325809
+## sample estimates:
+##         p 
+## 0.4246164</code></pre>
+</div>
 </div>
 <div id="solucionario-pc1" class="section level1">
 <h1><strong>Solucionario PC1</strong></h1>
@@ -741,7 +779,7 @@ paragrafico</code></pre>
 de residuos sólidos (P40_1)</p>
 <pre class="r"><code>ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat=&quot;identity&quot;)</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p><em>Extra</em>: Gráfico de barras en %</p>
 <pre class="r"><code>para_graficoP &lt;- data %&gt;% 
   mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c(&quot;Diaria&quot;,&quot;Interdiaria&quot;,&quot;Dos veces por semana&quot;,&quot;Una vez por semana&quot;))) %&gt;% 
@@ -761,7 +799,7 @@ para_graficoP</code></pre>
   geom_text(aes(label=paste(round(Porcentaje, 1), &quot;%&quot;)), vjust=-1, color=&quot;black&quot;, size=3)+
   labs(fill = &quot;Frecuencia de recojo&quot;) +
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p><strong>Pregunta 2</strong></p>
 <p>2.1 Calcula los estadísticos descriptivos para la variable que
 “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos”
@@ -783,13 +821,13 @@ interprete y responda a la pregunta ¿cuál sería la mejor medida de
 tendencia central para representar a la variable?</p>
 <pre class="r"><code>ggplot(data,aes(x = P41_1))+
   geom_histogram()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>2.3 Genere un gráfico que muestre los cuartiles de la variable
 “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen
 diferencias entre las zonas? Interprete los resultados</p>
 <pre class="r"><code>ggplot(data, aes(x=Zona, y=P41_1))+
   geom_boxplot()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />
