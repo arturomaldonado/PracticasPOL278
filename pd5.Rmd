@@ -200,7 +200,6 @@ icmedia_region = data%>%
   summarise(Media = mean(indicador, na.rm=T),
             min = ciMean(indicador, na.rm=T)[1],
             max = ciMean(indicador, na.rm=T)[2])
-
 icmedia_region
 ```
 
