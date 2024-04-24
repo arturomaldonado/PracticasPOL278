@@ -459,8 +459,8 @@ library(ggplot2)</code></pre>
 <pre class="r"><code>data=import(&quot;ENAPRES_2023.xlsx&quot;)</code></pre>
 <table>
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col width="26%" />
+<col width="73%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -556,8 +556,8 @@ representante indirecto de la variable de interés.</p>
 variables:</p>
 <table>
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col width="26%" />
+<col width="73%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -742,6 +742,26 @@ de residuos sólidos (P40_1)</p>
 <pre class="r"><code>ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat=&quot;identity&quot;)</code></pre>
 <p><img src="pd5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><em>Extra</em>: Gráfico de barras en %</p>
+<pre class="r"><code>para_graficoP &lt;- data %&gt;% 
+  mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c(&quot;Diaria&quot;,&quot;Interdiaria&quot;,&quot;Dos veces por semana&quot;,&quot;Una vez por semana&quot;))) %&gt;% 
+  group_by(P40_1) %&gt;% 
+  summarise(Freq=n()) %&gt;% 
+mutate(Porcentaje = (Freq / sum(Freq))*100)
+para_graficoP</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   P40_1                 Freq Porcentaje
+##   &lt;fct&gt;                &lt;int&gt;      &lt;dbl&gt;
+## 1 Diaria                  57      91.9 
+## 2 Interdiaria              3       4.84
+## 3 Dos veces por semana     1       1.61
+## 4 Una vez por semana       1       1.61</code></pre>
+<pre class="r"><code>ggplot(para_graficoP, aes(x=P40_1,y=Porcentaje,fill=P40_1))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Porcentaje, 1), &quot;%&quot;)), vjust=-1, color=&quot;black&quot;, size=3)+
+  labs(fill = &quot;Frecuencia de recojo&quot;) +
+  theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;))</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p><strong>Pregunta 2</strong></p>
 <p>2.1 Calcula los estadísticos descriptivos para la variable que
 “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos”
@@ -763,13 +783,13 @@ interprete y responda a la pregunta ¿cuál sería la mejor medida de
 tendencia central para representar a la variable?</p>
 <pre class="r"><code>ggplot(data,aes(x = P41_1))+
   geom_histogram()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>2.3 Genere un gráfico que muestre los cuartiles de la variable
 “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen
 diferencias entre las zonas? Interprete los resultados</p>
 <pre class="r"><code>ggplot(data, aes(x=Zona, y=P41_1))+
   geom_boxplot()</code></pre>
-<p><img src="pd5_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="pd5_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />

@@ -79,7 +79,7 @@ data=import("ENAPRES_2023.xlsx")
 ```
 
 | Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:----------------:|:----------------------------------------------------:|
+|:-----------------:|:---------------------------------------------------:|
 |     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
 |   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
 |     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
@@ -110,7 +110,7 @@ Un indicador proxy es una variable que se utiliza para inferir el valor de otra 
 Creamos un indicador aditivo a partir de las siguientes variables:
 
 | Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:----------------:|:----------------------------------------------------:|
+|:-----------------:|:---------------------------------------------------:|
 |     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
 |   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
 |     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
@@ -241,6 +241,27 @@ ggplot(paragrafico, aes(x=P40_1,y=Freq))+
   geom_bar(stat="identity")
 ```
 
+ *Extra*: Gráfico de barras en %
+ 
+```{r}
+
+para_graficoP <- data %>% 
+  mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c("Diaria","Interdiaria","Dos veces por semana","Una vez por semana"))) %>% 
+  group_by(P40_1) %>% 
+  summarise(Freq=n()) %>% 
+mutate(Porcentaje = (Freq / sum(Freq))*100)
+para_graficoP
+
+```
+```{r}
+ggplot(para_graficoP, aes(x=P40_1,y=Porcentaje,fill=P40_1))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Porcentaje, 1), "%")), vjust=-1, color="black", size=3)+
+  labs(fill = "Frecuencia de recojo") +
+  theme(panel.background=element_rect(fill = "white", colour = "white"))
+```
+ 
+ 
 **Pregunta 2**
 
 2.1 Calcula los estadísticos descriptivos para la variable que “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos” (P41_1). Interprete los resultados
