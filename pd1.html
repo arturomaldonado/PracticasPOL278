@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 1</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,15 +29,15 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -340,7 +340,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="Pd3.html">Práctica 3</a>
+  <a href="pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -463,7 +463,7 @@ cambios.</p>
 comando (escriba el código en la consola, ya que si lo ejecuta desde
 este Rmd, obtendrá el lugar donde se encuentra este archivo):</p>
 <pre class="r"><code>getwd() #para saber en qué carpeta está el archivo</code></pre>
-<pre><code>## [1] &quot;/Users/Karina/PracticasPOL278&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/lizettecrispinflorez/PracticasPOL278&quot;</code></pre>
 <p>Si queremos cambiar de directorio de trabajo, nos dirigirnos al menú
 <strong>“Session” &gt; “Set Working Directory” &gt; “Choose
 Directory”</strong>. Esto abrirá una ventana emergente, donde buscaremos
@@ -734,14 +734,17 @@ realizamos el análisis de la variable en cuestión
 <pre class="r"><code>class(data$Categorías) </code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.3     ✔ purrr   1.0.1
-## ✔ tibble  3.2.1     ✔ dplyr   1.1.3
-## ✔ tidyr   1.3.0     ✔ stringr 1.5.0
-## ✔ readr   2.1.4     ✔ forcats 1.0.0
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+## ✖ dplyr::filter()  masks stats::filter()
+## ✖ lubridate::hms() masks vembedr::hms()
+## ✖ dplyr::lag()     masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>data %&gt;%
  group_by(Categorías) %&gt;%
   summarize(Freq=n())</code></pre>
