@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 3</title>
+
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="FAQ.html">FAQ</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 3</h1>
+
+</div>
+
+
+<center>
+<img src=" " width="200"/>
+</center>
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
+<div
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+class="section level2">
+<h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2024 - 1 <br></h2>
+</div>
+<div id="repaso" class="section level2">
+<h2><strong>Repaso</strong></h2>
+<div id="e-government-survey-2022-the-future-of-digital-government"
+class="section level3">
+<h3><strong>E-Government Survey 2022: The Future of Digital
+Government</strong></h3>
+<p>La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha
+publicado cada dos años por el Departamento de Asuntos Económicos y
+Sociales de las Naciones Unidas desde 2001. La Encuesta evalúa el estado
+de desarrollo del gobierno electrónico de todos los Estados miembros de
+las Naciones Unidas y, durante este tiempo, ha establecido un conjunto
+de datos y análisis exhaustivos.</p>
+<p>La evaluación mide el rendimiento del gobierno electrónico de los
+países en relación con los demás, en lugar de ser una medición absoluta.
+Reconoce que cada país debe decidir el nivel y la extensión de sus
+iniciativas de gobierno electrónico de acuerdo con sus propias
+prioridades nacionales de desarrollo y para lograr los Objetivos de
+Desarrollo Sostenible. La Encuesta sirve como una herramienta de
+referencia y desarrollo para que los países aprendan entre sí,
+identifiquen áreas de fortaleza y desafíos en el gobierno electrónico y
+moldeen sus políticas y estrategias. También tiene como objetivo
+facilitar e informar las discusiones de los órganos
+intergubernamentales, incluida la Asamblea General de las Naciones
+Unidas, el Consejo Económico y Social y el Foro Político de Alto
+Nivel.</p>
+<p><img src="PD3_egov22.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>Carguemos la data <em>egov2022.xlsx</em></p>
+<pre class="r"><code>library(dplyr)#Convocamos el paquete
+library(rio)    
+data=import(&quot;egov2022.xlsx&quot;) </code></pre>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nombre</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pais</td>
+<td>Nombre del país</td>
+</tr>
+<tr class="even">
+<td>E_gov</td>
+<td>Indicador de gobernanza digital (0-100)</td>
+</tr>
+<tr class="odd">
+<td>E_part</td>
+<td>Transparencia y acceso a la información, participación ciudadana en
+línea (0 - 100)</td>
+</tr>
+<tr class="even">
+<td>Online_service</td>
+<td>Servicios en línea otorgado por el Estado (0-100)</td>
+</tr>
+<tr class="odd">
+<td>Human_cap</td>
+<td>Miembros del Estado especializados en el tema (0-100)</td>
+</tr>
+<tr class="even">
+<td>Tele_infra</td>
+<td>Índice de capacidad de redes de telecomunicaciones como acceso a
+internet 5G (0-100)</td>
+</tr>
+<tr class="odd">
+<td>Alto_teleinfra</td>
+<td>¿El país tiene un índice de infraestructura mayor a 80? Si/No</td>
+</tr>
+<tr class="even">
+<td>Region</td>
+<td>Continente donde pertenece cada país</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="recordando-el-análisis-descriptivo" class="section level1">
+<h1><strong>1.Recordando el análisis descriptivo</strong></h1>
+<ul>
+<li><strong>Moda</strong>: Nominales, ordinales y numéricas</li>
+<li><strong>Mediana</strong>: Ordinales y numéricas</li>
+<li><strong>Media</strong>: Numéricas</li>
+</ul>
+<p>Revisamos la estructura de la base de datos y sus variables</p>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    181 obs. of  8 variables:
+##  $ Pais          : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;Andorra&quot; ...
+##  $ E_gov         : num  21 74 54 71 33 59 83 73 96 90 ...
+##  $ E_part        : num  19 76 23 38 17 42 65 58 99 77 ...
+##  $ Online_service: num  28 82 37 51 47 42 81 72 94 88 ...
+##  $ Human_cap     : num  35 80 70 76 46 81 92 79 100 91 ...
+##  $ Tele_infra    : num  19 60 61 88 20 60 73 69 88 85 ...
+##  $ Alto_teleinfra: chr  &quot;No&quot; &quot;No&quot; &quot;No&quot; &quot;Si&quot; ...
+##  $ Region        : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...</code></pre>
+<p>Podemos ver que casi todas las variables son numéricas, excepto la
+variable <em>Region</em> que se muestra como texto, pero es categórica.
+Procedemos a revisar sus niveles y a recodificarla.</p>
+<pre class="r"><code>data %&gt;% 
+ group_by(Region) %&gt;% 
+  summarize(Freq=n())</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Region    Freq
+##   &lt;chr&gt;    &lt;int&gt;
+## 1 Africa      52
+## 2 Americas    32
+## 3 Asia        43
+## 4 Europe      40
+## 5 Oceania     14</code></pre>
+<pre class="r"><code>data$Region=as.factor(data$Region)
+class(data$Region) #Comprobamos</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+</div>
+<div id="aplicación-en-r" class="section level1">
+<h1><strong>2. Aplicación en R</strong></h1>
+<div id="cuál-es-el-estado-de-la-gobernanza-digital-de-los-países"
+class="section level3">
+<h3><strong>¿Cuál es el estado de la gobernanza digital de los
+países?</strong></h3>
+<ul>
+<li><strong>¿El país tiene un nivel alto de infraestructura en
+telecomunicaciones? (</strong>Alto_teleinfra) : Variable categórica</li>
+</ul>
+<p>Realicemos una tabla de frecuencias de la variable:</p>
+<pre class="r"><code>para_grafico= data %&gt;%
+  group_by(Alto_teleinfra) %&gt;% 
+  summarise(Freq=n())</code></pre>
+<p>¿Qué nos indica la tabla? En este caso, ¿cuál sería la moda?</p>
+<p>Revisemos en un gráfico:</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
+  geom_bar(stat = &quot;identity&quot;)+ xlab(&quot;Alto nivel de infraestructura en telecomunicaciones&quot;)+ylab(&quot;Frecuencia&quot;)</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<ul>
+<li><strong>E-Government Index</strong>: Variable numérica</li>
+</ul>
+<p>Revisamos <em>solo</em> la media del E_gov</p>
+<pre class="r"><code>data  %&gt;% 
+  summarise(media=mean(E_gov))</code></pre>
+<pre><code>##      media
+## 1 58.79558</code></pre>
+<p>Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos
+comentar de los datos obtenidos?</p>
+<pre class="r"><code>data  %&gt;% 
+  summarise(Mínimo=min(E_gov), 
+            Mediana= median(E_gov), 
+            Desviación=sd(E_gov),
+            Media= mean(E_gov),
+            Máximo= max(E_gov))</code></pre>
+<pre><code>##   Mínimo Mediana Desviación    Media Máximo
+## 1      0      59   23.98373 58.79558    100</code></pre>
+<ul>
+<li><p>¿Cuál es el puntaje más bajo y el máximo?</p></li>
+<li><p>¿Cuál es el rango? (<em>max-min</em>)</p></li>
+<li><p><strong>Desviación estándar (<em>sd</em>)</strong>: <em>La
+desviación estándar es una medida que nos ayuda a entender cuánto se
+separan los números en un conjunto de datos del valor promedio o medio.
+Podemos traducir ello como una forma de medir cuánto “se dispersan” los
+números alrededor de un número central.</em></p></li>
+<li><p>¿Hay mucha variabilidad en los datos? <em>sd</em></p></li>
+</ul>
+</div>
+<div id="visualización" class="section level2">
+<h2><strong>Visualización</strong></h2>
+<p>Histograma de E-Gov</p>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x=E_gov))+
+  geom_histogram(fill = &quot;blue&quot;,
+    color = &quot;black&quot;,
+    bins = 30,
+    alpha = 0.7)+
+  xlab(&quot;E-Government Index&quot;) +
+  ylab(&quot;Frecuencia&quot;)+
+   theme_minimal()</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Histograma de E-Gov + mediana (rojo) + media (verde)</p>
+<pre class="r"><code>data %&gt;%
+ggplot(aes(x=E_gov))+
+  geom_histogram(fill = &quot;blue&quot;,
+    color = &quot;black&quot;,
+    bins = 50,
+    alpha = 0.7)+
+  geom_vline(xintercept = median(data$E_gov), color = &quot;red&quot;)+
+  geom_vline(xintercept = mean(data$E_gov), color = &quot;green&quot;)+
+  xlab(&quot;E-Government Index&quot;) +
+  ylab(&quot;Frecuencia&quot;)+
+  theme_light()</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>summary(data$E_gov)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0    40.0    59.0    58.8    79.0   100.0</code></pre>
+<div id="cuartiles-y-diagrama-de-cajas" class="section level3">
+<h3>Cuartiles y diagrama de cajas</h3>
+<pre class="r"><code>data %&gt;% 
+  filter(Region==&quot;Africa&quot;)%&gt;% 
+  summarise(CuartilesEgov = quantile(E_gov))</code></pre>
+<pre><code>##   CuartilesEgov
+## 1          0.00
+## 2         23.75
+## 3         35.00
+## 4         52.00
+## 5         73.00</code></pre>
+<pre class="r"><code>data %&gt;% 
+  summarise(CuartilesEgov = quantile(E_gov))</code></pre>
+<pre><code>##   CuartilesEgov
+## 1             0
+## 2            40
+## 3            59
+## 4            79
+## 5           100</code></pre>
+<p>¿Cómo ubicamos los cuartiles en el diagrama de cajas?</p>
+<pre class="r"><code>data %&gt;% 
+  ggplot(aes(y=E_gov))+
+  geom_boxplot()+
+  ylab(&quot;E-Government Index&quot;)</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+</div>
+<div
+id="según-región-cuál-es-el-estado-de-la-gobernanza-digital-de-los-países"
+class="section level2">
+<h2><strong>Según región, ¿cuál es el estado de la gobernanza digital de
+los países?</strong></h2>
+<p>¿Cuál es la importancia de analizar por regiones?</p>
+<pre class="r"><code>data %&gt;%
+ group_by(Region) %&gt;%
+  summarize(Media=mean(E_gov)) </code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   Region   Media
+##   &lt;fct&gt;    &lt;dbl&gt;
+## 1 Africa    36.3
+## 2 Americas  62.6
+## 3 Asia      63.2
+## 4 Europe    84.2
+## 5 Oceania   47.7</code></pre>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x=E_gov))+
+  geom_histogram()+
+  facet_wrap(~Region)+
+  xlab(&quot;E-Gov Index&quot;)+
+  ylab(&quot;Frecuencia&quot;)</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Analicemos los resultados 😼</p>
+<p><strong>Descriptivos por región</strong></p>
+<pre class="r"><code> data %&gt;%
+  group_by(Region)%&gt;%
+  summarise(Mínimo=min(E_gov), 
+            Mediana= median(E_gov), 
+            Desviación=sd(E_gov),
+            Media= mean(E_gov),
+            Máximo= max(E_gov))</code></pre>
+<pre><code>## # A tibble: 5 × 6
+##   Region   Mínimo Mediana Desviación Media Máximo
+##   &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Africa        0    35        17.3   36.3     73
+## 2 Americas     18    62.5      15.5   62.6     86
+## 3 Asia         21    67        19.3   63.2     93
+## 4 Europe       61    86         9.35  84.2    100
+## 5 Oceania      27    40.5      22.6   47.7     97</code></pre>
+<p>Comparo los resultados y los ubico en mi diagrama de cajas</p>
+<pre class="r"><code> data %&gt;%
+ggplot(aes(x=Region, y=E_gov, color=Region)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
+  theme_classic()</code></pre>
+<p><img src="pd3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Si deseo un subset solamente de los países que están por encima de la
+media ¿cuántos países son?</p>
+<pre class="r"><code>MayorMedia=data %&gt;%
+  filter(E_gov &gt; mean(E_gov)) </code></pre>
+<p>Si queremos ver solo una región, en este caso África</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Region ==&quot;Africa&quot;) %&gt;%
+  summarise(mean(E_gov))</code></pre>
+<pre><code>##   mean(E_gov)
+## 1    36.28846</code></pre>
+<p>O los estadísticos de los países de Asia</p>
+<pre class="r"><code>data %&gt;%
+  filter(Region == &quot;Asia&quot;) %&gt;%
+  summarise(Mínimo=min(E_gov), 
+            Mediana= median(E_gov), 
+            Desviación=sd(E_gov),
+            Media= mean(E_gov),
+            Máximo= max(E_gov))</code></pre>
+<pre><code>##   Mínimo Mediana Desviación    Media Máximo
+## 1     21      67   19.31929 63.16279     93</code></pre>
+</div>
+</div>
+<div id="ejercicios" class="section level1">
+<h1><strong>3. Ejercicios 👾 :</strong></h1>
+<ul>
+<li>Realizar los estadísticos descriptivos del Online Service Index
+(Online_Service).</li>
+<li>Realizar una muestra de aquellos paises que están por encima de la
+media del índice de infraestructura y telecomunicaciones
+(Tele_infra).</li>
+<li>Realizar diagrama de cajas del E-Participation Index (E_part) por
+región.</li>
+<li>Según si tiene alto nivel de infraestructura en telecomunicaciones
+(Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y
+luego genera un gráfico que los muestre.</li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
