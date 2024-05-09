@@ -1,0 +1,166 @@
+---
+title: "Práctica dirigida 6"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 1
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+<center><img src=" " width="200"/></center>
+
+```{r,echo=FALSE, out.width="30%"}
+#knitr::include_graphics("logoPUCP.png") 
+```
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+
+
+## Prueba T para diferencia de medias 
+
+Generalmente, cuando queremos comparar dos grupos centramos nuestra atención en el promedio de cada uno. Sin embargo, el hecho de que los promedios sean distintos no supone, necesariamente, que existe una diferencia estadísticamente significativa.
+
+Para saber si la diferencia observada entre las medias de dos grupos es o no significativa se emplean métodos paramétricos como el de Z-scores o la distribución T-student. Estas técnicas calculan los intervalos de confianza de cada grupo y concluyen si existe una diferencia real entre las medias.
+
+La prueba T compara la media de una variable numérica para dos grupos o categorías de una variable nominal u ordinal. Los grupos que forman la variable nominal/ordinal tienen que ser independientes. Es decir, cada observación debe pertenecer a un grupo o al otro, pero no a ambos.
+
+```{r}
+library(rio)
+data=import("PROETICA_2022.xlsx")
+```
+
+| Nombre de variable | Etiqueta    |
+|:-------------:|:-------------------------------------------------------:|
+|      genero   | 1:Hombre, 2:Mujer |
+|      edad     |    Edad de la persona en años        |
+|      deforestacion  | ¿Cree que el Estado peruano hace lo suficiente para enfrentar la deforestación y la tala ilegal o no? 1:Sí, hace lo suficiente, 2:No hace lo suficiente|
+|      corrupcion     | ¿Usted cree que la corrupción lo perjudica en su vida cotidiana o no? 1: Sí, me perjudica, 2: No me perjudica | 
+|      informado      | En general, ¿qué tan informado está/ se siente usted respecto al acontecer político nacional? 1:Nada/ Poco informado, 2:Algo/ Muy informado |
+|      autopercepcion | Índice aditivo de autopercepción sobre la corrupción en el Perú* |
+
+*Para la creación del índice se consideraron las siguientes variables: 
+
+1. Autopercepción sobre qué tan corruptos son los peruanos
+
+2. Autopercepción sobre qué tan corruptos son en su ciudad
+
+3. Autopercepción sobre qué tan corruptos son en su barrio
+
+4. Autopercepción sobre qué tan corruptos son en su familia o en sus amistades
+
+5. Autopercepción sobre qué tan corrupto es usted mismo
+
+
+## Pregunta de investigación
+
+En base a esta encuesta deseamos responder si, a un 95% de confianza: ¿Existirán diferencias significativas en el Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria?
+
+
+## Análisis Exploratorio de Datos
+
+```{r}
+library(tidyverse)
+```
+
+**CONFIGURACIÓN ADECUADA DE LAS VARIABLES A UTILIZAR**
+
+Configuramos el factor:
+
+```{r}
+str(data$corrupcion)
+data = data %>%
+ mutate(corrupcion = factor(corrupcion, levels = 1:2, labels = c("Sí","No")))
+str(data$corrupcion)
+```
+
+Verificamos la numérica:
+
+```{r}
+str(data$autopercepcion)
+summary(data$autopercepcion)
+```
+
+**EXPLORACIÓN DE LOS ESTADÍSTICOS MUESTRALES**
+
+La media del índice es:
+
+```{r}
+data |> 
+  summarise(mean(autopercepcion, na.rm = TRUE))
+```
+
+La media por grupo (según variable corrupción) es:
+
+```{r}
+data |> 
+  group_by(corrupcion) |> 
+  summarise(mean(autopercepcion, na.rm=T))
+```
+
+Vemos una diferencia en la muestra. Esta será significativa?
+
+
+## Realizar la prueba de hipótesis
+
+Recordemos que para esta prueba, las hipótesis con las que vamos a trabajar son:
+
+- H0: No hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias son iguales en los grupos)*
+
+- H1: Sí hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias no son iguales en los grupos)*
+
+
+Ahora utilizamos la función `t.test()` para calcular el p-value. Recuerda que el p-valor es la proabilidad de observar una diferencia de medias (Estadístico de Prueba) como la observada, asumiendo que la hipótesis nula sea verdadera (que las medias poblacionales sean iguales).
+
+
+```{r}
+t.test(autopercepcion ~ corrupcion, 
+       data = data,
+       conf.level  = 0.95) # El nivel de confianza predeterminado es 0.95. Esto lo podemos modificar. 
+
+```
+
+Nuestro p-value es 0.001615.
+
+
+## Informar los resultados
+
+Luego de realizar la Prueba T para diferencia de medias, dado que se obtuvo un p-valor (0.001615) que es menor que nuestro nivel de significancia establecido de 0.05, hay evidencia suficiente para rechazar la hipótesis nula. Por lo tanto, concluimos que **existen diferencias estadísticamentes significativas** en el promedio del Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria.
+
+
+## ¿Y si constrastamos el resultado con los intervalos de confianza por grupos?
+
+Comparemos lo encontrado con un gráfico de medias con intervalos de confianza de cada grupo.
+
+```{r}
+library(ggplot2)
+library(lsr)
+```
+
+```{r}
+data %>%
+  group_by(corrupcion) %>%
+  summarise(Media = mean(autopercepcion, na.rm=T),
+            min = ciMean(autopercepcion, na.rm=T)[1],
+            max = ciMean(autopercepcion, na.rm=T)[2]) %>% 
+  ggplot(aes(x= corrupcion, y = Media)) +
+        geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+        geom_text(aes(label=paste(round(Media,1))), size=3)+
+        xlab("¿Considera que la corrupción perjudica su vida cotidiana?")+
+        ylab("Índice de autopercepción de la corrupción")
+```
+
+
+Interpretación: Tal como se observa, ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos con un 95% de confianza en la población.
+
+
