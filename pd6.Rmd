@@ -1,6 +1,5 @@
 ---
-title: "Sesión 6. Prueba T y Comparaciones de proporciones"
-author: "Curso: POL278 - Estadística para el análisis político 1"
+title: "Práctica dirigida 6"
 output:
   html_document:
     toc: yes
@@ -10,23 +9,25 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
+    always_allow_html: true
 ---
 
-```{r,echo=FALSE, out.width="40%",fig.align="center"}
-knitr::include_graphics("logoPUCP.png")
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-## **Recordando lo avanzado**
+<center><img src=" " width="200"/></center>
 
-En la sesión anterior de teoría, nos adentramos al análisis inferencial bivariado, teniendo como base del tema el cálculo del Intervalo de Confianza (IC) para una media (variables numéricas) y para una proporción (variables categóricas). Recordemos que gracias al IC podemos determinar si la estimación es representativa de la población. La idea era calcular los intervalos de confianza para cada grupo y ver si los intervalos se interceptan o no. La regla era que si los intervalos de ambos grupos no se interceptaban, podíamos extrapolar que la diferencia muestral existe en la población al 95% de confianza.
+```{r,echo=FALSE, out.width="30%"}
+#knitr::include_graphics("logoPUCP.png") 
+```
 
-Para profundizar sobre estadística inferencial, evaluaremos las hipótesis mediante la introducción a la prueba t de diferencia de medias y desarrollaremos los cincos pasos de la inferencia estadística. Recordemos que el objetivo es corroborar que es posible extrapolar un resultado de la muestra a la población.
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## **¿Qué es la prueba T de diferencia de medias?**
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+
+
+## Prueba T para diferencia de medias 
 
 Generalmente, cuando queremos comparar dos grupos centramos nuestra atención en el promedio de cada uno. Sin embargo, el hecho de que los promedios sean distintos no supone, necesariamente, que existe una diferencia estadísticamente significativa.
 
@@ -34,424 +35,132 @@ Para saber si la diferencia observada entre las medias de dos grupos es o no sig
 
 La prueba T compara la media de una variable numérica para dos grupos o categorías de una variable nominal u ordinal. Los grupos que forman la variable nominal/ordinal tienen que ser independientes. Es decir, cada observación debe pertenecer a un grupo o al otro, pero no a ambos.
 
-# **Pruebas T para muestras independientes**
-
-## **Condiciones**
-
-1.  Independencia: Las muestras deben ser independientes. El muestreo debe ser aleatorio.
-
-2.  Igualdad de varianza: La varianza de ambas poblaciones comparadas debe ser igual.
-
-3.  La variable numérica se distribuye de manera normal.
-
-**IMPORTANTE**
-
-La condición de normalidad también es considerada si es que la muestra fuera pequeña (Agresti y Finlay proponen que se aplica con un n pequeño menor a 30 observaciones). A medida que el n se hace más grande, el supuesto de normalidad es menos importante pues con grandes n confiamos en el teorema del límite central que nos indica que la distribución muestral será siempre normal.
-
-
-## **Pasos para realizar la Prueba T**
-
-1.  Establecer hipótesis
-2.  Calcular el estadístico (parámetro estimado) que se va a emplear
-3.  Determinar el nivel de significancia (alpha)
-4.  Calcular el p-value y realizar la prueba prop.test
-5.  Interpretar
-
-**Recuerda** El H0 de la prueba T es la siguiente:
-
-Ho: No existe diferencia estadísticamente significativa entre las medias de los dos grupos comparados.
-H1: Sí existe diferencia estadísticamente significativa entre las medias de los dos grupos comparados.
-
-La H0 es **generalmente** la hipótesis de no efecto, de no diferencias.
-
-**Indicador Proxy**
-
-También llamado indicador indirecto se usa ante la imposibilidad de medir lo que efectivamente es de importancia. El indicador mide una variable distinta a la que nos interesa de manera específica, pero presenta una relación lo más directa posible con el fenómeno en estudio. Un indicador proxy es una medición o señal indirecto que aproxima o representa un fenómeno en la ausencia de una medición o señal directo.
-
-## **Indicador Aditivo**
-
-### **Pasos para construir un indicador:**
-
-1.  Verificar que las variables que construyan el indicador correspondan al concepto que se desea medir. *Ejemplo: Si deseo mejor Satisfacción del Usuario, las preguntas deben ser sobre ello.*
-2.  Revisar el cuestionario e identificar el sentido de las categorías. *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
-3.  Si las categorías de las variables están en el correcto sentido proceder a sumarlas, si no lo están, proceder a recodificarlas para luego sumar.
-4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Restar a todos los valores el valor mínimo.
-6.  Al resultado de lo anterior, dividir por el nuevo máximo, con ello, se va a obtener valores entre 0 y 1.
-7.  Multiplicar por 100 si se desea el índice de 0 a 100, o por 10 si se desea el índice de 0 a 10.
-
-# **Apliquemos lo aprendido**
-
-## **Carguemos la base de datos**
-
-*Descripción del Proyecto: Satisfacción de la ciudadanía con los servicios públicos transaccionales en regiones*
-
-Este estudio fue realizado por la Secretaría de Gestión Pública de la Presidencia del Consejo de Ministros en el año 2021. El propósito del estudio consistió en identificar los conductores de calidad (variables explicativas) en la satisfacción de una persona con la realización de un servicio público transaccional (duplicado de DNI, pago en el Banco de la Nación, pasaporte, etc).
-
-Se identificó que los factores que impactan en las regiones respecto a la satisfacción sobre los servicios públicos son: i. el tiempo de desplazamiento hacia la sede de la entidad, ii. la calidad del trato, iii. la rapidez del trabajador, iv. el procedimiento de atención, v. el resultado de la gestión, y, vi. la confianza.
-
-Lo que buscaremos en este ejercicio es corroborar que los grupos de edad hasta 35 años y mayor a 35 años tienen diferencias estadísticas sobre el nivel de satisfacción.
-
-Más sobre el proyecto accediendo al siguiente enlace: <https://www.gob.pe/institucion/pcm/informes-publicaciones/2244351-estudio-en-las-regiones-del-peru-que-factores-influyen-en-la-satisfaccion-de-las-personas-con-los-servicios-publicos-brindados>
-
-```{r,warning = FALSE, message=FALSE}
-#No olvides cambiar el directorio de trabajo
-library(dplyr)
-library(rio) 
-data <- import("data.csv")
-```
-
-Exploramos las variables que tiene la base de datos:
-
-Utilizamos *glimpse* para ver la estructura de la data.
-
-Utilizamos *colnames* para verificar los nombres de la data.
-
-Utilizamos *colSums(is.na())* para contar los nulos de la data.
-
-```{r,warning = FALSE}
-str(data[,1:5]) #Visualice la estructura de la bbdd
-colnames(data[,1:5]) #Visualice los nombres de las variables de la bbdd
-colSums(is.na(data))
-
-```
-
-Limpieza de las variables previo al análisis: 
-a. Seleccionar variables que conceptualmente generen un índice de satisfacción. Revisar preguntas en encuesta.
-
-Según el cuestionario, *5* significa *muy insatisfecho* y *1* significa *muy satisfecho*.
-
--   P10 = satisfacción con trabajador que lo atendió
-
--   P25 = satisfacción con tiempo de espera desde que llegó a la entidad hasta ser atendido
-
--   P30 = satisfacción con el proceso de gestión / trámite realizado (cantidad de documentos)
-
--   P31 = satisfacción con la cantidad de pasos requeridos para completar gestión / trámite
-
-Si deseamos crear un indicador de satisfacción, entonces el máximo valor debe ser la calificación más alta de satisfacción, y por tanto el valor mínimo de mostrar la insatisfacción:
-
--   1 'Muy satisfecho' a 5
-
--   2 a 4
-
--   3 a 3
-
--   4 a 2
-
--   5 'Muy insatisfecho' a 1
-
-    **Ojo: Si bien estas variables deberían estar catalogadas como factor, para poder crear el índice necesitamos que se mantengan como numéricas para poder sumarlas.**
-    
 ```{r}
-summary(data$P10)
-summary(data$P25)
-summary(data$P30)
-summary(data$P31)
+library(rio)
+data=import("PROETICA_2022.xlsx")
 ```
 
-b.  Recodificar los valores de las variables
+| Nombre de variable | Etiqueta    |
+|:-------------:|:-------------------------------------------------------:|
+|      genero   | 1:Hombre, 2:Mujer |
+|      edad     |    Edad de la persona en años        |
+|      deforestacion  | ¿Cree que el Estado peruano hace lo suficiente para enfrentar la deforestación y la tala ilegal o no? 1:Sí, hace lo suficiente, 2:No hace lo suficiente|
+|      corrupcion     | ¿Usted cree que la corrupción lo perjudica en su vida cotidiana o no? 1: Sí, me perjudica, 2: No me perjudica | 
+|      informado      | En general, ¿qué tan informado está/ se siente usted respecto al acontecer político nacional? 1:Nada/ Poco informado, 2:Algo/ Muy informado |
+|      autopercepcion | Índice aditivo de autopercepción sobre la corrupción en el Perú* |
 
-Ejemplo: La recodificación de una variable a la vez.
+*Para la creación del índice se consideraron las siguientes variables: 
+
+1. Autopercepción sobre qué tan corruptos son los peruanos
+
+2. Autopercepción sobre qué tan corruptos son en su ciudad
+
+3. Autopercepción sobre qué tan corruptos son en su barrio
+
+4. Autopercepción sobre qué tan corruptos son en su familia o en sus amistades
+
+5. Autopercepción sobre qué tan corrupto es usted mismo
+
+
+## Pregunta de investigación
+
+En base a esta encuesta deseamos responder si, a un 95% de confianza: ¿Existirán diferencias significativas en el Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria?
+
+
+## Análisis Exploratorio de Datos
 
 ```{r}
-data=data %>%
- mutate(satisfaccion_trabajador=case_when(
-  P10 == 1 ~ "5", 
-  P10 == 2 ~ "4",
-  P10 == 3~ "3",
-  P10 == 4 ~ "2",
-  P10 == 5 ~"1"),
-  satisfaccion_tiempo=case_when(
-  P25 == 1 ~ "5", 
-  P25 == 2 ~ "4",
-  P25 == 3~ "3",
-  P25 == 4 ~ "2",
-  P25 == 5 ~"1"),
-  satisfaccion_n_documentos=case_when(
-  P30 == 1 ~ "5", 
-  P30 == 2 ~ "4",
-  P30 == 3~ "3",
-  P30 == 4 ~ "2",
-  P30 == 5 ~"1"),
-   satisfaccion_n_pasos=case_when(
-  P31 == 1 ~ "5", 
-  P31 == 2 ~ "4",
-  P31 == 3~ "3",
-  P31 == 4 ~ "2",
-  P31 == 5 ~"1"))
+library(tidyverse)
 ```
 
-Verifiquemos que nuestra recodificación se realizó de manera correcta.
+**CONFIGURACIÓN ADECUADA DE LAS VARIABLES A UTILIZAR**
+
+Configuramos el factor:
 
 ```{r}
-table(data$P10)
-table(data$satisfaccion_trabajador)
-```
-
-La recodificación de un conjunto de variables.
-
-```{r}
-#library(dplyr)
-#data=data %>% 
-#   mutate(across(c(P10,P25, P30,P31), 
-#             ~ case_when(. == 1 ~ "5", 
-#                       . == 2 ~ "4",
-#                       . == 3~ "3",
-#                       . == 4 ~ "2",
-#                       . == 5 ~"1")))
-```
-
-c.  Convertir las variables a numéricas
-
-```{r}
-library(dplyr)
-data=data %>% # objeto base de datos cargada
-    mutate(satisfaccion_trabajador = as.numeric(satisfaccion_trabajador),#convertimos nuestras nuevas variables como numéricas
-         satisfaccion_tiempo = as.numeric(satisfaccion_tiempo),
-         satisfaccion_n_documentos = as.numeric(satisfaccion_n_documentos),
-         satisfaccion_n_pasos = as.numeric(satisfaccion_n_pasos))
-```
-
-```{r}
-summary(data$satisfaccion_trabajador)
-summary(data$satisfaccion_tiempo)
-summary(data$satisfaccion_n_documentos)
-summary(data$satisfaccion_n_pasos)
-```
-
-d.  Recordemos los pasos para crear un índice aditivo:
-
-    *((var_suma - mín_de_suma)/máx_de_suma))\*valor al que quiere que llegue el índice(si va del 0 al 10 será 10, del 0 al 50 será 50, etc).*
-
-    Crearemos una variable nueva "indice_satisfacción". 
-    Primero, sumamos las variables:
-
-```{r}
-data=data %>%
-  mutate(suma = satisfaccion_trabajador + 
-           satisfaccion_tiempo +
-           satisfaccion_n_documentos +
-           satisfaccion_n_pasos)
-```
-
-Revisamos mínimo y máximo
-
-```{r}
-summary(data$suma)
-```
-
-```{r}
-data=data %>%
-  mutate(resta = ((suma - 4)# Menos el minimo
-                                / 16), # Cuarto paso: dividir entre el nuevo máximo
-         indice_satisfaccion = resta * 100) #Queremos que el índice va del 1 al 100
-```
-
-Opción 2: Sin crear variable "resta"
-
-```{r}
-#data = data %>%
- # mutate(indice_satisfaccion = ((suma-4)/16)*100) 
-```
-
-```{r}
-summary(data$indice_satisfaccion)
-```
-
-Otra opción es usar el rescale:
-
-```{r}
-library(scales)
+str(data$corrupcion)
 data = data %>%
-mutate(indice_satisfaccion_rescale = rescale(suma, to = c(0,100)))
-summary(data$indice_satisfaccion_rescale)
-       
+ mutate(corrupcion = factor(corrupcion, levels = 1:2, labels = c("Sí","No")))
+str(data$corrupcion)
 ```
 
-e.  Los grupos que compararemos serán dados por la variable P4. Damos formato a la variable categórica P4, si recibio orientación o no
-
-```{r,warning = FALSE, message=FALSE}
-data$P4=as.factor(data$P4)
-data$P4=factor(data$P4,
-                levels = levels(data$P4),
-                labels = c("Si orientación","No orientación"),
-                ordered = F)
-```
-
-Como se menciona en las consideraciones, analizaremos la varianza en los grupos, para ello usaremos la prueba Levene (varianza debe ser igual):
-
-H0: La varianza de los grupos comparados (grupo que recibió información y grupo que NO recibió información) son iguales
-H1: La varianza de los grupos comparados (grupo que recibió información y grupo que NO recibió información) NO son iguales
+Verificamos la numérica:
 
 ```{r}
-library(DescTools)
-LeveneTest(data$indice_satisfaccion, data$P4)
+str(data$autopercepcion)
+summary(data$autopercepcion)
 ```
 
-Como el p valor es mayor a 0.05 podemos afirmar que las varianzas son iguales, por lo que podemos continuar con la realización de la Prueba T.
+**EXPLORACIÓN DE LOS ESTADÍSTICOS MUESTRALES**
 
-## **Realizamos la Prueba T**
+La media del índice es:
 
-### **Primer paso: Establecer la hipótesis.**
-
-La hipotesis de la prueba T queda establecida de la siguiente forma:
-
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no recibieron información. **(no diferencia de medias)**
-
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no recibieron información. **(sí diferencia de medias)**
-
-Ambas hipótesis son acerca de los parámetros de la población.
-
-### **Segundo paso: Calcular el estadístico a emplear**
-
-Para verificar la diferencia de medias, se calcula el estadístico T. Uno de los primeros pasos es calcular las diferencias entre las medias muestrales, ya que es lo quiero extrapolar y, por tanto, saber si existe o no una diferencia significativa entre las medias poblacionales de ambos grupos.
-
-### **Tercer paso: Determinar el nivel de significancia**
-
-Se trata de la probabilidad que define qué tan inusual debe ser la diferencia de medias muestrales para rechazar la H0 (que la diferencia de medias poblacionales sea 0). El valor más común es de alpha = 0.05 a un nivel de confianza de 95%. De manera convencional establecemos la siguiente regla para nuestra prueba T:
-
--   p-value <= 0.05 Rechazo la H0 y acepto H1
--   p-value > 0.05 No rechazo la H0
-
-### **Cuarto paso: Calcular el p-value y realizar la prueba t.test**
-
-El p-value mide la probabilidad de observar en una muestra una diferencia de medias como la observada, si la diferencia de medias poblacional fuera cero.
-
-```{r,message=FALSE}
-t.test(indice_satisfaccion ~ P4, data = data,
-  alternative = "two.sided", 
-  conf.level  = 0.95 #nivel de confianza (95%)
-)
+```{r}
+data |> 
+  summarise(mean(autopercepcion, na.rm = TRUE))
 ```
 
-### **Quinto paso: Interpretar**
+La media por grupo (según variable corrupción) es:
 
-**¿Cómo interpreto?**
+```{r}
+data |> 
+  group_by(corrupcion) |> 
+  summarise(mean(autopercepcion, na.rm=T))
+```
 
-Recordando nuestras hipotesis:
+Vemos una diferencia en la muestra. Esta será significativa?
 
--   Ho: No hay diferencia entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no recibieron información.
 
--   H1: Si existen diferencias entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no recibieron información.
+## Realizar la prueba de hipótesis
 
-Asimismo, en el paso 4, determinamos el nivel de significancia de la siguiente manera:
+Recordemos que para esta prueba, las hipótesis con las que vamos a trabajar son:
 
--   Si el p-value del t test es <=0.05 Rechazo la H0 y se afirma H1.
+- H0: No hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias son iguales en los grupos)*
 
--   Si el p-value del t test es > 0.05 No rechazo la H0
+- H1: Sí hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias no son iguales en los grupos)*
 
-Entonces, vemos que el p-value es 2.2e-16, y es menor al alpha (0.05), entonces rechazo la H0, por tanto, existe una diferencia estadísticamente significativa entre las medias del índice de satisfacción aditivo entre los grupos que sí recibieron orientación y los que no recibieron información con un 95% de confianza.
 
-### **Paso FINAL: Graficar**
+Ahora utilizamos la función `t.test()` para calcular el p-value. Recuerda que el p-valor es la proabilidad de observar una diferencia de medias (Estadístico de Prueba) como la observada, asumiendo que la hipótesis nula sea verdadera (que las medias poblacionales sean iguales).
 
-Otro método para evaluar la comparación entre grupos es realizar un gráfico de medias con intervalos de confianza de cada grupo.
 
-```{r,message=FALSE}
+```{r}
+t.test(autopercepcion ~ corrupcion, 
+       data = data,
+       conf.level  = 0.95) # El nivel de confianza predeterminado es 0.95. Esto lo podemos modificar. 
+
+```
+
+Nuestro p-value es 0.001615.
+
+
+## Informar los resultados
+
+Luego de realizar la Prueba T para diferencia de medias, dado que se obtuvo un p-valor (0.001615) que es menor que nuestro nivel de significancia establecido de 0.05, hay evidencia suficiente para rechazar la hipótesis nula. Por lo tanto, concluimos que **existen diferencias estadísticamentes significativas** en el promedio del Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria.
+
+
+## ¿Y si constrastamos el resultado con los intervalos de confianza por grupos?
+
+Comparemos lo encontrado con un gráfico de medias con intervalos de confianza de cada grupo.
+
+```{r}
 library(ggplot2)
 library(lsr)
+```
 
+```{r}
 data %>%
-  group_by(P4) %>%
-  summarise(Media = mean(indice_satisfaccion, na.rm=T),
-            min = ciMean(indice_satisfaccion, na.rm=T)[1],
-            max = ciMean(indice_satisfaccion, na.rm=T)[2]) %>% 
-ggplot(aes(x= P4, y = Media)) +
-  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
-   geom_text(aes(label=paste(round(Media,1))), size=3)+
-  xlab("Grupo de comparación por Orientación") +
-  ylim(45, 75) # Especificar según los valores que obtienes
+  group_by(corrupcion) %>%
+  summarise(Media = mean(autopercepcion, na.rm=T),
+            min = ciMean(autopercepcion, na.rm=T)[1],
+            max = ciMean(autopercepcion, na.rm=T)[2]) %>% 
+  ggplot(aes(x= corrupcion, y = Media)) +
+        geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
+        geom_text(aes(label=paste(round(Media,1))), size=3)+
+        xlab("¿Considera que la corrupción perjudica su vida cotidiana?")+
+        ylab("Índice de autopercepción de la corrupción")
 ```
 
-**Interpretación**: Tal como se observa, ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos. El grupo que si recibio orientación tiene mayor satisfacción en comparación al grupo que no recibió orientación, con un 95% de confianza en la población.
 
-**EJERCICIO PRÁCTICO**
-
-Verifica si existe o no relación entre el número de veces que un ciudadano fue a la institución pública para realizar un trámite transaccional (grupo 1 sola vez vs grupo más de 1 vez) y el índice de satisfacción.
-
-
-# **Comparación de proporciones**
-
-Para este ejercicio trabajaremos con dos variables:
-
--   *P42: Preferencia en la realización de gestiones presenciales*
-
--   *INDICE_SATISFACCION: Índice de satisfacción aditivo creado en la sección anterior*
-
-Revisemos a nuestras variables:
-
-Recordemos que para comparar proporciones necesitamos que nuestras variables sean ambas categóricas. En el caso del índice de satisfacción aditivo, se recodificará para que tengamos dos grupos: Satisfecho vs No Satisfecho.
-
-```{r}
-data = data %>%
-  mutate(INDICE_AGRUPADO = case_when(indice_satisfaccion >= 60.00 ~ "Satisfecho",
-                          indice_satisfaccion < 60.00 ~ "No satisfecho"))
-```
-
-Realizamos el mismo ejercicio con nuestra variable P42:
-
-```{r}
-class(data$P42) #Revisamos cómo está catalogada nuestra variable
-summary(data$P42) 
-```
-
-La recodificaremos para que tengamos dos grupos: Presencial y No presencial (revisar cuestionario para corroborar sentido de investigación)
-
-```{r}
-data = data %>%
-  mutate(P42_2 = case_when(P42 == 1 ~ "Presencial",
-                          TRUE ~ "No presencial"))
-```
-
-```{r}
-#Realizamos una tabla de frecuencias
-table(data$INDICE_AGRUPADO,data$P42_2)
-```
-
-Identificamos lo que nos interesa: La frecuencia de los que tienen satisfacción alta y prefieren realizar gestiones presenciales es 1988; mientras que, los que tienen satisfacción alta y prefieren realizar gestiones no presenciales es de 842.
-
-```{r}
-#Hallamos la proporción
-prop.test(x=c(1988,842),n=c(1988+831,842+481))
-```
-
-Interpretación: 
-
-Si el intervalo de confianza no contiene el valor cero, esto sugiere que las proporciones de los dos grupos son significativamente diferentes y que la hipótesis nula de que las proporciones son iguales debe ser rechazada. Por otro lado, si el intervalo de confianza contiene el valor cero, no podemos rechazar la hipótesis nula y no podemos concluir que las proporciones son significativamente diferentes. En el ejercicio, dado que el intervalo no contiene el valor cero, las proporciones son significativamente diferentes.
-
-La diferencia entre aquellas personas que tienen satisfacción alta y preferencia por gestión presencial vs personas que tienen satisfacción alta y preferencia por gestión no presencial, se encuentra entre 4% y 10%, a un 95% de confianza cuando se extrapola a la población.
-
-
-```{r}
-# Grafiquemos la comparación de proporciones
-library(fastDummies)
-data_grafico =dummy_cols(data,select_columns=c("INDICE_AGRUPADO"))
-library(lsr)
-tabla2=data_grafico%>%
-  dplyr::group_by(P42_2)%>%
-  dplyr::summarise(Media = mean(INDICE_AGRUPADO_Satisfecho, na.rm=T),
-            limiteinferior = ciMean(INDICE_AGRUPADO_Satisfecho,conf = 0.99, na.rm=T)[1],
-            limitesuperior = ciMean(INDICE_AGRUPADO_Satisfecho,conf = 0.99, na.rm=T)[2]
-            )
-tabla2
-
-```
-
-```{r}
-# Grafiquemos la comparación de proporciones
-tabla2=as.data.frame(tabla2)
-library(ggplot2)
-ggplot(tabla2, aes(x=P42_2, y = Media))+
-  geom_errorbar(aes(ymin=limiteinferior, ymax=limitesuperior), width=0.2)+
-  geom_text(aes(label=paste(round(Media, 2))), size = 4)+
-  xlab("Presencialidad") + ylab("Satisfacción")+
-  ylim(0.55,0.75)
-
-```
-
-# **Ejercicios**
-
- - Revisa al cuestionario para identificar variables categóricas y/o numéricas que sean posibles - con sentido de investigación - recodificar en 2 categorías. Luego, realiza ejemplos de comparación de proporciones y esboza hipótesis sobre los hallazgos identificados.
- 
+Interpretación: Tal como se observa, ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos con un 95% de confianza en la población.
 
 
