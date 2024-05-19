@@ -2,14 +2,17 @@
 title: "Práctica dirigida 6"
 output:
   html_document:
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    number_sections: no
-    toc_depth: 1
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 2
     theme: cosmo
     highlight: textmate
     always_allow_html: true
+  pdf_document:
+    toc: true
+    toc_depth: '2'
 ---
 
 ```{r setup, include=FALSE}
@@ -26,8 +29,7 @@ knitr::include_graphics("logoPUCP.png")
 
 ## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
-
-## Prueba T para diferencia de medias 
+## Prueba T para diferencia de medias
 
 Generalmente, cuando queremos comparar dos grupos centramos nuestra atención en el promedio de cada uno. Sin embargo, el hecho de que los promedios sean distintos no supone, necesariamente, que existe una diferencia estadísticamente significativa.
 
@@ -40,32 +42,30 @@ library(rio)
 data=import("PROETICA_2022.xlsx")
 ```
 
-| Nombre de variable | Etiqueta    |
-|:-------------:|:-------------------------------------------------------:|
-|      genero   | 1:Hombre, 2:Mujer |
-|      edad     |    Edad de la persona en años        |
-|      deforestacion  | ¿Cree que el Estado peruano hace lo suficiente para enfrentar la deforestación y la tala ilegal o no? 1:Sí, hace lo suficiente, 2:No hace lo suficiente|
-|      corrupcion     | ¿Usted cree que la corrupción lo perjudica en su vida cotidiana o no? 1: Sí, me perjudica, 2: No me perjudica | 
-|      informado      | En general, ¿qué tan informado está/ se siente usted respecto al acontecer político nacional? 1:Nada/ Poco informado, 2:Algo/ Muy informado |
-|      autopercepcion | Índice aditivo de autopercepción sobre la corrupción en el Perú* |
+| Nombre de variable |                                                                        Etiqueta                                                                         |
+|:---------------:|:-----------------------------------------------------:|
+|       genero       |                                                                    1:Hombre, 2:Mujer                                                                    |
+|        edad        |                                                               Edad de la persona en años                                                                |
+|   deforestacion    | ¿Cree que el Estado peruano hace lo suficiente para enfrentar la deforestación y la tala ilegal o no? 1:Sí, hace lo suficiente, 2:No hace lo suficiente |
+|     corrupcion     |                      ¿Usted cree que la corrupción lo perjudica en su vida cotidiana o no? 1: Sí, me perjudica, 2: No me perjudica                      |
+|     informado      |       En general, ¿qué tan informado está/ se siente usted respecto al acontecer político nacional? 1:Nada/ Poco informado, 2:Algo/ Muy informado       |
+|   autopercepcion   |                                            Índice aditivo de autopercepción sobre la corrupción en el Perú\*                                            |
 
-*Para la creación del índice se consideraron las siguientes variables: 
+\*Para la creación del índice se consideraron las siguientes variables:
 
-1. Autopercepción sobre qué tan corruptos son los peruanos
+1.  Autopercepción sobre qué tan corruptos son los peruanos
 
-2. Autopercepción sobre qué tan corruptos son en su ciudad
+2.  Autopercepción sobre qué tan corruptos son en su ciudad
 
-3. Autopercepción sobre qué tan corruptos son en su barrio
+3.  Autopercepción sobre qué tan corruptos son en su barrio
 
-4. Autopercepción sobre qué tan corruptos son en su familia o en sus amistades
+4.  Autopercepción sobre qué tan corruptos son en su familia o en sus amistades
 
-5. Autopercepción sobre qué tan corrupto es usted mismo
-
+5.  Autopercepción sobre qué tan corrupto es usted mismo
 
 ## Pregunta de investigación
 
 En base a esta encuesta deseamos responder si, a un 95% de confianza: ¿Existirán diferencias significativas en el Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria?
-
 
 ## Análisis Exploratorio de Datos
 
@@ -110,18 +110,15 @@ data |>
 
 Vemos una diferencia en la muestra. Esta será significativa?
 
-
 ## Realizar la prueba de hipótesis
 
 Recordemos que para esta prueba, las hipótesis con las que vamos a trabajar son:
 
-- H0: No hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias son iguales en los grupos)*
+-   H0: No hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias son iguales en los grupos)*
 
-- H1: Sí hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias no son iguales en los grupos)*
-
+-   H1: Sí hay diferencia entre las medias del índice aditivo de autopercepción de la corrupción entre el grupo que considera que la corrupción afecta su vida cotidiana y el que no lo considera. *(Las medias no son iguales en los grupos)*
 
 Ahora utilizamos la función `t.test()` para calcular el p-value. Recuerda que el p-valor es la proabilidad de observar una diferencia de medias (Estadístico de Prueba) como la observada, asumiendo que la hipótesis nula sea verdadera (que las medias poblacionales sean iguales).
-
 
 ```{r}
 t.test(autopercepcion ~ corrupcion, 
@@ -132,11 +129,9 @@ t.test(autopercepcion ~ corrupcion,
 
 Nuestro p-value es 0.001615.
 
-
 ## Informar los resultados
 
 Luego de realizar la Prueba T para diferencia de medias, dado que se obtuvo un p-valor (0.001615) que es menor que nuestro nivel de significancia establecido de 0.05, hay evidencia suficiente para rechazar la hipótesis nula. Por lo tanto, concluimos que **existen diferencias estadísticamentes significativas** en el promedio del Índice de autopercepción sobre la corrupción en el Perú según si considera o no que la corrupción le afecta en su vida diaria.
-
 
 ## ¿Y si constrastamos el resultado con los intervalos de confianza por grupos?
 
@@ -160,7 +155,4 @@ data %>%
         ylab("Índice de autopercepción de la corrupción")
 ```
 
-
 Interpretación: Tal como se observa, ambos intervalos de confianza no se traslapan, por lo que se puede concluir gráficamente que existe una diferencia estadísticamente significativa entre los grupos con un 95% de confianza en la población.
-
-
