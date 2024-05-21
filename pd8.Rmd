@@ -124,7 +124,6 @@ tabla1.1 #tabla simple
 Creamos porcentajes por columna:
 
 ```{r message=FALSE}
-library(tidyverse)
 tabla1.2 = tabla1.1 %>%
            prop.table(2) %>%  # porcentaje por columna
            round(3)
