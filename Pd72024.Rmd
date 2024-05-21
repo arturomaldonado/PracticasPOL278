@@ -1,9 +1,6 @@
 ---
 title: "Práctica dirigida 8"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
   html_document:
     toc: yes
     toc_float: yes
@@ -13,10 +10,17 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
 editor_options: 
   markdown: 
     wrap: sentence
 ---
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
@@ -64,9 +68,29 @@ Si es que encuentran que no se cumple este supuesto: Repórtalo!
 
 -   Hipótesis alternativa (H1): Las variables son estadísticamente dependientes (Sí hay asociación).
 
-### Ejercicios
+# Pregunta de investigación
 
-EXPLICACIÓN DE DATA
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+```
+::: custom-text
+¿Cuál es la percepción de la situación del país a partir de variables socioeconómicas ?
+🤔
+:::
+
+Para poder responder a la anterior pregunta se usará la base de datos del Latin American Public Opinion Project (LAPOP[^1]) 2023.
+Este es un estudio de la Universidad de Vanderbilt que realiza encuestas de opinión pública en 34 países de América, incluyendo Norte, Centro, Sur y el Caribe.
+LAPOP mide actitudes, evaluaciones y experiencias en diversos temas, proporcionando datos comparativos de alta calidad sobre la democracia, la gobernabilidad y el desarrollo social en la región.
+
+[^1]: <https://www.vanderbilt.edu/lapop/ab2023/AB2023-Pulso-de-la-democracia-final-20240219.pdf>
 
 Cargamos la data:
 
@@ -77,27 +101,33 @@ lapop=import("peru2023.sav")
 str(lapop)
 ```
 
-Pregunta: percepción del gobierno
+Diccionario de datos
 
-## Ejercicio 1. Relación entre sexo y situación económica del país respecto del año pasado\*\*
+![](diccionarioP7.jpeg)
 
-Situación económica: 1-Mejor 2-Igual 3-Peor
+## 🔵 ¿Existe diferencia sobre la percepción económica actual entre hombres y mujeres?
+
+-   Pregunta en cuestionario LAPOP: *¿Considera usted que la situación económica del país es mejor, igual o peor que hace doce meses?*
+-   Situación económica: 1 (Mejor), 2 (Igual), 3 (Peor)
+
+**PASO 0: Revisamos la estructura de las variables que nos interesan:**
 
 ```{r }
-lapop$situ_pais = factor(lapop$situ_pais, levels = 1:3, labels = c("Mejor","Igual","Peor"))
-table(lapop$situ_pais)
+lapop <- lapop %>%
+  mutate(situ_pais = factor(situ_pais, levels = 1:3, labels = c("Mejor", "Igual", "Peor")))
+
+str(lapop$situ_pais) #verificamos
+
 ```
 
 A nivel general, ¿qué percibe la mayoría sobre la situación económica del país?
 
 ```{r}
-general=table(lapop$situ_pais)
-prop.table(general)*100
+resultados = lapop %>%
+  count(situ_pais) %>%
+  mutate(percentage = n / sum(n) * 100)
+resultados
 ```
-
-Relación entre sexo y situación económica del país
-
-*PASO 0: Revisamos la estructura de las variables que nos interesan:*
 
 Variable sexo: nominal 1 - Hombre 2 - Mujer
 
@@ -123,7 +153,7 @@ tabla1
 ```
 
 Creamos porcentajes por columna, para ello tenemos que agregar prop.table al comando anterior.
-El argumento de prop.table puede ser 1: para calcular porcentaje por fil, o 2: para calcular por columna
+El argumento de prop.table puede ser 1: *para calcular porcentaje por fil*, o 2: *para calcular por columna* ⚠️
 
 ```{r}
 tablapor1 = tabla1 %>%
@@ -178,7 +208,7 @@ chisq.test(tabla1)
 De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
 
 Por lo tanto, concluimos existe dependencia entre las variables escogidas: sexo y situación económica actual.
-Esto quiere decir que el ser hombre o mujer si se refleja en la percepción de la situación económica del país.
+Esto quiere decir que el ser hombre o mujer sí se refleja en la percepción de la situación económica del país.
 
 **SUPUESTO**
 
@@ -189,12 +219,13 @@ chisq.test(tabla1)$expected
 ```
 
 En este caso sí cumple el supuesto!
+😎
 
-## Ejercicio 2: Relación entre vivir en zona rural o urbana y la percepción de la gestión de Dina Boluarte\*\*
+## 🔵¿Existe relación entre zona de vivienda y la percepción de la gestión de Boluarte? 
 
 *PASO 0: Revisamos la estructura de las variables que nos interesan:*
 
-Variable percep_dina: 1 Muy bueno 2 Bueno 3 Ni bueno, ni malo (regular) 4 Malo 5 Muy malo (pésimo)
+-   Variable percep_dina: 1 (Muy bueno), 2 (Bueno), 3 (Ni bueno, ni malo), 4 (Malo), 5 (Muy malo).
 
 Para este ejercicio creemos solo tres grupos "Buena" (1/Muy bueno y 2/Bueno), "Ni buena ni mala" (3/Ni bueno ni malo) y "Mala" (4/Malo, 5/Muy malo)
 
@@ -275,9 +306,9 @@ toPlot2 |>
 chisq.test(tabla2)
 ```
 
-De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
+🗯️ De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
 
-Por lo tanto, concluimos existe la variable percepción de la gestión de dina y el estrato en el de residencia si se encuentran asociadas.
+Por lo tanto, concluimos que la variable percepción de la gestión de Dina y el estrato de residencia sí se encuentran asociadas.
 Una mayor proporción de los residentes de las zonas rurales califican como mala a la gestión de la presidenta; mientras que, la zona urbana se relaciona con una mayor proporción de opiniones neutrales en comparación.
 
 **SUPUESTO**
@@ -302,6 +333,6 @@ Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 -   Más de 60
 
-Hint: Usa case_when y establece los intervalos, no olvides que la estructura es case_when(condición \~ valor, condicion2 \~ valor2,...)
+*Hint*: Usa case_when y establece los intervalos, no olvides que la estructura es case_when(condición \~ valor, condicion2 \~ valor2,...)
 
 2.  Analizar si existe dependencia entre la variable estrato y percepción de situación de servicios médicos
