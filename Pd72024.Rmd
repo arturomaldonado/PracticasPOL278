@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 8"
+title: "Práctica dirigida 7"
 output:
   html_document:
     toc: yes
