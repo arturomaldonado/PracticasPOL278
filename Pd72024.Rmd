@@ -330,10 +330,10 @@ chisq.test(tabla2)$expected
 
 En este caso también cumple el supuesto!
 
-## Ejercicios:
+## Ejercicios en clase:
 
 1\.
-Analizar si existe asociación entre las variables percepción de situación de las escuelas y edad (agrupado)\
+Analizar si existe asociación entre las variables satisfacción con la de situación de las escuelas (calid_esc) y edad (agrupado)\
 Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 -   De 18 a 25
@@ -346,4 +346,18 @@ Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 *Hint*: Usa case_when y establece los intervalos, no olvides que la estructura es case_when(condición \~ valor, condicion2 \~ valor2,...)
 
-2.  Analizar si existe dependencia entre la variable estrato y percepción de situación de servicios médicos
+2.  Analizar si existe dependencia entre la variable estrato y satisfacción con la situación de servicios médicos (serv_medic)
+
+## Ejercicios para que practiques:
+
+1.  Analizar la asociación entre la región (estratropri) (Agrupar y obtener Costa/Sierra/Selva/Lima Metropolitana) y la satisfacción con la calidad del servicio de agua (serv_agua).
+
+    1101/1102 - Costa
+
+    1103 - Lima Metropolitana
+
+    1104 - Selva
+
+    1105/1106/1107 - Sierra
+
+2.  Crea un indice aditivo de la satisfacción con servicios públicos que vaya del 0 al 10. Previamente, debes invertir el sentido de las variables: calid_esc, serv_medic y serv_agua. Lo que era 4, ahora debe ser 1, lo que era 3 ahora 2, lo que era 2 ahora 3 y lo que era 1 ahora 4. Así, lo que se convierta en 4 medida la satisfacción y no la insatisfacción. Luego de ello, lo que supere el valor de en el indicador será "Satisfecho con servicios públicos" o 5 o menos será "Insatisfecho con los servicios públicos", esta nueva variable será llamada ind_agrupado. Analiza si ind_agrupado se encuentra asociado con el sexo del encuestado.
