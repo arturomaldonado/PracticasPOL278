@@ -82,7 +82,7 @@ Otros ejemplos:
 </style>
 ```
 ::: custom-text
-¿Cómo se relaciona la percepción de corrupción con los indicadores de democracia con los países?
+¿Cómo se relaciona la percepción de corrupción con los indicadores de democracia de los países?
 🤔
 :::
 
@@ -285,7 +285,7 @@ Sin embargo, esto no sucederá en la misma medida para todos los casos, ya que l
 1.  Realiza un gráfico de dispersión que muestre la relación entre el indicador de libertades civiles (Lib_civiles) y % de personas de acuerdo con cada una de las siguientes frases.
 
     | Variable | \% de personas de acuerdo con la frase                                                                                     |
-    |-------------|-----------------------------------------------------------|
+    |----------|----------------------------------------------------------------------------------------------------------------------------|
     | c_frase1 | "En nuestra sociedad es generalmente aceptable que las personas denuncien los casos de corrupción de los que son testigos" |
     | c_frase2 | "Si fuera testigo de un acto de corrupción, me sentiría personalmente obligado a denunciarlo"                              |
     | c_frase3 | "Denunciaría un caso de corrupción aunque tuviera que pasar un día en el juzgado para declarar"                            |
