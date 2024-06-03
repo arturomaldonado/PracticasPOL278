@@ -1,22 +1,27 @@
 ---
-title: "Práctica dirigida 9"
+title: "Práctica dirigida 10"
 output:
   html_document:
     toc: yes
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 1
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
   pdf_document:
+    latex_engine : xelatex
     toc: yes
     toc_depth: '1'
 editor_options: 
-  markdown: 
     wrap: sentence
 ---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
 
 <center><img src=" " width="200"/></center>
 
@@ -26,270 +31,367 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 ------------------------------------------------------------------------
 
+# **I. Análisis de regresión simple: ideas clave**
 
-## **Diagramas de dispersión y Correlación**
+Técnica estadística que predice el valor de una variable con los valores de otra. La regresión lineal simple es un método útil para predecir una respuesta cuantitativa **Y** partiendo de una sola variable predictora **X**, asumiendo que hay una relación aproximadamente lineal entre X e Y. Matemáticamente, esta relación lineal se representa como
 
-### Ideas clave
+Y = a + bX + E
 
-La correlación es en esencia una medida normalizada de asociación o covariación lineal entre dos variables.
+-   Y = variable dependiente o explicada. Variable cuyos valores se desea predecir o resumir. Un modelo de regresión lineal tiene como variable dependiente una variable numérica
 
--   La **correlación** es una medida de la relación (covariación) entre **dos variables cuantitativas.**
+-   a = Constante: ordenada en el origen, valor esperado de "Y" cuando X=0
 
--   La manera más sencilla de saber si dos variables están correlacionadas es determinar si co-varían (varían conjuntamente).
+-   b = Pendiente: mide el cambio de la variable "Y" por cada unidad de cambio de "X". Su magnitud sirve para predecir en cuánto aumentará "y" cada vez que "x" se incremente en una unidad.Su signo puede ser positivo o negativo, y en esto la interpretación coincide con la correlación.
 
--   Es importante hacer notar que **esta covariación o relación no implica necesariamente causalidad**: La correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental. A este tipo de relación se le llama "espuria".
+-   X = variable utilizada para predecir el valor de la variable dependiente. También se denomina variable predictora o variable explicativa. Las variables explicativas que son parte del modelo suelen ser numéricas o intervalares; sin embargo, es posible incorporar variables explicativas ordinales o categóricas.
 
-### Coeficiente de Correlación de Pearson
+-   E = Corresponde a las desviaciones de los valores verdaderos de Y con respecto a los valores esperados de "Y" (diferencia entre lo observado y estimado por el modelo). Asumimos que es independiente de "X".
 
--   "El Coeficiente de Correlación de Pearson es un estadístico paramétrico, pues se asume que ambas variables tienen una distribución aproximadamente normal, o sea, distribución normal bivariante".
+La relación entre las variables depende de la pendiente:
 
--   Es una medida que **puede variar entre -1 y +1**, ambos extremos indicando correlaciones perfectas, negativa y positiva respectivamente.
+-   Si b es positivo, Y aumenta cuando X aumenta. Es una relación directa / positiva.
 
--   Un valor de r = 0 indica que no existe relación lineal entre las dos variables.
+-   Si b es negativo, Y aumenta cuando X disminuye. Es una relación inversa / negativa.
 
-![](G1.png)
+-   Si b es cero.Y no cambia cuando X varía. No existe relación entre las variables.
 
-### Supuestos
+Asimismo, con el método de la regresión lineal se puede responder las siguientes preguntas:
 
--   Normalidad = Teorema Central del Límite plantea que, en la medida que nuestro marco muestral es suficientemente grande (mayor a 121 casos), la variable aleatoria se aproxima a un comportamiento normal.
+-   Analizar si hay una **asociación** entre las variables mediante un test de independencia estadística.
 
-### Gráfico de dispersión
+-   Analizar la **dirección** de la asociación (directa o inversa).
 
-![](G2.png)
+-   Evaluar la **fuerza** de la asociación usando una medida de asociación llamada *correlación de Pearson*.
 
-Otros ejemplos:
+-   Estimar una ecuación de regresión que **"predice"** los valores de la variable dependiente para valores de la variable independiente.
 
-![](G3.png)
+# **II. Aplicación práctica**
 
-### Aplicación práctica
+Para la sesión de hoy trabajaremos con datos del 2017 de una base de datos que contiene variables obtenidas de las siguientes bases: - Freedom in the World - V-Dem - Democracy Index - Global Corruption Barometer
 
-Vamos a analizar la relación entre el voto a Pedro Castillo y el **Índice de Desarrollo Humano (IDH)**.
+Información sobre las bases: - Freedom in the World es elaborado por Freedom House y analiza los siguientes aspectos: el proceso electoral, las políticas pluriculturales y la participación, el funcionamiento del gobierno, la libertad de expresión y de creencia, los derechos de asociación y organización, el estado de derecho, la autonomía personal y los derechos individuales.
 
-El IDH es un importante indicador del desarrollo humano que elabora cada año el PNUD. Se trata de un indicador que, a diferencia de los que se utilizaban anteriormente que medían el desarrollo económico de un país, analiza la salud, la educación y los ingresos.
+-   V-Dem es publicada por el V-Dem Institute. En ella se describe la calidad de los gobiernos a partir de información de 542 indicadores. La sata describe todos los aspectos de un gobierno, brindándo énfasis en la calidad de la democracia, la inclusividad y otros indicadores económicos.
 
-Pueden encontrar más información sobre este índice aquí: <https://hdr.undp.org/data-center>
+-   Democracy Index es elaborado por The Economist y utiliza 60 indicadores, agrupados en cinco categorías: proceso electoral y pluralismo, libertades civiles, funcionamiento del gobierno, participación política y política cultural. A partir de estas categorías posiciona a los países en alguno de los cuatro tipos de régimen: Democracia plena, democracia imperfecta, régimen híbrido y régimen autoritario.
 
-Los datos que analizaremos se encuentran a nivel de provincia, pero pueden encontrar el IDH desagregado incluso a nivel de distritos.
+-   Global Corruption Barometer es publicado por Transparencia Internacional y contiene información proveniente de la opinión pública ciudadana
 
-Variables:
-
--   *PL*: Porcentaje de voto a Pedro Castillo (Perú Libre) en segunda vuelta de las elecciones presidenciales 2021
--   *habitantes*: Número de habitantes por provincia
--   *esperanza*: Esperanza de vida al nacer
--   *secundaria*: Población (18 años) con educación secundaria completa
--   *educación*: Años de educación (población de 25 a más)
--   *ingresos*: Ingreso familiar per cápita
--   *IDH*: Índice de Desarrollo Humano, en una escala de 0 a 1
-
-### Cargamos nuestra base de datos:
-
-```{r eval=FALSE}
+```{r}
 library(rio)
-data = import("Data Provincias.xlsx")
-head(data)
+data=import("corrupcion-democracia-1.xlsx")
 ```
 
-### Ejercicio 1: Relación entre el voto a Pedro Castillo y el IDH
+## **¿La percepción de corrupción en los funcionarios impacta en el puntaje del índice de la democracia?**
 
-**Paso 1: Exploramos variables de interés**
+Ejercicio 1: Impacto de la percepción de la corrupción de funcionarios en el puntaje de democracia participativa (según V-Dem), por país.
 
-Voto a Pedro Castillo:
+Las variables que utilizaremos serán:
 
-```{r eval=FALSE}
-str(data$PL)
-```
+**c_funcionarios** = Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción
 
-Análisis descriptivo:
+**Part** = Indicador de democracia participativa - Vdem
 
-```{r eval=FALSE}
-library(tidyverse)
-data %>%
- summarize(Min = min(PL),
-           Media = mean(PL),
-           Mediana = median(PL),
-           Max = max(PL))
-```
+### Gráfico de dispersión:
 
-IDH:
+Elaboramos el gráfico de dispersión y la recta
 
-```{r eval=FALSE}
-str(data$IDH)
-```
-
-Análisis descriptivo:
-
-```{r eval=FALSE}
-data %>%
- summarize(Min = min(IDH),
-           Media = mean(IDH),
-           Mediana = median(IDH),
-           Max = max(IDH))
-```
-
-**Paso 2: Gráfico de dispersión**
-
-Visualizamos la relación entre dos variables cuantitativas. Esta "nube" de puntos en el gráfico de dispersión nos da una idea visual (preliminar) de la probable relación entre las variables.
-
-```{r eval=FALSE}
-ggplot(data, aes(x=PL, y=IDH)) +
-  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Índice de Desarrollo Humano") +
-  ggtitle("Relación entre el IDH y el voto a Castillo") +
-  theme_light()+ geom_smooth(method=lm,se=F)
-```
-
-¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
-
-**Paso 3: Correlación**
-
-Dos hipótesis:
-
--   H0 = No existe correlación entre el IDH y el % de voto a Pedro Castillo
--   H1 = Sí existe correlación entre el IDH y el % de voto a Pedro Castillo
-
-```{r eval=FALSE}
-#Prueba de correlación
-cor.test(data$PL, data$IDH)
-```
-
--   p \< 0.05 Rechazas la H0/Aceptas la H1 (sí hay correlación)
--   P \> 0.05 Aceptas la H0/Rechazas la H1 (no hay correlación)
-
-**¿Qué nos dice el resultado?** Interpretación: Dado que el p-valor es menor a 0.05, no hay suficiente evidencia estadística para aceptar la H0. Por lo tanto, aceptamos la H1 de que "Sí existe correlación entre el IDH y el % de voto a Pedro Castillo".
-
-El coeficiente es de -0.43 lo que quiere decir: (i) Se trata de una "correlación negativa"; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación mediana.
-
-### Ejercicio 2: Relación entre el voto a Pedro Castillo y los ingresos per cápita
-
-**Paso 1: Exploramos variables de interés**
-
-Ingresos per cápita:
-
-```{r eval=FALSE}
-str(data$ingresos)
-```
-
-Análisis descriptivo:
-
-```{r eval=FALSE}
-data %>%
- summarize(Min = min(ingresos),
-           Media = mean(ingresos),
-           Mediana = median(ingresos),
-           Max = max(ingresos))
-```
-
-**Paso 2: Gráfico de dispersión**
-
-```{r eval=FALSE}
+```{r}
+library(dplyr)
 library(ggplot2)
-ggplot(data, aes(x=PL, y=ingresos)) +
-  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Ingresos per cápita") +
-  ggtitle("Relación entre los ingresos per cápita y el voto a Castillo") +
-  theme_light() + geom_smooth(method=lm,se=F)
-```
-
-¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
-
-**Paso 3: Correlación**
-
--   H0 = No existe correlación entre los ingresos per cápita y el % de voto a Pedro Castillo
--   H1 = Sí existe correlación entre los ingresos per cápita y el % de voto a Pedro Castillo
-
-```{r eval=FALSE}
-#Prueba de correlación
-cor.test(data$PL, data$ingresos)
-```
-
-¿Qué nos dice el resultado?
-
-### Ejercicio 3: Relación entre el voto a Pedro Castillo y el acceso a educación secundaria
-
-**Paso 1: Exploramos variables de interés**
-
-Educación secundaria:
-
-```{r eval=FALSE}
-str(data$secundaria)
-```
-
-Análisis descriptivo:
-
-```{r eval=FALSE}
 data %>%
- summarize(Min = min(secundaria),
-           Media = mean(secundaria),
-           Mediana = median(secundaria),
-           Max = max(secundaria))
+  ggplot(aes (x=c_funcionarios*100, y=Part)) +
+  geom_point(colour="skyblue4") +  
+  xlab("% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
+       públicos están involucrados en corrupción") +  
+  ylab("Índicador de democracia participativa")+ theme_light() + 
+  geom_smooth(method="lm", se = T, colour="green4")
 ```
 
-**Paso 2: Gráfico de dispersión**
+A primera vista parece haber un leve impacto, y la relación entre nuestras variables se perfila como negativa. Comprobémoslo ...
 
-```{r eval=FALSE}
-ggplot(data, aes(x=PL, y=secundaria)) +
-  geom_point(colour="red") +  xlab("Acceso a educación secundaria") +  ylab("% voto a Pedro Castillo") +
-  ggtitle("Relación entre el acceso a educación secundaria y el voto a Castillo") +
-  theme_light()+ geom_smooth(method=lm,se=F)
+### Creación del modelo
+
+```{r}
+modelo1=lm(Part~c_funcionarios,data=data)
+summary(modelo1)
 ```
 
-¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
+### Interpretación
 
-**Paso 3: Correlación**
+*¿El porcentaje de personas que creen que los funcionarios son corruptos influyen en el indicador de democracia participativa?*
 
--   H0 = No existe correlación entre el acceso a educación secundaria y el % de voto a Pedro Castillo
--   H1 = Sí existe correlación entre el acceso a educación secundaria y el % de voto a Pedro Castillo
+Para interpretar los resultados del modelo debemos tener presente lo siguiente:
 
-```{r eval=FALSE}
-#Prueba de correlación
-cor.test(data$PL, data$secundaria)
+#### Primero: p-value
+
+Sabremos si la variable independiente impacta en la dependiente al revisar la significancia del p valor.
+
+Establezcamos nuestras hipótesis:
+
+-   H0: El modelo de regresión no es válido
+
+-   H1: El modelo de regresión es válido (variable X aporta al modelo)
+
+Como el p valor es **0.002453**, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el índice de democracia participativa y la percepción de funcionarios corruptos por país.
+
+En otras palabras, podemos decir que la percepción de funcionarios corruptos del país *sí influye* en el puntaje obtenido en el índice de democracia participativa.
+
+#### Segundo: pendiente/b
+
+Explica cómo es el efecto de x en y. Para ello analizamos el valor del parámetro de la pendiente.
+
+En este caso, al ser este valor **-0.31779**, concluímos que cada vez que el valor de la percepción de corrupción en el país aumenta en 1, el puntaje del índice de democracia participativa disminuye en 0.318. Es decir, tenemos una *relación inversa o negativa*.
+
+#### Tercero: R^2^
+
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por la variable independiente (x), para ello revisamor el **R^2^** (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
+
+En nuestro modelo, este arrojó el valor de **0.07765**, por lo que podemos concluir que aproximadamente el **7.8%** (0.07765\*100)de la variabilidad en el índice de democracia participativa puede ser explicado porel porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción.
+
+Esto quiere decir que la cantidad de variabilidad explicada es relativamente baja. Por lo que podemos afirmar que hay otros factores más importantes o complejos que afectan la percepción de corrupción en cada país.
+
+#### Cuarto: Ecuación de la recta
+
+Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los dos valores de la tabla que se encuentran en la columna de "Estimate", el valor de la primera fila es el del intercepto (a) y el de la segunda es el de la pendiente (b).
+
+Del segundo paso, ya conocíamos que el valor de la pendiente es **-0.31779.** Si volvemos a revisar nuestra tabla podemos observar que en el cruce de Estimate e Intercept está el valor de **0.49004**, este sería nuestro intercepto. Ahora, armemos nuestra ecuación de la recta:
+
+**Ŷ = 0.49004 - 0.31779∗X**
+
+Donde:
+
+-   X = Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción - (independiente)
+-   Y = Indicador de democracia participativa - (dependiente)
+
+**¿Qué se quiere saber?**: Queremos saber si el % de personas que opinan que los funcionarios son corruptos influye en el indicador de democracia participativa.
+
+Esa ecuación crea una línea recta en el diagrama de dispersión que representa la relación entre ambas variables y además indica que el cambio esperado en nuestra variable dependiente (Porcentaje de personas que opinan que la mayoría o todos los funcionarios del gobierno están envueltos en corrupción) por cada cambio de una unidad en nuestra variable independiente (Indicador de democracia participativa). Así, con esta ecuación se puede estimar el valor de Y para cualquier valor de X.
+
+También podemos obtener los coeficientes de intercepción/intercepto y pendiente de la siguiente forma:
+
+```{r}
+modelo1$coefficients
 ```
 
-¿Qué nos dice el resultado?
+#### Quinto: Predecir
 
-En el ejericicio anterior, nuestro p= 0.14, el cual es mayor a 0.05. Por ello, **no se puede rechazar la H0** y, por el contrario, se debe concluir que no existe una correlación entre el acceso a la educación secundaria y el % de voto a Pedro Castillo.
+Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente (Y) para un valor dado de la variable independiente (X).
 
-### Ejercicio 4: Relación entre el voto a Pedro Castillo y la esperanza de vida
+Por ejemplo, si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4, solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
 
-**Paso 1: Exploramos variables de interés**
+Sustituyendo el valor de "x" en la ecuación, tenemos:
 
-Esperanza de vida:
+**Ŷ = 0.49004 - 0.31779 \* 0.4**
 
-```{r eval=FALSE}
-str(data$esperanza)
-```
+**Ŷ = 0.49004 - 0.12712**
 
-Análisis descriptivo:
+**Ŷ = 0.36292**
 
-```{r eval=FALSE}
+Por lo tanto, utilizando la ecuación de la recta, cuando el índice de democracia participativa es 0.4 , podemos predecir que aproximadamente el 36.2% de las personas opinan que la mayoría/todos los funcionarios están envueltos en corrupción en ese país.
+
+Ejercicio 2: Impacto de la percepción de derechos políticos en el puntaje del índice de libertad (según Freedom House), por país
+
+Las variables que utilizaremos serán:
+
+**Der_pol** = Puntaje del indicador de derechos políticos
+
+**Libertad** = Puntuación de libertad - Freedom House
+
+## **¿La percepción de corrupción en los funcionarios impacta en el puntaje del índice de la democracia?**
+
+### Gráfico de dispersión:
+
+Elaboramos el gráfico de dispersión y la recta
+
+```{r}
+library(dplyr)
+library(ggplot2)
 data %>%
- summarize(Min = min(esperanza),
-           Media = mean(esperanza),
-           Mediana = median(esperanza),
-           Max = max(esperanza))
+  ggplot(aes (x=Der_pol, y=Libertad)) +
+  geom_point(colour="blue2") +  
+  xlab("Puntaje del indicador de derechos políticos") +  
+  ylab("Puntaje del índice de libertad")+ theme_light() + 
+  geom_smooth(method="lm", se = T, colour="red3")
 ```
 
-**Paso 2: Gráfico de dispersión**
+A primera vista parece haber un impacto fuerte, y la relación entre nuestras variables se perfila como negativa o inversa.
 
-```{r eval=FALSE}
-ggplot(data, aes(x=PL, y=esperanza)) +
-  geom_point(colour="red") +  xlab("% voto a Pedro Castillo") +  ylab("Esperanza de vida") +
-  ggtitle("Relación entre la esperanza de vida y el voto a Castillo") +
-  theme_light() + geom_smooth(method=lm, se=F)
+### Creación del modelo
+
+```{r}
+modelo2=lm(Libertad~Der_pol,data=data)
+summary(modelo2)
 ```
 
-¿Qué nos indica el gráfico? ¿Existirá correlación? ¿Con qué fuerza? ¿Qué sentido?
+### Interpretación
 
-**Paso 3: Correlación**
+#### Primero: p-value
 
--   H0 = No existe correlación entre la esperanza de vida y el % de voto a Pedro Castillo
--   H1 = Sí existe correlación entre la esperanza de vida y el % de voto a Pedro Castillo
+Sabremos si la variable independiente impacta en la dependiente al revisar la significancia del p valor.
 
-```{r eval=FALSE}
-#Prueba de correlación
-cor.test(data$PL, data$esperanza)
+Establezcamos nuestras hipótesis:
+
+-   H0: El modelo de regresión no es válido
+
+-   H1: El modelo de regresión es válido (variable X aporta al modelo)
+
+Como el p valor es **2.2e-16**, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el puntaje del indicador de derechos políticos y el puntaje del índice de Libertad, por país.
+
+En otras palabras, podemos decir que la percepción de la existencia de derechos políticos *sí influye* en el puntaje obtenido en el índice de libertad.
+
+#### Segundo: pendiente/b
+
+Explica cómo es el efecto de x en y. Para ello analizamos el valor del parámetro de la pendiente.
+
+En este caso, al ser este valor **-12.6083**, concluimos que cada vez que el valor de la percepción de la existencia de derechos políticos en el país aumenta en 1, el puntaje del índice de libertad disminuye en 12.61 puntos. Es decir, tenemos una *relación inversa o negativa*.
+
+#### Tercero: R^2^
+
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por la variable independiente (x), para ello revisamor el **R^2^** (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
+
+En nuestro modelo, este arrojó el valor de **0.9494**, por lo que podemos concluir que aproximadamente el **95%** (0.9494\*100)de la variabilidad en el puntaje de percepción de derechos políticos respecto del índice de libertad.
+
+Esto quiere decir que la cantidad de variabilidad explicada es muy alta. Por tanto, podemos afirmar que la percepción de la existencia de derechos políticos tiene el impacto mayoritario sobre el puntaje del índice de la libertad.
+
+#### Cuarto: Ecuación de la recta
+
+Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los dos valores de la tabla que se encuentran en la columna de "Estimate", el valor de la primera fila es el del intercepto (a) y el de la segunda es el de la pendiente (b).
+
+Del segundo paso, ya conocíamos que el valor de la pendiente es **-12.6083.** Si volvemos a revisar nuestra tabla podemos observar que en el cruce de Estimate e Intercept está el valor de **103.2894**, este sería nuestro intercepto. Ahora, armemos nuestra ecuación de la recta:
+
+**Ŷ = 103.2894 -12.6083∗X**
+
+Donde:
+
+-   X = Puntaje del indicador de derechos políticos - (independiente)
+-   Y = Indicador de libertad, seún Freedom House - (dependiente)
+
+También podemos obtener los coeficientes de intercepción/intercepto y pendiente de la siguiente forma:
+
+```{r}
+modelo2$coefficients
 ```
 
-¿Qué nos dice el resultado?
+#### Quinto: Predecir
+
+Podemos utilizar la relación linear establecida por la ecuación para estimar el valor de la variable dependiente (Y) para un valor dado de la variable independiente (X).
+
+Por ejemplo, si queremos calcular el valor de porcentaje de personas que opinan que la mayoría/todos los funcionarios están envueltos en corrupción cuando el índice de democracia participativa (0 a 1) es 0.4, solo tenemos que reemplazar el valor de x por 0.4 en nuestra ecuación.
+
+Sustituyendo el valor de "x" en la ecuación, tenemos:
+
+**Ŷ = 103.2894 -12.6083∗X \* 6**
+
+**Ŷ = 103.2894 - 75.6498**
+
+**Ŷ = 27.6396**
+
+Por lo tanto, utilizando la ecuación de la recta, cuando el puntaje del indicador de derechos políticos en un país es 6 , podemos predecir que aproximadamente el puntaje del indicador de libertad será de 27.7 puntos en ese país.
+
+Ejercicio 3: Impacto de la percepción de funcionamiento del gobierno en el puntaje del índice de democracia (según Democracy Index), por país
+
+Las variables que utilizaremos serán:
+
+**Fun_gob** = Puntaje del indicador de funcionamiento del gobierno
+
+**Democracia** = Puntuación del indice de democracia - Democracy Index
+
+## **¿La percepción del funcionamiento del gobierno influye en el puntaje del indice de la democracia (Democracy Index)?**
+
+### Gráfico de dispersión:
+
+Elaboramos el gráfico de dispersión y la recta
+
+```{r}
+library(dplyr)
+library(ggplot2)
+data %>%
+  ggplot(aes (x=Fun_gob, y=Democracia)) +
+  geom_point(colour="yellow4") +  
+  xlab("Puntaje del indicador de derechos políticos") +  
+  ylab("Puntaje del índice de libertad")+ theme_light() + 
+  geom_smooth(method="lm", se = T, colour="purple3")
+```
+
+A primera vista parece haber un impacto moderado o mediano, y la relación entre nuestras variables se perfila como positiva o directa.
+
+### Creación del modelo
+
+```{r}
+modelo3=lm(Democracia~Fun_gob,data=data)
+summary(modelo3)
+```
+
+### Interpretación
+
+#### Primero: p-value
+
+Sabremos si la variable independiente impacta en la dependiente al revisar la significancia del p valor.
+
+Establezcamos nuestras hipótesis:
+
+-   H0: El modelo de regresión no es válido
+
+-   H1: El modelo de regresión es válido (variable X aporta al modelo)
+
+Como el p valor es **2.2e-16**, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. Es decir, podemos decir que hay evidencia estadística suficiente para afirmar que existe una relación significativa entre el puntaje del indicador del funcionamiento del gobierno y el puntaje del índice de la democracia, por país.
+
+En otras palabras, podemos decir que la percepción acerca del funcionamiento del gobierno *sí influye* en el puntaje obtenido en el índice de la democracia.
+
+#### Segundo: pendiente/b
+
+Explica cómo es el efecto de x en y. Para ello analizamos el valor del parámetro de la pendiente.
+
+En este caso, al ser este valor **0.7351**, concluimos que cada vez que el valor de la percepción de un buen funcionamiento del gobierno en el país aumenta en 1, el puntaje del índice de democracia aumenta en 0.74 puntos. Es decir, tenemos una *relación directa o positiva*.
+
+#### Tercero: R^2^
+
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por la variable independiente (x), para ello revisamor el **R^2^** (Multiple R-squared). Los valores van de 0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad explicada. El R2 es un indicador de ajuste del modelo.
+
+En nuestro modelo, este arrojó el valor de **0.8213**, por lo que podemos concluir que aproximadamente el **82%** (0.8213\*100)del puntaje en el índice de la democracia es explicado por la percepción del funcionamiento del gobierno del país.
+
+Esto quiere decir que la cantidad de variabilidad explicada es alta (sin llegar a ser muy alta). Por tanto, podemos afirmar que la percepción de un buen funcionamiento del gobierno tiene un impacto considerable sobre el puntaje del índice de la democracia.
+
+#### Cuarto: Ecuación de la recta
+
+Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos los dos valores de la tabla que se encuentran en la columna de "Estimate", el valor de la primera fila es el del intercepto (a) y el de la segunda es el de la pendiente (b).
+
+Del segundo paso, ya conocíamos que el valor de la pendiente es **+0.7351** Si volvemos a revisar nuestra tabla podemos observar que en el cruce de Estimate e Intercept está el valor de **2.0470**, este sería nuestro intercepto. Ahora, armemos nuestra ecuación de la recta:
+
+**Ŷ =2.0470 + 0.7351∗X**
+
+Donde:
+
+-   X = Puntaje del indicador de funcionamiento del gobierno - (independiente)
+-   Y = Indicador de democracia, según el Democracy Index - (dependiente)
+
+También podemos obtener los coeficientes de intercepción/intercepto y pendiente de la siguiente forma:
+
+```{r}
+modelo3$coefficients
+```
+
+#### Quinto: Predecir
+
+Sustituyendo el valor de "x" en la ecuación, tenemos:
+
+**Ŷ = 2.0470 + 0.7351∗X \* 1.5**
+
+**Ŷ = 2.0470 + 1.10265**
+
+**Ŷ = 3.14965**
+
+Por lo tanto, utilizando la ecuación de la recta, cuando el puntaje del indicador de funcionamiento del gobierno en un país es 1.5, podemos predecir que aproximadamente el puntaje del indicador de democracia será de 3.15 puntos en ese país.
+
+# **Practica resolviendo los siguientes ejercicios en casa**
+
+Ejercicio 1: Impacto del % de personas que creen que los congresistas están envueltos en actos de corrupción (c_congreso) en el índice de participación política de V-Dem (Part).
+
+Ejercicio 2: Impacto de la percepción ciudadana acerca de los procesos electorales (Proceso_elect) en el índice de la democracia de Democracy Index (Democracia).
+
+Ejercicio 3: Impacto de la percepción sobre libertades civiles (Lib_civiles) en el puntaje del índice de la libertad de Freedom House (Libertad).
