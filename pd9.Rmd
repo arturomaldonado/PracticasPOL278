@@ -202,7 +202,7 @@ Las variables que utilizaremos serán:
 
 **Libertad** = Puntuación de libertad - Freedom House
 
-## **¿La percepción de corrupción en los funcionarios impacta en el puntaje del índice de la democracia?**
+## **¿El puntaje de libertad impacta en el puntaje de los derechos politicos?**
 
 ### Gráfico de dispersión:
 
