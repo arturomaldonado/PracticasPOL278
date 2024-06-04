@@ -202,7 +202,7 @@ Las variables que utilizaremos serán:
 
 **Libertad** = Puntuación de libertad - Freedom House
 
-## **¿El puntaje de libertad impacta en el puntaje de los derechos politicos?**
+## **¿Los derechos políticos impactan en el puntaje de libertad?**
 
 ### Gráfico de dispersión:
 
