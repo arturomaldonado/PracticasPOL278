@@ -106,7 +106,7 @@ Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podem
 
 Observamos el **R2 ajustado**.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared, por ser un modelo lineal múltiple).
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamos el R2 (Adjusted R-squared, por ser un modelo lineal múltiple).
 
 En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos concluir que el modelo explica aproximadamente el 92.2% (0.9217\*100) de la variabilidad en el acceso a la información (variable dependiente). En otras palabras, este valor alto de R cuadrado ajustado indica que el modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar la relación entre las variables independientes y la variable dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice nada sobre la significancia estadística de las variables individuales, ni sobre la causalidad. Por ello analizaremos también las variables de forma independiente en el siguiente paso.
 
@@ -134,6 +134,25 @@ De esa manera puedo hallar la ecuación:
 $$
 Y = -0.12 + \text{participaciónDigital} \times (-0.078) + \text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times (0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times (0.013) + \text{UsuariosInternet} \times (0.0015)
 $$
+
+Es decir, se tienen las siguientes relaciones entre VD y las VI:
+
+- Por cada unidad adicional de puntaje en participación digital, el índice de acceso a la información **disminuye en 0.078 puntos** (relación inversa).
+
+- Por cada unidad adicional de puntaje de servicios online, el índice de acceso a la información **aumenta en 0.08 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje en Capital Humano, el índice de acceso a la información **aumenta en 0.08 puntos** (relación directa).
+
+- Por cada unidad adicional de puntaje de telecomunicaciones e infraestructura, el índice de acceso a la información **aumenta en 0.35 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de Procesos Electorales, el índice de acceso a la información **aumenta en 0.0075 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de Cultura política, el índice de acceso a la información **aumenta en 0.013 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de acceso de Usuarios a Internet, el índice de acceso a la información **aumenta en 0.0015 puntos**. (relación directa).
+
+**OJO: La ecuación de la recta debe incluir TODAS las variables analizadas, tengan o no una influencia significativa en la VD.**
+
 ¿Qué sucede si retiro las variables independientes que no aportan al modelo 1? Veamos un segundo modelo 👀 .
 
 ## **Modelo 2**
@@ -161,7 +180,7 @@ Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podem
 
 Observamos el **R2 ajustado**.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamos el R2 (Adjusted R-squared).
 
 En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos concluir mi modelo explica aproximadamente el 92.25% (0.9225\*100) de la variabilidad en el acceso a la información (variable dependiente). E
 
@@ -183,10 +202,23 @@ De esa manera puedo hallar la ecuación:
 $$
 Y = -0.12 + \text{Capital\_Humano} \times (0.288) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times (0.0145) + \text{UsuariosInternet} \times (0.0016)
 $$
+En este modelo, las variables se interpretan de la siguiente manera:
+
+- Por cada unidad adicional de puntaje en Capital Humano, el índice de acceso a la información **aumenta en 0.288 puntos** (relación directa).
+
+- Por cada unidad adicional de puntaje de telecomunicaciones e infraestructura, el índice de acceso a la información **aumenta en 0.35 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de Procesos Electorales, el índice de acceso a la información **aumenta en 0.00758 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de Cultura política, el índice de acceso a la información **aumenta en 0.0145 puntos**. (relación directa).
+
+- Por cada unidad adicional de puntaje de acceso de Usuarios a Internet, el índice de acceso a la información **aumenta en 0.0016 puntos**. (relación directa).
 
 ¿Mi modelo ha mejorado?
 
 Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto, con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así la mejora no ha haya sido sustancial).
+
+También es importante notar que los coeficientes estimados de las VI han cambiado.
 
 ### **Predicción**
 
@@ -263,7 +295,7 @@ Luego nos fijamos en el **p-value** Como el p valor es 7.486e-07, entonces podem
 
 Observamos el **R2 ajustado**.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Adjusted R-squared).
 
 En nuestro modelo, este arrojó el valor de 0.09483 , por lo que podemos concluir el modelo explica aproximadamente el 9.48% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente).
 
@@ -286,7 +318,21 @@ De esa manera puedo hallar la ecuación:
 
 $$
 Y = 7.2635 + \text{Edad} \times (-0.0002) + \text{Genero} \times (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
-$$ **¿Qué sucede si retiramos aquellas variables que no aportan al modelo?** Hagamos un siguiente modelo
+$$ 
+
+¿Cómo interpretamos los coeficientes en este caso?
+
+- Por cada año adicional de edad, el tiempo de sueño **disminuye en 0.0002 horas** (relación inversa).
+
+- Si la persona es hombre, su tiempo de sueño **aumenta en 0.1167 horas** (relación directa).
+
+- Si la persona ha estado en primera línea en la lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.9295 horas de sueño** (relacuón inversa).
+
+- Si la persona trabaja desde casa, su tiempo de sueño **aumenta en 0.0814 horas** (relación directa).
+
+- Si la persona tiene niños en su casa, su tiempo de sueño **disminuye en 0.5412 horas** (relación inversa).
+
+**¿Qué sucede si retiramos aquellas variables que no aportan al modelo?** Hagamos un siguiente modelo.
 
 ## **Modelo 4**
 
@@ -312,7 +358,7 @@ Luego nos fijamos en el **p-value** Como el p valor es 1.375e-08 entonces podemo
 
 Observamos el **R2 ajustado**.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Adjusted R-squared).
 
 En nuestro modelo, este arrojó el valor de 0.102 , por lo que podemos concluir mi modelo explica aproximadamente el 10.2% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente). 
 
@@ -333,16 +379,26 @@ De esa manera puedo hallar la ecuación:
 
 $$
 Y = 7.35  + \text{Primera linea} \times (-0.97) +  \text{Tiene niños en casa} \times (-0.54)
-$$ **¿Qué variable aporta más al modelo?**
+$$ 
+
+En este caso, los coeficientes se interpretan de la siguiente manera:
+
+- Si la persona perteneció a la primera línea de lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.97 horas** (relación inversa).
+
+- Si la persona tiene niños en casa, su tiempo de sueño **disminuye en 0.54 horas** (relación inversa).
 
 ¿Mi modelo ha mejorado?
+
+Ligeramente: el R2 ajustado, de .948 (9.48%), subió a 0.102 (10.2%) al momento de explicar la variabilidad de horas de sueño de las personas.
 
 ### **Predicción**
 
 Supondiendo que alguien **NO es de primera línea** y **SI tiene niños en casa**:
 
-**Y = -0.97(0) - 0.54(1)**
+**Y = 7. 35 - 0.97(0) - 0.54(1)**
 
-**Y = -0.54**
+**Y = 7.35 - 0.54**
 
-Se interpreta que, si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño **disminuyen en 0.54 horas**.
+**Y = 6.81**
+
+Se interpreta que, si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño serán, aproximadamente, **6.81 horas**.

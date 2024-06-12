@@ -521,8 +521,8 @@ modelo de predicción.</p>
 <h3><strong>¿Qué tanto explica el modelo?</strong></h3>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared, por ser un modelo lineal múltiple).</p>
+explicada por las variables independientes elegidas, para ello revisamos
+el R2 (Adjusted R-squared, por ser un modelo lineal múltiple).</p>
 <p>En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos
 concluir que el modelo explica aproximadamente el 92.2% (0.9217*100) de
 la variabilidad en el acceso a la información (variable dependiente). En
@@ -571,8 +571,36 @@ Y = -0.12 + \text{participaciónDigital} \times (-0.078) +
 (0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) +
 \text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times
 (0.013) + \text{UsuariosInternet} \times (0.0015)
-\]</span> ¿Qué sucede si retiro las variables independientes que no
-aportan al modelo 1? Veamos un segundo modelo 👀 .</p>
+\]</span></p>
+<p>Es decir, se tienen las siguientes relaciones entre VD y las VI:</p>
+<ul>
+<li><p>Por cada unidad adicional de puntaje en participación digital, el
+índice de acceso a la información <strong>disminuye en 0.078
+puntos</strong> (relación inversa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de servicios online, el
+índice de acceso a la información <strong>aumenta en 0.08
+puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje en Capital Humano, el índice
+de acceso a la información <strong>aumenta en 0.08 puntos</strong>
+(relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de telecomunicaciones e
+infraestructura, el índice de acceso a la información <strong>aumenta en
+0.35 puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de Procesos Electorales, el
+índice de acceso a la información <strong>aumenta en 0.0075
+puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de Cultura política, el
+índice de acceso a la información <strong>aumenta en 0.013
+puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de acceso de Usuarios a
+Internet, el índice de acceso a la información <strong>aumenta en 0.0015
+puntos</strong>. (relación directa).</p></li>
+</ul>
+<p><strong>OJO: La ecuación de la recta debe incluir TODAS las variables
+analizadas, tengan o no una influencia significativa en la
+VD.</strong></p>
+<p>¿Qué sucede si retiro las variables independientes que no aportan al
+modelo 1? Veamos un segundo modelo 👀 .</p>
 </div>
 </div>
 <div id="modelo-2" class="section level2">
@@ -625,8 +653,8 @@ modelo de predicción.</p>
 <h3><strong>¿Qué tanto explica el modelo?</strong></h3>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
+explicada por las variables independientes elegidas, para ello revisamos
+el R2 (Adjusted R-squared).</p>
 <p>En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos
 concluir mi modelo explica aproximadamente el 92.25% (0.9225*100) de la
 variabilidad en el acceso a la información (variable dependiente). E</p>
@@ -656,12 +684,32 @@ Y = -0.12 + \text{Capital\_Humano} \times (0.288) +
 \text{Telecommunicacion\_Infrastructura} \times (0.35) +
 \text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times
 (0.0145) + \text{UsuariosInternet} \times (0.0016)
-\]</span></p>
+\]</span> En este modelo, las variables se interpretan de la siguiente
+manera:</p>
+<ul>
+<li><p>Por cada unidad adicional de puntaje en Capital Humano, el índice
+de acceso a la información <strong>aumenta en 0.288 puntos</strong>
+(relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de telecomunicaciones e
+infraestructura, el índice de acceso a la información <strong>aumenta en
+0.35 puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de Procesos Electorales, el
+índice de acceso a la información <strong>aumenta en 0.00758
+puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de Cultura política, el
+índice de acceso a la información <strong>aumenta en 0.0145
+puntos</strong>. (relación directa).</p></li>
+<li><p>Por cada unidad adicional de puntaje de acceso de Usuarios a
+Internet, el índice de acceso a la información <strong>aumenta en 0.0016
+puntos</strong>. (relación directa).</p></li>
+</ul>
 <p>¿Mi modelo ha mejorado?</p>
 <p>Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo
 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto,
 con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así
 la mejora no ha haya sido sustancial).</p>
+<p>También es importante notar que los coeficientes estimados de las VI
+han cambiado.</p>
 </div>
 <div id="predicción" class="section level3">
 <h3><strong>Predicción</strong></h3>
@@ -791,7 +839,7 @@ modelo de predicción.</p>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
 explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
+el R2 (Adjusted R-squared).</p>
 <p>En nuestro modelo, este arrojó el valor de 0.09483 , por lo que
 podemos concluir el modelo explica aproximadamente el 9.48% de la
 variabilidad en el promedio de las horas de sueño del personal de salud
@@ -821,8 +869,23 @@ class="section level3">
 Y = 7.2635 + \text{Edad} \times (-0.0002) + \text{Genero} \times
 (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde
 casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
-\]</span> <strong>¿Qué sucede si retiramos aquellas variables que no
-aportan al modelo?</strong> Hagamos un siguiente modelo</p>
+\]</span></p>
+<p>¿Cómo interpretamos los coeficientes en este caso?</p>
+<ul>
+<li><p>Por cada año adicional de edad, el tiempo de sueño
+<strong>disminuye en 0.0002 horas</strong> (relación inversa).</p></li>
+<li><p>Si la persona es hombre, su tiempo de sueño <strong>aumenta en
+0.1167 horas</strong> (relación directa).</p></li>
+<li><p>Si la persona ha estado en primera línea en la lucha contra la
+pandemia de Covid, su tiempo de sueño <strong>disminuye en 0.9295 horas
+de sueño</strong> (relacuón inversa).</p></li>
+<li><p>Si la persona trabaja desde casa, su tiempo de sueño
+<strong>aumenta en 0.0814 horas</strong> (relación directa).</p></li>
+<li><p>Si la persona tiene niños en su casa, su tiempo de sueño
+<strong>disminuye en 0.5412 horas</strong> (relación inversa).</p></li>
+</ul>
+<p><strong>¿Qué sucede si retiramos aquellas variables que no aportan al
+modelo?</strong> Hagamos un siguiente modelo.</p>
 </div>
 </div>
 <div id="modelo-4" class="section level2">
@@ -871,7 +934,7 @@ modelo de predicción.</p>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
 explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
+el R2 (Adjusted R-squared).</p>
 <p>En nuestro modelo, este arrojó el valor de 0.102 , por lo que podemos
 concluir mi modelo explica aproximadamente el 10.2% de la variabilidad
 en el promedio de las horas de sueño del personal de salud (variable
@@ -896,17 +959,30 @@ class="section level3">
 <p><span class="math display">\[
 Y = 7.35  + \text{Primera linea} \times (-0.97) +  \text{Tiene niños en
 casa} \times (-0.54)
-\]</span> <strong>¿Qué variable aporta más al modelo?</strong></p>
+\]</span></p>
+<p>En este caso, los coeficientes se interpretan de la siguiente
+manera:</p>
+<ul>
+<li><p>Si la persona perteneció a la primera línea de lucha contra la
+pandemia de Covid, su tiempo de sueño <strong>disminuye en 0.97
+horas</strong> (relación inversa).</p></li>
+<li><p>Si la persona tiene niños en casa, su tiempo de sueño
+<strong>disminuye en 0.54 horas</strong> (relación inversa).</p></li>
+</ul>
 <p>¿Mi modelo ha mejorado?</p>
+<p>Ligeramente: el R2 ajustado, de .948 (9.48%), subió a 0.102 (10.2%)
+al momento de explicar la variabilidad de horas de sueño de las
+personas.</p>
 </div>
 <div id="predicción-1" class="section level3">
 <h3><strong>Predicción</strong></h3>
 <p>Supondiendo que alguien <strong>NO es de primera línea</strong> y
 <strong>SI tiene niños en casa</strong>:</p>
-<p><strong>Y = -0.97(0) - 0.54(1)</strong></p>
-<p><strong>Y = -0.54</strong></p>
+<p><strong>Y = 7. 35 - 0.97(0) - 0.54(1)</strong></p>
+<p><strong>Y = 7.35 - 0.54</strong></p>
+<p><strong>Y = 6.81</strong></p>
 <p>Se interpreta que, si alguien no es de primera línea y sí tiene niños
-en casa, sus horas de sueño <strong>disminuyen en 0.54
+en casa, sus horas de sueño serán, aproximadamente, <strong>6.81
 horas</strong>.</p>
 </div>
 </div>
