@@ -188,24 +188,32 @@ $$
 
 Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto, con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así la mejora no ha haya sido sustancial).
 
+### **Predicción**
+
+Si el puntaje en CapitalHumano es 0.8, de telecomunicaciones e infraestructura es 0.6, de proceso electoral de 9 y de Usuarios de internet es de 56.
+
+**Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) + 0.002(56)**
+
+**Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.112**
+
+**Y = 0.524**
+
+En este caso, el índice de acceso a la información es de **0.524** puntos.
+
 ## **Qué factores determinan la calidad de sueño del personal de salud en pandemia**
 
 La pandemia de COVID-19 tuvo una repercusión significativa en el personal de salud en todo el mundo. Los trabajadores de la salud estuvieron en la primera línea de batalla, enfrentando desafíos sin precedentes. Además de los riesgos físicos, el personal de salud enfrentó una carga emocional y psicológica abrumadora. Una de las principales preocupaciones era la calidad del sueño del personal de salud, pues podía repercutir directamente en la calidad de atención de los pacientes. 
 
 -   Q1: Edad
--   Q2: Género
--   Q7: ¿Se encentra en la primera línea de atención del Covid-19?
--   Q8: ¿Trabaja desde casa?
--   Q11: ¿Tiene niños en casa?
+-   Q2: Género (0 = "Mujer", 1 = "Hombre")
+-   Q7: ¿Se encentra en la primera línea de atención del Covid-19? (0 = "No", 1 = "Si")
+-   Q8: ¿Trabaja desde casa? (0 = "No", 1 = "Si")
+-   Q11: ¿Tiene niños en casa? (0 = "No", 1 = "Si")
 -   Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?
 
 ```{r}
-Covid=import("COVID_pd12.xlsx")
+Covid=import("covid_pd12.csv")
 names(Covid)
-```
-
-```{r}
-str(Covid)
 ```
 
 ```{r}
@@ -221,22 +229,15 @@ table(Covid$Q8)
 table(Covid$Q11)
 ```
 
-```{r}
-Covid$Q2= factor(ifelse(Covid$Q2=="Male",1,0))
-Covid$Q7= factor(ifelse(Covid$Q7=="Yes",1,0))
-Covid$Q8= factor(ifelse(Covid$Q8=="Yes",1,0))
-Covid$Q11= factor(ifelse(Covid$Q11=="Yes",1,0))
-str(Covid)
-```
+**OJO: como esta vez las variables son dicotómicas tratadas como numéricas, la interpretamos de la siguiente manera:**
 
-```{r}
-Covid$Q1= as.numeric(Covid$Q1)
-Covid$Q13= as.numeric(Covid$Q13)
-```
+- Si alguien es hombre, se multiplica el coeficiente por 1. Si se es mujer, se multiplica dicho coeficiente por 0.
 
-```{r}
-Covid = Covid[complete.cases(Covid), ]
-```
+- Si alguien perteneció a primera línea, se multiplica dicho coeficiente estimado por 1. Si no ha sido de primera línea, se multiplica por 0.
+
+- Si alguien trabaja desde casa, se multiplica dicho coeficiente estimado por 1. Si no ha trabajado desde casa, se multiplica por 0.
+
+- Si alguien tiene hijos en casa, se multiplica dicho coeficiente estimado por 1. Si no los tiene, se multiplica por 0.
 
 ## **Modelo 3**
 
@@ -256,7 +257,7 @@ Establezcamos nuestras hipótesis:
 -   H0: El modelo de regresión no es válido
 -   H1: El modelo de regresión es válido (variable X aporta al modelo)
 
-Luego nos fijamos en el **p-value** Como el p valor es 2.224e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción.
+Luego nos fijamos en el **p-value** Como el p valor es 7.486e-07, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción.
 
 ### **¿Qué tanto explica el modelo?**
 
@@ -264,7 +265,7 @@ Observamos el **R2 ajustado**.
 
 Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
 
-En nuestro modelo, este arrojó el valor de 0.08799 , por lo que podemos concluir el modelo explica aproximadamente el 8.79% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente).
+En nuestro modelo, este arrojó el valor de 0.09483 , por lo que podemos concluir el modelo explica aproximadamente el 9.48% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente).
 
 ### **¿Las variables aportan al modelo?**
 
@@ -284,7 +285,7 @@ modelo3$coefficients
 De esa manera puedo hallar la ecuación:
 
 $$
-Y = 7.35 + \text{Edad} \times (-0.0053) + \text{Genero} \times (0.20) + \text{Primera línea} \times (-0.81) + \text{Trabaja desde casa} \times (0.19) + \text{Tiene niños en casa} \times (-0.47)
+Y = 7.2635 + \text{Edad} \times (-0.0002) + \text{Genero} \times (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
 $$ **¿Qué sucede si retiramos aquellas variables que no aportan al modelo?** Hagamos un siguiente modelo
 
 ## **Modelo 4**
@@ -305,7 +306,7 @@ Establezcamos nuestras hipótesis:
 -   H0: El modelo de regresión no es válido
 -   H1: El modelo de regresión es válido (variable X aporta al modelo)
 
-Luego nos fijamos en el **p-value** Como el p valor es 1.367e-09 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
+Luego nos fijamos en el **p-value** Como el p valor es 1.375e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
 
 ### **¿Qué tanto explica el modelo?**
 
@@ -313,7 +314,7 @@ Observamos el **R2 ajustado**.
 
 Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
 
-En nuestro modelo, este arrojó el valor de 0.08711 , por lo que podemos concluir mi modelo explica aproximadamente el 8.71% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente). 
+En nuestro modelo, este arrojó el valor de 0.102 , por lo que podemos concluir mi modelo explica aproximadamente el 10.2% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente). 
 
 ### **¿Las variables aportan al modelo?** 🤔
 
@@ -331,7 +332,17 @@ modelo4$coefficients
 De esa manera puedo hallar la ecuación:
 
 $$
-Y = 7.27  + \text{Primera linea} \times (-0.88) +  \text{Tiene niños en casa} \times (-0.458)
+Y = 7.35  + \text{Primera linea} \times (-0.97) +  \text{Tiene niños en casa} \times (-0.54)
 $$ **¿Qué variable aporta más al modelo?**
 
 ¿Mi modelo ha mejorado?
+
+### **Predicción**
+
+Supondiendo que alguien **NO es de primera línea** y **SI tiene niños en casa**:
+
+**Y = -0.97(0) - 0.54(1)**
+
+**Y = -0.54**
+
+Se interpreta que, si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño **disminuyen en 0.54 horas**.
