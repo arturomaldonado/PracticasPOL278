@@ -430,25 +430,42 @@ se dice que la relación era espúrea.</p></li>
 </div>
 <div id="aplicación-práctica" class="section level1">
 <h1>Aplicación práctica</h1>
-<div id="factores-que-determinan-el-tipo-de-cambio-nominal-tc_nominal"
+<div
+id="factores-que-determinan-el-acceso-a-la-información-en-los-estados"
 class="section level2">
-<h2><strong>Factores que determinan el tipo de cambio nominal
-(TC_NOMINAL)</strong></h2>
-<p>Conocer el tipo de cambio es muy importante para la economía tanto
-nacional como internacional. Para ello, observaremos los factores que
-influyen en dicha denominación.</p>
-<p>Los datos han sido extraídos de la página web del Banco Central de
-Reserva (BCR): “<a
-href="https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04645PD/csv/2019-6-10/2024-6-10"
-class="uri">https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04645PD/csv/2019-6-10/2024-6-10</a>”
-y han sido limpiados para este ejercicio.</p>
+<h2><strong>Factores que determinan el acceso a la información en los
+Estados</strong></h2>
+<p>El acceso a la información es fundamental para el funcionamiento de
+cualquier Estado democrático, ya que promueve la transparencia, la
+responsabilidad y la participación ciudadana.</p>
+<p>Para poder realizar el análisis se han revisado las siguientes
+fuentes:</p>
+<p><strong>Digital Access Index</strong> El Índice de Acceso Digital es
+utilizado para medir y evaluar el nivel de acceso a las tecnologías
+digitales y a internet. Proporciona una medida de hasta qué punto las
+personas y las comunidades pueden utilizar y beneficiarse de las
+tecnologías digitales.</p>
+<p><strong>Egov-index</strong> El Índice de Gobierno Electrónico es una
+medida que evalúa el nivel de desarrollo y adopción de tecnologías de la
+información y la comunicación (TIC) en el sector público. Este índice se
+utiliza para medir la capacidad de los gobiernos para proporcionar
+servicios en línea, promover la participación ciudadana y utilizar las
+TIC de manera efectiva en la gestión gubernamental.</p>
+<p><strong>Democracy Index</strong> El Índice de Democracia es un índice
+que mide el estado de la democracia en países de todo el mundo. Es
+elaborado por The Economist (EIU) y evalúa el funcionamiento de los
+procesos e instituciones democráticas.</p>
 <p>A partir de la información recolectada se ha creado una base de datos
-llamada “data”.</p>
+llamada Egov.</p>
+<p><img src="PD12_diccionarioEgov.png" width="80%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(rio)
-data=import(&quot;base_bcr.csv&quot;)
-names(data)</code></pre>
-<pre><code>## [1] &quot;V1&quot;               &quot;FECHA&quot;            &quot;TC_NOMINAL&quot;       &quot;RESERVA_INT&quot;     
-## [5] &quot;RENDIMIENTO_BONO&quot; &quot;ORO&quot;              &quot;PETROLEO&quot;         &quot;ANIO&quot;</code></pre>
+Egov=import(&quot;EGov.xlsx&quot;)
+names(Egov)</code></pre>
+<pre><code>## [1] &quot;pais&quot;                             &quot;participaciónDigital&quot;            
+## [3] &quot;Servicios_Online&quot;                 &quot;Capital_Humano&quot;                  
+## [5] &quot;Telecommunicacion_Infrastructura&quot; &quot;ProcesoElectoral&quot;                
+## [7] &quot;Policulture&quot;                      &quot;accesoInformacion&quot;               
+## [9] &quot;UsuariosInternet&quot;</code></pre>
 <p><strong>No olviden el análisis descriptivo antes de hacer los
 modelos.</strong></p>
 </div>
@@ -456,26 +473,34 @@ modelos.</strong></p>
 <h2><strong>Modelo 1</strong></h2>
 <pre class="r"><code>library(tidyverse)
 
-M1 &lt;- lm(TC_NOMINAL ~ ORO, data = data)
-summary(M1)</code></pre>
+modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet ,data=Egov)
+summary(modelo1)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = TC_NOMINAL ~ ORO, data = data)
+## lm(formula = accesoInformacion ~ participaciónDigital + Servicios_Online + 
+##     Capital_Humano + Telecommunicacion_Infrastructura + ProcesoElectoral + 
+##     Policulture + UsuariosInternet, data = Egov)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.28456 -0.16354 -0.03593  0.12598  0.47253 
+##       Min        1Q    Median        3Q       Max 
+## -0.204651 -0.033054  0.002505  0.032268  0.116256 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 2.886e+00  4.141e-02   69.68   &lt;2e-16 ***
-## ORO         4.439e-04  2.262e-05   19.62   &lt;2e-16 ***
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      -0.1208398  0.0263792  -4.581 1.13e-05 ***
+## participaciónDigital             -0.0788712  0.0914304  -0.863  0.39004    
+## Servicios_Online                  0.0809775  0.0948445   0.854  0.39491    
+## Capital_Humano                    0.2968634  0.0555961   5.340 4.43e-07 ***
+## Telecommunicacion_Infrastructura  0.3561180  0.0782623   4.550 1.28e-05 ***
+## ProcesoElectoral                  0.0075843  0.0019182   3.954  0.00013 ***
+## Policulture                       0.0139957  0.0043417   3.224  0.00163 ** 
+## UsuariosInternet                  0.0015629  0.0006815   2.293  0.02355 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1909 on 1826 degrees of freedom
-## Multiple R-squared:  0.1741, Adjusted R-squared:  0.1737 
-## F-statistic: 384.9 on 1 and 1826 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 0.06194 on 121 degrees of freedom
+## Multiple R-squared:  0.926,  Adjusted R-squared:  0.9217 
+## F-statistic: 216.3 on 7 and 121 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div id="interpretamos" class="section level2">
 <h2><strong>Interpretamos 😎</strong></h2>
@@ -488,28 +513,26 @@ summary(M1)</code></pre>
 modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-&lt; 0.05 entonces podemos afirmar que hay suficiente evidencia para
+&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
 rechazar la H0, por lo que concluimos que el modelo sí es válido como
 modelo de predicción.</p>
 </div>
 <div id="qué-tanto-explica-el-modelo" class="section level3">
 <h3><strong>¿Qué tanto explica el modelo?</strong></h3>
-<p>Observamos el <strong>R2 múltiple</strong>.</p>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
 explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared, por ser un modelo lineal simple en este
-caso).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.174, por lo que podemos
-concluir que el modelo explica aproximadamente el 17.4% (0.174*100) de
+el R2 (Multiple R-squared, por ser un modelo lineal múltiple).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos
+concluir que el modelo explica aproximadamente el 92.2% (0.9217*100) de
 la variabilidad en el acceso a la información (variable dependiente). En
 otras palabras, este valor alto de R cuadrado ajustado indica que el
 modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar
-la relación entre las variables independientes (oro) y la variable
-dependiente (tipo de cambio nominal). Sin embargo, el valor del R
-cuadrado ajustado no te dice nada sobre la significancia estadística de
-las variables individuales, ni sobre la causalidad. Por ello
-analizaremos también las variables de forma independiente en el
-siguiente paso.</p>
+la relación entre las variables independientes y la variable
+dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice
+nada sobre la significancia estadística de las variables individuales,
+ni sobre la causalidad. Por ello analizaremos también las variables de
+forma independiente en el siguiente paso.</p>
 <p><em>Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un
 R cuadrado de 1 indica que el modelo explica toda la variabilidad de la
 variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de
@@ -532,15 +555,24 @@ class="section level3">
 <p>Podemos obtener extraer los coeficientes del modelo:</p>
 <p><em>No olvidar identificar el signo de cada coeficiente, este tendrá
 repercusión en la ecuación y su futura aplicación</em></p>
-<pre class="r"><code>M1$coefficients</code></pre>
-<pre><code>##  (Intercept)          ORO 
-## 2.8858909617 0.0004438699</code></pre>
+<pre class="r"><code>modelo1$coefficients</code></pre>
+<pre><code>##                      (Intercept)             participaciónDigital 
+##                     -0.120839771                     -0.078871158 
+##                 Servicios_Online                   Capital_Humano 
+##                      0.080977535                      0.296863439 
+## Telecommunicacion_Infrastructura                 ProcesoElectoral 
+##                      0.356118022                      0.007584279 
+##                      Policulture                 UsuariosInternet 
+##                      0.013995704                      0.001562898</code></pre>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
-Y = 2.89+ \text{ORO} \times (-0.00044)
-\]</span></p>
-<p>¿Qué sucede si añado otras variables independientes al modelo 1?
-Veamos un segundo modelo 👀 .</p>
+Y = -0.12 + \text{participaciónDigital} \times (-0.078) +
+\text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times
+(0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) +
+\text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times
+(0.013) + \text{UsuariosInternet} \times (0.0015)
+\]</span> ¿Qué sucede si retiro las variables independientes que no
+aportan al modelo 1? Veamos un segundo modelo 👀 .</p>
 </div>
 </div>
 <div id="modelo-2" class="section level2">
@@ -548,27 +580,31 @@ Veamos un segundo modelo 👀 .</p>
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
 
-M2 &lt;- lm(TC_NOMINAL ~ ORO + PETROLEO, data = data)
-summary(M2)</code></pre>
+modelo2 = lm(accesoInformacion ~Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
+summary(modelo2)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = TC_NOMINAL ~ ORO + PETROLEO, data = data)
+## lm(formula = accesoInformacion ~ Capital_Humano + Telecommunicacion_Infrastructura + 
+##     ProcesoElectoral + Policulture + UsuariosInternet, data = Egov)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.30692 -0.13081 -0.00893  0.08063  0.46629 
+##       Min        1Q    Median        3Q       Max 
+## -0.205352 -0.037077  0.002991  0.035621  0.111936 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 2.855e+00  3.508e-02   81.41   &lt;2e-16 ***
-## ORO         2.635e-04  2.029e-05   12.98   &lt;2e-16 ***
-## PETROLEO    5.182e-03  1.927e-04   26.89   &lt;2e-16 ***
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      -0.1220640  0.0262044  -4.658 8.15e-06 ***
+## Capital_Humano                    0.2884448  0.0538523   5.356 4.02e-07 ***
+## Telecommunicacion_Infrastructura  0.3513669  0.0774659   4.536 1.34e-05 ***
+## ProcesoElectoral                  0.0075854  0.0018682   4.060 8.66e-05 ***
+## Policulture                       0.0145801  0.0042686   3.416 0.000863 ***
+## UsuariosInternet                  0.0016876  0.0006405   2.635 0.009498 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1616 on 1825 degrees of freedom
-## Multiple R-squared:  0.4085, Adjusted R-squared:  0.4079 
-## F-statistic: 630.2 on 2 and 1825 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 0.06163 on 123 degrees of freedom
+## Multiple R-squared:  0.9255, Adjusted R-squared:  0.9225 
+## F-statistic: 305.8 on 5 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div id="interpretamos-1" class="section level2">
 <h2><strong>Interpretamos 😎</strong></h2>
@@ -581,19 +617,19 @@ summary(M2)</code></pre>
 modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-<strong>&lt;0.05</strong>, entonces podemos afirmar que hay suficiente
-evidencia para rechazar la H0, por lo que concluimos que el modelo sí es
-válido como modelo de predicción.</p>
+&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
 </div>
 <div id="qué-tanto-explica-el-modelo-1" class="section level3">
 <h3><strong>¿Qué tanto explica el modelo?</strong></h3>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
 explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Adjusted R-squared).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.408, por lo que podemos
-concluir mi modelo explica aproximadamente el 40.8% (0.408*100) de la
-variabilidad en el tipo de cambio nominal (variable dependiente).</p>
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos
+concluir mi modelo explica aproximadamente el 92.25% (0.9225*100) de la
+variabilidad en el acceso a la información (variable dependiente). E</p>
 </div>
 <div id="las-variables-aportan-al-modelo-1" class="section level3">
 <h3><strong>¿Las variables aportan al modelo?</strong></h3>
@@ -607,45 +643,128 @@ independiente.</p>
 <div id="cuáles-son-los-coeficientes-de-la-ecuación-1"
 class="section level3">
 <h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
-<pre class="r"><code>M2$coefficients</code></pre>
-<pre><code>## (Intercept)         ORO    PETROLEO 
-## 2.855412006 0.000263475 0.005181793</code></pre>
+<pre class="r"><code>modelo2$coefficients</code></pre>
+<pre><code>##                      (Intercept)                   Capital_Humano 
+##                     -0.122063970                      0.288444800 
+## Telecommunicacion_Infrastructura                 ProcesoElectoral 
+##                      0.351366905                      0.007585449 
+##                      Policulture                 UsuariosInternet 
+##                      0.014580126                      0.001687594</code></pre>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
-Y = 2.85541 + \text{ORO} \times (0.00026) + \text{PETROLEO} \times
-(0.00518)
+Y = -0.12 + \text{Capital\_Humano} \times (0.288) +
+\text{Telecommunicacion\_Infrastructura} \times (0.35) +
+\text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times
+(0.0145) + \text{UsuariosInternet} \times (0.0016)
 \]</span></p>
-<p>Mi modelo ha mejorado?</p>
-<p>Bastante: mientras que el modelo 1 explicaba un 17.4%, el modelo 2
-explica un 40.8% de la variabilidad del tipo de cambio nominal.</p>
+<p>¿Mi modelo ha mejorado?</p>
+<p>Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo
+2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto,
+con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así
+la mejora no ha haya sido sustancial).</p>
 </div>
+</div>
+<div
+id="qué-factores-determinan-la-calidad-de-sueño-del-personal-de-salud-en-pandemia"
+class="section level2">
+<h2><strong>Qué factores determinan la calidad de sueño del personal de
+salud en pandemia</strong></h2>
+<p>La pandemia de COVID-19 tuvo una repercusión significativa en el
+personal de salud en todo el mundo. Los trabajadores de la salud
+estuvieron en la primera línea de batalla, enfrentando desafíos sin
+precedentes. Además de los riesgos físicos, el personal de salud
+enfrentó una carga emocional y psicológica abrumadora. Una de las
+principales preocupaciones era la calidad del sueño del personal de
+salud, pues podía repercutir directamente en la calidad de atención de
+los pacientes.</p>
+<ul>
+<li>Q1: Edad</li>
+<li>Q2: Género</li>
+<li>Q7: ¿Se encentra en la primera línea de atención del Covid-19?</li>
+<li>Q8: ¿Trabaja desde casa?</li>
+<li>Q11: ¿Tiene niños en casa?</li>
+<li>Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?</li>
+</ul>
+<pre class="r"><code>Covid=import(&quot;COVID_pd12.xlsx&quot;)
+names(Covid)</code></pre>
+<pre><code>## [1] &quot;Q1&quot;  &quot;Q2&quot;  &quot;Q7&quot;  &quot;Q8&quot;  &quot;Q11&quot; &quot;Q13&quot;</code></pre>
+<pre class="r"><code>str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : chr  NA NA NA NA ...
+##  $ Q7 : chr  NA NA NA NA ...
+##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
+##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : chr  NA NA NA NA ...
+##  $ Q7 : chr  NA NA NA NA ...
+##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
+##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<p>Reviso las variables dicotómicas Q2,Q7,Q8 y Q11</p>
+<pre class="r"><code>table(Covid$Q2)</code></pre>
+<pre><code>## 
+## Female   Male 
+##    723    185</code></pre>
+<pre class="r"><code>table(Covid$Q7)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 338 116</code></pre>
+<pre class="r"><code>table(Covid$Q8)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 328 582</code></pre>
+<pre class="r"><code>table(Covid$Q11)</code></pre>
+<pre><code>## 
+##  No Yes 
+## 515 360</code></pre>
+<pre class="r"><code>Covid$Q2= factor(ifelse(Covid$Q2==&quot;Male&quot;,1,0))
+Covid$Q7= factor(ifelse(Covid$Q7==&quot;Yes&quot;,1,0))
+Covid$Q8= factor(ifelse(Covid$Q8==&quot;Yes&quot;,1,0))
+Covid$Q11= factor(ifelse(Covid$Q11==&quot;Yes&quot;,1,0))
+str(Covid)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
+##  $ Q1 : chr  NA NA NA NA ...
+##  $ Q2 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA 1 1 1 1 1 NA ...
+##  $ Q7 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q8 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 1 2 NA 2 2 2 2 2 NA ...
+##  $ Q11: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 2 2 NA 1 2 2 1 1 NA ...
+##  $ Q13: chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>Covid$Q1= as.numeric(Covid$Q1)
+Covid$Q13= as.numeric(Covid$Q13)</code></pre>
+<pre class="r"><code>Covid = Covid[complete.cases(Covid), ]</code></pre>
 </div>
 <div id="modelo-3" class="section level2">
 <h2><strong>Modelo 3</strong></h2>
-<p>Podemos añadir el peso de las reservas internacionales (variable
-RESERVA_INT) del país en la influencia del tipo de cambio.</p>
-<pre class="r"><code>M3 &lt;- lm(TC_NOMINAL ~ ORO + PETROLEO + RESERVA_INT, data = data)
-summary(M3)</code></pre>
+<p>Hacemos uso de todas las variables de la base de datos. Veamos los
+resultados.</p>
+<pre class="r"><code>modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
+summary(modelo3)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = TC_NOMINAL ~ ORO + PETROLEO + RESERVA_INT, data = data)
+## lm(formula = Q13 ~ Q1 + Q2 + Q7 + Q8 + Q11, data = Covid)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.31926 -0.10078 -0.02895  0.08540  0.47572 
+##     Min      1Q  Median      3Q     Max 
+## -4.5407 -0.8801  0.1046  0.8078 10.7835 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 1.284e+00  7.843e-02  16.375   &lt;2e-16 ***
-## ORO         4.128e-05  2.074e-05   1.991   0.0467 *  
-## PETROLEO    4.226e-03  1.771e-04  23.865   &lt;2e-16 ***
-## RESERVA_INT 2.757e-05  1.263e-06  21.838   &lt;2e-16 ***
+## (Intercept)  7.357909   0.319505  23.029  &lt; 2e-16 ***
+## Q1          -0.005345   0.005906  -0.905  0.36601    
+## Q21          0.205988   0.182598   1.128  0.25992    
+## Q71         -0.814687   0.189035  -4.310 2.04e-05 ***
+## Q81          0.190613   0.163688   1.164  0.24488    
+## Q111        -0.470729   0.148751  -3.165  0.00167 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1439 on 1824 degrees of freedom
-## Multiple R-squared:  0.5311, Adjusted R-squared:  0.5303 
-## F-statistic: 688.7 on 3 and 1824 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 1.491 on 423 degrees of freedom
+## Multiple R-squared:  0.09865,    Adjusted R-squared:  0.08799 
+## F-statistic: 9.259 on 5 and 423 DF,  p-value: 2.224e-08</code></pre>
 </div>
 <div id="interpretamos-2" class="section level2">
 <h2><strong>Interpretamos 😎</strong></h2>
@@ -658,7 +777,7 @@ summary(M3)</code></pre>
 modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-&lt;0.065 entonces podemos afirmar que hay suficiente evidencia para
+2.224e-08 entonces podemos afirmar que hay suficiente evidencia para
 rechazar la H0, por lo que concluimos que el modelo sí es válido como
 modelo de predicción.</p>
 </div>
@@ -666,11 +785,12 @@ modelo de predicción.</p>
 <h3><strong>¿Qué tanto explica el modelo?</strong></h3>
 <p>Observamos el <strong>R2 ajustado</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamos
-el R2 (Adjusted R-squared).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.53, por lo que podemos
-concluir el modelo explica aproximadamente el 53% de la variabilidad en
-el tipo de cambio nominal (variable dependiente).</p>
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.08799 , por lo que
+podemos concluir el modelo explica aproximadamente el 8.79% de la
+variabilidad en el promedio de las horas de sueño del personal de salud
+(variable dependiente).</p>
 </div>
 <div id="las-variables-aportan-al-modelo-2" class="section level3">
 <h3><strong>¿Las variables aportan al modelo?</strong></h3>
@@ -678,30 +798,100 @@ el tipo de cambio nominal (variable dependiente).</p>
 independiente.</p>
 <ul>
 <li>Esperamos obtener un p-value &lt;0.05.</li>
-<li>Esta vez todas las variables <strong>sí aportan</strong> al modelo.
-Sin embargo, hay que notar que la variable “ORO” casi se acerca al
-0.05.</li>
+<li>Esta vez las variables que <strong>sí aportan</strong> al modelo
+son: Q7 (primera línea contra Covid) y Q11 (Ttiene niños en casa)</li>
 </ul>
 </div>
 <div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
 class="section level3">
 <h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
 <p>Coeficientes:</p>
-<pre class="r"><code>M3$coefficients</code></pre>
-<pre><code>##  (Intercept)          ORO     PETROLEO  RESERVA_INT 
-## 1.284310e+00 4.128238e-05 4.226380e-03 2.757462e-05</code></pre>
+<pre class="r"><code>modelo3$coefficients</code></pre>
+<pre><code>##  (Intercept)           Q1          Q21          Q71          Q81         Q111 
+##  7.357908524 -0.005344998  0.205988315 -0.814686704  0.190613180 -0.470728913</code></pre>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
-Y = 1.284310 + \text{ORO} \times (0.000041) + \text{PETROLEO} \times
-(0.004226) + \text{RESERVA_INT} \times (-0.000028)
-\]</span></p>
+Y = 7.35 + \text{Edad} \times (-0.0053) + \text{Genero} \times (0.20) +
+\text{Primera línea} \times (-0.81) + \text{Trabaja desde casa} \times
+(0.19) + \text{Tiene niños en casa} \times (-0.47)
+\]</span> <strong>¿Qué sucede si retiramos aquellas variables que no
+aportan al modelo?</strong> Hagamos un siguiente modelo</p>
 </div>
 </div>
-<div id="ejercicio" class="section level2">
-<h2><strong>Ejercicio</strong></h2>
-<p>Crea un nuevo modelo añadiendo al rendimiento de bonos
-internacionales (variable RENDIMIENTO_BONO) e interpreta los
-resultados.</p>
+<div id="modelo-4" class="section level2">
+<h2><strong>Modelo 4</strong></h2>
+<p>Aplicamos el <strong>principio de parsimonia</strong> para crear un
+nuevo modelo solo con las variables que aportan.</p>
+<pre class="r"><code>modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
+summary(modelo4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Q13 ~ Q7 + Q11, data = Covid)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.2780 -0.9310  0.1802  0.7220 10.7220 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.27799    0.09959  73.078  &lt; 2e-16 ***
+## Q71         -0.88879    0.16560  -5.367 1.32e-07 ***
+## Q111        -0.45821    0.14813  -3.093  0.00211 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.492 on 426 degrees of freedom
+## Multiple R-squared:  0.09138,    Adjusted R-squared:  0.08711 
+## F-statistic: 21.42 on 2 and 426 DF,  p-value: 1.367e-09</code></pre>
+</div>
+<div id="interpretamos-3" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-3" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+1.367e-09 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-3" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.08711 , por lo que
+podemos concluir mi modelo explica aproximadamente el 8.71% de la
+variabilidad en el promedio de las horas de sueño del personal de salud
+(variable dependiente).</p>
+</div>
+<div id="las-variables-aportan-al-modelo-3" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong> 🤔</h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Todas las variables <em>aportan</em> al modelo.</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-3"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<pre class="r"><code>modelo4$coefficients</code></pre>
+<pre><code>## (Intercept)         Q71        Q111 
+##   7.2779936  -0.8887921  -0.4582067</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 7.27  + \text{Primera linea} \times (-0.88) +  \text{Tiene niños en
+casa} \times (-0.458)
+\]</span> <strong>¿Qué variable aporta más al modelo?</strong></p>
+<p>¿Mi modelo ha mejorado?</p>
+</div>
 </div>
 </div>
 
