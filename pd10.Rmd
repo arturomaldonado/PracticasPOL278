@@ -389,7 +389,7 @@ En este caso, los coeficientes se interpretan de la siguiente manera:
 
 ¿Mi modelo ha mejorado?
 
-Ligeramente: el R2 ajustado, de .948 (9.48%), subió a 0.102 (10.2%) al momento de explicar la variabilidad de horas de sueño de las personas.
+Ligeramente: el R2 ajustado, de 0.0948 (9.48%), subió a 0.102 (10.2%) al momento de explicar la variabilidad de horas de sueño de las personas.
 
 ### **Predicción**
 
