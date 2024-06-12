@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 10</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -339,7 +339,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="Pd3.html">Práctica 3</a>
+  <a href="pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -372,7 +372,7 @@ div.tocify {
   <a href="pd13.html">Práctica 13</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="FAQ.html">FAQ</a>
 </li>
 <li>
   <a href="https://github.com/arturomaldonado/PracticasPOL278">
@@ -398,260 +398,310 @@ div.tocify {
 <img src=" " width="200"/>
 </center>
 <p><img src="logoPUCP.png" width="30%" /></p>
-<div id="i.-análisis-de-regresión-simple-ideas-clave"
-class="section level1">
-<h1><strong>I. Análisis de regresión simple: ideas clave</strong></h1>
-<p>Técnica estadística que predice el valor de una variable con los
-valores de otra. La regresión lineal simple es un método útil para
-predecir una respuesta cuantitativa <strong>Y</strong> partiendo de una
-sola variable predictora <strong>X</strong>, asumiendo que hay una
-relación aproximadamente lineal entre X e Y. Matemáticamente, esta
-relación lineal se representa como</p>
-<p>Y = a + bX + E</p>
+<div id="regresión-linea-múltiple" class="section level1">
+<h1><strong>Regresión linea múltiple</strong></h1>
+<p>Hasta el momento, nos hemos encontrado en el campo del análisis
+bivariado. Sin embargo, en el mundo social, difícilmente se pueden
+explicar los fenómenos de interés con una sola variable. Incluso si nos
+interesa evaluar el efecto de un a variable en específico sobre un
+fenómeno de estudio, hay muchos otros factores que podrían influir en
+aquello que nos interesa explorar. Por ello, necesitamos recurrir al
+<strong>análisis multivariado</strong> y conocer el concepto de
+<strong>control estadístico</strong>.</p>
+<p>El control estadístico nos permite “eliminar” explicaciones
+alternativas, en tanto se aisla el efecto de otras variables. La idea
+es:</p>
 <ul>
-<li><p>Y = variable dependiente o explicada. Variable cuyos valores se
-desea predecir o resumir. Un modelo de regresión lineal tiene como
-variable dependiente una variable numérica</p></li>
-<li><p>a = Constante: ordenada en el origen, valor esperado de “Y”
-cuando X=0</p></li>
-<li><p>b = Pendiente: mide el cambio de la variable “Y” por cada unidad
-de cambio de “X”. Su magnitud sirve para predecir en cuánto aumentará
-“y” cada vez que “x” se incremente en una unidad.Su signo puede ser
-positivo o negativo, y en esto la interpretación coincide con la
-correlación.</p></li>
-<li><p>X = variable utilizada para predecir el valor de la variable
-dependiente. También se denomina variable predictora o variable
-explicativa. Las variables explicativas que son parte del modelo suelen
-ser numéricas o intervalares; sin embargo, es posible incorporar
-variables explicativas ordinales o categóricas.</p></li>
-<li><p>E = Corresponde a las desviaciones de los valores verdaderos de Y
-con respecto a los valores esperados de “Y” (diferencia entre lo
-observado y estimado por el modelo). Asumimos que es independiente de
-“X”.</p></li>
+<li><p>Evaluar si la asociación entre X - Y permanece si se remueve el
+efecto de otra variable, es decir, si se controla por una tercera
+variable.</p></li>
+<li><p>Se analiza la relación entre X - Y para valores similares o
+iguales de una variable Z. De esta manera se elimina la influencia de Z
+en la relación entre X - Y. Es un paso en el establecimiento de X -&gt;
+Y.</p></li>
+<li><p>Si la relación entre X - Y desaparece cuando se controla por Z,
+se dice que la relación era espúrea.</p></li>
 </ul>
-<p>La relación entre las variables depende de la pendiente:</p>
-<ul>
-<li><p>Si b es positivo, Y aumenta cuando X aumenta. Es una relación
-directa / positiva.</p></li>
-<li><p>Si b es negativo, Y aumenta cuando X disminuye. Es una relación
-inversa / negativa.</p></li>
-<li><p>Si b es cero.Y no cambia cuando X varía. No existe relación entre
-las variables.</p></li>
-</ul>
-<p>Asimismo, con el método de la regresión lineal se puede responder las
-siguientes preguntas:</p>
-<ul>
-<li><p>Analizar si hay una <strong>asociación</strong> entre las
-variables mediante un test de independencia estadística.</p></li>
-<li><p>Analizar la <strong>dirección</strong> de la asociación (directa
-o inversa).</p></li>
-<li><p>Evaluar la <strong>fuerza</strong> de la asociación usando una
-medida de asociación llamada <em>correlación de Pearson</em>.</p></li>
-<li><p>Estimar una ecuación de regresión que <strong>“predice”</strong>
-los valores de la variable dependiente para valores de la variable
-independiente.</p></li>
-</ul>
+<p>Sobre la regresión lineal múltiple:</p>
+<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
+<hr />
+<p>Seguiremos los siguientes pasos para el análisis:</p>
+<p><img src="pd12_diap2.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="ii.-aplicación-práctica" class="section level1">
-<h1><strong>II. Aplicación práctica</strong></h1>
-<p>Para la sesión de hoy trabajaremos con datos del 2017 de una base de
-datos que contiene variables obtenidas de las siguientes bases: -
-Freedom in the World - V-Dem - Democracy Index - Global Corruption
-Barometer</p>
-<p>Información sobre las bases: - Freedom in the World es elaborado por
-Freedom House y analiza los siguientes aspectos: el proceso electoral,
-las políticas pluriculturales y la participación, el funcionamiento del
-gobierno, la libertad de expresión y de creencia, los derechos de
-asociación y organización, el estado de derecho, la autonomía personal y
-los derechos individuales.</p>
-<ul>
-<li><p>V-Dem es publicada por el V-Dem Institute. En ella se describe la
-calidad de los gobiernos a partir de información de 542 indicadores. La
-sata describe todos los aspectos de un gobierno, brindándo énfasis en la
-calidad de la democracia, la inclusividad y otros indicadores
-económicos.</p></li>
-<li><p>Democracy Index es elaborado por The Economist y utiliza 60
-indicadores, agrupados en cinco categorías: proceso electoral y
-pluralismo, libertades civiles, funcionamiento del gobierno,
-participación política y política cultural. A partir de estas categorías
-posiciona a los países en alguno de los cuatro tipos de régimen:
-Democracia plena, democracia imperfecta, régimen híbrido y régimen
-autoritario.</p></li>
-<li><p>Global Corruption Barometer es publicado por Transparencia
-Internacional y contiene información proveniente de la opinión pública
-ciudadana</p></li>
-</ul>
+<div id="aplicación-práctica" class="section level1">
+<h1>Aplicación práctica</h1>
+<div id="factores-que-determinan-el-tipo-de-cambio-nominal-tc_nominal"
+class="section level2">
+<h2><strong>Factores que determinan el tipo de cambio nominal
+(TC_NOMINAL)</strong></h2>
+<p>Conocer el tipo de cambio es muy importante para la economía tanto
+nacional como internacional. Para ello, observaremos los factores que
+influyen en dicha denominación.</p>
+<p>Los datos han sido extraídos de la página web del Banco Central de
+Reserva (BCR): “<a
+href="https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04645PD/csv/2019-6-10/2024-6-10"
+class="uri">https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04645PD/csv/2019-6-10/2024-6-10</a>”
+y han sido limpiados para este ejercicio.</p>
+<p>A partir de la información recolectada se ha creado una base de datos
+llamada “data”.</p>
 <pre class="r"><code>library(rio)
-data=import(&quot;corrupcion-democracia-1.xlsx&quot;)</code></pre>
-<p>Ejercicio 1: Impacto del índice de democracia participativa en % de
-personas que personas que opinan que la mayoría de autoridades están
-implicada en corrupción por país</p>
-<p>Las variables que utilizaremos serán:</p>
-<p><strong>Q2c</strong> = Porcentaje de personas que opinan que la
-mayoría o todos los funcionarios del gobierno están envueltos en
-corrupción</p>
-<p><strong>Part</strong> = Indicador de democracia participativa -
-Vdem</p>
-<div id="gráfico-de-dispersión" class="section level2">
-<h2>Gráfico de dispersión:</h2>
-<p><strong>¿El indicador de democracia participativa tiene un impacto en
-el porcentaje de personas que opinan que la mayoría/todos los
-funcionarios están envueltos en corrupción?</strong></p>
-<p>Elaboramos el gráfico de dispersión y la recta</p>
-<pre class="r"><code>library(dplyr)
-library(ggplot2)
-data %&gt;%
-  ggplot(aes (x=Q2c*100, y=Part)) +
-  geom_point(colour=&quot;lightsteelblue4&quot;) +  
-  xlab(&quot;% de personas que opinan \n que la mayoría/todos  los funcionarios \n 
-       públicos están involucrados en corrupción&quot;) +  
-  ylab(&quot;Índicador de democracia participativa&quot;)+ theme_light() + 
-  geom_smooth(method=&quot;lm&quot;, se = T, colour=&quot;grey5&quot;)</code></pre>
-<p><img src="pd10_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>A primera vista parece haber un leve impacto, y la relación entre
-nuestras variables se perfila como negativa. Comprobémoslo …</p>
+data=import(&quot;base_bcr.csv&quot;)
+names(data)</code></pre>
+<pre><code>## [1] &quot;V1&quot;               &quot;FECHA&quot;            &quot;TC_NOMINAL&quot;       &quot;RESERVA_INT&quot;     
+## [5] &quot;RENDIMIENTO_BONO&quot; &quot;ORO&quot;              &quot;PETROLEO&quot;         &quot;ANIO&quot;</code></pre>
+<p><strong>No olviden el análisis descriptivo antes de hacer los
+modelos.</strong></p>
 </div>
-<div id="creación-del-modelo" class="section level2">
-<h2>Creación del modelo</h2>
-<pre class="r"><code>modelo1=lm(Part~Q2c,data=data)
-summary(modelo1)</code></pre>
+<div id="modelo-1" class="section level2">
+<h2><strong>Modelo 1</strong></h2>
+<pre class="r"><code>library(tidyverse)
+
+M1 &lt;- lm(TC_NOMINAL ~ ORO, data = data)
+summary(M1)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Part ~ Q2c, data = data)
+## lm(formula = TC_NOMINAL ~ ORO, data = data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.41744 -0.12712  0.00909  0.13936  0.35691 
+## -0.28456 -0.16354 -0.03593  0.12598  0.47253 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.49004    0.03944  12.425  &lt; 2e-16 ***
-## Q2c         -0.31779    0.10258  -3.098  0.00245 ** 
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.886e+00  4.141e-02   69.68   &lt;2e-16 ***
+## ORO         4.439e-04  2.262e-05   19.62   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1768 on 114 degrees of freedom
-##   (2 observations deleted due to missingness)
-## Multiple R-squared:  0.07765,    Adjusted R-squared:  0.06956 
-## F-statistic: 9.598 on 1 and 114 DF,  p-value: 0.002453</code></pre>
+## Residual standard error: 0.1909 on 1826 degrees of freedom
+## Multiple R-squared:  0.1741, Adjusted R-squared:  0.1737 
+## F-statistic: 384.9 on 1 and 1826 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div id="interpretación" class="section level2">
-<h2>Interpretación</h2>
-<p><em>¿El porcentaje de personas que creen que los funcionarios son
-corruptos influyen en el indicador de democracia participativa?</em></p>
-<p>Para interpretar los resultados del modelo debemos tener presente lo
-siguiente:</p>
-<div id="primero-p-value" class="section level3">
-<h3>Primero: p-value</h3>
-<p>Sabremos si la variable independiente impacta en la dependiente al
-revisar la significancia del p valor.</p>
+<div id="interpretamos" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
-<li><p>H0: El modelo de regresión no es válido</p></li>
-<li><p>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</p></li>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
 </ul>
-<p>Como el p valor es <strong>0.002453</strong>, entonces podemos
-afirmar que hay suficiente evidencia para rechazar la H0, por lo que
-concluimos que el modelo sí es válido como modelo de predicción. Es
-decir, podemos decir que hay evidencia estadística suficiente para
-afirmar que existe una relación significativa entre el índice de
-democracia participativa y la percepción de funcionarios corruptos por
-país.</p>
-<p>En otras palabras, podemos decir que la percepción de funcionarios
-corruptos del país <em>sí influye</em> en el puntaje obtenido en el
-índice de democracia participativa.</p>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+&lt; 0.05 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
 </div>
-<div id="segundo-pendienteb" class="section level3">
-<h3>Segundo: pendiente/b</h3>
-<p>Explica cómo es el efecto de x en y. Para ello analizamos el valor
-del parámetro de la pendiente.</p>
-<p>En este caso, al ser este valor <strong>-0.31779</strong>, concluímos
-que cada vez que el valor de la percepción de corrupción en el país
-aumenta en 1, el puntaje del índice de democracia participativa
-disminuye en 0.318. Es decir, tenemos una <em>relación inversa o
-negativa</em>.</p>
-</div>
-<div id="tercero-r2" class="section level3">
-<h3>Tercero: R<sup>2</sup></h3>
+<div id="qué-tanto-explica-el-modelo" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 múltiple</strong>.</p>
 <p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por la variable independiente (x), para ello revisamor el
-<strong>R<sup>2</sup></strong> (Multiple R-squared). Los valores van de
-0 a 1. Mientras más cercano esté el R2 a 1, mayor será la variabilidad
-explicada. El R2 es un indicador de ajuste del modelo.</p>
-<p>En nuestro modelo, este arrojó el valor de <strong>0.07765</strong>,
-por lo que podemos concluir que aproximadamente el <strong>7.8%</strong>
-(0.07765*100)de la variabilidad en el índice de democracia participativa
-puede ser explicado porel porcentaje de personas que opinan que la
-mayoría/todos los funcionarios están envueltos en corrupción.</p>
-<p>Esto quiere decir que la cantidad de variabilidad explicada es
-relativamente baja. Por lo que podemos afirmar que hay otros factores
-más importantes o complejos que afectan la percepción de corrupción en
-cada país.</p>
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Multiple R-squared, por ser un modelo lineal simple en este
+caso).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.174, por lo que podemos
+concluir que el modelo explica aproximadamente el 17.4% (0.174*100) de
+la variabilidad en el acceso a la información (variable dependiente). En
+otras palabras, este valor alto de R cuadrado ajustado indica que el
+modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar
+la relación entre las variables independientes (oro) y la variable
+dependiente (tipo de cambio nominal). Sin embargo, el valor del R
+cuadrado ajustado no te dice nada sobre la significancia estadística de
+las variables individuales, ni sobre la causalidad. Por ello
+analizaremos también las variables de forma independiente en el
+siguiente paso.</p>
+<p><em>Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un
+R cuadrado de 1 indica que el modelo explica toda la variabilidad de la
+variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de
+la variabilidad de la variable Y.</em></p>
 </div>
-<div id="cuarto-ecuación-de-la-recta" class="section level3">
-<h3>Cuarto: Ecuación de la recta</h3>
-<p>Hallar la ecuación de la recta del modelo. Para lograrlo, revisemos
-los dos valores de la tabla que se encuentran en la columna de
-“Estimate”, el valor de la primera fila es el del intercepto (a) y el de
-la segunda es el de la pendiente (b).</p>
-<p>Del segundo paso, ya conocíamos que el valor de la pendiente es
-<strong>-0.31779.</strong> Si volvemos a revisar nuestra tabla podemos
-observar que en el cruce de Estimate e Intercept está el valor de
-<strong>0.49004</strong>, este sería nuestro intercepto. Ahora, armemos
-nuestra ecuación de la recta:</p>
-<p><strong>Ŷ = 0.49004 - 0.31779∗X</strong></p>
-<p>Donde:</p>
+<div id="las-variables-aportan-al-modelo" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
 <ul>
-<li>X = Porcentaje de personas que opinan que la mayoría o todos los
-funcionarios del gobierno están envueltos en corrupción -
-(independiente)</li>
-<li>Y = Indicador de democracia participativa - (dependiente)</li>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Nos damos cuenta que <em>no todas</em> las variables independientes
+tienen un p-value &lt;0.05, es el caso de: participaciónDigital y
+Servicios_Online</li>
 </ul>
-<p><strong>¿Qué se quiere saber?</strong>: Queremos saber si el % de
-personas que opinan que los funcionarios son corruptos influye en el
-indicador de democracia participativa.</p>
-<p>Esa ecuación crea una línea recta en el diagrama de dispersión que
-representa la relación entre ambas variables y además indica que el
-cambio esperado en nuestra variable dependiente (Porcentaje de personas
-que opinan que la mayoría o todos los funcionarios del gobierno están
-envueltos en corrupción) por cada cambio de una unidad en nuestra
-variable independiente (Indicador de democracia participativa). Así, con
-esta ecuación se puede estimar el valor de Y para cualquier valor de
-X.</p>
-<p>También podemos obtener los coeficientes de intercepción/intercepto y
-pendiente de la siguiente forma:</p>
-<pre class="r"><code>modelo1$coefficients</code></pre>
-<pre><code>## (Intercept)         Q2c 
-##   0.4900430  -0.3177901</code></pre>
 </div>
-<div id="quinto-predecir" class="section level3">
-<h3>Quinto: Predecir</h3>
-<p>Podemos utilizar la relación linear establecida por la ecuación para
-estimar el valor de la variable dependiente (Y) para un valor dado de la
-variable independiente (X).</p>
-<p>Por ejemplo, si queremos calcular el valor de porcentaje de personas
-que opinan que la mayoría/todos los funcionarios están envueltos en
-corrupción cuando el índice de democracia participativa (0 a 1) es 0.4,
-solo tenemos que reemplazar el valor de x por 0.4 en nuestra
-ecuación.</p>
-<p>Sustituyendo el valor de “x” en la ecuación, tenemos:</p>
-<p><strong>Ŷ = 0.49004 - 0.31779 * 0.4</strong></p>
-<p><strong>Ŷ = 0.49004 - 0.12712</strong></p>
-<p><strong>Ŷ = 0.36292</strong></p>
-<p>Por lo tanto, utilizando la ecuación de la recta, cuando el índice de
-democracia participativa es 0.4 , podemos predecir que aproximadamente
-el 36.2% de las personas opinan que la mayoría/todos los funcionarios
-están envueltos en corrupción en ese país.</p>
-<p>Practica resolviendo los siguientes ejercicios</p>
-<p>Ejercicio 2: Impacto de la puntuación de libertad en el % de personas
-que opinan que el nivel de corrupción disminuyó en el país</p>
-<p>Ejercicio 3: Impacto del % de personas que están de acuerdo con la
-frase “Denunciaría un caso de corrupción aunque tuviera que pasar un día
-en el juzgado para declarar” en el % de personas que está de acuerdo con
-que los ciudadanos de a pie creen que pueden hacer la diferencia en la
-lucha contra la corrupción en el país</p>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<p>Podemos obtener extraer los coeficientes del modelo:</p>
+<p><em>No olvidar identificar el signo de cada coeficiente, este tendrá
+repercusión en la ecuación y su futura aplicación</em></p>
+<pre class="r"><code>M1$coefficients</code></pre>
+<pre><code>##  (Intercept)          ORO 
+## 2.8858909617 0.0004438699</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 2.89+ \text{ORO} \times (-0.00044)
+\]</span></p>
+<p>¿Qué sucede si añado otras variables independientes al modelo 1?
+Veamos un segundo modelo 👀 .</p>
 </div>
+</div>
+<div id="modelo-2" class="section level2">
+<h2><strong>Modelo 2</strong></h2>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+
+M2 &lt;- lm(TC_NOMINAL ~ ORO + PETROLEO, data = data)
+summary(M2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = TC_NOMINAL ~ ORO + PETROLEO, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.30692 -0.13081 -0.00893  0.08063  0.46629 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.855e+00  3.508e-02   81.41   &lt;2e-16 ***
+## ORO         2.635e-04  2.029e-05   12.98   &lt;2e-16 ***
+## PETROLEO    5.182e-03  1.927e-04   26.89   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1616 on 1825 degrees of freedom
+## Multiple R-squared:  0.4085, Adjusted R-squared:  0.4079 
+## F-statistic: 630.2 on 2 and 1825 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="interpretamos-1" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-1" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+<strong>&lt;0.05</strong>, entonces podemos afirmar que hay suficiente
+evidencia para rechazar la H0, por lo que concluimos que el modelo sí es
+válido como modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-1" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamor
+el R2 (Adjusted R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.408, por lo que podemos
+concluir mi modelo explica aproximadamente el 40.8% (0.408*100) de la
+variabilidad en el tipo de cambio nominal (variable dependiente).</p>
+</div>
+<div id="las-variables-aportan-al-modelo-1" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li><em>Todas</em> las variables independientes aportan al modelo.</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-1"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<pre class="r"><code>M2$coefficients</code></pre>
+<pre><code>## (Intercept)         ORO    PETROLEO 
+## 2.855412006 0.000263475 0.005181793</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 2.85541 + \text{ORO} \times (0.00026) + \text{PETROLEO} \times
+(0.00518)
+\]</span></p>
+<p>Mi modelo ha mejorado?</p>
+<p>Bastante: mientras que el modelo 1 explicaba un 17.4%, el modelo 2
+explica un 40.8% de la variabilidad del tipo de cambio nominal.</p>
+</div>
+</div>
+<div id="modelo-3" class="section level2">
+<h2><strong>Modelo 3</strong></h2>
+<p>Podemos añadir el peso de las reservas internacionales (variable
+RESERVA_INT) del país en la influencia del tipo de cambio.</p>
+<pre class="r"><code>M3 &lt;- lm(TC_NOMINAL ~ ORO + PETROLEO + RESERVA_INT, data = data)
+summary(M3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = TC_NOMINAL ~ ORO + PETROLEO + RESERVA_INT, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.31926 -0.10078 -0.02895  0.08540  0.47572 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 1.284e+00  7.843e-02  16.375   &lt;2e-16 ***
+## ORO         4.128e-05  2.074e-05   1.991   0.0467 *  
+## PETROLEO    4.226e-03  1.771e-04  23.865   &lt;2e-16 ***
+## RESERVA_INT 2.757e-05  1.263e-06  21.838   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1439 on 1824 degrees of freedom
+## Multiple R-squared:  0.5311, Adjusted R-squared:  0.5303 
+## F-statistic: 688.7 on 3 and 1824 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="interpretamos-2" class="section level2">
+<h2><strong>Interpretamos 😎</strong></h2>
+<div id="el-modelo-es-válido-2" class="section level3">
+<h3><strong>¿El modelo es válido?</strong></h3>
+<p>Establezcamos nuestras hipótesis:</p>
+<ul>
+<li>H0: El modelo de regresión no es válido</li>
+<li>H1: El modelo de regresión es válido (variable X aporta al
+modelo)</li>
+</ul>
+<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
+&lt;0.065 entonces podemos afirmar que hay suficiente evidencia para
+rechazar la H0, por lo que concluimos que el modelo sí es válido como
+modelo de predicción.</p>
+</div>
+<div id="qué-tanto-explica-el-modelo-2" class="section level3">
+<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
+<p>Observamos el <strong>R2 ajustado</strong>.</p>
+<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
+explicada por las variables independientes elegidas, para ello revisamos
+el R2 (Adjusted R-squared).</p>
+<p>En nuestro modelo, este arrojó el valor de 0.53, por lo que podemos
+concluir el modelo explica aproximadamente el 53% de la variabilidad en
+el tipo de cambio nominal (variable dependiente).</p>
+</div>
+<div id="las-variables-aportan-al-modelo-2" class="section level3">
+<h3><strong>¿Las variables aportan al modelo?</strong></h3>
+<p>Revisamos <strong>p-value</strong> por cada variable
+independiente.</p>
+<ul>
+<li>Esperamos obtener un p-value &lt;0.05.</li>
+<li>Esta vez todas las variables <strong>sí aportan</strong> al modelo.
+Sin embargo, hay que notar que la variable “ORO” casi se acerca al
+0.05.</li>
+</ul>
+</div>
+<div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
+class="section level3">
+<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
+<p>Coeficientes:</p>
+<pre class="r"><code>M3$coefficients</code></pre>
+<pre><code>##  (Intercept)          ORO     PETROLEO  RESERVA_INT 
+## 1.284310e+00 4.128238e-05 4.226380e-03 2.757462e-05</code></pre>
+<p>De esa manera puedo hallar la ecuación:</p>
+<p><span class="math display">\[
+Y = 1.284310 + \text{ORO} \times (0.000041) + \text{PETROLEO} \times
+(0.004226) + \text{RESERVA_INT} \times (-0.000028)
+\]</span></p>
+</div>
+</div>
+<div id="ejercicio" class="section level2">
+<h2><strong>Ejercicio</strong></h2>
+<p>Crea un nuevo modelo añadiendo al rendimiento de bonos
+internacionales (variable RENDIMIENTO_BONO) e interpreta los
+resultados.</p>
 </div>
 </div>
 
