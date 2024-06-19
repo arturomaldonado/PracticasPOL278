@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 11"
+title: "Práctica dirigida 12"
 output:
   html_document:
     toc: yes
@@ -9,18 +9,8 @@ output:
     toc_depth: 1
     theme: cosmo
     highlight: textmate
-    always_allow_html: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
-editor_options: 
-  markdown: 
-    wrap: sentence
+    always_allow_html: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
-```
 
 <center><img src=" " width="200"/></center>
 
@@ -28,309 +18,301 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 knitr::include_graphics("logoPUCP.png") 
 ```
 
-# **Regresión linea múltiple**
+Cargamos la base de datos:
 
-Hasta el momento, nos hemos encontrado en el campo del análisis bivariado. Sin embargo, en el mundo social, difícilmente se pueden explicar los fenómenos de interés con una sola variable. Incluso si nos interesa evaluar el efecto de un a variable en específico sobre un fenómeno de estudio, hay muchos otros factores que podrían influir en aquello que nos interesa explorar. Por ello, necesitamos recurrir al **análisis multivariado** y conocer el concepto de **control estadístico**. 
-
-El control estadístico nos permite “eliminar” explicaciones alternativas, en tanto se aisla el efecto de otras variables. La idea es:
-
-* Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.
-
-* Se analiza la relación entre X - Y para valores similares o iguales de una variable Z. De esta manera se elimina la influencia de Z en la relación entre X - Y. Es un paso en el establecimiento de X -> Y.
-
-* Si la relación entre X - Y desaparece cuando se controla por Z, se dice que la relación era espúrea.
-
-Sobre la regresión lineal múltiple: 
-
-```{r,echo=FALSE, out.width="100%",fig.align="center"}
-knitr::include_graphics("pd12_diap1.png") 
-```
-
-------------------------------------------------------------------------
-
-Seguiremos los siguientes pasos para el análisis: 
-
-```{r,echo=FALSE, out.width="100%",fig.align="center"}
-knitr::include_graphics("pd12_diap2.png") 
-```
-
-# Aplicación práctica
-
-## **Factores que determinan el acceso a la información en los Estados**
-
-El acceso a la información es fundamental para el funcionamiento de cualquier Estado democrático, ya que promueve la transparencia, la responsabilidad y la participación ciudadana. 
-
-Para poder realizar el análisis se han revisado las siguientes fuentes:
-
-**Digital Access Index** El Índice de Acceso Digital es utilizado para medir y evaluar el nivel de acceso a las tecnologías digitales y a internet. Proporciona una medida de hasta qué punto las personas y las comunidades pueden utilizar y beneficiarse de las tecnologías digitales.
-
-**Egov-index** El Índice de Gobierno Electrónico es una medida que evalúa el nivel de desarrollo y adopción de tecnologías de la información y la comunicación (TIC) en el sector público. Este índice se utiliza para medir la capacidad de los gobiernos para proporcionar servicios en línea, promover la participación ciudadana y utilizar las TIC de manera efectiva en la gestión gubernamental.
-
-**Democracy Index** El Índice de Democracia es un índice que mide el estado de la democracia en países de todo el mundo. Es elaborado por The Economist (EIU) y evalúa el funcionamiento de los procesos e instituciones democráticas.
-
-A partir de la información recolectada se ha creado una base de datos llamada Egov.
-
-```{r,echo=FALSE, out.width="80%",fig.align="center"}
-knitr::include_graphics("PD12_diccionarioEgov.png") 
-```
-
-```{r}
+```{r,warning=FALSE}
 library(rio)
-Egov=import("EGov.xlsx")
-names(Egov)
+data=import("LCV1819-1.sav")
 ```
 
-**No olviden el análisis descriptivo antes de hacer los modelos.**
+# ANOVA
 
-## **Modelo 1**
+Recordemos la teoría, el test de ANOVA se usa para comparar la media de una variable dependiente numérica entre grupos de una variable de tipo factor con más de 2 grupos.
+
+Repasemos nuestras hipótesis:
+
+H0: No existe diferencia entre las medias poblacionales de los grupos evaluados / Hay igualdad entre las medias.
+
+H1: Al menos una media poblacional de un grupo es diferente / Hay diferencias entre al menos un grupo o más.
+
+## Ejercicio 1:
+
+¿Existe alguna diferencia estadísticamente significativa en el gasto en transporte (PE10A) entre los estratos de lima metropolitana (ESTRATOS_IOP)? Si existe, ¿entre qué grupos?
+
+Preparemos nuestras variables
 
 ```{r}
-library(tidyverse)
+str(data$PE10A)
+```
 
-modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet ,data=Egov)
+```{r}
+data$ESTRATOS_IOP=factor(data$ESTRATOS_IOP, levels = c(1:4) ,labels = c("Centro","Este","Norte","Sur"))
+```
+
+```{r}
+str(data$PE10A)
+```
+
+Realicemos una tabla de la media y límites de los intervalos para ver qué podemos anticipar:
+
+```{r,warning=FALSE}
+library(tidyverse)
+library(lsr)
+data_grafico= data %>%                          
+  group_by(ESTRATOS_IOP)%>%
+  summarise(Desviacion = sd(PE10A, na.rm=T),
+          Media = mean(PE10A, na.rm=T),
+            min = ciMean(PE10A,conf = 0.95, na.rm=T)[1],
+            max = ciMean(PE10A,conf = 0.95, na.rm=T)[2],
+            n=length(PE10A))
+            
+data_grafico
+```
+
+Grafiquemos
+
+```{r,warning=FALSE}
+ggplot(data_grafico,aes(x=ESTRATOS_IOP,y=Media))+geom_errorbar(aes(ymin=min,ymax=max),color="steelblue3",size=0.6)+xlab("ESTRATO")+ylab("Gasto en transporte en el hogar")+ylim(0,130)+theme_bw()
+```
+
+Ahora, confirmemos la observación visual con la prueba ANOVA.
+
+```{r,warning=FALSE}
+anova = aov(data$PE10A~data$ESTRATOS_IOP)
+summary(anova)
+```
+
+Obsevamos que el p-value es bastante pequeño y menor a 0.05, por lo que podemos afirmar que existe diferencia de promedios de gasto en transporte según estrato de residencia: Lima Centro, Este, Norte y Sur. Lo que coincide con lo reportado por el gráfico. Confirmemos qué grupo/s tiene/n promedios distintos con la prueba Tukey.
+
+```{r}
+TukeyHSD(anova)
+```
+
+```{r,warning=FALSE}
+plot(TukeyHSD(anova),cex.axis=0.3)
+```
+
+Según la prueba Tukey, la media de gasto de transporte en los hogares de Lima Este es distinta a la de Lima Norte y Centro; mientras que el promedio de los hogares de Lima Sur es distinta a la de Lima Centro. Por el gráfico, podemos complementar esta intrepretación e indicar que los promedios más altos de gasto en transporte los reportan los hogares de Lima Centro y Norte. Asimismo, sobre los grupos con diferencia de promedios, podemos afirmar que el promedio de gasto en transporte en Lima Este es menor que el de Centro y Norte y que los hogares de Lima sur gastan menos, en promedio, que los de Lima Centro.
+
+# CHI CUADRADO Y PRUEBAS DE ASOCIACIÓN
+
+Recordemos que chi cuadrado es una prueba para probar si existe asociación entre variables categóricas.
+
+H0: Las variables son estadísticamente independientes/no hay dependencia H1: Las variables son estadísticamente dependientes.
+
+OJO: Recuerden que hablar de asociación no implica causalidad.
+
+## Ejercicio 2:
+
+¿Existe asociación entre el gasto en transporte y la edad (EDAD)?
+
+La variable de gasto en transporte es numérica, (PE10A). Separemos esta variable en 3 grupos, nos guiaremos de los cuartiles para crear los grupos: Bajo(menos de 20) , medio (de 20 a 70) , Alto (más de 70). La nueva variable se llamará “GASTO_T”.
+
+```{r}
+summary(data$PE10A)
+```
+
+```{r,warning=FALSE}
+data = data %>%
+  mutate(GASTO_T=case_when(PE10A<20 ~ "1.BAJO",
+                             PE10A>=20 & EG2OTRO<=70 ~ "2.MEDIO",
+                             PE10A>70 ~ "3.ALTO"))
+
+data$GASTO_T= factor(data$GASTO_T)
+```
+
+```{r}
+data$EDAD=factor(data$EDAD, levels = c(1:3),labels = c("18 a 29",
+                                                        "30 a 44",
+                                                         "más de 45"))
+```
+
+Creemos nuestra tabla de contingencia
+
+```{r,warning=FALSE}
+tabla=table(data$EDAD,data$GASTO_T)
+tabla #con esta realizamos la prueba
+```
+
+En porcentajes: calculamos el 100% sobre "EDAD"
+
+```{r,warning=FALSE}
+tabla_p= tabla %>%
+  prop.table(1)%>% #porcentaje por filas
+  round(3)*100
+tabla_p
+```
+
+Grafiquemos:
+
+```{r,warning=FALSE}
+toPlot = as.data.frame(tabla_p) 
+names(toPlot) = c("Edad", "Gasto", "Porcentaje")
+
+ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Edad)) + 
+    geom_bar(position="fill", stat="identity") + 
+    labs( y = 'Porcentaje (%)', x = ' ')+
+    ggtitle('Gasto en transporte según grupo etario')+
+    theme_bw()
+```
+
+El grafico y la tabla muestran que en los 3 grupos etarios la mayoría tiene un gasto bajo en transporte. Sin embargo, se puede observar que en comparación, la proporción que tiene un gasto elevado entre los más jóvenes es mayor que dentro de los otros grupos etarios.
+
+```{r,warning}
+chisq.test(tabla)$expected
+```
+
+Podemos proceder con la prueba
+
+```{r,warning=FALSE}
+chisq.test(tabla)
+```
+
+De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes). Por lo tanto concluimos que existe dependencia entre el gasto en transporte (bajo/medio/alto) y el grupo etario.
+
+# CORRELACIÓN
+
+Esta es una medida de relación entre dos variables cuantitativas o numéricas.
+
+H0 = No existe correlación las variables H1 = Sí existe correlación entre las variables
+
+En esta prueba, no es suficiente analizar el pvalue, también debemos interpretar el coeficiente de correlación de pearson. Este nos indica la fuerza y la dirección de la relación entre las variables.
+
+## Ejercicio 3:
+
+En el caso de las personas que de Lima Norte, ¿Existe relación entre el gasto en transporte (PE10A) y el tiempo en años que la persona ha vivido en Lima
+
+Primero, debemos filtrar solo los casos de Lima Norte
+
+```{r}
+str(data$EG2OTRO)
+```
+
+```{r,warning=FALSE}
+data_cor=data%>%
+  filter(ESTRATOS_IOP=="Norte")
+```
+
+Previo a la prueba, realicemos un gráfico de dispersión para hacernos una idea inicial
+
+```{r,warning=FALSE}
+ggplot(data_cor,aes(x=PE10A, y=EG2OTRO)) +
+  geom_point(colour="darkblue") +  xlab("Gasto en transporte") +  ylab("Años en Lima") +
+  ggtitle("Relación entre el gasto en transporte y el tiempo (en años) \n que se ha vivido en Lima - Solo Lima Norte") + xlim(0,1000)+ylim(0,30)+
+  theme_light() + 
+  geom_smooth(method="lm", se = F)
+```
+
+Podemos ver bastante dispersión, no parece haber correlación entre las variables.
+
+
+```{r,warning=FALSE}
+cor.test(data_cor$PE10A, data_cor$EG2OTRO)
+```
+
+Confirmando lo que mostraba el gráfico, no se rechaza la hipótesis nula; en ese sentido podemos afirmar que en el caso de las personas de Lima Norte, no hay relación entre el gasto en transporte y los años que han vivido en Lima.
+
+# REGRESIÓN SIMPLE
+
+Recordemos que con la regresión predecimos el valor de una variable con los valores de otra. La regresión lineal simple es un método útil para predecir una respuesta cuantitativa Y partiendo de una sola variable predictora X, asumiendo que hay una relación aproximadamente lineal entre X e Y.
+
+## Pasos para la regresión lineal simple
+
+-   Paso 1: Analizar la asociación entre las variables de insumo: Diagrama de dispersión y correlación bivariada, en caso de variables numéricas
+
+-   Paso 2: Conocer qué tanto explica el modelo: COEFICIENTE DE DETERMINACIÓN -- R2
+
+-   Paso 3: Conocer los parámetros del modelo: TABLA DE COEFICIENTES
+
+-   Paso 4: Construir la ecuación y predecir
+
+## Ejercicio 4:
+
+Queremos analizar posibles modelos que expliquen la percepción de los limeños acerca del transporte público informal (buses, cousters y combis, y mototaxis). Para esto calcularemos un indice aditivo de la calificación de los servicios de buses (MT7A), de cousters y combis (MT7B) y de mototaxis (MT7D), que varíe de 0 a 100.
+
+Pero, ¿qué puede influir en la percepción de los limeños acerca del transporte público? Para este ejercicio emplearemos dos variables:
+
+Creación del índice:
+```{r,warning=FALSE}
+data$evaluacion_ti = ((data$MT7A + data$MT7B + data$MT7D)-3)/12*100
+summary(data$evaluacion_ti)
+```
+
+Paso 1: Diagrama de dispersión y correlación bivariada
+
+```{r,warning=FALSE}
+library(ggplot2)
+ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
+  geom_point(colour="lightsteelblue4") +  
+  xlab("Tiempo en Lima") +  
+  ylab("Indice de percepción sobre el transporte")+ theme_light() + 
+  geom_smooth(method="lm", se = T, colour="grey5")
+```
+
+Correlación:
+
+```{r}
+cor.test(data$evaluacion_ti, data$EG2OTRO)
+```
+
+Podemos observar que existe correlación entre ambas variables (p valor = 0,012) y que la correlación es negativa y que no es relevante (r = 0.08).
+
+
+```{r,warning=FALSE}
+modelo1 = lm(data$evaluacion_ti ~ data$EG2OTRO)
 summary(modelo1)
 ```
 
-## **Interpretamos 😎**
+Ahora, debemos responder las siguientes preguntas:
 
-### **¿El modelo es válido?**
++ ¿Qué tanto explica el modelo?
 
-Establezcamos nuestras hipótesis:
+Con un valor de 0,006, podemos afirmar que el **0,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima.
 
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
++ ¿La variable aporta al modelo?
 
-Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
+H0: La variable X no tiene un efecto estadísticamente significativo en la variable Y. H1: La variable X tiene un efecto estadísticamente significativo en la variable Y.
 
-### **¿Qué tanto explica el modelo?**
+Con un **p valor < 0,05** podemos afirmar que la variable “tiempo que una persona vive en Lima” aporta al modelo de regresión.
 
-Observamos el **R2 ajustado**.
-
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared, por ser un modelo lineal múltiple).
-
-En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos concluir que el modelo explica aproximadamente el 92.2% (0.9217\*100) de la variabilidad en el acceso a la información (variable dependiente). En otras palabras, este valor alto de R cuadrado ajustado indica que el modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar la relación entre las variables independientes y la variable dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice nada sobre la significancia estadística de las variables individuales, ni sobre la causalidad. Por ello analizaremos también las variables de forma independiente en el siguiente paso.
-
-*Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un R cuadrado de 1 indica que el modelo explica toda la variabilidad de la variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de la variabilidad de la variable Y.*
-
-### **¿Las variables aportan al modelo?**
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   Nos damos cuenta que *no todas* las variables independientes tienen un p-value \<0.05, es el caso de: participaciónDigital y Servicios_Online
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
-Podemos obtener extraer los coeficientes del modelo: 
-
-*No olvidar identificar el signo de cada coeficiente, este tendrá repercusión en la ecuación y su futura aplicación*
-
+Paso 5: Construir la ecuación y predecir
 ```{r}
 modelo1$coefficients
 ```
+ 
+ **Y = 50.84202 - 0.0861 * X** 
 
-De esa manera puedo hallar la ecuación:
+Realizar el ejercicio con otra variable explicativa: Gasto en transporte (PE10A) 
 
-$$
-Y = -0.12 + \text{participaciónDigital} \times (-0.078) + \text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times (0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times (0.013) + \text{UsuariosInternet} \times (0.0015)
-$$
+# REGRESIÓN MÚLTIPLE
 
-¿Qué sucede si retiro las variables independientes que no aportan al modelo 1? Veamos un segundo modelo 👀 .
+De manera independiente, vemos que cada modelo explica de manera diferente nuestra variable de interés, ahora probemos combinando algunas de estas variables y busquemos alguna diferencia en el porcentaje de predicción. 
 
-## **Modelo 2**
+## Ejercicio 5:
 
-```{r}
-library(dplyr)
-library(ggplot2)
+VD = Evaluación del transporte informal (evaluacion_ti)
+VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)
 
-modelo2 = lm(accesoInformacion ~Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
+```{r,warning=FALSE}
+modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
 summary(modelo2)
 ```
 
-## **Interpretamos 😎**
+Ahora, debemos responder las siguientes preguntas:
 
-### **¿El modelo es válido?**
++ ¿El modelo es válido?
 
-Establezcamos nuestras hipótesis:
+Con un **p valor < 0,05** podemos rechazar la hipótesis nula. Es decir, rechazamos que el modelo no sea válido.
 
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
++ ¿Qué tanto explica el modelo?
 
-Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
+Con un valor de **0,014**, podemos afirmar que el **1,4%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima y por el gasto que emplea su hogar en transporte.
 
-### **¿Qué tanto explica el modelo?**
++ ¿La variable aporta al modelo?
 
-Observamos el **R2 ajustado**.
+Con un **p valor < 0,05** podemos afirmar que ambas variables aportan al modelo de regresión.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
-
-En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos concluir mi modelo explica aproximadamente el 92.25% (0.9225\*100) de la variabilidad en el acceso a la información (variable dependiente). E
-
-### **¿Las variables aportan al modelo?**
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   *Todas* las variables independientes aportan al modelo.
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
+Paso 5: Construir la ecuación y predecir
 ```{r}
 modelo2$coefficients
 ```
-
-De esa manera puedo hallar la ecuación:
-
-$$
-Y = -0.12 + \text{Capital\_Humano} \times (0.288) + \text{Telecommunicacion\_Infrastructura} \times (0.35) + \text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times (0.0145) + \text{UsuariosInternet} \times (0.0016)
-$$
-
-Mi modelo ha mejorado?
-
-Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo 2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto, con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así la mejora no ha haya sido sustancial).
-
-## **Qué factores determinan la calidad de sueño del personal de salud en pandemia**
-
-La pandemia de COVID-19 tuvo una repercusión significativa en el personal de salud en todo el mundo. Los trabajadores de la salud estuvieron en la primera línea de batalla, enfrentando desafíos sin precedentes. Además de los riesgos físicos, el personal de salud enfrentó una carga emocional y psicológica abrumadora. Una de las principales preocupaciones era la calidad del sueño del personal de salud, pues podía repercutir directamente en la calidad de atención de los pacientes. 
-
--   Q1: Edad
--   Q2: Género
--   Q7: ¿Se encentra en la primera línea de atención del Covid-19?
--   Q8: ¿Trabaja desde casa?
--   Q11: ¿Tiene niños en casa?
--   Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?
-
-```{r}
-Covid=import("COVID_pd12.xlsx")
-names(Covid)
-```
-
-```{r}
-str(Covid)
-```
-
-```{r}
-str(Covid)
-```
-
-Reviso las variables dicotómicas Q2,Q7,Q8 y Q11
-
-```{r}
-table(Covid$Q2)
-table(Covid$Q7)
-table(Covid$Q8)
-table(Covid$Q11)
-```
-
-```{r}
-Covid$Q2= factor(ifelse(Covid$Q2=="Male",1,0))
-Covid$Q7= factor(ifelse(Covid$Q7=="Yes",1,0))
-Covid$Q8= factor(ifelse(Covid$Q8=="Yes",1,0))
-Covid$Q11= factor(ifelse(Covid$Q11=="Yes",1,0))
-str(Covid)
-```
-
-```{r}
-Covid$Q1= as.numeric(Covid$Q1)
-Covid$Q13= as.numeric(Covid$Q13)
-```
-
-```{r}
-Covid = Covid[complete.cases(Covid), ]
-```
-
-## **Modelo 3**
-
-Hacemos uso de todas las variables de la base de datos. Veamos los resultados.
-
-```{r}
-modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
-summary(modelo3)
-```
-
-## **Interpretamos 😎**
-
-### **¿El modelo es válido?**
-
-Establezcamos nuestras hipótesis:
-
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
-
-Luego nos fijamos en el **p-value** Como el p valor es 2.224e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción.
-
-### **¿Qué tanto explica el modelo?**
-
-Observamos el **R2 ajustado**.
-
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
-
-En nuestro modelo, este arrojó el valor de 0.08799 , por lo que podemos concluir el modelo explica aproximadamente el 8.79% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente).
-
-### **¿Las variables aportan al modelo?**
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   Esta vez las variables que **sí aportan** al modelo son: Q7 y Q11
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
-Coeficientes:
-
-```{r}
-modelo3$coefficients
-```
-
-De esa manera puedo hallar la ecuación:
-
-$$
-Y = 7.35 + \text{Q1} \times (-0.0053) + \text{Q2} \times (0.20) + \text{Q7} \times (-0.81) + \text{Q8} \times (0.19) + \text{Q11} \times (-0.47)
-$$ **¿Qué sucede si retiramos aquellas variables que no aportan al modelo?** Hagamos un siguiente modelo
-
-## **Modelo 4**
-
-```{r}
-modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
-summary(modelo4)
-```
-
-## **Interpretamos 😎**
-
-### **¿El modelo es válido?**
-
-Establezcamos nuestras hipótesis:
-
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
-
-Luego nos fijamos en el **p-value** Como el p valor es 1.367e-09 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
-
-### **¿Qué tanto explica el modelo?**
-
-Observamos el **R2 ajustado**.
-
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Multiple R-squared).
-
-En nuestro modelo, este arrojó el valor de 0.08711 , por lo que podemos concluir mi modelo explica aproximadamente el 8.71% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente). 
-
-### **¿Las variables aportan al modelo?** 🤔
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   Todas las variables *aportan* al modelo.
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
-```{r}
-modelo4$coefficients
-```
-
-De esa manera puedo hallar la ecuación:
-
-$$
-Y = 7.27  + \text{Q7} \times (-0.88) +  \text{Q11} \times (-0.458)
-$$ **¿Qué variable aporta más al modelo?**
-
-Mi modelo ha mejorado?
