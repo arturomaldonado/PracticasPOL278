@@ -657,29 +657,31 @@ predicción.</p>
 <h2>Ejercicio 5:</h2>
 <p>VD = Evaluación del transporte informal (evaluacion_ti) VI = Gasto de
 su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima
-(EG2OTRO)</p>
-<pre class="r"><code>modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+(EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = “2”)</p>
+<pre class="r"><code>modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO)
 summary(modelo2)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + 
+##     data$SEXO)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -50.699  -8.847   1.073   9.359  52.319 
+## -51.072  -8.957   0.982   9.353  52.787 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  51.41257    1.06017  48.495  &lt; 2e-16 ***
-## data$EG2OTRO -0.08111    0.03590  -2.259  0.02410 *  
-## data$PE10A   -0.01298    0.00431  -3.012  0.00267 ** 
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  49.839390   2.172470  22.941  &lt; 2e-16 ***
+## data$EG2OTRO -0.077970   0.036107  -2.159  0.03108 *  
+## data$PE10A   -0.013002   0.004311  -3.016  0.00263 ** 
+## data$SEXO     0.960544   1.157719   0.830  0.40694    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 17.13 on 896 degrees of freedom
+## Residual standard error: 17.13 on 895 degrees of freedom
 ##   (2845 observations deleted due to missingness)
-## Multiple R-squared:  0.01571,    Adjusted R-squared:  0.01352 
-## F-statistic: 7.152 on 2 and 896 DF,  p-value: 0.0008287</code></pre>
+## Multiple R-squared:  0.01647,    Adjusted R-squared:  0.01317 
+## F-statistic: 4.996 on 3 and 895 DF,  p-value: 0.001929</code></pre>
 <p>Ahora, debemos responder las siguientes preguntas:</p>
 <ul>
 <li>¿El modelo es válido?</li>
@@ -689,20 +691,25 @@ hipótesis nula. Es decir, rechazamos que el modelo no sea válido.</p>
 <ul>
 <li>¿Qué tanto explica el modelo?</li>
 </ul>
-<p>Con un valor de <strong>0,014</strong>, podemos afirmar que el
-<strong>1,4%</strong> de la variabilidad del índice aditivo de la
+<p>Con un valor de <strong>0,016</strong>, podemos afirmar que el
+<strong>1,6%</strong> de la variabilidad del índice aditivo de la
 calificación del transporte es explicada por el tiempo que una persona
-vive en Lima y por el gasto que emplea su hogar en transporte.</p>
+vive en Lima, por el gasto que emplea su hogar en transporte y por el
+sexo de la persona.</p>
 <ul>
-<li>¿La variable aporta al modelo?</li>
+<li>¿Las variable aporta al modelo?</li>
 </ul>
-<p>Con un <strong>p valor &lt; 0,05</strong> podemos afirmar que ambas
-variables aportan al modelo de regresión.</p>
+<p>Con un <strong>p valor &lt; 0,05</strong> podemos afirmar que las
+variables que aportan al modelo de regresión son: tiempo de persona
+viviendo en Lima (variable EG2OTRO) y gasto del hogar en transporte
+(variable PE10A). Asimismo, la variable “sexo” no aporta al modelo de
+regresión.</p>
 <p>Paso 5: Construir la ecuación y predecir</p>
 <pre class="r"><code>modelo2$coefficients</code></pre>
-<pre><code>##  (Intercept) data$EG2OTRO   data$PE10A 
-##  51.41257529  -0.08111233  -0.01298039</code></pre>
-<p><strong>Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A)</strong></p>
+<pre><code>##  (Intercept) data$EG2OTRO   data$PE10A    data$SEXO 
+##  49.83938973  -0.07796970  -0.01300184   0.96054357</code></pre>
+<p><strong>Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A) +
+0.96(Sexo)</strong></p>
 </div>
 </div>
 

@@ -221,10 +221,10 @@ De manera independiente, vemos que cada modelo explica de manera diferente nuest
 ## Ejercicio 5:
 
 VD = Evaluación del transporte informal (evaluacion_ti)
-VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)
+VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = "2")
 
 ```{r,warning=FALSE}
-modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO)
 summary(modelo2)
 ```
 
@@ -236,15 +236,15 @@ Con un **p valor < 0,05** podemos rechazar la hipótesis nula. Es decir, rechaza
 
 + ¿Qué tanto explica el modelo?
 
-Con un valor de **0,014**, podemos afirmar que el **1,4%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima y por el gasto que emplea su hogar en transporte.
+Con un valor de **0,016**, podemos afirmar que el **1,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima, por el gasto que emplea su hogar en transporte y por el sexo de la persona.
 
-+ ¿La variable aporta al modelo?
++ ¿Las variable aporta al modelo?
 
-Con un **p valor < 0,05** podemos afirmar que ambas variables aportan al modelo de regresión.
+Con un **p valor < 0,05** podemos afirmar que las variables que aportan al modelo de regresión son: tiempo de persona viviendo en Lima (variable EG2OTRO) y gasto del hogar en transporte (variable PE10A). Asimismo, la variable "sexo" no aporta al modelo de regresión.
 
 Paso 5: Construir la ecuación y predecir
 ```{r}
 modelo2$coefficients
 ```
 
-**Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A)**
+**Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A) + 0.96(Sexo)**
