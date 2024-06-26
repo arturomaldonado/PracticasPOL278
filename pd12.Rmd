@@ -25,74 +25,7 @@ library(rio)
 data=import("LCV1819-1.sav")
 ```
 
-# ANOVA
-
-Recordemos la teoría, el test de ANOVA se usa para comparar la media de una variable dependiente numérica entre grupos de una variable de tipo factor con más de 2 grupos.
-
-Repasemos nuestras hipótesis:
-
-H0: No existe diferencia entre las medias poblacionales de los grupos evaluados / Hay igualdad entre las medias.
-
-H1: Al menos una media poblacional de un grupo es diferente / Hay diferencias entre al menos un grupo o más.
-
-## Ejercicio 1:
-
-¿Existe alguna diferencia estadísticamente significativa en el gasto en transporte (PE10A) entre los estratos de lima metropolitana (ESTRATOS_IOP)? Si existe, ¿entre qué grupos?
-
-Preparemos nuestras variables
-
-```{r}
-str(data$PE10A)
-```
-
-```{r}
-data$ESTRATOS_IOP=factor(data$ESTRATOS_IOP, levels = c(1:4) ,labels = c("Centro","Este","Norte","Sur"))
-```
-
-```{r}
-str(data$PE10A)
-```
-
-Realicemos una tabla de la media y límites de los intervalos para ver qué podemos anticipar:
-
-```{r,warning=FALSE}
-library(tidyverse)
-library(lsr)
-data_grafico= data %>%                          
-  group_by(ESTRATOS_IOP)%>%
-  summarise(Desviacion = sd(PE10A, na.rm=T),
-          Media = mean(PE10A, na.rm=T),
-            min = ciMean(PE10A,conf = 0.95, na.rm=T)[1],
-            max = ciMean(PE10A,conf = 0.95, na.rm=T)[2],
-            n=length(PE10A))
-            
-data_grafico
-```
-
-Grafiquemos
-
-```{r,warning=FALSE}
-ggplot(data_grafico,aes(x=ESTRATOS_IOP,y=Media))+geom_errorbar(aes(ymin=min,ymax=max),color="steelblue3",size=0.6)+xlab("ESTRATO")+ylab("Gasto en transporte en el hogar")+ylim(0,130)+theme_bw()
-```
-
-Ahora, confirmemos la observación visual con la prueba ANOVA.
-
-```{r,warning=FALSE}
-anova = aov(data$PE10A~data$ESTRATOS_IOP)
-summary(anova)
-```
-
-Obsevamos que el p-value es bastante pequeño y menor a 0.05, por lo que podemos afirmar que existe diferencia de promedios de gasto en transporte según estrato de residencia: Lima Centro, Este, Norte y Sur. Lo que coincide con lo reportado por el gráfico. Confirmemos qué grupo/s tiene/n promedios distintos con la prueba Tukey.
-
-```{r}
-TukeyHSD(anova)
-```
-
-```{r,warning=FALSE}
-plot(TukeyHSD(anova),cex.axis=0.3)
-```
-
-Según la prueba Tukey, la media de gasto de transporte en los hogares de Lima Este es distinta a la de Lima Norte y Centro; mientras que el promedio de los hogares de Lima Sur es distinta a la de Lima Centro. Por el gráfico, podemos complementar esta intrepretación e indicar que los promedios más altos de gasto en transporte los reportan los hogares de Lima Centro y Norte. Asimismo, sobre los grupos con diferencia de promedios, podemos afirmar que el promedio de gasto en transporte en Lima Este es menor que el de Centro y Norte y que los hogares de Lima sur gastan menos, en promedio, que los de Lima Centro.
+# **REPASO**
 
 # CHI CUADRADO Y PRUEBAS DE ASOCIACIÓN
 
@@ -102,17 +35,19 @@ H0: Las variables son estadísticamente independientes/no hay dependencia H1: La
 
 OJO: Recuerden que hablar de asociación no implica causalidad.
 
-## Ejercicio 2:
+## Ejercicio 1:
+Queremos saber si existe asociación entre el gasto en el trasporte agrupado y otras variables, en específico, queremos saber si
 
-¿Existe asociación entre el gasto en transporte y la edad (EDAD)?
+¿Existe asociación entre el gasto en transporte agrupado y la edad agrupada (EDAD)?
 
-La variable de gasto en transporte es numérica, (PE10A). Separemos esta variable en 3 grupos, nos guiaremos de los cuartiles para crear los grupos: Bajo(menos de 20) , medio (de 20 a 70) , Alto (más de 70). La nueva variable se llamará “GASTO_T”.
+La variable gasto en trasporte (PEA10A) es numérica. Ante ello, tenemos que separar esta variable en 3 grupos, nos guiaremos de los cuartiles para crear los grupos: Bajo(menos de 20) , medio (de 20 a 70) , Alto (más de 70). La nueva variable se llamará “GASTO_T”.
 
 ```{r}
 summary(data$PE10A)
 ```
 
 ```{r,warning=FALSE}
+library(tidyverse)
 data = data %>%
   mutate(GASTO_T=case_when(PE10A<20 ~ "1.BAJO",
                              PE10A>=20 & EG2OTRO<=70 ~ "2.MEDIO",
@@ -130,7 +65,7 @@ data$EDAD=factor(data$EDAD, levels = c(1:3),labels = c("18 a 29",
 Creemos nuestra tabla de contingencia
 
 ```{r,warning=FALSE}
-tabla=table(data$EDAD,data$GASTO_T)
+tabla=table(data$GASTO_T,data$EDAD)
 tabla #con esta realizamos la prueba
 ```
 
@@ -138,8 +73,8 @@ En porcentajes: calculamos el 100% sobre "EDAD"
 
 ```{r,warning=FALSE}
 tabla_p= tabla %>%
-  prop.table(1)%>% #porcentaje por filas
-  round(3)*100
+  prop.table(2)%>% #porcentaje por columna
+  round(2)*100
 tabla_p
 ```
 
@@ -147,16 +82,67 @@ Grafiquemos:
 
 ```{r,warning=FALSE}
 toPlot = as.data.frame(tabla_p) 
-names(toPlot) = c("Edad", "Gasto", "Porcentaje")
+names(toPlot) = c("Gasto", "Edad", "Porcentaje")
 
 ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Edad)) + 
-    geom_bar(position="fill", stat="identity") + 
+    geom_bar(stat="identity") + 
     labs( y = 'Porcentaje (%)', x = ' ')+
     ggtitle('Gasto en transporte según grupo etario')+
     theme_bw()
 ```
 
-El grafico y la tabla muestran que en los 3 grupos etarios la mayoría tiene un gasto bajo en transporte. Sin embargo, se puede observar que en comparación, la proporción que tiene un gasto elevado entre los más jóvenes es mayor que dentro de los otros grupos etarios.
+El grafico y la tabla muestran que en los 3 grupos etarios la mayoría tiene un gasto bajo en transporte. Sin embargo, se puede observar que en comparación, el porcentaje que tiene un gasto alto entre los más jóvenes es mayor que dentro de los otros grupos etarios.
+
+```{r}
+chisq.test(tabla)$expected
+```
+
+Podemos proceder con la prueba
+
+```{r,warning=FALSE}
+chisq.test(tabla)
+```
+
+De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula. Por lo tanto, concluimos que existe dependencia entre el gasto en transporte (bajo/medio/alto) y el grupo etario.
+
+## Ejercicio 2:
+Queremos saber si existe asociación entre el gasto en transporte agrupado y el sexo (SEXO)
+
+
+```{r}
+data$SEXO_F=factor(data$SEXO, levels = c(1:2),labels = c("Hombre","Mujer"))
+```
+
+Creemos nuestra tabla de contingencia
+
+```{r,warning=FALSE}
+tabla=table(data$GASTO_T,data$SEXO_F)
+tabla #con esta realizamos la prueba
+```
+
+En porcentajes: calculamos el 100% sobre "SEXO"
+
+```{r,warning=FALSE}
+tabla_p= tabla %>%
+  prop.table(2)%>% #porcentaje por columna
+  round(2)*100
+tabla_p
+```
+
+Grafiquemos:
+
+```{r,warning=FALSE}
+toPlot = as.data.frame(tabla_p) 
+names(toPlot) = c("Gasto", "Sexo", "Porcentaje")
+
+ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Sexo)) + 
+    geom_bar(stat="identity") + 
+    labs( y = 'Porcentaje (%)', x = ' ')+
+    ggtitle('Gasto en transporte según sexo')+
+    theme_bw()
+```
+
+¿Qué hallazgos podría comentar respecto a la visualización?
 
 ```{r,warning}
 chisq.test(tabla)$expected
@@ -168,37 +154,48 @@ Podemos proceder con la prueba
 chisq.test(tabla)
 ```
 
-De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes). Por lo tanto concluimos que existe dependencia entre el gasto en transporte (bajo/medio/alto) y el grupo etario.
+De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al ser mayor de 0.05, podemos aceptar la hipótesis nula. Por lo tanto, concluimos que no existe dependencia entre el gasto en transporte (bajo/medio/alto) y el sexo.
+
+## Ejercicio 3:
+
+Queremos saber si existe asociación entre el gasto en transporte agrupado y el nivel socioeconómico (NSE_IOP).
+Grafica, realiza la prueba estadística correspondiente y comenta los resultados.
+
+## Ejercicio 4:
+
+Queremos saber si existe asociación entre el gasto en transporte agrupado y el estrato geográfico (ESTRATOS_IOP)
+Grafica, realiza la prueba estadística correspondiente y comenta los resultados.
+
+## Ejercicio 5:
+
+Queremos saber si existe asociación entre la percepción sobre su calidad de vida hace 12 meses al momento de la aplicación de la encuesta y el nivel socioeconómico (ESTRATOS_IOP)
+Grafica, realiza la prueba estadística correspondiente y comenta los resultados.
+
 
 # CORRELACIÓN
 
 Esta es una medida de relación entre dos variables cuantitativas o numéricas.
 
-H0 = No existe correlación las variables H1 = Sí existe correlación entre las variables
+H0 = No existe correlación las variables 
+H1 = Sí existe correlación entre las variables
 
 En esta prueba, no es suficiente analizar el pvalue, también debemos interpretar el coeficiente de correlación de pearson. Este nos indica la fuerza y la dirección de la relación entre las variables.
 
-## Ejercicio 3:
+## Ejercicio 6:
 
-En el caso de las personas que de Lima Norte, ¿Existe relación entre el gasto en transporte (PE10A) y el tiempo en años que la persona ha vivido en Lima
-
-Primero, debemos filtrar solo los casos de Lima Norte
+Ahora queremos explorar si existe relación entre el gasto en educación (PE10D) y la edad (ANIOS)
 
 ```{r}
-str(data$EG2OTRO)
-```
-
-```{r,warning=FALSE}
-data_cor=data%>%
-  filter(ESTRATOS_IOP=="Norte")
+str(data$PE10D)
 ```
 
 Previo a la prueba, realicemos un gráfico de dispersión para hacernos una idea inicial
 
 ```{r,warning=FALSE}
-ggplot(data_cor,aes(x=PE10A, y=EG2OTRO)) +
-  geom_point(colour="darkblue") +  xlab("Gasto en transporte") +  ylab("Años en Lima") +
-  ggtitle("Relación entre el gasto en transporte y el tiempo (en años) \n que se ha vivido en Lima - Solo Lima Norte") + xlim(0,1000)+ylim(0,30)+
+ggplot(data,aes(x=ANIOS, y=data$PE10D)) +
+  geom_point(colour="darkblue") +  xlab("Edad") +  ylab("Gasto en educación") +
+  ggtitle("Relación entre el gasto en educación y la edad") +
+  xlim(18,80)+ylim(0,1000)+
   theme_light() + 
   geom_smooth(method="lm", se = F)
 ```
@@ -207,10 +204,23 @@ Podemos ver bastante dispersión, no parece haber correlación entre las variabl
 
 
 ```{r,warning=FALSE}
-cor.test(data_cor$PE10A, data_cor$EG2OTRO)
+cor.test(data$ANIOS,data$PE10D)
 ```
 
-Confirmando lo que mostraba el gráfico, no se rechaza la hipótesis nula; en ese sentido podemos afirmar que en el caso de las personas de Lima Norte, no hay relación entre el gasto en transporte y los años que han vivido en Lima.
+Siendo el p-valor menor a 0.05, podemos rechazar la hipótesis nula y concluir que existe relación entre la edad y el gasto en educación. Adicionalmente, podemos determinar que esta relación es inversa y no relevante (r = 0.06). 
+
+## Ejercicio 7:
+
+Ahora queremos explorar si existe relación entre el gasto en salud (PE10E) y la edad (ANIOS)
+
+## Ejercicio 8:
+
+Ahora queremos explorar si existe relación entre el gasto en salud (PE10E) y la evaluación de la gestión de la Municipalidad de Lima Metropolitana (GP7)
+
+## Ejercicio 9:
+
+Ahora queremos explorar si existe relación entre el gasto en alimentación (PE10B) y la edad (ANIOS)
+
 
 # REGRESIÓN SIMPLE
 
@@ -226,7 +236,7 @@ Recordemos que con la regresión predecimos el valor de una variable con los val
 
 -   Paso 4: Construir la ecuación y predecir
 
-## Ejercicio 4:
+## Ejercicio 10:
 
 Queremos analizar posibles modelos que expliquen la percepción de los limeños acerca del transporte público informal (buses, cousters y combis, y mototaxis). Para esto calcularemos un indice aditivo de la calificación de los servicios de buses (MT7A), de cousters y combis (MT7B) y de mototaxis (MT7D), que varíe de 0 a 100.
 
@@ -241,6 +251,7 @@ summary(data$evaluacion_ti)
 Paso 1: Diagrama de dispersión y correlación bivariada
 
 ```{r,warning=FALSE}
+library(ggplot2)
 ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
   geom_point(colour="lightsteelblue4") +  
   xlab("Tiempo en Lima") +  
@@ -251,10 +262,10 @@ ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
 Correlación:
 
 ```{r}
-cor.test(data$evaluacion_ti, data$EG2OTRO, method = "pearson")
+cor.test(data$evaluacion_ti, data$EG2OTRO)
 ```
 
-Podemos observar que existe correlación entre ambas variables (p valor = 0,012) y que la correlación es negativa y que no es relevante.
+Podemos observar que existe correlación entre ambas variables (p valor = 0,012) y que la correlación es negativa y que no es relevante (r = -0.08).
 
 
 ```{r,warning=FALSE}
@@ -266,17 +277,22 @@ Ahora, debemos responder las siguientes preguntas:
 
 + ¿Qué tanto explica el modelo?
 
-Con un valor de 0,006, podemos afirmar que el 0,6% de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima.
+Con un valor de 0,006, podemos afirmar que el **0,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima.
 
 + ¿La variable aporta al modelo?
 
 H0: La variable X no tiene un efecto estadísticamente significativo en la variable Y. H1: La variable X tiene un efecto estadísticamente significativo en la variable Y.
 
-Con un p valor menor a 0,05 podemos afirmar que la variable “tiempo que una persona vive en Lima” aporta al modelo de regresión.
+Con un **p valor < 0,05** podemos afirmar que la variable “tiempo que una persona vive en Lima” aporta al modelo de regresión.
 
 Paso 5: Construir la ecuación y predecir
+```{r}
+modelo1$coefficients
+```
  
- **Y = 50.84202 - 0.0861 * X** 
+ **Y = 50.84202 - 0.0861(EG2OTRO)** 
+
+## Ejercicio 11:
 
 Realizar el ejercicio con otra variable explicativa: Gasto en transporte (PE10A) 
 
@@ -284,13 +300,30 @@ Realizar el ejercicio con otra variable explicativa: Gasto en transporte (PE10A)
 
 De manera independiente, vemos que cada modelo explica de manera diferente nuestra variable de interés, ahora probemos combinando algunas de estas variables y busquemos alguna diferencia en el porcentaje de predicción. 
 
-## Ejercicio 5:
+## Ejercicio 12:
 
 VD = Evaluación del transporte informal (evaluacion_ti)
-VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)
+VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = "2")
 
 ```{r,warning=FALSE}
-modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A)
+# La variable sexo se puede tratar de 2 maneras.
+# Primer caso: convertir a factor y tener un categoría de referencia. Para el ejemplo nos referiremos a MUJER.
+
+data <- data %>%
+  mutate(SEXO_FACTOR = case_when(
+    SEXO == 1 ~ 0,
+    SEXO == 2 ~ 1),
+    SEXO_FACTOR = as.factor(SEXO_FACTOR))
+
+# Segundo caso: usar fastdummies
+library(fastDummies)
+data = dummy_cols(data,  select_columns = c("SEXO"))
+data = data %>% rename(SEXO_HOMBRE=SEXO_1, SEXO_MUJER=SEXO_2)
+
+```
+
+```{r,warning=FALSE}
+modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO_FACTOR)
 summary(modelo2)
 ```
 
@@ -298,17 +331,45 @@ Ahora, debemos responder las siguientes preguntas:
 
 + ¿El modelo es válido?
 
-Con un p valor menor a 0,05 podemos rechazar la hipótesis nula. Es decir, rechazamos que el modelo no sea válido.
+Con un **p valor < 0,05** podemos rechazar la hipótesis nula. Es decir, rechazamos que el modelo no sea válido.
 
 + ¿Qué tanto explica el modelo?
 
-Con un valor de 0,014, podemos afirmar que el 1,4% de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima y por el gasto que emplea su hogar en transporte.
+Con un valor de **0,016**, podemos afirmar que el **1,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima, por el gasto que emplea su hogar en transporte y por el sexo de la persona.
 
-+ ¿La variable aporta al modelo?
++ ¿Las variable aporta al modelo?
 
-Con un p valor menor a 0,05 podemos afirmar que ambas variables aportan al modelo de regresión.
+Con un **p valor < 0,05** podemos afirmar que las variables que aportan al modelo de regresión son: tiempo de persona viviendo en Lima (variable EG2OTRO) y gasto del hogar en transporte (variable PE10A). Asimismo, la variable "sexo" no aporta al modelo de regresión.
 
 Paso 5: Construir la ecuación y predecir
+```{r}
+modelo2$coefficients
+```
+
+**Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A) + 0.96(Sexo)**
+
+```{r,warning=FALSE}
+modelo3 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO_HOMBRE + data$SEXO_MUJER)
+summary(modelo3)
+```
+
+## Ejercicio 13:
+
+VD = Evaluación del transporte informal (evaluacion_ti)
+VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)+ grupo de edad.
+Usa ambos escenarios para trabajar categóricas dentro del modelado.
+
+## Ejercicio 14:
+
+VD = Evaluación del transporte informal (evaluacion_ti)
+VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = "2") + nivel socioeconómico (NSE_IOP) +
+estratos geográficos (ESTRATOS_IOP)
+
+## Ejercicio 15:
+ ¿Cómo mejorarías el modelo? ¿Qué otras variables ingresarías?
+ ¿Qué criterios seguirías para saber la idoneidad del ingreso de una nueva variable al modelo?
  
- **Y = 51.41257 - 0.08111 * X1 - 0.01298 * X2** 
  
+
+
+
