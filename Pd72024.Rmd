@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 8"
+title: "Práctica dirigida 7"
 output:
   html_document:
     toc: yes
@@ -36,17 +36,17 @@ knitr::include_graphics("logoPUCP.png")
 -   En las casillas de la tabla se ubica la frecuencia o el número de casos de cada cruce.
 -   Conceptos importantes: Frecuencias observadas y frecuencias esperadas.
 
-![](IM1.png)
+![](IM1.png){width="500"}
 
 ### **Frecuencias observadas y esperadas**
 
--   Frecuencia esperada: Estas son las frecuencisa que deberían darse si las variables fueran independientes.
+-   Frecuencia esperada: Estas son las frecuencia que deberían darse si las variables fueran independientes.
 
 -   Frecuencia observada: Estas son las frecuencias reales que se observa en nuestra data.
 
 Ejemplo:
 
-![](IM2.png)
+![](IM2.png){width="800"}
 
 # Prueba Chi2
 
@@ -113,7 +113,7 @@ Diccionario de datos
 **PASO 0: Revisamos la estructura de las variables que nos interesan:**
 
 ```{r }
-lapop <- lapop %>%
+lapop = lapop %>%
   mutate(situ_pais = factor(situ_pais, levels = 1:3, labels = c("Mejor", "Igual", "Peor")))
 
 str(lapop$situ_pais) #verificamos
@@ -153,7 +153,7 @@ tabla1
 ```
 
 Creamos porcentajes por columna, para ello tenemos que agregar prop.table al comando anterior.
-El argumento de prop.table puede ser 1: *para calcular porcentaje por fil*, o 2: *para calcular por columna* ⚠️
+El argumento de prop.table puede ser 1: *para calcular porcentaje por fil*, o 2: *para calcular por columna* ⚠️ Recuerda que es recomendable calcular los porcentajes sobre la variable sociodemográfica o aquella que antecede a la otra.
 
 ```{r}
 tablapor1 = tabla1 %>%
@@ -164,15 +164,21 @@ tablapor1
 
 > ¿Existe diferencia con lo que vemos a nivel de cada subgrupo (hombre y mujer) respecto a lo que habíamos visto a nivel de toda la muestra?
 
+Otra forma de hacer ambas tablas de manera directa es mediante el comando **tbl_summary** del paquete **gtsummary**, dentro de este se debe indicar sobre qué variable calcular el 100%, para este ejercicio esa variable sería sexo
+
+```{r}
+library(gtsummary)
+
+lapop %>% 
+  select(situ_pais,sexo) %>% 
+  tbl_summary(by=sexo)
+```
+
 **PASO 2: Diagrama de barras apiladas**
 
-Preparamos la data para graficar: 1.
-Necesitamos que sea un data frame
-
-```{r }
+```{r}
 toPlot1 = as.data.frame(tablapor1) 
 names(toPlot1) = c("Categoria", "Sexo", "Porcentaje")
-toPlot1
 ```
 
 Generamos el gráfico y lo solicitamos:
@@ -180,9 +186,7 @@ Generamos el gráfico y lo solicitamos:
 ```{r }
 library(ggplot2)
 
-toPlot1 %>% 
-  ggplot()+
-  aes(x=Sexo, y=Porcentaje*100, fill=Categoria) +
+  ggplot(toPlot1, aes(x=Sexo, y=Porcentaje*100, fill=Categoria)) +
   geom_bar(position="stack", stat="identity")+ #Stack indica que son barras apiladas
   geom_text(aes(label=paste0(Porcentaje*100,"%")), 
             position = position_stack(), 
@@ -260,16 +264,24 @@ tabla2 = table(lapop$percep_dina2, lapop$ur)
 tabla2
 ```
 
-Creamos porcentajes por columna:
+Es recomendable calcular los porcentajes sobre la variable sociodemográfica o aquella que antecede a la otra.
+En este caso, esa variable sería estrato (urbano/rural), por ello deberíamos calcular el porcentaje sobre ella.
+Esto quiere decir que todas las percepciones deben sumar 100% para urbano y 100% para rural.
 
 ```{r message= FALSE}
 tablapor2 = tabla2 %>%
-  prop.table(2) %>%  # porcentaje por columna
+  prop.table(2) %>%  # porcentaje por columna, para calcular por fila indicar (1)
   round(3)
 tablapor2
 ```
 
-Creamos porcentajes por fila:
+Podemos hacer ambas tablas con el comando: tbl_summary
+
+```{r}
+lapop %>% 
+  select(percep_dina2,ur) %>% 
+  tbl_summary(by=ur)
+```
 
 **PASO 2: Diagrama de barras apiladas**
 
@@ -278,15 +290,12 @@ Preparamos la data para graficar:
 ```{r }
 toPlot2 = as.data.frame(tablapor2) 
 names(toPlot2) = c("Categoria", "Estrato", "Porcentaje")
-toPlot2
 ```
 
 Generamos el gráfico y lo solicitamos:
 
 ```{r}
-toPlot2 |> 
-  ggplot()+
-  aes(x=Estrato, y=Porcentaje*100, fill=Categoria) +
+  ggplot(toPlot2, aes(x=Estrato, y=Porcentaje*100, fill=Categoria)) +
   geom_bar(position="stack", stat="identity")+
   geom_text(aes(label=paste(Porcentaje*100,"%")), 
             position = position_stack(), 
@@ -321,8 +330,10 @@ chisq.test(tabla2)$expected
 
 En este caso también cumple el supuesto!
 
-Ejercicios: 1.
-Analizar si existe asociación entre las variables percepción de situación de las escuelas y edad (agrupado)\
+## Ejercicios en clase:
+
+1\.
+Analizar si existe asociación entre las variables satisfacción con la de situación de las escuelas (calid_esc) y edad (agrupado)\
 Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 -   De 18 a 25
@@ -335,4 +346,18 @@ Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 *Hint*: Usa case_when y establece los intervalos, no olvides que la estructura es case_when(condición \~ valor, condicion2 \~ valor2,...)
 
-2.  Analizar si existe dependencia entre la variable estrato y percepción de situación de servicios médicos
+2.  Analizar si existe dependencia entre la variable estrato y satisfacción con la situación de servicios médicos (serv_medic)
+
+## Ejercicios para que practiques:
+
+1.  Analizar la asociación entre la región (estratropri) (Agrupar y obtener Costa/Sierra/Selva/Lima Metropolitana) y la satisfacción con la calidad del servicio de agua (serv_agua).
+
+    1101/1102 - Costa
+
+    1103 - Lima Metropolitana
+
+    1104 - Selva
+
+    1105/1106/1107 - Sierra
+
+2.  Crea un indice aditivo de la satisfacción con servicios públicos que vaya del 0 al 10. Previamente, debes invertir el sentido de las variables: calid_esc, serv_medic y serv_agua. Lo que era 4, ahora debe ser 1, lo que era 3 ahora 2, lo que era 2 ahora 3 y lo que era 1 ahora 4. Así, lo que se convierta en 4 medida la satisfacción y no la insatisfacción. Luego de ello, lo que supere el valor de en el indicador será "Satisfecho con servicios públicos" o 5 o menos será "Insatisfecho con los servicios públicos", esta nueva variable será llamada ind_agrupado. Analiza si ind_agrupado se encuentra asociado con el sexo del encuestado.

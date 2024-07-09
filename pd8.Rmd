@@ -6,283 +6,292 @@ output:
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 1
+    toc_depth: 3
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
   pdf_document:
     toc: yes
-    toc_depth: '1'
+    toc_depth: '2'
 editor_options: 
   markdown: 
     wrap: sentence
 ---
 
+<center><img src=" " width="200"/></center>
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
+
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
 
 ------------------------------------------------------------------------
 
-# **Tablas de contingencia y prueba Chi2**
+## **Diagramas de dispersión y correlación**
 
-# Tablas de contingencia
+### Ideas clave
 
--   Son tablas de doble entrada, en las cuales se cruzan las categorías de dos variables de interés.
--   En las casillas de la tabla se ubica la frecuencia o el número de casos de cada cruce.
--   Conceptos importantes: Frecuencias observadas y frecuencias esperadas.
+La correlación es en esencia una medida normalizada de asociación o covariación lineal entre dos variables.
 
-![](IM1.png)
+-   La **correlación** es una medida de la relación (covariación) entre **dos variables cuantitativas.**
 
-### **Frecuencias observadas y esperadas**
+-   La manera más sencilla de saber si dos variables están correlacionadas es determinar si co-varían (varían conjuntamente).
 
--   Frecuencia esperada: Estas son las frecuencisa que deberían darse si las variables fueran independientes.
+-   Es importante hacer notar que **esta covariación o relación no implica necesariamente causalidad**: La correlación puede ser fortuita, como en el caso clásico de la correlación entre el número de venta de helados e incendios, debido al efecto de una tercera variable, la temperatura ambiental.
+    A este tipo de relación se le llama "espuria".
 
--   Frecuencia observada: Estas son las frecuencias reales que se observa en nuestra data.
+### Hipótesis de la prueba de correlación
 
-Ejemplo:
+-   H0 : No existe correlación entre las variables
+-   H1 : Existe correlación entre las variables
 
-![](IM2.png)
+### Coeficiente de Correlación de Pearson
 
-# Prueba Chi2
+-   "El Coeficiente de Correlación de Pearson es un estadístico paramétrico, pues se asume que ambas variables tienen una distribución aproximadamente normal, o sea, distribución normal bivariante".
 
-Chi2 es una prueba para estimar el grado de asociación entre variables categóricas: "Nominal - Nominal", "Nominal - Ordinal" y "Ordinal - Ordinal".
-Esto significa que una parte de la variabilidad de una variable puede ser explicada por otra variable.
+-   Es una medida que **puede variar entre -1 y +1**, ambos extremos indicando correlaciones perfectas, negativa y positiva respectivamente.
 
-**Supuestos:**
+-   Un valor de r = 0 indica que no existe relación lineal entre las dos variables.
 
-Para analizar asociación se requiere que el número de observaciones esperadas en cada celda de la tabla de contingencia debe ser suficientemente grande.
+![](G1.png)
 
-Para fines de este curso, al menos cada celda de la TC de frecuencias esperadas debe ser de 5.
+### Gráfico de dispersión
 
-Ten en cuenta que si estas condiciones no se cumplen, entonces la prueba podría no funcionar adecuadamente y los resultados de la prueba podrían no ser válidos.
-Si es que encuentran que no se cumple este supuesto: Repórtalo!
+![](G2.png)
 
-**Hipótesis:**
+Otros ejemplos:
 
--   Hipótesis nula (H0): Las variables son estadísticamente independientes (No hay asociación).
+![](G3.png)
 
--   Hipótesis alternativa (H1): Las variables son estadísticamente dependientes (Sí hay asociación).
+### Aplicación práctica
 
-### Ejercicios
+# Pregunta de investigación
 
-Utilizaremos data sobre elecciones presidenciales en Estados Unidos, de hace 20 años.
-La base de datos continene información sobre las preferencias electorales antes y después de las elecciones, así como informacion de las preferencias políticas, situación económica, religión, y participación política de los encuestados.
+```{=html}
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+```
+::: custom-text
+¿Cómo se relaciona la percepción de corrupción con los indicadores de democracia de los países?
+🤔
+:::
 
-Cargamos la data:
+Para la sesión de hoy trabajaremos con una base de datos que contiene variables obtenidas de las siguientes bases: - Freedom in the World - V-Dem - Democracy Index - Global Corruption Barometer
 
-```{r warning=FALSE,message=FALSE}
+Información sobre las bases: - Freedom in the World es elaborado por Freedom House y analiza los siguientes aspectos: el proceso electoral, las políticas pluriculturales y la participación, el funcionamiento del gobierno, la libertad de expresión y de creencia, los derechos de asociación y organización, el estado de derecho, la autonomía personal y los derechos individuales.
+
+V-Dem es publicada por el V-Dem Institute.
+En ella se describe la calidad de los gobiernos a partir de información de 542 indicadores.
+La data describe todos los aspectos de un gobierno, brindándo énfasis en la calidad de la democracia, la inclusividad y otros indicadores económicos.
+
+Democracy Index es elaborado por The Economist y utiliza 60 indicadores, agrupados en cinco categorías: proceso electoral y pluralismo, libertades civiles, funcionamiento del gobierno, participación política y política cultural.
+A partir de estas categorías posiciona a los países en alguno de los cuatro tipos de régimen: Democracia plena, democracia imperfecta, régimen híbrido y régimen autoritario.
+
+Global Corruption Barometer es publicado por Transparencia Internacional y contiene información proveniente de la opinión pública ciudadana
+
+![](diccionariopd82024.png)
+
+### Cargamos nuestra base de datos:
+
+```{r message=FALSE,warning=FALSE}
 library(rio)
-eda=import("eda.sav")
-```
-
-## Ejercicio 1. Relación entre sexo y situación económica respecto del año pasado\*\*
-
-*PASO 0: Revisamos la estructura de las variables que nos interesan:*
-
-Variable sexo: nominal
-
-```{r eval=F}
-str(eda$sexo)
-
-```
-
-Les damos el formato adecuado:
-
-```{r}
-eda$sexo = factor(eda$sexo, labels = c("Hombre","Mujer"))
-table(eda$sexo)
-```
-
-Situación económica: ordinal
-
-```{r }
-str(eda$su_ecopas)
-```
-
-```{r }
-eda$su_ecopas= factor(eda$su_ecopas, 
-                      levels = c(1:3),
-                      labels = c("Mejor","Igual","Peor"),
-                      ordered = T)
-table(eda$su_ecopas)
-```
-
-```{r }
-prop.table(table(eda$su_ecopas))*100
-```
-
-**PASO 1: Tabla de contigencias**
-
-Los valores observados son los valores de nuestra tabla tal como la tenemos en nuestra base
-
-```{r }
-tabla1.1 = table(eda$su_ecopas, eda$sexo)
-tabla1.1 #tabla simple
-```
-
-Creamos porcentajes por columna:
-
-```{r message=FALSE}
-tabla1.2 = tabla1.1 %>%
-           prop.table(2) %>%  # porcentaje por columna
-           round(3)
-tabla1.2
-```
-
-> Existe diferencia con lo que vemos a nivel de cada subgrupo (hombre y mujer) respecto a lo que habíamos visto a nivel de toda la muestra?
-
-**PASO 2: Diagrama de barras apiladas**
-
-Preparamos la data para graficar:
-
-```{r }
-toPlot1 = as.data.frame(tabla1.2) 
-names(toPlot1) = c("Categoria", "Sexo", "Porcentaje")
-toPlot1
-```
-
-Generamos el gráfico y lo solicitamos:
-
-```{r }
+library(dplyr)
 library(ggplot2)
 
-barras_apiladas<-toPlot1 |> 
-  ggplot()+
-  aes(x=Sexo, y=Porcentaje, fill=Categoria) +
-  geom_bar(position="stack", stat="identity")+
-  geom_text(aes(label=Porcentaje*100), 
-            position = position_stack(), 
-            vjust=1, size = 3)+
-  labs(x="Sexo", y="Porcentaje", fill="Situación económica")+
-  theme_bw()
-
-barras_apiladas
+data=import("corrupcion-democracia-1.xlsx")
+names(data)
 ```
 
-> De forma preliminar, ves diferencias entre la forma cómo se distribuye la variable "Situación Económica" en cada subgrupo (hombre y mujer)?
+### Ejercicio 1: ¿Existe relación entre el indicador de democracia y el porcentaje de personas que perciben que los funcionario son corruptos en el país?
 
-**PASO 3: Prueba Chi cuadrado**
+**Paso 1: Exploramos variables de interés**
 
--   H0: El sexo es estadísticamente independiente de la situación económica respecto del año pasado
-
--   HA: El sexo es estadísticamente dependiente de la situación económica respecto del año pasado
+Primero analicemos la variable **c_funcionarios**:
 
 ```{r }
-chisq.test(tabla1.1)
+str(data$c_funcionarios)
 ```
 
-
-
-De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
-
-Por lo tanto, concluimos existe dependencia entre las variables escogidas: sexo y situación económica actual.
-
-**SUPUESTO**
-
-Ten en cuenta que si te piden verificar el supuesto sólo tienes que solicitar la tabla de frecuencias esperadas y ver que efectivamente todas las celdas tienen un número igual o mayor a 5.
-
-```{r}
-chisq.test(tabla1.1)$expected
-```
-
-En este caso sí cumple el supuesto!
-
-## Ejercicio 2: Relación entre nivel educativo (ordinal) y nivel de confianza en la política (ordinal)
-
-*PASO 0: Revisamos la estructura de las variables que nos interesan:*
-
-Variable nivel educativo: ordinal
-
-```{r eval=F}
-str(eda$educ)
-```
+Análisis descriptivo de la variable **c_funcionarios**:
 
 ```{r }
-eda$educ = factor(eda$educ, 
-                      levels = c(1:3),
-                      labels = c("Menos que secundaria","Secundaria completa","Mas que secundaria"),
-                      ordered = T)
-table(eda$educ)
+data %>%
+ summarize(Min = min(c_funcionarios, na.rm = TRUE),
+           Media = mean(c_funcionarios, na.rm = TRUE),
+           Mediana = median(c_funcionarios, na.rm = TRUE),
+           Max = max(c_funcionarios, na.rm = TRUE))
 ```
 
-Confianza en la política: ordinal
+Ahora, analicemos nuestra segunda variable **Democracia**:
 
 ```{r }
-eda$confipolR = factor(eda$confipolR, 
-                      levels = c(1:3),
-                      labels = c("Baja","Media", "Alta"),
-                      ordered = T)
-table(eda$confipolR)
+str(data$Democracia)
 ```
 
-**PASO 1: Tabla de contigencia**
-
-Los valores observados son los valores de nuestra tabla tal como la tenemos en nuestra base
+Análisis descriptivo de la variable **Democracia**:
 
 ```{r }
-tabla2.1 = table(eda$confipolR, eda$educ)
-tabla2.1
+data %>%
+ summarize(Min = min(Democracia, na.rm = TRUE),
+           Media = mean(Democracia, na.rm = TRUE),
+           Mediana = median(Democracia, na.rm = TRUE),
+           Max = max(Democracia, na.rm = TRUE))
 ```
 
-Creamos porcentajes por columna:
+**Paso 2: Gráfico de dispersión**
 
-```{r message= FALSE}
-library(tidyverse)
-tabla2.2 = tabla2.1 %>%
-  prop.table(2) %>%  # porcentaje por columna
-  round(3)
-tabla2.2
+Visualizamos la relación entre dos variables cuantitativas.
+Esta "nube" de puntos en el gráfico de dispersión nos da una idea visual (preliminar) de la probable relación entre las variables.
+
+```{r warning=FALSE,message=FALSE}
+ggplot(data, aes(x=c_funcionarios, y=Democracia)) +
+  geom_point(colour="skyblue") +  xlab("% de personas que opinan que los funcionarios del \n gobierno están envueltos en corrupción") +  ylab("Puntaje de democracia") +
+  ggtitle("Relación entre la percepción de corrupción \n de funcionarios del gobierno y la democracia") +
+  theme_light()+ geom_smooth(method=lm,se=F)
 ```
 
-Creamos porcentajes por fila:
+¿Qué nos indica el gráfico?
+¿Existirá correlación?
+¿Con qué fuerza?
+¿Qué sentido?
 
-**PASO 2: Diagrama de barras apiladas**
+El gráfico nos indica una correlación negativa.
+Adicionalmente, es posible asociar la distribución de los puntos con una correlación pequeña o mediana.
+¿Cómo sabremos la fuerza de la correlación?
+Con la **prueba de correlación**
 
-Preparamos la data para graficar:
+**Paso 3: Correlación**
+
+Dos hipótesis:
+
+-   H0 = No existe correlación entre el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción y el puntaje de la democracia
+-   H1 = Sí existe correlación entre el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción y el puntaje de la democracia
+
+```{r warning=FALSE,message=FALSE}
+#Prueba de correlación
+cor.test(data$Democracia, data$c_funcionarios)
+```
+
+-   p \< 0.05 Rechazas la H0 (por lo tanto, sí hay correlación)
+-   P \> 0.05 No rechazas la H0
+
+**¿Qué nos dice el resultado?** *Recuerda que en la interpretación no debe faltar: (i) intepretación del p-valor y (ii) interpretación del coeficiente de correlación (cor)*
+
+Interpretación: Dado que el p-valor es menor a 0.05, rechazamos la H0.
+Por lo tanto, podemos afirmar que **existe correlación** entre el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción y el indicador de la democracia.
+
+El coeficiente es de -0.30, lo que quiere decir: (i) Se trata de una **correlación negativa**; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación mediana.
+
+En síntesis, se espera que mientras el indicador de democracia sea más alto en un país, menor lo será el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción.
+Sin embargo, esta relación es de fuerza media, lo que significa que aunque la tendencia es clara, no es una relación extremadamente fuerte, pero sí lo suficientemente significativa como para ser considerada relevante.
+
+### Ejercicio 2: ¿Existe relación entre el indicador de funcionamiento de gobierno y el porcentaje de personas que creen que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción?
+
+**Paso 1: Exploramos variables de interés**
+
+Primero analicemos la variable **c_diferencia**:
 
 ```{r }
-toPlot2 = as.data.frame(tabla2.2) 
-names(toPlot2) = c("Categoria", "Educacion", "Porcentaje")
-toPlot2
+str(data$c_diferencia)
 ```
 
-Generamos el gráfico y lo solicitamos:
-
-```{r}
-barras_apiladas2<-toPlot2 |> 
-  ggplot()+
-  aes(x=Educacion, y=Porcentaje, fill=Categoria) +
-  geom_bar(position="stack", stat="identity")+
-  geom_text(aes(label=Porcentaje*100), 
-            position = position_stack(), 
-            vjust=1, size = 3)+
-  labs(x="Educacion", y="Categoría", fill="Confianza")+
-  theme_bw()
-
-barras_apiladas2
-```
-
-**PASO 3: Prueba Chi cuadrado**
-
--   H0: El nivel educativo es estadísticamente independiente de la confianza en la política
-
--   HA: El nivel educativo es estadísticamente dependiente de la confianza en la política
+Análisis descriptivo de la variable **c_diferencia**:
 
 ```{r }
-chisq.test(tabla2.1)
+data %>%
+ summarize(Min = min(c_diferencia, na.rm = TRUE),
+           Media = mean(c_diferencia, na.rm = TRUE),
+           Mediana = median(c_diferencia, na.rm = TRUE),
+           Max = max(c_diferencia, na.rm = TRUE))
 ```
 
-De acuerdo al p--value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son independientes).
+Ahora, analicemos nuestra segunda variable **Fun_gob**:
 
-Por lo tanto, concluimos existe dependencia entre las variables escogidas: confianza en la política y nivel educativo.
-
-**SUPUESTO**
-
-Ten en cuenta que si te piden verificar el supuesto sólo tienes que solicitar la tabla de frecuencias esperadas y ver que efectivamente todas las celdas tienen un número igual o mayor a 5.
-
-```{r}
-chisq.test(tabla2.1)$expected
+```{r }
+str(data$Fun_gob)
 ```
 
-En este caso también cumple el supuesto!
+Análisis descriptivo de la variable **Fun_gob**:
+
+```{r }
+data %>%
+ summarize(Min = min(Fun_gob, na.rm = TRUE),
+           Media = mean(Fun_gob, na.rm = TRUE),
+           Mediana = median(Fun_gob, na.rm = TRUE),
+           Max = max(Fun_gob, na.rm = TRUE))
+```
+
+**Paso 2: Gráfico de dispersión**
+
+```{r warning=FALSE,message=FALSE}
+ggplot(data, aes(x=c_diferencia, y=Fun_gob)) +
+  geom_point(colour="skyblue") +  xlab("% de personas que creen que los ciudadanos \n pueden hacer la diferencia en la lucha contra la corrupción") +  ylab("Indicador de funcionamiento de gobierno") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+```
+
+¿Qué nos indica el gráfico?
+¿Existirá correlación?
+¿Con qué fuerza?
+¿Qué sentido?
+
+El gráfico nos indica una correlación positiva.
+Posiblemente se trate de una correlación pequeña, pero no lo sabremos con certeza hasta realizar la **prueba de correlación**
+
+**Paso 3: Correlación**
+
+Dos hipótesis:
+
+-   H0 = No existe correlación entre el el indicador de funcionamiento del gobierno y el porcentaje de personas que creen que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción
+-   H1 = Sí existe correlación entre el indicador de funcionamiento del gobierno y el porcentaje de personas que creen que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción
+
+```{r warning=FALSE,message=FALSE}
+#Prueba de correlación
+cor.test(data$c_diferencia, data$Fun_gob)
+```
+
+-   p \< 0.05 Rechazas la H0 (por lo tanto, sí hay correlación)
+-   P \> 0.05 No rechazas la H0
+
+**¿Qué nos dice el resultado?** *Recuerda que en la interpretación no debe faltar: (i) intepretación del p-valor y (ii) interpretación del coeficiente de correlación (cor)*
+
+Interpretación: Dado que el p-valor es menor a 0.05, rechazamos la H0.
+Por lo tanto, podemos afirmar que existe correlación entre el porcentaje de personas opinan que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción y el indicador de funcionamiento del gobierno.
+
+El coeficiente es de 0.29, por lo tanto se trata de una relación positiva (i), y de fuerza pequeña (ii).
+Esto quiere decir que a medida el indicador de funcionamiento de gobierno aumenta en un país, también lo hará el porcentaje de personas que piensan que la ciudadanía hará la diferencia en la lucha contra la corrupción.
+Sin embargo, esto no sucederá en la misma medida para todos los casos, ya que la fuerza de correlación es pequeña.
+
+# Ejercicios en clase
+
+1.  Realiza un gráfico de dispersión que muestre la relación entre el % de personas que opina que la policía es corrupta (c_policia) y el indicador de derechos políticos (Der_pol). Luego analiza si existe relación entre las variables y descríbela.
+
+<!-- -->
+
+2.  Realiza un gráfico de dispersión que muestre la relación entre el % de personas que opina que la policía es corrupta (c_policia) y el indicador de derechos políticos (Libertad). Luego analiza si existe relación entre las variables y descríbela.
+3.  Compara las correlaciones anteriores, ¿alguna es más fuerte que la otra? ¿Qué variable está más relacionada con el % de personas que opina que la policía es corrupta?
+
+# Ejercicios para practicar en casa
+
+1.  Realiza un gráfico de dispersión que muestre la relación entre el indicador de libertades civiles (Lib_civiles) y % de personas de acuerdo con cada una de las siguientes frases.
+
+    | Variable | \% de personas de acuerdo con la frase                                                                                     |
+    |----------|----------------------------------------------------------------------------------------------------------------------------|
+    | c_frase1 | "En nuestra sociedad es generalmente aceptable que las personas denuncien los casos de corrupción de los que son testigos" |
+    | c_frase2 | "Si fuera testigo de un acto de corrupción, me sentiría personalmente obligado a denunciarlo"                              |
+    | c_frase3 | "Denunciaría un caso de corrupción aunque tuviera que pasar un día en el juzgado para declarar"                            |
+
+*Hint: Debe de haber 3 gráficos uno de Lib_civiles con c_frase1, otro de Lib_civiles con c_frase2 y otro de Lib_civiles con c_frase2.*
+
+2.  Analiza si existe relación entre las variables mostradas en los gráficos anteriores, y compara los resultados.
+
+    *Hint: Debe de haber 3 cor.test uno de Lib_civiles con c_frase1, otro de Lib_civiles con c_frase2 y otro de Lib_civiles con c_frase2.*

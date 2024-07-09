@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 11</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -339,7 +339,7 @@ div.tocify {
   <a href="pd2.html">Práctica 2</a>
 </li>
 <li>
-  <a href="Pd3.html">Práctica 3</a>
+  <a href="pd3.html">Práctica 3</a>
 </li>
 <li>
   <a href="pd4.html">Práctica 4</a>
@@ -372,7 +372,7 @@ div.tocify {
   <a href="pd13.html">Práctica 13</a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="FAQ.html">FAQ</a>
 </li>
 <li>
   <a href="https://github.com/arturomaldonado/PracticasPOL278">
@@ -398,498 +398,318 @@ div.tocify {
 <img src=" " width="200"/>
 </center>
 <p><img src="logoPUCP.png" width="30%" /></p>
-<div id="regresión-linea-múltiple" class="section level1">
-<h1><strong>Regresión linea múltiple</strong></h1>
-<p>Hasta el momento, nos hemos encontrado en el campo del análisis
-bivariado. Sin embargo, en el mundo social, difícilmente se pueden
-explicar los fenómenos de interés con una sola variable. Incluso si nos
-interesa evaluar el efecto de un a variable en específico sobre un
-fenómeno de estudio, hay muchos otros factores que podrían influir en
-aquello que nos interesa explorar. Por ello, necesitamos recurrir al
-<strong>análisis multivariado</strong> y conocer el concepto de
-<strong>control estadístico</strong>.</p>
-<p>El control estadístico nos permite “eliminar” explicaciones
-alternativas, en tanto se aisla el efecto de otras variables. La idea
-es:</p>
-<ul>
-<li><p>Evaluar si la asociación entre X - Y permanece si se remueve el
-efecto de otra variable, es decir, si se controla por una tercera
-variable.</p></li>
-<li><p>Se analiza la relación entre X - Y para valores similares o
-iguales de una variable Z. De esta manera se elimina la influencia de Z
-en la relación entre X - Y. Es un paso en el establecimiento de X -&gt;
-Y.</p></li>
-<li><p>Si la relación entre X - Y desaparece cuando se controla por Z,
-se dice que la relación era espúrea.</p></li>
-</ul>
-<p>Sobre la regresión lineal múltiple:</p>
-<p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
-<hr />
-<p>Seguiremos los siguientes pasos para el análisis:</p>
-<p><img src="pd12_diap2.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="aplicación-práctica" class="section level1">
-<h1>Aplicación práctica</h1>
-<div
-id="factores-que-determinan-el-acceso-a-la-información-en-los-estados"
-class="section level2">
-<h2><strong>Factores que determinan el acceso a la información en los
-Estados</strong></h2>
-<p>El acceso a la información es fundamental para el funcionamiento de
-cualquier Estado democrático, ya que promueve la transparencia, la
-responsabilidad y la participación ciudadana.</p>
-<p>Para poder realizar el análisis se han revisado las siguientes
-fuentes:</p>
-<p><strong>Digital Access Index</strong> El Índice de Acceso Digital es
-utilizado para medir y evaluar el nivel de acceso a las tecnologías
-digitales y a internet. Proporciona una medida de hasta qué punto las
-personas y las comunidades pueden utilizar y beneficiarse de las
-tecnologías digitales.</p>
-<p><strong>Egov-index</strong> El Índice de Gobierno Electrónico es una
-medida que evalúa el nivel de desarrollo y adopción de tecnologías de la
-información y la comunicación (TIC) en el sector público. Este índice se
-utiliza para medir la capacidad de los gobiernos para proporcionar
-servicios en línea, promover la participación ciudadana y utilizar las
-TIC de manera efectiva en la gestión gubernamental.</p>
-<p><strong>Democracy Index</strong> El Índice de Democracia es un índice
-que mide el estado de la democracia en países de todo el mundo. Es
-elaborado por The Economist (EIU) y evalúa el funcionamiento de los
-procesos e instituciones democráticas.</p>
-<p>A partir de la información recolectada se ha creado una base de datos
-llamada Egov.</p>
-<p><img src="PD12_diccionarioEgov.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>Cargamos la base de datos:</p>
 <pre class="r"><code>library(rio)
-Egov=import(&quot;EGov.xlsx&quot;)
-names(Egov)</code></pre>
-<pre><code>## [1] &quot;pais&quot;                             &quot;participaciónDigital&quot;            
-## [3] &quot;Servicios_Online&quot;                 &quot;Capital_Humano&quot;                  
-## [5] &quot;Telecommunicacion_Infrastructura&quot; &quot;ProcesoElectoral&quot;                
-## [7] &quot;Policulture&quot;                      &quot;accesoInformacion&quot;               
-## [9] &quot;UsuariosInternet&quot;</code></pre>
-<p><strong>No olviden el análisis descriptivo antes de hacer los
-modelos.</strong></p>
+data=import(&quot;LCV1819-1.sav&quot;)</code></pre>
+<div id="repaso" class="section level1">
+<h1><strong>REPASO</strong></h1>
 </div>
-<div id="modelo-1" class="section level2">
-<h2><strong>Modelo 1</strong></h2>
-<pre class="r"><code>library(tidyverse)
+<div id="chi-cuadrado-y-pruebas-de-asociación" class="section level1">
+<h1>CHI CUADRADO Y PRUEBAS DE ASOCIACIÓN</h1>
+<p>Recordemos que chi cuadrado es una prueba para probar si existe
+asociación entre variables categóricas.</p>
+<p>H0: Las variables son estadísticamente independientes/no hay
+dependencia H1: Las variables son estadísticamente dependientes.</p>
+<p>OJO: Recuerden que hablar de asociación no implica causalidad.</p>
+<div id="ejercicio-1" class="section level2">
+<h2>Ejercicio 1:</h2>
+<p>Queremos saber si existe asociación entre el gasto en el trasporte
+agrupado y otras variables, en específico, queremos saber si</p>
+<p>¿Existe asociación entre el gasto en transporte agrupado y la edad
+agrupada (EDAD)?</p>
+<p>La variable gasto en trasporte (PEA10A) es numérica. Ante ello,
+tenemos que separar esta variable en 3 grupos, nos guiaremos de los
+cuartiles para crear los grupos: Bajo(menos de 20) , medio (de 20 a 70)
+, Alto (más de 70). La nueva variable se llamará “GASTO_T”.</p>
+<pre class="r"><code>summary(data$PE10A)</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA&#39;s 
+##     0.00    10.00    20.00    81.33    70.00 14000.00      304</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>data = data %&gt;%
+  mutate(GASTO_T=case_when(PE10A&lt;20 ~ &quot;1.BAJO&quot;,
+                             PE10A&gt;=20 &amp; EG2OTRO&lt;=70 ~ &quot;2.MEDIO&quot;,
+                             PE10A&gt;70 ~ &quot;3.ALTO&quot;))
 
-modelo1 = lm(accesoInformacion ~participaciónDigital+Servicios_Online+Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet ,data=Egov)
+data$GASTO_T= factor(data$GASTO_T)</code></pre>
+<pre class="r"><code>data$EDAD=factor(data$EDAD, levels = c(1:3),labels = c(&quot;18 a 29&quot;,
+                                                        &quot;30 a 44&quot;,
+                                                         &quot;más de 45&quot;))</code></pre>
+<p>Creemos nuestra tabla de contingencia</p>
+<pre class="r"><code>tabla=table(data$GASTO_T,data$EDAD)
+tabla #con esta realizamos la prueba</code></pre>
+<pre><code>##          
+##           18 a 29 30 a 44 más de 45
+##   1.BAJO      383     441       483
+##   2.MEDIO     195     274       427
+##   3.ALTO      190     159       121</code></pre>
+<p>En porcentajes: calculamos el 100% sobre “EDAD”</p>
+<pre class="r"><code>tabla_p= tabla %&gt;%
+  prop.table(2)%&gt;% #porcentaje por columna
+  round(2)*100
+tabla_p</code></pre>
+<pre><code>##          
+##           18 a 29 30 a 44 más de 45
+##   1.BAJO       50      50        47
+##   2.MEDIO      25      31        41
+##   3.ALTO       25      18        12</code></pre>
+<p>Grafiquemos:</p>
+<pre class="r"><code>toPlot = as.data.frame(tabla_p) 
+names(toPlot) = c(&quot;Gasto&quot;, &quot;Edad&quot;, &quot;Porcentaje&quot;)
+
+ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Edad)) + 
+    geom_bar(stat=&quot;identity&quot;) + 
+    labs( y = &#39;Porcentaje (%)&#39;, x = &#39; &#39;)+
+    ggtitle(&#39;Gasto en transporte según grupo etario&#39;)+
+    theme_bw()</code></pre>
+<p><img src="pd11_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>El grafico y la tabla muestran que en los 3 grupos etarios la mayoría
+tiene un gasto bajo en transporte. Sin embargo, se puede observar que en
+comparación, el porcentaje que tiene un gasto alto entre los más jóvenes
+es mayor que dentro de los otros grupos etarios.</p>
+<pre class="r"><code>chisq.test(tabla)$expected</code></pre>
+<pre><code>##          
+##            18 a 29  30 a 44 más de 45
+##   1.BAJO  375.5241 427.3543  504.1216
+##   2.MEDIO 257.4366 292.9682  345.5952
+##   3.ALTO  135.0393 153.6775  181.2832</code></pre>
+<p>Podemos proceder con la prueba</p>
+<pre class="r"><code>chisq.test(tabla)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla
+## X-squared = 79.615, df = 4, p-value &lt; 2.2e-16</code></pre>
+<p>De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al
+ser menor de 0.05, podemos rechazar la hipótesis nula. Por lo tanto,
+concluimos que existe dependencia entre el gasto en transporte
+(bajo/medio/alto) y el grupo etario.</p>
+</div>
+</div>
+<div id="correlación" class="section level1">
+<h1>CORRELACIÓN</h1>
+<p>Esta es una medida de relación entre dos variables cuantitativas o
+numéricas.</p>
+<p>H0 = No existe correlación las variables H1 = Sí existe correlación
+entre las variables</p>
+<p>En esta prueba, no es suficiente analizar el pvalue, también debemos
+interpretar el coeficiente de correlación de pearson. Este nos indica la
+fuerza y la dirección de la relación entre las variables.</p>
+<div id="ejercicio-2" class="section level2">
+<h2>Ejercicio 2:</h2>
+<p>Ahora queremos explorar si existe relación entre el gasto en
+educación (PE10D) y la edad (ANIOS)</p>
+<pre class="r"><code>str(data$EG2OTRO)</code></pre>
+<pre><code>##  num [1:3744] NA NA NA NA 2 NA 63 50 NA NA ...
+##  - attr(*, &quot;label&quot;)= chr &quot;¿Hace cuántos años que vive en la ciudad de Lima? - Especificar número de años&quot;
+##  - attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;</code></pre>
+<p>Previo a la prueba, realicemos un gráfico de dispersión para hacernos
+una idea inicial</p>
+<pre class="r"><code>ggplot(data,aes(x=ANIOS, y=data$PE10D)) +
+  geom_point(colour=&quot;darkblue&quot;) +  xlab(&quot;Edad&quot;) +  ylab(&quot;Gasto en educación&quot;) +
+  ggtitle(&quot;Relación entre el gasto en educación y la edad&quot;) +
+  xlim(18,80)+ylim(0,1000)+
+  theme_light() + 
+  geom_smooth(method=&quot;lm&quot;, se = F)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="pd11_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Podemos ver bastante dispersión, no parece haber correlación entre
+las variables.</p>
+<pre class="r"><code>cor.test(data$ANIOS,data$PE10D)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data$ANIOS and data$PE10D
+## t = -3.2686, df = 2664, p-value = 0.001094
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.10092230 -0.02530033
+## sample estimates:
+##         cor 
+## -0.06320204</code></pre>
+<p>Siendo el p-valor menor a 0.05, podemos rechazar la hipótesis nula y
+concluir que existe relación entre la edad y el gasto en educación.
+Adicionalmente, podemos determinar que esta relación es inversa y no
+relevante (r = 0.06).</p>
+</div>
+</div>
+<div id="regresión-simple" class="section level1">
+<h1>REGRESIÓN SIMPLE</h1>
+<p>Recordemos que con la regresión predecimos el valor de una variable
+con los valores de otra. La regresión lineal simple es un método útil
+para predecir una respuesta cuantitativa Y partiendo de una sola
+variable predictora X, asumiendo que hay una relación aproximadamente
+lineal entre X e Y.</p>
+<div id="pasos-para-la-regresión-lineal-simple" class="section level2">
+<h2>Pasos para la regresión lineal simple</h2>
+<ul>
+<li><p>Paso 1: Analizar la asociación entre las variables de insumo:
+Diagrama de dispersión y correlación bivariada, en caso de variables
+numéricas</p></li>
+<li><p>Paso 2: Conocer qué tanto explica el modelo: COEFICIENTE DE
+DETERMINACIÓN – R2</p></li>
+<li><p>Paso 3: Conocer los parámetros del modelo: TABLA DE
+COEFICIENTES</p></li>
+<li><p>Paso 4: Construir la ecuación y predecir</p></li>
+</ul>
+</div>
+<div id="ejercicio-3" class="section level2">
+<h2>Ejercicio 3:</h2>
+<p>Queremos analizar posibles modelos que expliquen la percepción de los
+limeños acerca del transporte público informal (buses, cousters y
+combis, y mototaxis). Para esto calcularemos un indice aditivo de la
+calificación de los servicios de buses (MT7A), de cousters y combis
+(MT7B) y de mototaxis (MT7D), que varíe de 0 a 100.</p>
+<p>Pero, ¿qué puede influir en la percepción de los limeños acerca del
+transporte público? Para este ejercicio emplearemos dos variables:</p>
+<p>Creación del índice:</p>
+<pre class="r"><code>data$evaluacion_ti = ((data$MT7A + data$MT7B + data$MT7D)-3)/12*100
+summary(data$evaluacion_ti)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00   33.33   50.00   47.95   58.33  100.00    1626</code></pre>
+<p>Paso 1: Diagrama de dispersión y correlación bivariada</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
+  geom_point(colour=&quot;lightsteelblue4&quot;) +  
+  xlab(&quot;Tiempo en Lima&quot;) +  
+  ylab(&quot;Indice de percepción sobre el transporte&quot;)+ theme_light() + 
+  geom_smooth(method=&quot;lm&quot;, se = T, colour=&quot;grey5&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="pd11_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Correlación:</p>
+<pre class="r"><code>cor.test(data$evaluacion_ti, data$EG2OTRO)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  data$evaluacion_ti and data$EG2OTRO
+## t = -2.5253, df = 975, p-value = 0.01172
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.14260835 -0.01798253
+## sample estimates:
+##         cor 
+## -0.08061048</code></pre>
+<p>Podemos observar que existe correlación entre ambas variables (p
+valor = 0,012) y que la correlación es negativa y que no es relevante (r
+= -0.08).</p>
+<pre class="r"><code>modelo1 = lm(data$evaluacion_ti ~ data$EG2OTRO)
 summary(modelo1)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = accesoInformacion ~ participaciónDigital + Servicios_Online + 
-##     Capital_Humano + Telecommunicacion_Infrastructura + ProcesoElectoral + 
-##     Policulture + UsuariosInternet, data = Egov)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.204651 -0.033054  0.002505  0.032268  0.116256 
-## 
-## Coefficients:
-##                                    Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                      -0.1208398  0.0263792  -4.581 1.13e-05 ***
-## participaciónDigital             -0.0788712  0.0914304  -0.863  0.39004    
-## Servicios_Online                  0.0809775  0.0948445   0.854  0.39491    
-## Capital_Humano                    0.2968634  0.0555961   5.340 4.43e-07 ***
-## Telecommunicacion_Infrastructura  0.3561180  0.0782623   4.550 1.28e-05 ***
-## ProcesoElectoral                  0.0075843  0.0019182   3.954  0.00013 ***
-## Policulture                       0.0139957  0.0043417   3.224  0.00163 ** 
-## UsuariosInternet                  0.0015629  0.0006815   2.293  0.02355 *  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.06194 on 121 degrees of freedom
-## Multiple R-squared:  0.926,  Adjusted R-squared:  0.9217 
-## F-statistic: 216.3 on 7 and 121 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-<div id="interpretamos" class="section level2">
-<h2><strong>Interpretamos 😎</strong></h2>
-<div id="el-modelo-es-válido" class="section level3">
-<h3><strong>¿El modelo es válido?</strong></h3>
-<p>Establezcamos nuestras hipótesis:</p>
-<ul>
-<li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
-</ul>
-<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
-rechazar la H0, por lo que concluimos que el modelo sí es válido como
-modelo de predicción.</p>
-</div>
-<div id="qué-tanto-explica-el-modelo" class="section level3">
-<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
-<p>Observamos el <strong>R2 ajustado</strong>.</p>
-<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared, por ser un modelo lineal múltiple).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos
-concluir que el modelo explica aproximadamente el 92.2% (0.9217*100) de
-la variabilidad en el acceso a la información (variable dependiente). En
-otras palabras, este valor alto de R cuadrado ajustado indica que el
-modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar
-la relación entre las variables independientes y la variable
-dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice
-nada sobre la significancia estadística de las variables individuales,
-ni sobre la causalidad. Por ello analizaremos también las variables de
-forma independiente en el siguiente paso.</p>
-<p><em>Recordemos que el R cuadrado puede tomar valores entre 0 y 1. Un
-R cuadrado de 1 indica que el modelo explica toda la variabilidad de la
-variable Y. Un R cuadrado de 0 indica que el modelo no explica nada de
-la variabilidad de la variable Y.</em></p>
-</div>
-<div id="las-variables-aportan-al-modelo" class="section level3">
-<h3><strong>¿Las variables aportan al modelo?</strong></h3>
-<p>Revisamos <strong>p-value</strong> por cada variable
-independiente.</p>
-<ul>
-<li>Esperamos obtener un p-value &lt;0.05.</li>
-<li>Nos damos cuenta que <em>no todas</em> las variables independientes
-tienen un p-value &lt;0.05, es el caso de: participaciónDigital y
-Servicios_Online</li>
-</ul>
-</div>
-<div id="cuáles-son-los-coeficientes-de-la-ecuación"
-class="section level3">
-<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
-<p>Podemos obtener extraer los coeficientes del modelo:</p>
-<p><em>No olvidar identificar el signo de cada coeficiente, este tendrá
-repercusión en la ecuación y su futura aplicación</em></p>
-<pre class="r"><code>modelo1$coefficients</code></pre>
-<pre><code>##                      (Intercept)             participaciónDigital 
-##                     -0.120839771                     -0.078871158 
-##                 Servicios_Online                   Capital_Humano 
-##                      0.080977535                      0.296863439 
-## Telecommunicacion_Infrastructura                 ProcesoElectoral 
-##                      0.356118022                      0.007584279 
-##                      Policulture                 UsuariosInternet 
-##                      0.013995704                      0.001562898</code></pre>
-<p>De esa manera puedo hallar la ecuación:</p>
-<p><span class="math display">\[
-Y = -0.12 + \text{participaciónDigital} \times (-0.078) +
-\text{Servicios\_Online} \times (0.080) + \text{Capital\_Humano} \times
-(0.29) + \text{Telecommunicacion\_Infrastructura} \times (0.35) +
-\text{ProcesoElectoral} \times (0.0075) + \text{Policulture} \times
-(0.013) + \text{UsuariosInternet} \times (0.0015)
-\]</span></p>
-<p>¿Qué sucede si retiro las variables independientes que no aportan al
-modelo 1? Veamos un segundo modelo 👀 .</p>
-</div>
-</div>
-<div id="modelo-2" class="section level2">
-<h2><strong>Modelo 2</strong></h2>
-<pre class="r"><code>library(dplyr)
-library(ggplot2)
-
-modelo2 = lm(accesoInformacion ~Capital_Humano  +Telecommunicacion_Infrastructura+ProcesoElectoral+ Policulture +UsuariosInternet   ,data=Egov)
-summary(modelo2)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = accesoInformacion ~ Capital_Humano + Telecommunicacion_Infrastructura + 
-##     ProcesoElectoral + Policulture + UsuariosInternet, data = Egov)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.205352 -0.037077  0.002991  0.035621  0.111936 
-## 
-## Coefficients:
-##                                    Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                      -0.1220640  0.0262044  -4.658 8.15e-06 ***
-## Capital_Humano                    0.2884448  0.0538523   5.356 4.02e-07 ***
-## Telecommunicacion_Infrastructura  0.3513669  0.0774659   4.536 1.34e-05 ***
-## ProcesoElectoral                  0.0075854  0.0018682   4.060 8.66e-05 ***
-## Policulture                       0.0145801  0.0042686   3.416 0.000863 ***
-## UsuariosInternet                  0.0016876  0.0006405   2.635 0.009498 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.06163 on 123 degrees of freedom
-## Multiple R-squared:  0.9255, Adjusted R-squared:  0.9225 
-## F-statistic: 305.8 on 5 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-<div id="interpretamos-1" class="section level2">
-<h2><strong>Interpretamos 😎</strong></h2>
-<div id="el-modelo-es-válido-1" class="section level3">
-<h3><strong>¿El modelo es válido?</strong></h3>
-<p>Establezcamos nuestras hipótesis:</p>
-<ul>
-<li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
-</ul>
-<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-&lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
-rechazar la H0, por lo que concluimos que el modelo sí es válido como
-modelo de predicción.</p>
-</div>
-<div id="qué-tanto-explica-el-modelo-1" class="section level3">
-<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
-<p>Observamos el <strong>R2 ajustado</strong>.</p>
-<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.9225, por lo que podemos
-concluir mi modelo explica aproximadamente el 92.25% (0.9225*100) de la
-variabilidad en el acceso a la información (variable dependiente). E</p>
-</div>
-<div id="las-variables-aportan-al-modelo-1" class="section level3">
-<h3><strong>¿Las variables aportan al modelo?</strong></h3>
-<p>Revisamos <strong>p-value</strong> por cada variable
-independiente.</p>
-<ul>
-<li>Esperamos obtener un p-value &lt;0.05.</li>
-<li><em>Todas</em> las variables independientes aportan al modelo.</li>
-</ul>
-</div>
-<div id="cuáles-son-los-coeficientes-de-la-ecuación-1"
-class="section level3">
-<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
-<pre class="r"><code>modelo2$coefficients</code></pre>
-<pre><code>##                      (Intercept)                   Capital_Humano 
-##                     -0.122063970                      0.288444800 
-## Telecommunicacion_Infrastructura                 ProcesoElectoral 
-##                      0.351366905                      0.007585449 
-##                      Policulture                 UsuariosInternet 
-##                      0.014580126                      0.001687594</code></pre>
-<p>De esa manera puedo hallar la ecuación:</p>
-<p><span class="math display">\[
-Y = -0.12 + \text{Capital\_Humano} \times (0.288) +
-\text{Telecommunicacion\_Infrastructura} \times (0.35) +
-\text{ProcesoElectoral} \times (0.00758) + \text{Policulture} \times
-(0.0145) + \text{UsuariosInternet} \times (0.0016)
-\]</span></p>
-<p>Mi modelo ha mejorado?</p>
-<p>Ligeramente, mientras que el modelo 1 explicaba un 92.17% y el modelo
-2 92.25%. A pesar de que mi modelo 1 tiene un rango de explicación alto,
-con el modelo 2 se ha podido demostrar que el modelo puede mejorar (así
-la mejora no ha haya sido sustancial).</p>
-</div>
-</div>
-<div
-id="qué-factores-determinan-la-calidad-de-sueño-del-personal-de-salud-en-pandemia"
-class="section level2">
-<h2><strong>Qué factores determinan la calidad de sueño del personal de
-salud en pandemia</strong></h2>
-<p>La pandemia de COVID-19 tuvo una repercusión significativa en el
-personal de salud en todo el mundo. Los trabajadores de la salud
-estuvieron en la primera línea de batalla, enfrentando desafíos sin
-precedentes. Además de los riesgos físicos, el personal de salud
-enfrentó una carga emocional y psicológica abrumadora. Una de las
-principales preocupaciones era la calidad del sueño del personal de
-salud, pues podía repercutir directamente en la calidad de atención de
-los pacientes.</p>
-<ul>
-<li>Q1: Edad</li>
-<li>Q2: Género</li>
-<li>Q7: ¿Se encentra en la primera línea de atención del Covid-19?</li>
-<li>Q8: ¿Trabaja desde casa?</li>
-<li>Q11: ¿Tiene niños en casa?</li>
-<li>Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?</li>
-</ul>
-<pre class="r"><code>Covid=import(&quot;COVID_pd12.xlsx&quot;)
-names(Covid)</code></pre>
-<pre><code>## [1] &quot;Q1&quot;  &quot;Q2&quot;  &quot;Q7&quot;  &quot;Q8&quot;  &quot;Q11&quot; &quot;Q13&quot;</code></pre>
-<pre class="r"><code>str(Covid)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
-##  $ Q1 : chr  NA NA NA NA ...
-##  $ Q2 : chr  NA NA NA NA ...
-##  $ Q7 : chr  NA NA NA NA ...
-##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
-##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
-##  $ Q13: chr  NA NA NA NA ...</code></pre>
-<pre class="r"><code>str(Covid)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
-##  $ Q1 : chr  NA NA NA NA ...
-##  $ Q2 : chr  NA NA NA NA ...
-##  $ Q7 : chr  NA NA NA NA ...
-##  $ Q8 : chr  NA &quot;No&quot; &quot;Yes&quot; NA ...
-##  $ Q11: chr  NA &quot;Yes&quot; &quot;Yes&quot; NA ...
-##  $ Q13: chr  NA NA NA NA ...</code></pre>
-<p>Reviso las variables dicotómicas Q2,Q7,Q8 y Q11</p>
-<pre class="r"><code>table(Covid$Q2)</code></pre>
-<pre><code>## 
-## Female   Male 
-##    723    185</code></pre>
-<pre class="r"><code>table(Covid$Q7)</code></pre>
-<pre><code>## 
-##  No Yes 
-## 338 116</code></pre>
-<pre class="r"><code>table(Covid$Q8)</code></pre>
-<pre><code>## 
-##  No Yes 
-## 328 582</code></pre>
-<pre class="r"><code>table(Covid$Q11)</code></pre>
-<pre><code>## 
-##  No Yes 
-## 515 360</code></pre>
-<pre class="r"><code>Covid$Q2= factor(ifelse(Covid$Q2==&quot;Male&quot;,1,0))
-Covid$Q7= factor(ifelse(Covid$Q7==&quot;Yes&quot;,1,0))
-Covid$Q8= factor(ifelse(Covid$Q8==&quot;Yes&quot;,1,0))
-Covid$Q11= factor(ifelse(Covid$Q11==&quot;Yes&quot;,1,0))
-str(Covid)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    914 obs. of  6 variables:
-##  $ Q1 : chr  NA NA NA NA ...
-##  $ Q2 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA 1 1 1 1 1 NA ...
-##  $ Q7 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA NA NA NA NA NA NA NA NA NA ...
-##  $ Q8 : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 1 2 NA 2 2 2 2 2 NA ...
-##  $ Q11: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: NA 2 2 NA 1 2 2 1 1 NA ...
-##  $ Q13: chr  NA NA NA NA ...</code></pre>
-<pre class="r"><code>Covid$Q1= as.numeric(Covid$Q1)
-Covid$Q13= as.numeric(Covid$Q13)</code></pre>
-<pre class="r"><code>Covid = Covid[complete.cases(Covid), ]</code></pre>
-</div>
-<div id="modelo-3" class="section level2">
-<h2><strong>Modelo 3</strong></h2>
-<p>Hacemos uso de todas las variables de la base de datos. Veamos los
-resultados.</p>
-<pre class="r"><code>modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
-summary(modelo3)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Q13 ~ Q1 + Q2 + Q7 + Q8 + Q11, data = Covid)
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.5407 -0.8801  0.1046  0.8078 10.7835 
+## -50.153  -8.572   1.053   9.645  53.120 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  7.357909   0.319505  23.029  &lt; 2e-16 ***
-## Q1          -0.005345   0.005906  -0.905  0.36601    
-## Q21          0.205988   0.182598   1.128  0.25992    
-## Q71         -0.814687   0.189035  -4.310 2.04e-05 ***
-## Q81          0.190613   0.163688   1.164  0.24488    
-## Q111        -0.470729   0.148751  -3.165  0.00167 ** 
+## (Intercept)  50.84202    0.98083  51.836   &lt;2e-16 ***
+## data$EG2OTRO -0.08614    0.03411  -2.525   0.0117 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.491 on 423 degrees of freedom
-## Multiple R-squared:  0.09865,    Adjusted R-squared:  0.08799 
-## F-statistic: 9.259 on 5 and 423 DF,  p-value: 2.224e-08</code></pre>
-</div>
-<div id="interpretamos-2" class="section level2">
-<h2><strong>Interpretamos 😎</strong></h2>
-<div id="el-modelo-es-válido-2" class="section level3">
-<h3><strong>¿El modelo es válido?</strong></h3>
-<p>Establezcamos nuestras hipótesis:</p>
+## Residual standard error: 17.15 on 975 degrees of freedom
+##   (2767 observations deleted due to missingness)
+## Multiple R-squared:  0.006498,   Adjusted R-squared:  0.005479 
+## F-statistic: 6.377 on 1 and 975 DF,  p-value: 0.01172</code></pre>
+<p>Ahora, debemos responder las siguientes preguntas:</p>
 <ul>
-<li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>¿Qué tanto explica el modelo?</li>
 </ul>
-<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-2.224e-08 entonces podemos afirmar que hay suficiente evidencia para
-rechazar la H0, por lo que concluimos que el modelo sí es válido como
-modelo de predicción.</p>
-</div>
-<div id="qué-tanto-explica-el-modelo-2" class="section level3">
-<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
-<p>Observamos el <strong>R2 ajustado</strong>.</p>
-<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.08799 , por lo que
-podemos concluir el modelo explica aproximadamente el 8.79% de la
-variabilidad en el promedio de las horas de sueño del personal de salud
-(variable dependiente).</p>
-</div>
-<div id="las-variables-aportan-al-modelo-2" class="section level3">
-<h3><strong>¿Las variables aportan al modelo?</strong></h3>
-<p>Revisamos <strong>p-value</strong> por cada variable
-independiente.</p>
+<p>Con un valor de 0,006, podemos afirmar que el <strong>0,6%</strong>
+de la variabilidad del índice aditivo de la calificación del transporte
+es explicada por el tiempo que una persona vive en Lima.</p>
 <ul>
-<li>Esperamos obtener un p-value &lt;0.05.</li>
-<li>Esta vez las variables que <strong>sí aportan</strong> al modelo
-son: Q7 y Q11</li>
+<li>¿La variable aporta al modelo?</li>
 </ul>
-</div>
-<div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
-class="section level3">
-<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
-<p>Coeficientes:</p>
-<pre class="r"><code>modelo3$coefficients</code></pre>
-<pre><code>##  (Intercept)           Q1          Q21          Q71          Q81         Q111 
-##  7.357908524 -0.005344998  0.205988315 -0.814686704  0.190613180 -0.470728913</code></pre>
-<p>De esa manera puedo hallar la ecuación:</p>
-<p><span class="math display">\[
-Y = 7.35 + \text{Q1} \times (-0.0053) + \text{Q2} \times (0.20) +
-\text{Q7} \times (-0.81) + \text{Q8} \times (0.19) + \text{Q11} \times
-(-0.47)
-\]</span> <strong>¿Qué sucede si retiramos aquellas variables que no
-aportan al modelo?</strong> Hagamos un siguiente modelo</p>
+<p>H0: La variable X no tiene un efecto estadísticamente significativo
+en la variable Y. H1: La variable X tiene un efecto estadísticamente
+significativo en la variable Y.</p>
+<p>Con un <strong>p valor &lt; 0,05</strong> podemos afirmar que la
+variable “tiempo que una persona vive en Lima” aporta al modelo de
+regresión.</p>
+<p>Paso 5: Construir la ecuación y predecir</p>
+<pre class="r"><code>modelo1$coefficients</code></pre>
+<pre><code>##  (Intercept) data$EG2OTRO 
+##  50.84201594  -0.08613805</code></pre>
+<p><strong>Y = 50.84202 - 0.0861(EG2OTRO)</strong></p>
+<p>Realizar el ejercicio con otra variable explicativa: Gasto en
+transporte (PE10A)</p>
 </div>
 </div>
-<div id="modelo-4" class="section level2">
-<h2><strong>Modelo 4</strong></h2>
-<pre class="r"><code>modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
-summary(modelo4)</code></pre>
+<div id="regresión-múltiple" class="section level1">
+<h1>REGRESIÓN MÚLTIPLE</h1>
+<p>De manera independiente, vemos que cada modelo explica de manera
+diferente nuestra variable de interés, ahora probemos combinando algunas
+de estas variables y busquemos alguna diferencia en el porcentaje de
+predicción.</p>
+<div id="ejercicio-5" class="section level2">
+<h2>Ejercicio 5:</h2>
+<p>VD = Evaluación del transporte informal (evaluacion_ti) VI = Gasto de
+su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima
+(EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = “2”)</p>
+<pre class="r"><code>modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO)
+summary(modelo2)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Q13 ~ Q7 + Q11, data = Covid)
+## lm(formula = data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + 
+##     data$SEXO)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.2780 -0.9310  0.1802  0.7220 10.7220 
+## -51.072  -8.957   0.982   9.353  52.787 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  7.27799    0.09959  73.078  &lt; 2e-16 ***
-## Q71         -0.88879    0.16560  -5.367 1.32e-07 ***
-## Q111        -0.45821    0.14813  -3.093  0.00211 ** 
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  49.839390   2.172470  22.941  &lt; 2e-16 ***
+## data$EG2OTRO -0.077970   0.036107  -2.159  0.03108 *  
+## data$PE10A   -0.013002   0.004311  -3.016  0.00263 ** 
+## data$SEXO     0.960544   1.157719   0.830  0.40694    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.492 on 426 degrees of freedom
-## Multiple R-squared:  0.09138,    Adjusted R-squared:  0.08711 
-## F-statistic: 21.42 on 2 and 426 DF,  p-value: 1.367e-09</code></pre>
-</div>
-<div id="interpretamos-3" class="section level2">
-<h2><strong>Interpretamos 😎</strong></h2>
-<div id="el-modelo-es-válido-3" class="section level3">
-<h3><strong>¿El modelo es válido?</strong></h3>
-<p>Establezcamos nuestras hipótesis:</p>
+## Residual standard error: 17.13 on 895 degrees of freedom
+##   (2845 observations deleted due to missingness)
+## Multiple R-squared:  0.01647,    Adjusted R-squared:  0.01317 
+## F-statistic: 4.996 on 3 and 895 DF,  p-value: 0.001929</code></pre>
+<p>Ahora, debemos responder las siguientes preguntas:</p>
 <ul>
-<li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>¿El modelo es válido?</li>
 </ul>
-<p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
-1.367e-09 entonces podemos afirmar que hay suficiente evidencia para
-rechazar la H0, por lo que concluimos que el modelo sí es válido como
-modelo de predicción.</p>
-</div>
-<div id="qué-tanto-explica-el-modelo-3" class="section level3">
-<h3><strong>¿Qué tanto explica el modelo?</strong></h3>
-<p>Observamos el <strong>R2 ajustado</strong>.</p>
-<p>Analizar cuánto de la variabilidad de la variable dependiente (y) es
-explicada por las variables independientes elegidas, para ello revisamor
-el R2 (Multiple R-squared).</p>
-<p>En nuestro modelo, este arrojó el valor de 0.08711 , por lo que
-podemos concluir mi modelo explica aproximadamente el 8.71% de la
-variabilidad en el promedio de las horas de sueño del personal de salud
-(variable dependiente).</p>
-</div>
-<div id="las-variables-aportan-al-modelo-3" class="section level3">
-<h3><strong>¿Las variables aportan al modelo?</strong> 🤔</h3>
-<p>Revisamos <strong>p-value</strong> por cada variable
-independiente.</p>
+<p>Con un <strong>p valor &lt; 0,05</strong> podemos rechazar la
+hipótesis nula. Es decir, rechazamos que el modelo no sea válido.</p>
 <ul>
-<li>Esperamos obtener un p-value &lt;0.05.</li>
-<li>Todas las variables <em>aportan</em> al modelo.</li>
+<li>¿Qué tanto explica el modelo?</li>
 </ul>
-</div>
-<div id="cuáles-son-los-coeficientes-de-la-ecuación-3"
-class="section level3">
-<h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
-<pre class="r"><code>modelo4$coefficients</code></pre>
-<pre><code>## (Intercept)         Q71        Q111 
-##   7.2779936  -0.8887921  -0.4582067</code></pre>
-<p>De esa manera puedo hallar la ecuación:</p>
-<p><span class="math display">\[
-Y = 7.27  + \text{Q7} \times (-0.88) +  \text{Q11} \times (-0.458)
-\]</span> <strong>¿Qué variable aporta más al modelo?</strong></p>
-<p>Mi modelo ha mejorado?</p>
-</div>
+<p>Con un valor de <strong>0,016</strong>, podemos afirmar que el
+<strong>1,6%</strong> de la variabilidad del índice aditivo de la
+calificación del transporte es explicada por el tiempo que una persona
+vive en Lima, por el gasto que emplea su hogar en transporte y por el
+sexo de la persona.</p>
+<ul>
+<li>¿Las variable aporta al modelo?</li>
+</ul>
+<p>Con un <strong>p valor &lt; 0,05</strong> podemos afirmar que las
+variables que aportan al modelo de regresión son: tiempo de persona
+viviendo en Lima (variable EG2OTRO) y gasto del hogar en transporte
+(variable PE10A). Asimismo, la variable “sexo” no aporta al modelo de
+regresión.</p>
+<p>Paso 5: Construir la ecuación y predecir</p>
+<pre class="r"><code>modelo2$coefficients</code></pre>
+<pre><code>##  (Intercept) data$EG2OTRO   data$PE10A    data$SEXO 
+##  49.83938973  -0.07796970  -0.01300184   0.96054357</code></pre>
+<p><strong>Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A) +
+0.96(Sexo)</strong></p>
 </div>
 </div>
 
