@@ -221,7 +221,7 @@ chisq.test(tabla1)$expected
 En este caso sí cumple el supuesto!
 😎
 
-## 🔵¿Existe relación entre zona de vivienda y la percepción de la gestión de Boluarte? 
+## 🔵¿Existe relación entre zona de vivienda y la percepción de la gestión de Boluarte?
 
 *PASO 0: Revisamos la estructura de las variables que nos interesan:*
 
