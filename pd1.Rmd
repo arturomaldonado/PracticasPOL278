@@ -20,7 +20,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 2 <br>
 
 ------------------------------------------------------------------------
 
@@ -106,81 +106,56 @@ Vamos a abrir un archivo en R, utilizando la función "import" del paquete "rio"
 
 Antes que todo, debemos instalar el paquete escribiendo en la consola: `install.packages("rio")`
 
-```{r}
-library(rio) #Convocamos el paquete   
-data=import("DemocracyIndex2022.xlsx") #Utilizamos la función import (importar) que creará un objeto  que contenga la base de datos del archivo "DemocracyIndex2022.xlsx" la cual hemos descargado. 
-
-#Podemos verificar la creación del objeto en el environment (ventana derecha superior)
-
-class(data) #si quieren saber que clase de objeto es el que has creado, utilizamos la función "class" y entre paréntesis colocamos el nombre del objeto. Verán que se trata de un "data frame", es el tipo de objeto en R para las bases de datos.
-```
-
-##### ¿Qué otro tipo de objetos existen? 🤔
-
-#### **3.3. Tipos de objetos en R**
-
-Una parte clave para iniciar el manejo del programa es identificar los diversos objetos que podemos crear, manipular y utilizar. Para la definición de objetos en R será necesario previamente tener claridad teórica sobre lo que es una variable categórica nominal, categórica ordinal, numérica discreta y numérica continua.
-
-Para los fines de este curso se contemplarán las siguientes objetos:
-
-+------------------------+----------------------------------------------------------------------------------------------------------------------------------------+
-| Tipo                   | Descripción                                                                                                                            |
-+========================+========================================================================================================================================+
-| **Vector numérico**    | Vector conformado por la concatenación de números, puede representar variables numéricas continuas o discretas. Ej: 1.5 , 2.7 , 3.1    |
-+------------------------+----------------------------------------------------------------------------------------------------------------------------------------+
-| **Vector de factores** | Vector que sirve para representar variables categóricas.                                                                               |
-|                        |                                                                                                                                        |
-|                        | Pudiendo ser factores nominales u ordinales. Ej: "costa", "sierra", "selva"                                                            |
-+------------------------+----------------------------------------------------------------------------------------------------------------------------------------+
-| **Data frames**        | Son hojas de datos, estructuras similares a una matriz; sin embargo, a diferencia de estas pueden almacenar objetos de distintos tipo. |
-|                        |                                                                                                                                        |
-|                        | **Generalmente nuestras bases de datos son de este tipo** (como una hoja de Excel que tiene variables numéricas, categóricas, etc).    |
-+------------------------+----------------------------------------------------------------------------------------------------------------------------------------+
-
-Los **vectores numéricos** se crean a través de la función ***concatenar*** **`c()`**. Vamos a crear un vector que contenga los montos en millones de soles del presupuesto del Estado asignado a las 5 prioridades para el 2021
+También podemos instalar un paquete haciendo clic en "Tools" en la barra superior" y luego en "Install packages", se escribe el nombre del paquete a instalar y listo.
 
 ```{r}
-Presupuesto_millones=c(9879, 33132, 20991, 690, 5392) #creamos el vector (verifiquemos en el environment)
-Presupuesto_millones #invocamos el vector para visualizar su contenido
+library(rio)  
+data=import("DemocracyIndex2022.xlsx") 
 ```
 
-Un **factor** nos permite representar una variable categórica. Se crean a través de la función **"factor()"**, pero antes se crea como vector pues almacena las categorías en la forma de un vector con números discretos integrales (1,2,3,4,etc.), que son códigos de los valores de la variable y otro vector de caracteres interno que contiene las etiquetas de esos códigos. Creemos un factor con los nombres de las prioridades del presupuesto para el 2021:
+Utilizamos la función import (importar) que creará un objeto que contenga la base de datos del archivo "DemocracyIndex2022.xlsx" la cual hemos descargado. Podemos verificar la creación del objeto en el environment (ventana derecha superior), debe encontrarse bajo el nombre de **data**.
+
+Podemos conocer el tipo de objeto que tenemos si usamos el comando **class.** Se puede aplicar a cualquier objeto o variable dentro de un objeto. Entre paréntesis colocamos el nombre del objeto. En este caso, se trata de un "data frame", que es el tipo de objeto en R para las bases de datos.
 
 ```{r}
-Prioridad = c(1,2,3,4,5) #primero creamos un vector
-Prioridad = factor(Prioridad, levels = c(1:5), labels = c("reactivación", "educación","salud","mujer","pobreza")) #Lo convertimos en factor. Ojo con los argumentos.
-Prioridad #visualizamos su contenido
+class(data) 
 ```
 
-También podemos crear un **factor ordenado** para almacenar información de una variable categórica ordinal. Es casi la misma ruta, solo que añadiremos una función más para convertir el factor en ordinal. Creemos un factor ordinal ficticio que contenga el nivel de ejecución que el Estado ha mostrado en las categorías presupuestales correspondientes a las prioridades, donde *1=Mala, 2=Intermedia y 3= Buena.*
+Podemos realizar el mismo ejercicio con una variable en específico. En el lenguaje de base de R, usamos el **símbolo \$** como sinónimo de pertenencia. Es así que para referirnos a una variable debemos hacerlo indicando primero la base u objeto al que pertenece, el símbolo \$, y luego la variable en cuestión **(data\$variable)**
+
+Hagamos el ejercicio con la variable Categorías.
 
 ```{r}
-Ejecucion=c(3,2,2,1,2) #creamos un vector numérico que registra los datos
-Ejecucion=factor(Ejecucion) #Lo convertimos en factor
-levels(Ejecucion)=c("Mala","Intermedia","Buena") #asignamos los niveles al factor
-Ejecucion=ordered(Ejecucion) #indicamos que se trata de un factor ordinal (ordered)
-Ejecucion #Visualizamos
+class(data$Categorías)
 ```
 
-Finalmente, los **data frames** nos permite almacenar un conjunto de datos, es decir una base de datos (bd) que tiene filas y columnas. Creemos la base de datos "PP2024" que contenga todos los objetos que hemos creado:
+El anterior comando le pide a R, que indique el tipo de la variable **Categorías** que **pertenece** al objeto llamado **data**.
 
-```{r}
-PP2024 = data.frame(Prioridad,Presupuesto_millones,Ejecucion)
-PP2024 # Visualice la base de datos
-str(PP2024) # Visualice la estructura de la BD
-names(PP2024) #Visualice los nombres de las variables de la BD
+#### 3.3. El mundo tidyverse
+
+Hay una excepción al uso de la estructura anterior y es al usar algún paquete de **tidyverse**.
+
+Tidyverse es un conjunto de de paquetes de R para ciencia de datos, nos ayuda a trabajar las bases de datos. Para importar datos tenemos readr, haven y readxl. Para limpiar los datos usamos tidyr, para transformar los datos se usa dyplr, que lo veremos a continuación, para modelar se usa purr o broom, para visualizar se usa ggplot2. Finalmente, para comunicar se usa knitr para publicar los resultados por html, pdf, ppt. y rmarkdown es la estructura de knitr.
+
+Para el curso solo usaremos **dplyr**.
+
+El paquete dplyr es el más útil en R para la manipulación de datos, una de las ventajas es que se pueda usar el pipe (%\>%) para combinar diferentes funciones en R. En el caso de ggplot2, concatenaremos con el símbolo "+" .
+
+Como mencionamos, este conjunto de paquetes tiene otra lógica de programación. Además del pipe, otra diferencia es que en este caso indicamos la base al inicio, luego el pipe, y lo sigue la función que deseemos ejecutar.
+
+```{r, eval=FALSE,echo=TRUE}
+data %>% 
+  funcion1() %>% 
+  funcion2()
 ```
 
-Cuando queramos invocar una variable específica de una base de datos utilizaremos **`$`**, entre la base de datos y la variable que queremos invocar.
+La data va en la sección superior, seguido del pipe. Siempre que deseemos seguir concatenando funciones usaremos "%\>%" al final de cada línea, hasta que terminemos nuestro código.
 
-```{r}
-PP2024$Prioridad #invocamos la variable prioridad de la base de datos
-class(PP2024$Ejecucion) #vemos de que clase es la variable ejecución de la data frame
-```
+Algunas de las funciones que veremos en dplyr hoy son
 
-------------------------------------------------------------------------
+-   summarise: es una función que se utiliza para crear resúmenes estadísticos de un conjunto de datos. Summarise necesita de dos argumentos básicos: el dato que queremos obtener (promedio, conteo, minimo, maximo) y la variable de la que lo queremos obtener
 
-<a id='part4'></a>
+-   group_by: agrupa los resultados del comando que le sigue. Se debe incluir como argumento una variable categórica y siempre irá acompañado de otra función.
 
 # **4. Análisis descriptivo en R**
 
@@ -209,13 +184,6 @@ Ahora, toca responder la pregunta de investigación.
 
 **¡Manos a la obra!**
 
-Importemos nuestra base de datos.
-
-```{r, results="hide"}
-library(rio)    
-data=import("DemocracyIndex2022.xlsx") 
-```
-
 Es necesario saber el tipo de variable que vamos a trabajar. Por ello, exploramos las variables que tiene nuestra base de datos:
 
 -   **chr, factor** -\> variable nominal
@@ -229,27 +197,19 @@ str(data)
 
 El contenido de cada variable lo podemos observar en el siguiente **diccionario de datos**:
 
--   **Pais**: nombre del pais
-
--   **Puntaje**: puntaje promedio del país.
-
--   **Rank**: puesto del país en el indice por puntaje promedio.
-
--   **Change_rank_previous_year**: comparación de puesto actual respecto del año anterior.
-
--   **Electoral_process_pluralism**: Puntaje de medición de pluralismo político-electoral.
-
--   **Functioning_government**: Puntaje de medición del funcionamiento del gobierno.
-
--   **Political_participation**: puntaje de medición de participación política.
-
--   **Political_culture**: puntaje de medición de la cultura política.
-
--   **Civil_liberties**: puntaje en la medición de libertades civiles.
-
--   **Categorías**: tipo de régimen.
-
--   **Continente**: región a la que pertenece el país analizado.
+| Nombre de variable              | Descripción                                            |
+|---------------------------|---------------------------------------------|
+| **Pais**                        | Nombre del país                                        |
+| **Puntaje**                     | Puntaje promedio del país                              |
+| **Rank**                        | Puesto del país en el indice por puntaje promedio      |
+| **Change_rank_previous_year**   | Comparación de puesto actual respecto del año anterior |
+| **Electoral_process_pluralism** | Puntaje de medición de pluralismo político-electoral   |
+| **Functioning_government**      | Puntaje de medición del funcionamiento del gobierno    |
+| **Political_participation**     | Puntaje de medición de participación política          |
+| **Political_culture**           | Puntaje de medición de la cultura política             |
+| **Civil_liberties**             | Puntaje en la medición de libertades civiles           |
+| **Categorías**                  | Tipo de régimen                                        |
+| **Continente**                  | Región a la que pertenece el país analizado            |
 
 ## **4.1. ¿Cuál es la distribución de países por régimen?**
 
@@ -261,38 +221,42 @@ Por ejemplo, debemos asegurarnos que una variable categórica no esté configura
 
 Queremos saber el tipo de régimen de cada país observado. Para ello, realizamos el análisis de la variable en cuestión `Categorías`
 
+Lo que queremos crear es una tabla de frecuencias. Necesitamos que cuente los casos (en esta data cada caso es un país) según cada categoría. En otras palabras, cuántos países hay por categoría.
 
-
-```{r}
-class(data$Categorías) 
-
-library(tidyverse)
+```{r, warning=FALSE,message=FALSE}
+library(dplyr)
 data %>%
  group_by(Categorías) %>%
-  summarize(Freq=n())
+  summarise(Freq=n())
 ```
 
-Se observa que, de los países analizados en el índice de la democtracia, 59 países son coniderados como **Autoritarismo**, 36 como **Regímenes híbridos**, 48 como **Democracia imperfecta** y solo 24 como **Democracia Plena**.
+Se observa que, de los países analizados en el índice de la democracia, 59 países son coniderados como **Autoritarismo**, 36 como **Regímenes híbridos**, 48 como **Democracia imperfecta** y solo 24 como **Democracia Plena**.
 
 Creemos un gráfico de barras para visualizar mejor los países por tipo de régimen.
 
-```{r}
-para_graficoReg=data %>%
- group_by(Categorías) %>%
-  summarize(Freq=n())#tabla de frecuencias
+Ya creamos anteriormente la tabla de frecuencias, pero esta **no fue agregada al environment**. Para hacerlo necesitamos guardarla con un nombre. Necesitamos que tenga uno para poder referirnos a ella al hacer el gráfico. **Para ello le agregamos al código anterior un "=" y antes del asignado irá el nombre del objeto nuevo "para_grafico".**
 
+```{r}
+para_grafico=data %>%
+ group_by(Categorías) %>%
+  summarise(Freq=n())#tabla de frecuencias
+```
+
+Es necesario llamar al paquete solo una vez y se podrá usar en las líneas que vayan después del llamado.
+
+```{r, warning=FALSE,message=FALSE}
 library(ggplot2)
-ggplot(para_graficoReg, aes(x=Categorías, y=Freq, fill=Categorías)) + 
+ggplot(para_grafico, aes(x=Categorías, y=Freq, fill=Categorías)) + 
 geom_bar(stat = "identity")
 ```
 
-Adaptemos el diseño del gráfico :)
+Lo que estamos haciendo con este código es usar el comando ggplot que es el que permite hacer gráfico y le indicamos que usaremos la base de datos para_grafico. De ella, en el eje X del gráfico irá la variable Categorías, en el eje Y la frecuencia (Freq) y el relleno será Categorías. Esto último es para que cada barra tenga un color según su valor. Luego, indicamos el tipo de gráfico, y le decimos para lograrlo solo debe replicar los valores de la tabla de frecuencias.
+
+Adaptemos el diseño del gráfico y agreguemos etiquetas, títulos, y tema.
 
 ```{r}
-library(ggplot2)
-ggplot(para_graficoReg, aes(reorder(x=Categorías,-Freq), y=Freq, fill=Categorías)) + 
+ggplot(para_grafico, aes(x=Categorías, y=Freq , fill=Categorías)) + 
 geom_bar(stat = "identity")+
-  
   ggtitle("Distribución de países por tipo de régimen") +
   xlab("Tipo de régimen") + ylab("Frecuencia")+
   geom_text(aes(label=round(Freq,1)), vjust=1.30, color="black", size=3)+
@@ -302,32 +266,26 @@ geom_bar(stat = "identity")+
 
 Las demás variables son numéricas y están configuradas como vectores numéricos de números enteros (integer), por lo cual lo dejamos así 😸.
 
-## **4.2 ¿Cuál es la distribución de países por puntaje?**
+## **4.2 ¿Cuáles son las medidas de tendencia central del indicador de democracia de los países?**
 
 Entonces, una vez configurados adecuadamente nuestros **objetos**, pidamos los estadísticos de tendencia central para nuestras variables de interés.
 
-Antes instalamos los paquetes que utilizaremos
-
--   **`install.packages("DescTools")`** para pedir los estadísticos de tendencia central
-
 | ¿Cuál es el promedio del puntaje de todos los países analizados?
 
-Para ello, usamos el comando `mean` que significa "media o promedio".
+Para ello, usamos el comando `mean` que significa "media o promedio". Recuerda que summarise siempre debe incluir el tipo de resumen o el estadístico que necesitamos.
 
 ```{r}
-library(DescTools)
-library(tidyverse)
-
-data %>% summarise(media = mean(Puntaje)) #este comando nos permitirá calcular la media. Consejo: leer este comando de derecha a izquierda
+data %>% 
+  summarise(media = mean(Puntaje)) 
 ```
 
-Este resultado quiere decir que el **puntaje promedio** de todos los países analizados es de 5.29 puntos.
+Este resultado quiere decir que el **puntaje promedio de democracia** de todos los países analizados es de 5.29 puntos.
 
 En segundo lugar, calculamos la mediana de los puntajes. Esta medida es más robusta que la media, pues resiste valores extremos.
 
 ```{r}
-library(DescTools)
-data %>% summarise(mediana = median(Puntaje)) #calcular la mediana. Al igual que con la media, se sugiere leer el comando de derecha a izquierda.
+data %>% 
+  summarise(mediana = median(Puntaje)) 
 ```
 
 Esto quiere decir que, hasta la mitad de países analizados tienen una puntuación de hasta 5.54 puntos.
@@ -336,12 +294,7 @@ Esto quiere decir que, hasta la mitad de países analizados tienen una puntuaci�
 
 Como la variable `Puntaje` es numérica, esta vez pediremos un **histograma**.
 
-```{r}
-names(data)
-```
-
-```{r}
-library(ggplot2) #no olvidar llamar al paquete
+```{r, warning=FALSE,message=FALSE}
 data %>%
 ggplot(aes(x=Puntaje)) + 
 geom_histogram() 
@@ -350,7 +303,6 @@ geom_histogram()
 Si lo queremos personalizar :)
 
 ```{r}
-
 data %>%
   ggplot(aes(x = Puntaje)) + 
   geom_histogram(color = "blue", fill = "#90EE90", bins = 30) +
@@ -368,23 +320,27 @@ data %>%
 
 El histograma muestra una **distribución asimétrica sesgada con ligero sesgo negativo o a la izquierda**. Esto quiere decir que existe una concentración de datos hacia la derecha.
 
-También podemos dividir las medias por grupo. Para ello, usamos el comando "group_by".
+##### Ejercicio 1: 
 
-```{r}
+Ahora tú, practica calculando el promedio por continente
+
+```{r, eval = T,echo=F}
 data%>%
   group_by(Continente)%>%
   summarise(media=mean(Puntaje))
 ```
 
-Podemos realizar la misma operación con la mediana
+##### Ejercicio 2: 
 
-```{r}
+Realiza la misma operación pero usando la mediana
+
+```{r, eval = T,echo=F}
 data%>%
   group_by(Continente)%>%
   summarise(mediana=median(Puntaje))
 ```
 
-Y también podemos resumir todo en una misma tabla. Este tipo de tabla se llama **Tabla resumen**
+También podemos resumir todo en una misma tabla. Este tipo de tabla se llama **Tabla resumen. Solo debemos separar los estadísticos solicitados con una coma.**
 
 ```{r}
 data%>%
@@ -392,7 +348,7 @@ data%>%
   summarise(media=mean(Puntaje), mediana=median(Puntaje))
 ```
 
-#### Ejercicio: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
+##### Ejercicio 3: Escojan una variable numérica que no hayamos utilizado y hallen la mediana y la media de dicha variable, por continente.
 
 <br></br>
 
