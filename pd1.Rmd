@@ -131,7 +131,7 @@ class(data$Categorías)
 
 El anterior comando le pide a R, que indique el tipo de la variable **Categorías** que **pertenece** al objeto llamado **data**.
 
-#### 3.3. El mundo tidyverse
+#### **3.3. El mundo tidyverse**
 
 Hay una excepción al uso de la estructura anterior y es al usar algún paquete de **tidyverse**.
 
