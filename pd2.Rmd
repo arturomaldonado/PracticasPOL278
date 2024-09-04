@@ -116,7 +116,191 @@ data=import("pd2_enades2024.xlsx")
 str(data) #revisamos las variables
 ```
 
-## 4.1 ¿Cómo se distribuye (%)la percepción de desigualdad económica en el Perú?
+## 4.1 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?
+
+### **Indicador Proxy**
+
+También llamado indicador indirecto, se usa ante la imposibilidad de
+medir lo que efectivamente es de importancia. El indicador mide una
+variable distinta a la que nos interesa de manera específica, pero
+presenta una relación lo más directa posible con el fenómeno en estudio.
+
+Un indicador proxy es una medición o señal indirecto que aproxima o
+representa un fenómeno en la ausencia de una medición o señal directo.
+
+### **Indicador Aditivo**
+
+Es una variable latente que se genera a través de la suma de un conjunto
+de variables manifiestas u observables. Luego de la suma se procede a
+aplicar una formula que genera que el valor máximo de la variable sea 1
+y el mínimo sea 0. A partir de eso se puede multiplicar por cualquier
+número para que el máximo cambie. Es así que si se multiplica por 10, el
+indicador irá de 0 a 10; si se desea que el indicador sea de 0 a 50, se
+debe multiplicar por 50; etc.
+
+```{r,echo=FALSE, out.width="60%",fig.align="center"}
+knitr::include_graphics("pd2_ejemplo.png") 
+```
+
+Sin embargo, el paquete scales nos facilita el uso del comando
+**rescale.** Al usarlo solo necesitamos señalar los límites del
+indicador.
+
+#### Pasos para construir un indicador:
+
+1.  Verificar que las variables que construyan el indicador correspondan
+    al concepto que se desea medir. *Ejemplo: Si deseo mejor
+    Satisfacción del Usuario, las preguntas deben ser sobre ello.*
+2.  Revisar el cuestionario e identificar el sentido de las categorías.
+    *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
+3.  Si las categorías de las variables están en el correcto sentido
+    proceder a sumarlas, si no lo están, proceder a recodificarlas para
+    luego sumar.
+4.  Una vez realizada la suma, identificar el mínimo y el máximo.
+5.  Aplicar la función **rescale** (paquete scales) con el rango
+    específico.
+
+Construiremos un indicador aditivos de percepción de desigualdad en
+calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
+las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
+
+```{r,echo=FALSE, out.width="100%",fig.align="center"}
+knitr::include_graphics("tablitaenades2024.png") 
+```
+
+El indicador que queremos crear es de percepción de desigualdad, por
+tanto mayor valor debería significar mayor desigualdad. En este caso, un
+mayor valor quiere decir menos desigualdad. Debemos cambiarlo.
+
+```{r, warning=FALSE,message=FALSE}
+library(dplyr)
+data <- data %>%
+  mutate(d_educ = case_when( d_educ == 1 ~ 4,
+                            d_educ == 2 ~ 3,
+                            d_educ == 3 ~ 2,
+                            d_educ == 4 ~ 1),
+      d_salud = case_when(d_salud == 1 ~ 4,
+                          d_salud == 2 ~ 3,
+                          d_salud == 3 ~ 2,
+                          d_salud == 4 ~ 1),
+      d_trabajo = case_when(d_trabajo == 1 ~ 4,
+                            d_trabajo == 2 ~ 3,
+                            d_trabajo == 3 ~ 2,
+                            d_trabajo == 4 ~ 1),
+      d_justicia = case_when(d_justicia == 1 ~ 4,
+                             d_justicia == 2 ~ 3,
+                             d_justicia == 3 ~ 2,
+                             d_justicia == 4 ~ 1))
+```
+
+También podemos usar esta opción más corta. En esta le estamos pidiendo
+ejecutar un cambio sa través de las cuatro variables mencionadas, y
+luego mencionamos la condición. Para no repetir las cuatro variables en
+cada condición podemos poner un punto (.).
+
+```{r opción corta, eval=T}
+data <- data %>%
+  mutate(across(c(d_educ, d_salud, d_trabajo, d_justicia),
+    ~ case_when(
+        . == 1 ~ 4,
+        . == 2 ~ 3,
+        . == 3 ~ 2,
+        . == 4 ~ 1)))
+```
+
+🗨️ Para poder crear el indicador, necesitamos que todas las variables a
+usar sean numéricas porque las tendremos que sumar. Entonces, primero
+verificamos el tipo de dato de cada variable.
+
+```{r}
+str(data)
+```
+
+```{r}
+data=data %>%
+  mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)
+```
+
+Revisamos mínimo y máximo
+
+```{r}
+summary(data$suma)
+```
+
+Creamos el indicador de 0 al 100
+
+```{r,warning=FALSE}
+library(scales)
+data = data %>%
+  mutate(indicador = rescale(suma, to = c(0, 100)))
+```
+
+Analicemos los descriptivos del indicador que creamos
+
+```{r}
+data %>% 
+  group_by(clase) %>% 
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )
+```
+
+## 4.2 ¿Cuál es la diferencia de la percepción de desigualdad entre *clases*?
+
+Primero indiquemos las etiquetas de la variable. El diccionario de datos
+indicaba que había 4 niveles para la variable clase. Dentro del mutate,
+debemos iniciar indicando que queremos que la variable sea factor, los
+niveles van del 1 al 4 y luego indicamos la etiqueta para cada nivel. La
+etiqueta se otorga en el orden. En este caso el 1 será Alta, 2 será
+Media alta, 3 será Media baja y 4 será Baja.
+
+```{r}
+data = data %>%
+ mutate(clase = factor(clase, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
+
+```
+
+Para hacer la tabla resumen de los descriptivos debemos agregar la
+agrupación por clase antes. Así los resultados saldrán según la clase.
+
+```{r}
+data%>%
+  group_by(clase) %>%
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )
+```
+
+```{r}
+library(ggplot2)
+ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
+  theme_classic()
+```
+
+➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy
+similar en el grupo de clase social Media baja y Baja. Por otro lado, en
+el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor
+(la caja es mucho más grande). Los *outliers* se muestran como puntos
+individuales más allá del bigote de la caja, los puntos más alejados se
+encuentran en el grupo de clase Baja.
+
+# 
+
+## 4.2 ¿Cómo se distribuye (%)la percepción de desigualdad económica en el Perú?
 
 Usaremos la variable **P07**:
 
@@ -137,10 +321,6 @@ variable (str, class) B. Convertimos la variable al tipo de dato que
 necesitamos dependiendo el caso C. Elaboramos un objeto que nos permita
 ver preliminarmente los datos de la variable. D. Elaboramos un gráfico
 que vaya acorde a la variable ordinal (gráfico de barras)
-
-```{r,warning=FALSE, message=FALSE}
-library(dplyr) #Convocamos el paquete
-```
 
 Comprobamos el tipo de dato que analizaremos
 
@@ -235,8 +415,6 @@ Nuestra variable es categórica, por lo tanto realizaremos el gráfico
 acorde:
 
 ```{r}
-library(ggplot2)
-
 ggplot(para_grafico, aes(x=P07, y=Porcentaje, fill=P07)) + 
 geom_bar(stat = "identity") +
   theme_bw()
@@ -262,187 +440,6 @@ ggplot(para_grafico, aes(x=P07, y=Porcentaje, fill=P07)) +
 
 El ejercicio de análisis descriptivo con variables numéricas lo
 realizaremos con un indicador aditivo que crearemos a continuación.
-
-## 4.2 ¿Cuál es la percepción de la desigualdad en calidad de vida en el Perú?
-
-### **Indicador Proxy**
-
-También llamado indicador indirecto, se usa ante la imposibilidad de
-medir lo que efectivamente es de importancia. El indicador mide una
-variable distinta a la que nos interesa de manera específica, pero
-presenta una relación lo más directa posible con el fenómeno en estudio.
-
-Un indicador proxy es una medición o señal indirecto que aproxima o
-representa un fenómeno en la ausencia de una medición o señal directo.
-
-### **Indicador Aditivo**
-
-Es una variable latente que se genera a través de la suma de un conjunto
-de variables manifiestas u observables. Luego de la suma se procede a
-aplicar una formula que genera que el valor máximo de la variable sea 1
-y el mínimo sea 0. A partir de eso se puede multiplicar por cualquier
-número para que el máximo cambie. Es así que si se multiplica por 10, el
-indicador irá de 0 a 10; si se desea que el indicador sea de 0 a 50, se
-debe multiplicar por 50; etc.
-
-```{r,echo=FALSE, out.width="60%",fig.align="center"}
-knitr::include_graphics("pd2_ejemplo.png") 
-```
-
-Sin embargo, el paquete scales nos facilita el uso del comando
-**rescale.** Al usarlo solo necesitamos señalar los límites del
-indicador.
-
-#### Pasos para construir un indicador:
-
-1.  Verificar que las variables que construyan el indicador correspondan
-    al concepto que se desea medir. *Ejemplo: Si deseo mejor
-    Satisfacción del Usuario, las preguntas deben ser sobre ello.*
-2.  Revisar el cuestionario e identificar el sentido de las categorías.
-    *Ejemplo: El valor 5 es "Muy instafisfecho" y 1 "Muy satisfecho"*
-3.  Si las categorías de las variables están en el correcto sentido
-    proceder a sumarlas, si no lo están, proceder a recodificarlas para
-    luego sumar.
-4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Aplicar la función **rescale** (paquete scales) con el rango
-    específico.
-
-Construiremos un indicador aditivos de percepción de desigualdad en
-calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
-las variables `d_educ`, `d_salud`, `d_trabajo` y `d_justicia`.
-
-```{r,echo=FALSE, out.width="100%",fig.align="center"}
-
-knitr::include_graphics("tablitaenades2024.png") 
-```
-
-El indicador que queremos crear es de percepción de desigualdad, por
-tanto mayor valor debería significar mayor desigualdad. En este caso, un
-mayor valor quiere decir menos desigualdad. Debemos cambiarlo.
-
-```{r}
-data <- data %>%
-  mutate(d_educ = case_when( d_educ == 1 ~ 4,
-                            d_educ == 2 ~ 3,
-                            d_educ == 3 ~ 2,
-                            d_educ == 4 ~ 1),
-      d_salud = case_when(d_salud == 1 ~ 4,
-                          d_salud == 2 ~ 3,
-                          d_salud == 3 ~ 2,
-                          d_salud == 4 ~ 1),
-      d_trabajo = case_when(d_trabajo == 1 ~ 4,
-                            d_trabajo == 2 ~ 3,
-                            d_trabajo == 3 ~ 2,
-                            d_trabajo == 4 ~ 1),
-      d_justicia = case_when(d_justicia == 1 ~ 4,
-                             d_justicia == 2 ~ 3,
-                             d_justicia == 3 ~ 2,
-                             d_justicia == 4 ~ 1))
-```
-
-También podemos usar esta opción más corta. En esta le estamos pidiendo
-ejecutar un cambio sa través de las cuatro variables mencionadas, y
-luego mencionamos la condición. Para no repetir las cuatro variables en
-cada condición podemos poner un punto (.).
-
-```{r opción corta, eval=T}
-data <- data %>%
-  mutate(across(c(d_educ, d_salud, d_trabajo, d_justicia),
-    ~ case_when(
-        . == 1 ~ 4,
-        . == 2 ~ 3,
-        . == 3 ~ 2,
-        . == 4 ~ 1)))
-```
-
-🗨️ Para poder crear el indicador, necesitamos que todas las variables a
-usar sean numéricas porque las tendremos que sumar. Entonces, primero
-verificamos el tipo de dato de cada variable.
-
-```{r}
-str(data)
-```
-
-```{r}
-data=data %>%
-  mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)
-```
-
-Revisamos mínimo y máximo
-
-```{r}
-summary(data$suma)
-```
-
-Creamos el indicador de 0 al 100
-
-```{r,warning=FALSE}
-library(scales)
-data = data %>%
-  mutate(indicador = rescale(suma, to = c(0, 100)))
-```
-
-Analicemos los descriptivos del indicador que creamos
-
-```{r}
-data %>% 
-  group_by(clase) %>% 
-  summarise(
-    Media = mean(indicador), 
-    Mediana = median(indicador), 
-    Desviacion = sd(indicador), 
-    Minimo = min(indicador), 
-    Maximo = max(indicador),
-    Q1 = quantile(indicador, 0.25), #Primer cuartil
-    Q3 = quantile(indicador, 0.75) #Tercer cuartil
-  )
-```
-
-## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre *clases*?
-
-Primero indiquemos las etiquetas de la variable. El diccionario de datos
-indicaba que había 4 niveles para la variable clase. Dentro del mutate,
-debemos iniciar indicando que queremos que la variable sea factor, los
-niveles van del 1 al 4 y luego indicamos la etiqueta para cada nivel. La
-etiqueta se otorga en el orden. En este caso el 1 será Alta, 2 será
-Media alta, 3 será Media baja y 4 será Baja.
-
-```{r}
-data = data %>%
- mutate(clase = factor(clase, levels = 1:4, labels = c("Alta", "Media alta", "Media baja", "Baja"), ordered = TRUE))
-
-```
-
-Para hacer la tabla resumen de los descriptivos debemos agregar la
-agrupación por clase antes. Así los resultados saldrán según la clase.
-
-```{r}
-data%>%
-  group_by(clase) %>%
-  summarise(
-    Media = mean(indicador), 
-    Mediana = median(indicador), 
-    Desviacion = sd(indicador), 
-    Minimo = min(indicador), 
-    Maximo = max(indicador),
-    Q1 = quantile(indicador, 0.25), #Primer cuartil
-    Q3 = quantile(indicador, 0.75) #Tercer cuartil
-  )
-```
-
-```{r}
-ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
-  theme_classic()
-```
-
-➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy
-similar en el grupo de clase social Media baja y Baja. Por otro lado, en
-el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor
-(la caja es mucho más grande). Los *outliers* se muestran como puntos
-individuales más allá del bigote de la caja, los puntos más alejados se
-encuentran en el grupo de clase Baja.
 
 # **5. Ejercicios**
 
