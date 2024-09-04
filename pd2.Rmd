@@ -84,7 +84,7 @@ knitr::include_graphics("pd2_GrafTipoVar.png")
 </style>
 ```
 ::: custom-text
-¿Cuál es la percepción de desigualdad en el Perú el 2022? 🤔
+¿Cuál es la percepción de desigualdad en el Perú el 2024? 🤔
 :::
 
 Para dar respuesta a la pregunta de investigación que guiara la práctica
