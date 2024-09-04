@@ -9,10 +9,13 @@ output:
     toc_depth: 4
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
     output: pdf_document
-editor_options: 
-  markdown: 
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -156,9 +159,9 @@ data %>%
 ```
 
 💥 Etiquetamos y categorizamos como factor. Para ello usaremos el
-comando mutate. Este comando forma parte del paquete dplyr. Lo usaremos
-cada vez que se quiera modificar de alguna forma la data o alguna
-variable en específico.
+comando **mutate**. Este comando forma parte del paquete dplyr. Lo
+usaremos cada vez que se quiera modificar de alguna forma la data o
+alguna variable en específico.
 
 ```{r}
 data = data %>%
@@ -171,8 +174,8 @@ otorgar una etiqueta. Es así que lo que aparece como 1 será Nada, lo que
 aparece como 2 será Poco, 3 será Algo y 4, Mucho.
 
 Revisemos que el cambio se haya realizado correctamente usando el
-comando summarise del paquete `dplyr`. Los resultados de la tabla deben
-mantenerse, lo que varía debe ser la etiqueta de la categoría.
+comando **summarise** del paquete `dplyr`. Los resultados de la tabla
+deben mantenerse, lo que varía debe ser la etiqueta de la categoría.
 
 ```{r}
 data %>%
@@ -274,6 +277,22 @@ representa un fenómeno en la ausencia de una medición o señal directo.
 
 ### **Indicador Aditivo**
 
+Es una variable latente que se genera a través de la suma de un conjunto
+de variables manifiestas u observables. Luego de la suma se procede a
+aplicar una formula que genera que el valor máximo de la variable sea 1
+y el mínimo sea 0. A partir de eso se puede multiplicar por cualquier
+número para que el máximo cambie. Es así que si se multiplica por 10, el
+indicador irá de 0 a 10; si se desea que el indicador sea de 0 a 50, se
+debe multiplicar por 50; etc.
+
+```{r,echo=FALSE, out.width="60%",fig.align="center"}
+knitr::include_graphics("pd2_ejemplo.png") 
+```
+
+Sin embargo, el paquete scales nos facilita el uso del comando
+**rescale.** Al usarlo solo necesitamos señalar los límites del
+indicador.
+
 #### Pasos para construir un indicador:
 
 1.  Verificar que las variables que construyan el indicador correspondan
@@ -285,7 +304,8 @@ representa un fenómeno en la ausencia de una medición o señal directo.
     proceder a sumarlas, si no lo están, proceder a recodificarlas para
     luego sumar.
 4.  Una vez realizada la suma, identificar el mínimo y el máximo.
-5.  Aplicar la función rescale con el rango específico.
+5.  Aplicar la función **rescale** (paquete scales) con el rango
+    específico.
 
 Construiremos un indicador aditivos de percepción de desigualdad en
 calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
@@ -319,6 +339,11 @@ data <- data %>%
                              d_justicia == 3 ~ 2,
                              d_justicia == 4 ~ 1))
 ```
+
+También podemos usar esta opción más corta. En esta le estamos pidiendo
+ejecutar un cambio sa través de las cuatro variables mencionadas, y
+luego mencionamos la condición. Para no repetir las cuatro variables en
+cada condición podemos poner un punto (.).
 
 ```{r opción corta, eval=T}
 data <- data %>%
@@ -357,8 +382,20 @@ data = data %>%
   mutate(indicador = rescale(suma, to = c(0, 100)))
 ```
 
+Analicemos los descriptivos del indicador que creamos
+
 ```{r}
-summary(data$indicador)
+data %>% 
+  group_by(clase) %>% 
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )
 ```
 
 ## 4.3 ¿Cuál es la diferencia de la percepción de desigualdad entre *clases*?
@@ -382,11 +419,15 @@ agrupación por clase antes. Así los resultados saldrán según la clase.
 ```{r}
 data%>%
   group_by(clase) %>%
-  summarise(Media = mean(indicador), 
-            Mediana = median(indicador),
-            Desviacion = sd(indicador),
-            Minimo = min(indicador),
-            Maximo = max(indicador))
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )
 ```
 
 ```{r}

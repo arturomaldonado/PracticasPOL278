@@ -524,9 +524,9 @@ las respuestas recogidas en la encuesta.</p>
 ## 3     3    97
 ## 4     4   308</code></pre>
 <p>💥 Etiquetamos y categorizamos como factor. Para ello usaremos el
-comando mutate. Este comando forma parte del paquete dplyr. Lo usaremos
-cada vez que se quiera modificar de alguna forma la data o alguna
-variable en específico.</p>
+comando <strong>mutate</strong>. Este comando forma parte del paquete
+dplyr. Lo usaremos cada vez que se quiera modificar de alguna forma la
+data o alguna variable en específico.</p>
 <pre class="r"><code>data = data %&gt;%
  mutate(P07 = factor(P07, levels = 1:4, labels = c(&quot;Nada&quot;, &quot;Poco&quot;, &quot;Algo&quot;, &quot;Mucho&quot;), ordered = TRUE))</code></pre>
 <p>En este caso queremos que dentro de la variable P07 se almacene el
@@ -534,9 +534,9 @@ resultado de convertir P07 a factor y según los cuatro niveles que tiene
 otorgar una etiqueta. Es así que lo que aparece como 1 será Nada, lo que
 aparece como 2 será Poco, 3 será Algo y 4, Mucho.</p>
 <p>Revisemos que el cambio se haya realizado correctamente usando el
-comando summarise del paquete <code>dplyr</code>. Los resultados de la
-tabla deben mantenerse, lo que varía debe ser la etiqueta de la
-categoría.</p>
+comando <strong>summarise</strong> del paquete <code>dplyr</code>. Los
+resultados de la tabla deben mantenerse, lo que varía debe ser la
+etiqueta de la categoría.</p>
 <pre class="r"><code>data %&gt;%
  group_by(P07) %&gt;%
  summarise(Freq=n())</code></pre>
@@ -639,6 +639,17 @@ directo.</p>
 </div>
 <div id="indicador-aditivo" class="section level3">
 <h3><strong>Indicador Aditivo</strong></h3>
+<p>Es una variable latente que se genera a través de la suma de un
+conjunto de variables manifiestas u observables. Luego de la suma se
+procede a aplicar una formula que genera que el valor máximo de la
+variable sea 1 y el mínimo sea 0. A partir de eso se puede multiplicar
+por cualquier número para que el máximo cambie. Es así que si se
+multiplica por 10, el indicador irá de 0 a 10; si se desea que el
+indicador sea de 0 a 50, se debe multiplicar por 50; etc.</p>
+<p><img src="pd2_ejemplo.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>Sin embargo, el paquete scales nos facilita el uso del comando
+<strong>rescale.</strong> Al usarlo solo necesitamos señalar los límites
+del indicador.</p>
 <div id="pasos-para-construir-un-indicador" class="section level4">
 <h4>Pasos para construir un indicador:</h4>
 <ol style="list-style-type: decimal">
@@ -652,7 +663,8 @@ satisfecho”</em></li>
 proceder a sumarlas, si no lo están, proceder a recodificarlas para
 luego sumar.</li>
 <li>Una vez realizada la suma, identificar el mínimo y el máximo.</li>
-<li>Aplicar la función rescale con el rango específico.</li>
+<li>Aplicar la función <strong>rescale</strong> (paquete scales) con el
+rango específico.</li>
 </ol>
 <p>Construiremos un indicador aditivos de percepción de desigualdad en
 calidad de vida en el Perú, que vaya del 0 al 100. Para ello usaremos a
@@ -679,6 +691,10 @@ mayor valor quiere decir menos desigualdad. Debemos cambiarlo.</p>
                              d_justicia == 2 ~ 3,
                              d_justicia == 3 ~ 2,
                              d_justicia == 4 ~ 1))</code></pre>
+<p>También podemos usar esta opción más corta. En esta le estamos
+pidiendo ejecutar un cambio sa través de las cuatro variables
+mencionadas, y luego mencionamos la condición. Para no repetir las
+cuatro variables en cada condición podemos poner un punto (.).</p>
 <pre class="r"><code>data &lt;- data %&gt;%
   mutate(across(c(d_educ, d_salud, d_trabajo, d_justicia),
     ~ case_when(
@@ -719,9 +735,25 @@ verificamos el tipo de dato de cada variable.</p>
 <pre class="r"><code>library(scales)
 data = data %&gt;%
   mutate(indicador = rescale(suma, to = c(0, 100)))</code></pre>
-<pre class="r"><code>summary(data$indicador)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    0.00    0.00   18.18   20.96   36.36  100.00</code></pre>
+<p>Analicemos los descriptivos del indicador que creamos</p>
+<pre class="r"><code>data %&gt;% 
+  group_by(clase) %&gt;% 
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )</code></pre>
+<pre><code>## # A tibble: 4 × 8
+##   clase Media Mediana Desviacion Minimo Maximo    Q1    Q3
+##   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1  13.6    9.09       12.5      0   36.4  9.09  15.9
+## 2     2  25.9   18.2        21.2      0   72.7  9.09  36.4
+## 3     3  21.0   18.2        19.8      0   90.9  0     36.4
+## 4     4  18.9    9.09       22.0      0  100    0     27.3</code></pre>
 </div>
 </div>
 </div>
@@ -743,23 +775,27 @@ agrupación por clase antes. Así los resultados saldrán según la
 clase.</p>
 <pre class="r"><code>data%&gt;%
   group_by(clase) %&gt;%
-  summarise(Media = mean(indicador), 
-            Mediana = median(indicador),
-            Desviacion = sd(indicador),
-            Minimo = min(indicador),
-            Maximo = max(indicador))</code></pre>
-<pre><code>## # A tibble: 4 × 6
-##   clase      Media Mediana Desviacion Minimo Maximo
-##   &lt;ord&gt;      &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Alta        13.6    9.09       12.5      0   36.4
-## 2 Media alta  25.9   18.2        21.2      0   72.7
-## 3 Media baja  21.0   18.2        19.8      0   90.9
-## 4 Baja        18.9    9.09       22.0      0  100</code></pre>
+  summarise(
+    Media = mean(indicador), 
+    Mediana = median(indicador), 
+    Desviacion = sd(indicador), 
+    Minimo = min(indicador), 
+    Maximo = max(indicador),
+    Q1 = quantile(indicador, 0.25), #Primer cuartil
+    Q3 = quantile(indicador, 0.75) #Tercer cuartil
+  )</code></pre>
+<pre><code>## # A tibble: 4 × 8
+##   clase      Media Mediana Desviacion Minimo Maximo    Q1    Q3
+##   &lt;ord&gt;      &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Alta        13.6    9.09       12.5      0   36.4  9.09  15.9
+## 2 Media alta  25.9   18.2        21.2      0   72.7  9.09  36.4
+## 3 Media baja  21.0   18.2        19.8      0   90.9  0     36.4
+## 4 Baja        18.9    9.09       22.0      0  100    0     27.3</code></pre>
 <pre class="r"><code>ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
   theme_classic()</code></pre>
-<p><img src="pd2_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="pd2_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy
 similar en el grupo de clase social Media baja y Baja. Por otro lado, en
 el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor
