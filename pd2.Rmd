@@ -291,12 +291,16 @@ ggplot(data, aes(x=clase, y=indicador, color=clase)) +
   theme_classic()
 ```
 
-➡️ Análisis: En el segundo gráfico la dispersión de los datos es muy
-similar en el grupo de clase social Media baja y Baja. Por otro lado, en
-el grupo de la clase Alta, se aprecia que la dispersión es mucho mayor
-(la caja es mucho más grande). Los *outliers* se muestran como puntos
-individuales más allá del bigote de la caja, los puntos más alejados se
-encuentran en el grupo de clase Baja.
+➡️ Análisis: Se puede notar que la mediana más alta es la de la clase
+media baja. Asimismo la mediana más baja es la de clase baja. Por otro
+lado vemos hay mucha dispersión dentro de la mayoría de categorías menos
+en la de la clase alta. Esto quiere decir que la mayoría hubo mayor
+homogeneidad en las respuesta del indicador. En otras palabras, dentro
+de la clase alta, la mayoría percibe que existe desigualdad en la
+calidad de vida entre 9 y 15 en una escala de 0 al 100; es decir, poca
+desigualdad. Los *outliers* se muestran como puntos individuales más
+allá del bigote de la caja, los puntos más alejados se encuentran en el
+grupo de clase Baja.
 
 # 
 
@@ -364,7 +368,7 @@ data %>%
 ```
 
 A primera vista, la tabla nos indica que la mayoría de los encuestados
-(453) opina que hay mucha desigualdad económica en el país. Pero,
+(308) opina que hay mucha desigualdad económica en el país. Pero,
 ¿cuánto sería dicho resultado en porcentaje?
 
 Podemos realizar una tabla de frecuencias y porcentajes agregando una
@@ -437,9 +441,6 @@ ggplot(para_grafico, aes(x=P07, y=Porcentaje, fill=P07)) +
   scale_fill_taylor(palette = "lover") #fearless, speakNow, Red
 
 ```
-
-El ejercicio de análisis descriptivo con variables numéricas lo
-realizaremos con un indicador aditivo que crearemos a continuación.
 
 # **5. Ejercicios**
 
