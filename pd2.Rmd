@@ -239,7 +239,6 @@ Analicemos los descriptivos del indicador que creamos
 
 ```{r}
 data %>% 
-  group_by(clase) %>% 
   summarise(
     Media = mean(indicador), 
     Mediana = median(indicador), 

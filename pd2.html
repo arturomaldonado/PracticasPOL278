@@ -601,7 +601,6 @@ data = data %&gt;%
   mutate(indicador = rescale(suma, to = c(0, 100)))</code></pre>
 <p>Analicemos los descriptivos del indicador que creamos</p>
 <pre class="r"><code>data %&gt;% 
-  group_by(clase) %&gt;% 
   summarise(
     Media = mean(indicador), 
     Mediana = median(indicador), 
@@ -611,13 +610,8 @@ data = data %&gt;%
     Q1 = quantile(indicador, 0.25), #Primer cuartil
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
-<pre><code>## # A tibble: 4 × 8
-##   clase Media Mediana Desviacion Minimo Maximo    Q1    Q3
-##   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     1  13.6    9.09       12.5      0   36.4  9.09  15.9
-## 2     2  25.9   18.2        21.2      0   72.7  9.09  36.4
-## 3     3  21.0   18.2        19.8      0   90.9  0     36.4
-## 4     4  18.9    9.09       22.0      0  100    0     27.3</code></pre>
+<pre><code>##      Media  Mediana Desviacion Minimo Maximo Q1       Q3
+## 1 20.96409 18.18182   20.76653      0    100  0 36.36364</code></pre>
 </div>
 </div>
 </div>
