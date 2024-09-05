@@ -198,7 +198,7 @@ ejecutar un cambio sa través de las cuatro variables mencionadas, y
 luego mencionamos la condición. Para no repetir las cuatro variables en
 cada condición podemos poner un punto (.).
 
-```{r opción corta, eval=T}
+```{r, eval=FALSE,echo=TRUE}
 data <- data %>%
   mutate(across(c(d_educ, d_salud, d_trabajo, d_justicia),
     ~ case_when(
@@ -291,15 +291,15 @@ ggplot(data, aes(x=clase, y=indicador, color=clase)) +
 ```
 
 ➡️ Análisis: Se puede notar que la mediana más alta es la de la clase
-media baja. Asimismo la mediana más baja es la de clase baja. Por otro
-lado vemos hay mucha dispersión dentro de la mayoría de categorías menos
-en la de la clase alta. Esto quiere decir que la mayoría hubo mayor
-homogeneidad en las respuesta del indicador. En otras palabras, dentro
-de la clase alta, la mayoría percibe que existe desigualdad en la
-calidad de vida entre 9 y 15 en una escala de 0 al 100; es decir, poca
-desigualdad. Los *outliers* se muestran como puntos individuales más
-allá del bigote de la caja, los puntos más alejados se encuentran en el
-grupo de clase Baja.
+alta y baja. Asimismo la mediana más baja es la de la clase media. Por
+otro lado vemos hay mucha dispersión dentro de la mayoría de categorías
+menos en la de la clase alta. Esto quiere decir que la mayoría hubo
+mayor homogeneidad en las respuesta del indicador. En otras palabras,
+dentro de la clase alta, la mayoría percibe (50% entre Q1 y Q3) que
+existe desigualdad en la calidad de vida entre 84 y 90 en una escala de
+0 al 100; es decir, alta desigualdad. Los *outliers* se muestran como
+puntos individuales más allá del bigote de la caja, los puntos más
+alejados se encuentran en el grupo de clase Baja.
 
 # 
 

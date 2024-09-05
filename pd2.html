@@ -584,17 +584,17 @@ verificamos el tipo de dato de cada variable.</p>
 ##  $ P20       : num  3 1 3 3 3 3 3 1 2 3 ...
 ##  $ P21       : num  3 2 3 3 1 1 2 1 2 3 ...
 ##  $ P22       : num  2 3 3 3 3 1 3 1 2 3 ...
-##  $ d_educ    : num  2 3 2 1 2 1 3 1 3 2 ...
-##  $ d_salud   : num  1 1 1 2 2 1 2 1 1 1 ...
-##  $ d_trabajo : num  2 3 1 1 1 3 3 1 1 2 ...
-##  $ d_justicia: num  2 1 2 1 2 1 2 1 1 2 ...
+##  $ d_educ    : num  3 2 3 4 3 4 2 4 2 3 ...
+##  $ d_salud   : num  4 4 4 3 3 4 3 4 4 4 ...
+##  $ d_trabajo : num  3 2 4 4 4 2 2 4 4 3 ...
+##  $ d_justicia: num  3 4 3 4 3 4 3 4 4 3 ...
 ##  $ P37       : num  2 1 2 6 3 2 4 1 2 2 ...</code></pre>
 <pre class="r"><code>data=data %&gt;%
   mutate(suma = d_educ + d_salud + d_trabajo + d_justicia)</code></pre>
 <p>Revisamos mínimo y máximo</p>
 <pre class="r"><code>summary(data$suma)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   4.000   4.000   6.000   6.306   8.000  15.000</code></pre>
+##    5.00   12.00   14.00   13.69   16.00   16.00</code></pre>
 <p>Creamos el indicador de 0 al 100</p>
 <pre class="r"><code>library(scales)
 data = data %&gt;%
@@ -610,8 +610,8 @@ data = data %&gt;%
     Q1 = quantile(indicador, 0.25), #Primer cuartil
     Q3 = quantile(indicador, 0.75) #Tercer cuartil
   )</code></pre>
-<pre><code>##      Media  Mediana Desviacion Minimo Maximo Q1       Q3
-## 1 20.96409 18.18182   20.76653      0    100  0 36.36364</code></pre>
+<pre><code>##      Media  Mediana Desviacion Minimo Maximo       Q1  Q3
+## 1 79.03591 81.81818   20.76653      0    100 63.63636 100</code></pre>
 </div>
 </div>
 </div>
@@ -645,27 +645,27 @@ clase.</p>
 <pre><code>## # A tibble: 4 × 8
 ##   clase      Media Mediana Desviacion Minimo Maximo    Q1    Q3
 ##   &lt;ord&gt;      &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 Alta        13.6    9.09       12.5      0   36.4  9.09  15.9
-## 2 Media alta  25.9   18.2        21.2      0   72.7  9.09  36.4
-## 3 Media baja  21.0   18.2        19.8      0   90.9  0     36.4
-## 4 Baja        18.9    9.09       22.0      0  100    0     27.3</code></pre>
+## 1 Alta        86.4    90.9       12.5  63.6     100  84.1  90.9
+## 2 Media alta  74.1    81.8       21.2  27.3     100  63.6  90.9
+## 3 Media baja  79.0    81.8       19.8   9.09    100  63.6 100  
+## 4 Baja        81.1    90.9       22.0   0       100  72.7 100</code></pre>
 <pre class="r"><code>library(ggplot2)</code></pre>
 <pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.2.3</code></pre>
 <pre class="r"><code>ggplot(data, aes(x=clase, y=indicador, color=clase)) + 
   geom_boxplot() + 
   geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
   theme_classic()</code></pre>
-<p><img src="pd2_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="pd2_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>➡️ Análisis: Se puede notar que la mediana más alta es la de la clase
-media baja. Asimismo la mediana más baja es la de clase baja. Por otro
-lado vemos hay mucha dispersión dentro de la mayoría de categorías menos
-en la de la clase alta. Esto quiere decir que la mayoría hubo mayor
-homogeneidad en las respuesta del indicador. En otras palabras, dentro
-de la clase alta, la mayoría percibe que existe desigualdad en la
-calidad de vida entre 9 y 15 en una escala de 0 al 100; es decir, poca
-desigualdad. Los <em>outliers</em> se muestran como puntos individuales
-más allá del bigote de la caja, los puntos más alejados se encuentran en
-el grupo de clase Baja.</p>
+alta y baja. Asimismo la mediana más baja es la de la clase media. Por
+otro lado vemos hay mucha dispersión dentro de la mayoría de categorías
+menos en la de la clase alta. Esto quiere decir que la mayoría hubo
+mayor homogeneidad en las respuesta del indicador. En otras palabras,
+dentro de la clase alta, la mayoría percibe (50% entre Q1 y Q3) que
+existe desigualdad en la calidad de vida entre 84 y 90 en una escala de
+0 al 100; es decir, alta desigualdad. Los <em>outliers</em> se muestran
+como puntos individuales más allá del bigote de la caja, los puntos más
+alejados se encuentran en el grupo de clase Baja.</p>
 </div>
 </div>
 <div id="section" class="section level1">
@@ -786,7 +786,7 @@ acorde:</p>
 <pre class="r"><code>ggplot(para_grafico, aes(x=P07, y=Porcentaje, fill=P07)) + 
 geom_bar(stat = &quot;identity&quot;) +
   theme_bw()</code></pre>
-<p><img src="pd2_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="pd2_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>Este es un gráfico básico, pero podemos personalizarlo<a href="#fn2"
 class="footnote-ref" id="fnref2"><sup>2</sup></a> según nuestros
 gustos.</p>
@@ -799,7 +799,7 @@ ggplot(para_grafico, aes(x=P07, y=Porcentaje, fill=P07)) +
   geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color=&quot;black&quot;, size=3)+
   theme(panel.background=element_rect(fill = &quot;white&quot;, colour = &quot;white&quot;)) +
   scale_fill_taylor(palette = &quot;lover&quot;) #fearless, speakNow, Red</code></pre>
-<p><img src="pd2_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="pd2_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 </div>
 </div>
 </div>
