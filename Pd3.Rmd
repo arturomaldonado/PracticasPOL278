@@ -27,7 +27,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 2 <br>
 
 ## **Repaso**
 
@@ -50,7 +50,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|----------------------|--------------------------------------------------|
+|----------------------|-------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -72,17 +72,11 @@ Revisamos la estructura de la base de datos y sus variables
 str(data)
 ```
 
-Podemos ver que casi todas las variables son numéricas, excepto la variable *Region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla.
-
-```{r}
-data %>% 
- group_by(Region) %>% 
-  summarize(Freq=n())
-```
+Podemos ver que casi todas las variables son numéricas, excepto la variable *Region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla como factor. Para ello usamos el comando as.factor, dentro del paréntesis debe ir el nombre de la variable. Otro comando común para cambiar el tipo de variable es as.numeric, este nos ayuda a convertir la variable a numérica.
 
 ```{r}
 data$Region=as.factor(data$Region)
-class(data$Region) #Comprobamos
+class(data$Region)
 ```
 
 # **2. Aplicación en R**
@@ -94,9 +88,10 @@ class(data$Region) #Comprobamos
 Realicemos una tabla de frecuencias de la variable:
 
 ```{r}
-para_grafico= data %>%
+grafico1 = data %>%
   group_by(Alto_teleinfra) %>% 
   summarise(Freq=n())
+grafico1
 ```
 
 ¿Qué nos indica la tabla? En este caso, ¿cuál sería la moda?
@@ -105,46 +100,57 @@ Revisemos en un gráfico:
 
 ```{r}
 library(ggplot2)
-ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
+ggplot(grafico1, aes(x=Alto_teleinfra, y= Freq, fill=Alto_teleinfra))+
   geom_bar(stat = "identity")+ xlab("Alto nivel de infraestructura en telecomunicaciones")+ylab("Frecuencia")
+```
+
+Revisemos si esta tendencia se mantiene a nivel regional
+
+```{r}
+grafico2 = data %>%
+  group_by(Region, Alto_teleinfra) %>% 
+  summarise(Freq=n())
+grafico2
+```
+
+La única región en la que la mayoría de los países cuenta con un nivel alto de infraestructura en telecomunicaciones alto es Europa.
+
+```{r}
+ggplot(grafico2, aes(x=Alto_teleinfra, y= Freq,fill=Region))+
+  geom_bar(stat = "identity")+ 
+  facet_wrap(~Region)+
+  xlab("Alto nivel de infraestructura en telecomunicaciones")+
+  ylab("Frecuencia")
 ```
 
 -   **E-Government Index**: Variable numérica
 
-Revisamos *solo* la media del E_gov
-
-```{r}
-data  %>% 
-  summarise(media=mean(E_gov))
-```
-
-Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos comentar de los datos obtenidos?
+Ahora analicemos las medidas de tendencia central, de dispersión y de posición. ¿Qué podemos comentar de los datos obtenidos?
 
 ```{r}
 data  %>% 
   summarise(Mínimo=min(E_gov), 
+            Media= mean(E_gov),
             Mediana= median(E_gov), 
             Desviación=sd(E_gov),
-            Media= mean(E_gov),
             Máximo= max(E_gov))
 ```
 
--   ¿Cuál es el puntaje más bajo y el máximo?
+-   ¿Cuál es el puntaje más bajo y el máximo? Sabemos que ningún país llega a 100 en el indicador de gobernanza digital.
 
 -   ¿Cuál es el rango? (*max-min*)
 
--   **Desviación estándar (*sd*)**: *La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central.*
+-   **Desviación estándar (*sd*)**: La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central. En este caso, la desviación es de 23.98 esto quiere decir que cada país se encuentra en promedio a 24 puntos de la media.
 
--   ¿Hay mucha variabilidad en los datos? *sd*
+-   ¿Hay mucha variabilidad en los datos?
 
 ## **Visualización**
 
 Histograma de E-Gov
 
 ```{r}
-data %>%
-  ggplot(aes(x=E_gov))+
-  geom_histogram(fill = "blue",
+  ggplot(data, aes(x=E_gov))+
+  geom_histogram(fill = "hotpink2",
     color = "black",
     bins = 30,
     alpha = 0.7)+
@@ -156,118 +162,73 @@ data %>%
 Histograma de E-Gov + mediana (rojo) + media (verde)
 
 ```{r}
-data %>%
-ggplot(aes(x=E_gov))+
-  geom_histogram(fill = "blue",
+ggplot(data, aes(x=E_gov))+
+  geom_histogram(fill = "hotpink2",
     color = "black",
     bins = 50,
     alpha = 0.7)+
-  geom_vline(xintercept = median(data$E_gov), color = "red")+
-  geom_vline(xintercept = mean(data$E_gov), color = "green")+
+  geom_vline(xintercept = median(data$E_gov), color = "grey")+
+  geom_vline(xintercept = mean(data$E_gov), color = "steelblue2")+
   xlab("E-Government Index") +
   ylab("Frecuencia")+
   theme_light()
 ```
+
+### Analicemos las medidas de posición y grafiquemos
+
+Ya sabemos que la mediana es 59
+
 ```{r}
-summary(data$E_gov)
+data  %>% 
+  summarise(Q1 = quantile(E_gov, 0.25),
+            Q3 = quantile(E_gov, 0.75))
 ```
 
-### Cuartiles y diagrama de cajas
+Generemos el gráfico que mejor permite ver estas medidas de posición
 
+```{r}
+  ggplot(data,aes(y=E_gov))+
+  geom_boxplot()+
+  ylab("E-Government Index")+
+  theme_classic()
+```
+
+Practiquemos el uso del comando filter. Recuerda que para usar este comando necesitamos indicar la variable sobre la cual queremos filtrar y la condición. Analizaremos que sucede en África. No olvides que debemos saber de antemano cómo esta escrita la palabra.
+
+Revisemos como está escrita
+
+```{r}
+levels(data$Region)
+```
+
+Ahora si, analicemos solo el caso de Africa
 
 ```{r}
 data %>% 
   filter(Region=="Africa")%>% 
-  summarise(CuartilesEgov = quantile(E_gov))
+  summarise(Q1 = quantile(E_gov, 0.25),
+            Q3 = quantile(E_gov, 0.75))
 ```
+
+La ventaja de tidyverse es que se pueden concatenar los comandos. Es así que podemos indicar primero que queremos filtrar, y luego generar el gráfico sobre esa tabla filtrada solo para el caso de áfrica.
 
 ```{r}
 data %>% 
-  summarise(CuartilesEgov = quantile(E_gov))
-```
-
-¿Cómo ubicamos los cuartiles en el diagrama de cajas?
-
-```{r}
-data %>% 
+  filter(Region=="Africa")%>% 
   ggplot(aes(y=E_gov))+
   geom_boxplot()+
-  ylab("E-Government Index")
+  ylab("E-Government Index")+
+  theme_linedraw()
 ```
 
-## **Según región, ¿cuál es el estado de la gobernanza digital de los países?**
-
-¿Cuál es la importancia de analizar por regiones?
-
-```{r}
-data %>%
- group_by(Region) %>%
-  summarize(Media=mean(E_gov)) 
-```
-
-```{r}
-data %>%
-  ggplot(aes(x=E_gov))+
-  geom_histogram()+
-  facet_wrap(~Region)+
-  xlab("E-Gov Index")+
-  ylab("Frecuencia")
-```
-
-Analicemos los resultados 😼
-
-**Descriptivos por región**
-
-```{r}
- data %>%
-  group_by(Region)%>%
-  summarise(Mínimo=min(E_gov), 
-            Mediana= median(E_gov), 
-            Desviación=sd(E_gov),
-            Media= mean(E_gov),
-            Máximo= max(E_gov))
-```
-
-Comparo los resultados y los ubico en mi diagrama de cajas
-
-```{r}
- data %>%
-ggplot(aes(x=Region, y=E_gov, color=Region)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
-  theme_classic()
-```
-
-Si deseo un subset solamente de los países que están por encima de la media ¿cuántos países son?
-
-```{r}
-MayorMedia=data %>%
-  filter(E_gov > mean(E_gov)) 
-```
-
-Si queremos ver solo una región, en este caso África
-
-```{r}
-data %>% 
-  filter(Region =="Africa") %>%
-  summarise(mean(E_gov))
-```
-
-O los estadísticos de los países de Asia
-
-```{r}
-data %>%
-  filter(Region == "Asia") %>%
-  summarise(Mínimo=min(E_gov), 
-            Mediana= median(E_gov), 
-            Desviación=sd(E_gov),
-            Media= mean(E_gov),
-            Máximo= max(E_gov))
-```
+¿Cómo ha cambiado el estado de la gobernanza digital en comparación con los datos de todos los países?
 
 # **3. Ejercicios 👾 :**
 
 -   Realizar los estadísticos descriptivos del Online Service Index (Online_Service).
+
 -   Realizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones (Tele_infra).
+
 -   Realizar diagrama de cajas del E-Participation Index (E_part) por región.
+
 -   Según si tiene alto nivel de infraestructura en telecomunicaciones (Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y luego genera un gráfico que los muestre.

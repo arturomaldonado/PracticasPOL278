@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 3</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -400,10 +400,10 @@ div.tocify {
 <p><img src="logoPUCP.png" width="30%" /></p>
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
 <div
-id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---2"
 class="section level2">
 <h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
-2024 - 1 <br></h2>
+2024 - 2 <br></h2>
 </div>
 <div id="repaso" class="section level2">
 <h2><strong>Repaso</strong></h2>
@@ -505,20 +505,13 @@ internet 5G (0-100)</td>
 ##  $ Region        : chr  &quot;Asia&quot; &quot;Europe&quot; &quot;Africa&quot; &quot;Europe&quot; ...</code></pre>
 <p>Podemos ver que casi todas las variables son numéricas, excepto la
 variable <em>Region</em> que se muestra como texto, pero es categórica.
-Procedemos a revisar sus niveles y a recodificarla.</p>
-<pre class="r"><code>data %&gt;% 
- group_by(Region) %&gt;% 
-  summarize(Freq=n())</code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   Region    Freq
-##   &lt;chr&gt;    &lt;int&gt;
-## 1 Africa      52
-## 2 Americas    32
-## 3 Asia        43
-## 4 Europe      40
-## 5 Oceania     14</code></pre>
+Procedemos a revisar sus niveles y a recodificarla como factor. Para
+ello usamos el comando as.factor, dentro del paréntesis debe ir el
+nombre de la variable. Otro comando común para cambiar el tipo de
+variable es as.numeric, este nos ayuda a convertir la variable a
+numérica.</p>
 <pre class="r"><code>data$Region=as.factor(data$Region)
-class(data$Region) #Comprobamos</code></pre>
+class(data$Region)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
 </div>
 <div id="aplicación-en-r" class="section level1">
@@ -532,183 +525,157 @@ países?</strong></h3>
 telecomunicaciones? (</strong>Alto_teleinfra) : Variable categórica</li>
 </ul>
 <p>Realicemos una tabla de frecuencias de la variable:</p>
-<pre class="r"><code>para_grafico= data %&gt;%
+<pre class="r"><code>grafico1 = data %&gt;%
   group_by(Alto_teleinfra) %&gt;% 
-  summarise(Freq=n())</code></pre>
+  summarise(Freq=n())
+grafico1</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   Alto_teleinfra  Freq
+##   &lt;chr&gt;          &lt;int&gt;
+## 1 No               139
+## 2 Si                42</code></pre>
 <p>¿Qué nos indica la tabla? En este caso, ¿cuál sería la moda?</p>
 <p>Revisemos en un gráfico:</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(para_grafico, aes(x=Alto_teleinfra, y = Freq, fill=Alto_teleinfra))+
+ggplot(grafico1, aes(x=Alto_teleinfra, y= Freq, fill=Alto_teleinfra))+
   geom_bar(stat = &quot;identity&quot;)+ xlab(&quot;Alto nivel de infraestructura en telecomunicaciones&quot;)+ylab(&quot;Frecuencia&quot;)</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Revisemos si esta tendencia se mantiene a nivel regional</p>
+<pre class="r"><code>grafico2 = data %&gt;%
+  group_by(Region, Alto_teleinfra) %&gt;% 
+  summarise(Freq=n())
+grafico2</code></pre>
+<pre><code>## # A tibble: 10 × 3
+## # Groups:   Region [5]
+##    Region   Alto_teleinfra  Freq
+##    &lt;fct&gt;    &lt;chr&gt;          &lt;int&gt;
+##  1 Africa   No                51
+##  2 Africa   Si                 1
+##  3 Americas No                30
+##  4 Americas Si                 2
+##  5 Asia     No                35
+##  6 Asia     Si                 8
+##  7 Europe   No                11
+##  8 Europe   Si                29
+##  9 Oceania  No                12
+## 10 Oceania  Si                 2</code></pre>
+<p>La única región en la que la mayoría de los países cuenta con un
+nivel alto de infraestructura en telecomunicaciones alto es Europa.</p>
+<pre class="r"><code>ggplot(grafico2, aes(x=Alto_teleinfra, y= Freq,fill=Region))+
+  geom_bar(stat = &quot;identity&quot;)+ 
+  facet_wrap(~Region)+
+  xlab(&quot;Alto nivel de infraestructura en telecomunicaciones&quot;)+
+  ylab(&quot;Frecuencia&quot;)</code></pre>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <ul>
 <li><strong>E-Government Index</strong>: Variable numérica</li>
 </ul>
-<p>Revisamos <em>solo</em> la media del E_gov</p>
-<pre class="r"><code>data  %&gt;% 
-  summarise(media=mean(E_gov))</code></pre>
-<pre><code>##      media
-## 1 58.79558</code></pre>
-<p>Ahora realizamos análisis descriptivo y de dispersión. ¿Qué podemos
-comentar de los datos obtenidos?</p>
+<p>Ahora analicemos las medidas de tendencia central, de dispersión y de
+posición. ¿Qué podemos comentar de los datos obtenidos?</p>
 <pre class="r"><code>data  %&gt;% 
   summarise(Mínimo=min(E_gov), 
+            Media= mean(E_gov),
             Mediana= median(E_gov), 
             Desviación=sd(E_gov),
-            Media= mean(E_gov),
             Máximo= max(E_gov))</code></pre>
-<pre><code>##   Mínimo Mediana Desviación    Media Máximo
-## 1      0      59   23.98373 58.79558    100</code></pre>
+<pre><code>##   Mínimo    Media Mediana Desviación Máximo
+## 1      0 58.79558      59   23.98373    100</code></pre>
 <ul>
-<li><p>¿Cuál es el puntaje más bajo y el máximo?</p></li>
+<li><p>¿Cuál es el puntaje más bajo y el máximo? Sabemos que ningún país
+llega a 100 en el indicador de gobernanza digital.</p></li>
 <li><p>¿Cuál es el rango? (<em>max-min</em>)</p></li>
-<li><p><strong>Desviación estándar (<em>sd</em>)</strong>: <em>La
-desviación estándar es una medida que nos ayuda a entender cuánto se
-separan los números en un conjunto de datos del valor promedio o medio.
-Podemos traducir ello como una forma de medir cuánto “se dispersan” los
-números alrededor de un número central.</em></p></li>
-<li><p>¿Hay mucha variabilidad en los datos? <em>sd</em></p></li>
+<li><p><strong>Desviación estándar (<em>sd</em>)</strong>: La desviación
+estándar es una medida que nos ayuda a entender cuánto se separan los
+números en un conjunto de datos del valor promedio o medio. Podemos
+traducir ello como una forma de medir cuánto “se dispersan” los números
+alrededor de un número central. En este caso, la desviación es de 23.98
+esto quiere decir que cada país se encuentra en promedio a 24 puntos de
+la media.</p></li>
+<li><p>¿Hay mucha variabilidad en los datos?</p></li>
 </ul>
 </div>
 <div id="visualización" class="section level2">
 <h2><strong>Visualización</strong></h2>
 <p>Histograma de E-Gov</p>
-<pre class="r"><code>data %&gt;%
-  ggplot(aes(x=E_gov))+
-  geom_histogram(fill = &quot;blue&quot;,
+<pre class="r"><code>  ggplot(data, aes(x=E_gov))+
+  geom_histogram(fill = &quot;hotpink2&quot;,
     color = &quot;black&quot;,
     bins = 30,
     alpha = 0.7)+
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
    theme_minimal()</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Histograma de E-Gov + mediana (rojo) + media (verde)</p>
-<pre class="r"><code>data %&gt;%
-ggplot(aes(x=E_gov))+
-  geom_histogram(fill = &quot;blue&quot;,
+<pre class="r"><code>ggplot(data, aes(x=E_gov))+
+  geom_histogram(fill = &quot;hotpink2&quot;,
     color = &quot;black&quot;,
     bins = 50,
     alpha = 0.7)+
-  geom_vline(xintercept = median(data$E_gov), color = &quot;red&quot;)+
-  geom_vline(xintercept = mean(data$E_gov), color = &quot;green&quot;)+
+  geom_vline(xintercept = median(data$E_gov), color = &quot;grey&quot;)+
+  geom_vline(xintercept = mean(data$E_gov), color = &quot;steelblue2&quot;)+
   xlab(&quot;E-Government Index&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>summary(data$E_gov)</code></pre>
-<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     0.0    40.0    59.0    58.8    79.0   100.0</code></pre>
-<div id="cuartiles-y-diagrama-de-cajas" class="section level3">
-<h3>Cuartiles y diagrama de cajas</h3>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div id="analicemos-las-medidas-de-posición-y-grafiquemos"
+class="section level3">
+<h3>Analicemos las medidas de posición y grafiquemos</h3>
+<p>Ya sabemos que la mediana es 59</p>
+<pre class="r"><code>data  %&gt;% 
+  summarise(Q1 = quantile(E_gov, 0.25),
+            Q3 = quantile(E_gov, 0.75))</code></pre>
+<pre><code>##   Q1 Q3
+## 1 40 79</code></pre>
+<p>Generemos el gráfico que mejor permite ver estas medidas de
+posición</p>
+<pre class="r"><code>  ggplot(data,aes(y=E_gov))+
+  geom_boxplot()+
+  ylab(&quot;E-Government Index&quot;)+
+  theme_classic()</code></pre>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Practiquemos el uso del comando filter. Recuerda que para usar este
+comando necesitamos indicar la variable sobre la cual queremos filtrar y
+la condición. Analizaremos que sucede en África. No olvides que debemos
+saber de antemano cómo esta escrita la palabra.</p>
+<p>Revisemos como está escrita</p>
+<pre class="r"><code>levels(data$Region)</code></pre>
+<pre><code>## [1] &quot;Africa&quot;   &quot;Americas&quot; &quot;Asia&quot;     &quot;Europe&quot;   &quot;Oceania&quot;</code></pre>
+<p>Ahora si, analicemos solo el caso de Africa</p>
 <pre class="r"><code>data %&gt;% 
   filter(Region==&quot;Africa&quot;)%&gt;% 
-  summarise(CuartilesEgov = quantile(E_gov))</code></pre>
-<pre><code>##   CuartilesEgov
-## 1          0.00
-## 2         23.75
-## 3         35.00
-## 4         52.00
-## 5         73.00</code></pre>
+  summarise(Q1 = quantile(E_gov, 0.25),
+            Q3 = quantile(E_gov, 0.75))</code></pre>
+<pre><code>##      Q1 Q3
+## 1 23.75 52</code></pre>
+<p>La ventaja de tidyverse es que se pueden concatenar los comandos. Es
+así que podemos indicar primero que queremos filtrar, y luego generar el
+gráfico sobre esa tabla filtrada solo para el caso de áfrica.</p>
 <pre class="r"><code>data %&gt;% 
-  summarise(CuartilesEgov = quantile(E_gov))</code></pre>
-<pre><code>##   CuartilesEgov
-## 1             0
-## 2            40
-## 3            59
-## 4            79
-## 5           100</code></pre>
-<p>¿Cómo ubicamos los cuartiles en el diagrama de cajas?</p>
-<pre class="r"><code>data %&gt;% 
+  filter(Region==&quot;Africa&quot;)%&gt;% 
   ggplot(aes(y=E_gov))+
   geom_boxplot()+
-  ylab(&quot;E-Government Index&quot;)</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+  ylab(&quot;E-Government Index&quot;)+
+  theme_linedraw()</code></pre>
+<p><img src="Pd3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>¿Cómo ha cambiado el estado de la gobernanza digital en comparación
+con los datos de todos los países?</p>
 </div>
-</div>
-<div
-id="según-región-cuál-es-el-estado-de-la-gobernanza-digital-de-los-países"
-class="section level2">
-<h2><strong>Según región, ¿cuál es el estado de la gobernanza digital de
-los países?</strong></h2>
-<p>¿Cuál es la importancia de analizar por regiones?</p>
-<pre class="r"><code>data %&gt;%
- group_by(Region) %&gt;%
-  summarize(Media=mean(E_gov)) </code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   Region   Media
-##   &lt;fct&gt;    &lt;dbl&gt;
-## 1 Africa    36.3
-## 2 Americas  62.6
-## 3 Asia      63.2
-## 4 Europe    84.2
-## 5 Oceania   47.7</code></pre>
-<pre class="r"><code>data %&gt;%
-  ggplot(aes(x=E_gov))+
-  geom_histogram()+
-  facet_wrap(~Region)+
-  xlab(&quot;E-Gov Index&quot;)+
-  ylab(&quot;Frecuencia&quot;)</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Analicemos los resultados 😼</p>
-<p><strong>Descriptivos por región</strong></p>
-<pre class="r"><code> data %&gt;%
-  group_by(Region)%&gt;%
-  summarise(Mínimo=min(E_gov), 
-            Mediana= median(E_gov), 
-            Desviación=sd(E_gov),
-            Media= mean(E_gov),
-            Máximo= max(E_gov))</code></pre>
-<pre><code>## # A tibble: 5 × 6
-##   Region   Mínimo Mediana Desviación Media Máximo
-##   &lt;fct&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Africa        0    35        17.3   36.3     73
-## 2 Americas     18    62.5      15.5   62.6     86
-## 3 Asia         21    67        19.3   63.2     93
-## 4 Europe       61    86         9.35  84.2    100
-## 5 Oceania      27    40.5      22.6   47.7     97</code></pre>
-<p>Comparo los resultados y los ubico en mi diagrama de cajas</p>
-<pre class="r"><code> data %&gt;%
-ggplot(aes(x=Region, y=E_gov, color=Region)) + 
-  geom_boxplot() + 
-  geom_jitter(shape=16, position=position_jitter(0.2)) +#para agregar los casos como puntos
-  theme_classic()</code></pre>
-<p><img src="pd3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Si deseo un subset solamente de los países que están por encima de la
-media ¿cuántos países son?</p>
-<pre class="r"><code>MayorMedia=data %&gt;%
-  filter(E_gov &gt; mean(E_gov)) </code></pre>
-<p>Si queremos ver solo una región, en este caso África</p>
-<pre class="r"><code>data %&gt;% 
-  filter(Region ==&quot;Africa&quot;) %&gt;%
-  summarise(mean(E_gov))</code></pre>
-<pre><code>##   mean(E_gov)
-## 1    36.28846</code></pre>
-<p>O los estadísticos de los países de Asia</p>
-<pre class="r"><code>data %&gt;%
-  filter(Region == &quot;Asia&quot;) %&gt;%
-  summarise(Mínimo=min(E_gov), 
-            Mediana= median(E_gov), 
-            Desviación=sd(E_gov),
-            Media= mean(E_gov),
-            Máximo= max(E_gov))</code></pre>
-<pre><code>##   Mínimo Mediana Desviación    Media Máximo
-## 1     21      67   19.31929 63.16279     93</code></pre>
 </div>
 </div>
 <div id="ejercicios" class="section level1">
 <h1><strong>3. Ejercicios 👾 :</strong></h1>
 <ul>
-<li>Realizar los estadísticos descriptivos del Online Service Index
-(Online_Service).</li>
-<li>Realizar una muestra de aquellos paises que están por encima de la
-media del índice de infraestructura y telecomunicaciones
-(Tele_infra).</li>
-<li>Realizar diagrama de cajas del E-Participation Index (E_part) por
-región.</li>
-<li>Según si tiene alto nivel de infraestructura en telecomunicaciones
-(Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y
-luego genera un gráfico que los muestre.</li>
+<li><p>Realizar los estadísticos descriptivos del Online Service Index
+(Online_Service).</p></li>
+<li><p>Realizar una muestra de aquellos paises que están por encima de
+la media del índice de infraestructura y telecomunicaciones
+(Tele_infra).</p></li>
+<li><p>Realizar diagrama de cajas del E-Participation Index (E_part) por
+región.</p></li>
+<li><p>Según si tiene alto nivel de infraestructura en
+telecomunicaciones (Alto_teleinfra), calcula los cuartiles de la
+variable Human_cap, y luego genera un gráfico que los muestre.</p></li>
 </ul>
 </div>
 
