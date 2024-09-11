@@ -61,7 +61,7 @@ Unidas, el Consejo Económico y Social y el Foro Político de Alto Nivel.
 knitr::include_graphics("PD3_egov22.png") 
 ```
 
-Carguemos la data *egov2022.xlsx*
+Carguemos la data ***egov2022.xlsx***
 
 ```{r}
 library(dplyr)#Convocamos el paquete
@@ -70,7 +70,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|-----------------------|------------------------------------------------|
+|------------------------|------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
