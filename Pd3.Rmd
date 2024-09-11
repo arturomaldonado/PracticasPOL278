@@ -2,17 +2,21 @@
 title: "Práctica dirigida 3"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
-    toc_depth: 1
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 4
     theme: cosmo
     highlight: textmate
-    always_allow_html: true
+    always_allow_html: yes
+    output: pdf_document
   pdf_document:
-    toc: true
-    toc_depth: '1'
+    toc: yes
+    toc_depth: '4'
+editor_options:
+  markdown:
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -33,9 +37,25 @@ knitr::include_graphics("logoPUCP.png")
 
 ### **E-Government Survey 2022: The Future of Digital Government**
 
-La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha publicado cada dos años por el Departamento de Asuntos Económicos y Sociales de las Naciones Unidas desde 2001. La Encuesta evalúa el estado de desarrollo del gobierno electrónico de todos los Estados miembros de las Naciones Unidas y, durante este tiempo, ha establecido un conjunto de datos y análisis exhaustivos.
+La Encuesta de las Naciones Unidas sobre Gobierno Electrónico se ha
+publicado cada dos años por el Departamento de Asuntos Económicos y
+Sociales de las Naciones Unidas desde 2001. La Encuesta evalúa el estado
+de desarrollo del gobierno electrónico de todos los Estados miembros de
+las Naciones Unidas y, durante este tiempo, ha establecido un conjunto
+de datos y análisis exhaustivos.
 
-La evaluación mide el rendimiento del gobierno electrónico de los países en relación con los demás, en lugar de ser una medición absoluta. Reconoce que cada país debe decidir el nivel y la extensión de sus iniciativas de gobierno electrónico de acuerdo con sus propias prioridades nacionales de desarrollo y para lograr los Objetivos de Desarrollo Sostenible. La Encuesta sirve como una herramienta de referencia y desarrollo para que los países aprendan entre sí, identifiquen áreas de fortaleza y desafíos en el gobierno electrónico y moldeen sus políticas y estrategias. También tiene como objetivo facilitar e informar las discusiones de los órganos intergubernamentales, incluida la Asamblea General de las Naciones Unidas, el Consejo Económico y Social y el Foro Político de Alto Nivel.
+La evaluación mide el rendimiento del gobierno electrónico de los países
+en relación con los demás, en lugar de ser una medición absoluta.
+Reconoce que cada país debe decidir el nivel y la extensión de sus
+iniciativas de gobierno electrónico de acuerdo con sus propias
+prioridades nacionales de desarrollo y para lograr los Objetivos de
+Desarrollo Sostenible. La Encuesta sirve como una herramienta de
+referencia y desarrollo para que los países aprendan entre sí,
+identifiquen áreas de fortaleza y desafíos en el gobierno electrónico y
+moldeen sus políticas y estrategias. También tiene como objetivo
+facilitar e informar las discusiones de los órganos
+intergubernamentales, incluida la Asamblea General de las Naciones
+Unidas, el Consejo Económico y Social y el Foro Político de Alto Nivel.
 
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("PD3_egov22.png") 
@@ -50,7 +70,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|-----------------------|-------------------------------------------------|
+|-----------------------|------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -72,7 +92,13 @@ Revisamos la estructura de la base de datos y sus variables
 str(data)
 ```
 
-Podemos ver que casi todas las variables son numéricas, excepto la variable *Region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla como factor. Para ello usamos el comando as.factor, dentro del paréntesis debe ir el nombre de la variable. Otro comando común para cambiar el tipo de variable es as.numeric, este nos ayuda a convertir la variable a numérica.
+Podemos ver que casi todas las variables son numéricas, excepto la
+variable *Region* que se muestra como texto, pero es categórica.
+Procedemos a revisar sus niveles y a recodificarla como factor. Para
+ello usamos el comando as.factor, dentro del paréntesis debe ir el
+nombre de la variable. Otro comando común para cambiar el tipo de
+variable es as.numeric, este nos ayuda a convertir la variable a
+numérica.
 
 ```{r}
 data = data %>% 
@@ -84,9 +110,10 @@ class(data$Region)
 
 ### **Pregunta general: ¿Cuál es el estado de la gobernanza digital de los países?**
 
-## 2.1 ¿Qué nivel de desarrollo de infraestructura en telecomunicaciones es más frecuente hallar en los países? 
+## 2.1 ¿Qué nivel de desarrollo de infraestructura en telecomunicaciones es más frecuente hallar en los países?
 
--   **¿El país tiene un nivel alto de infraestructura en telecomunicaciones? (**Alto_teleinfra) : Variable categórica
+-   **¿El país tiene un nivel alto de infraestructura en
+    telecomunicaciones? (**Alto_teleinfra) : Variable categórica
 
 Realicemos una tabla de frecuencias de la variable:
 
@@ -119,7 +146,8 @@ grafico2 = data %>%
 grafico2
 ```
 
-La única región en la que la mayoría de los países cuenta con un nivel alto de infraestructura en telecomunicaciones alto es Europa.
+La única región en la que la mayoría de los países cuenta con un nivel
+alto de infraestructura en telecomunicaciones alto es Europa.
 
 ```{r}
 ggplot(grafico2, aes(x=Alto_teleinfra, y= Porcentaje,fill=Region))+
@@ -130,11 +158,12 @@ ggplot(grafico2, aes(x=Alto_teleinfra, y= Porcentaje,fill=Region))+
   labs(fill = "¿Alto nivel de \n infraestructura \n en comunicaciones?")
 ```
 
-## 2.2 ¿Cuál es el nivel de gobernanza digital de los países? 
+## 2.2 ¿Cuál es el nivel de gobernanza digital de los países?
 
 -   **E-Government Index**: Variable numérica
 
-Ahora analicemos las medidas de tendencia central, de dispersión y de posición. ¿Qué podemos comentar de los datos obtenidos?
+Ahora analicemos las medidas de tendencia central, de dispersión y de
+posición. ¿Qué podemos comentar de los datos obtenidos?
 
 ```{r}
 data  %>% 
@@ -145,11 +174,18 @@ data  %>%
             Máximo= max(E_gov))
 ```
 
--   ¿Cuál es el puntaje más bajo y el máximo? Sabemos que ningún país llega a 100 en el indicador de gobernanza digital.
+-   ¿Cuál es el puntaje más bajo y el máximo? Sabemos que ningún país
+    llega a 100 en el indicador de gobernanza digital.
 
 -   ¿Cuál es el rango? (*max-min*)
 
--   **Desviación estándar (*sd*)**: La desviación estándar es una medida que nos ayuda a entender cuánto se separan los números en un conjunto de datos del valor promedio o medio. Podemos traducir ello como una forma de medir cuánto "se dispersan" los números alrededor de un número central. En este caso, la desviación es de 23.98 esto quiere decir que cada país se encuentra en promedio a 24 puntos de la media.
+-   **Desviación estándar (*sd*)**: La desviación estándar es una medida
+    que nos ayuda a entender cuánto se separan los números en un
+    conjunto de datos del valor promedio o medio. Podemos traducir ello
+    como una forma de medir cuánto "se dispersan" los números alrededor
+    de un número central. En este caso, la desviación es de 23.98 esto
+    quiere decir que cada país se encuentra en promedio a 24 puntos de
+    la media.
 
 -   ¿Hay mucha variabilidad en los datos?
 
@@ -202,7 +238,7 @@ Generemos el gráfico que mejor permite ver estas medidas de posición
   theme_classic()
 ```
 
-## 2.3 ¿Cuánto varía el indicador de gobernanza digital según región? 
+## 2.3 ¿Cuánto varía el indicador de gobernanza digital según región?
 
 ```{r}
 data  %>% 
@@ -213,7 +249,12 @@ data  %>%
             Q3 = quantile(E_gov, 0.75))
 ```
 
-Podemos afirmar que Europa cuenta unos niveles más altos de gobernanza digital en comparación a los otras regiones. Esto considerando que el 75% de sus datos superiores superan el 78.75. Las américas y Asia también muestran resultados elevados, aunque con mayor dispersión. Caso contrario al de África y Oceanía, en la que la mayoría de países no supera los 50 puntos.
+Podemos afirmar que Europa cuenta unos niveles más altos de gobernanza
+digital en comparación a los otras regiones. Esto considerando que el
+75% de sus datos superiores superan el 78.75. Las américas y Asia
+también muestran resultados elevados, aunque con mayor dispersión. Caso
+contrario al de África y Oceanía, en la que la mayoría de países no
+supera los 50 puntos.
 
 Grafiquemos
 
@@ -225,11 +266,20 @@ ggplot(data, aes(x=Region,y=E_gov, color = Region))+
 
 ```
 
-El gráfico facilita la visualización de la dispersión de los datos. En el caso de Europa, se observa poca dispersión debido al pequeño tamaño de la caja, mientras que África presenta una mayor dispersión. Además, se identifican valores atípicos en las Américas, Europa y Oceanía. Estos valores corresponden a casos que se encuentran a más de 1.5 veces el rango intercuartílico (IQR) por encima o por debajo de los límites de la caja.
+El gráfico facilita la visualización de la dispersión de los datos. En
+el caso de Europa, se observa poca dispersión debido al pequeño tamaño
+de la caja, mientras que África presenta una mayor dispersión. Además,
+se identifican valores atípicos en las Américas, Europa y Oceanía. Estos
+valores corresponden a casos que se encuentran a más de 1.5 veces el
+rango intercuartílico (IQR) por encima o por debajo de los límites de la
+caja.
 
 ## 2.4 ¿Cuál es la situación en cuanto gobernanza digital de África?
 
-Practiquemos el uso del comando filter. Recuerda que para usar este comando necesitamos indicar la variable sobre la cual queremos filtrar y la condición. Analizaremos que sucede en África. No olvides que debemos saber de antemano cómo esta escrita la palabra.
+Practiquemos el uso del comando filter. Recuerda que para usar este
+comando necesitamos indicar la variable sobre la cual queremos filtrar y
+la condición. Analizaremos que sucede en África. No olvides que debemos
+saber de antemano cómo esta escrita la palabra.
 
 Revisemos como está escrita
 
@@ -246,7 +296,9 @@ data %>%
             Q3 = quantile(E_gov, 0.75))
 ```
 
-La ventaja de tidyverse es que se pueden concatenar los comandos. Es así que podemos indicar primero que queremos filtrar, y luego generar el gráfico sobre esa tabla filtrada solo para el caso de áfrica.
+La ventaja de tidyverse es que se pueden concatenar los comandos. Es así
+que podemos indicar primero que queremos filtrar, y luego generar el
+gráfico sobre esa tabla filtrada solo para el caso de áfrica.
 
 ```{r}
 data %>% 
@@ -257,14 +309,21 @@ data %>%
   theme_classic()
 ```
 
-¿Cómo ha cambiado el estado de la gobernanza digital en comparación con los datos de todos los países?
+¿Cómo ha cambiado el estado de la gobernanza digital en comparación con
+los datos de todos los países?
 
 # **3. Ejercicios 👾 :**
 
--   Realizar los estadísticos descriptivos del Online Service Index (Online_Service).
+-   Realizar los estadísticos descriptivos del Online Service Index
+    (Online_Service).
 
--   Realizar una muestra de aquellos paises que están por encima de la media del índice de infraestructura y telecomunicaciones (Tele_infra).
+-   Realizar una muestra de aquellos paises que están por encima de la
+    media del índice de infraestructura y telecomunicaciones
+    (Tele_infra).
 
--   Realizar diagrama de cajas del E-Participation Index (E_part) por región.
+-   Realizar diagrama de cajas del E-Participation Index (E_part) por
+    región.
 
--   Según si tiene alto nivel de infraestructura en telecomunicaciones (Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y luego genera un gráfico que los muestre.
+-   Según si tiene alto nivel de infraestructura en telecomunicaciones
+    (Alto_teleinfra), calcula los cuartiles de la variable Human_cap, y
+    luego genera un gráfico que los muestre.
