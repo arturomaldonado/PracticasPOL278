@@ -50,7 +50,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|----------------------|-------------------------------------------------|
+|-----------------------|-------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -75,13 +75,16 @@ str(data)
 Podemos ver que casi todas las variables son numéricas, excepto la variable *Region* que se muestra como texto, pero es categórica. Procedemos a revisar sus niveles y a recodificarla como factor. Para ello usamos el comando as.factor, dentro del paréntesis debe ir el nombre de la variable. Otro comando común para cambiar el tipo de variable es as.numeric, este nos ayuda a convertir la variable a numérica.
 
 ```{r}
-data$Region=as.factor(data$Region)
+data = data %>% 
+  mutate(Region = as.factor(Region))
 class(data$Region)
 ```
 
 # **2. Aplicación en R**
 
-### **¿Cuál es el estado de la gobernanza digital de los países?**
+### **Pregunta general: ¿Cuál es el estado de la gobernanza digital de los países?**
+
+## 2.1 ¿Qué nivel de desarrollo de infraestructura en telecomunicaciones es más frecuente hallar en los países? 
 
 -   **¿El país tiene un nivel alto de infraestructura en telecomunicaciones? (**Alto_teleinfra) : Variable categórica
 
@@ -90,7 +93,8 @@ Realicemos una tabla de frecuencias de la variable:
 ```{r}
 grafico1 = data %>%
   group_by(Alto_teleinfra) %>% 
-  summarise(Freq=n())
+  summarise(Freq=n()) %>% #Hasta este punto hemos obtenido las frecuencias
+  mutate(Porcentaje = (Freq/sum(Freq))*100) #Ahora agregamos la columna con los porcentajes. 
 grafico1
 ```
 
@@ -100,8 +104,8 @@ Revisemos en un gráfico:
 
 ```{r}
 library(ggplot2)
-ggplot(grafico1, aes(x=Alto_teleinfra, y= Freq, fill=Alto_teleinfra))+
-  geom_bar(stat = "identity")+ xlab("Alto nivel de infraestructura en telecomunicaciones")+ylab("Frecuencia")
+ggplot(grafico1, aes(x=Alto_teleinfra, y= Porcentaje, fill=Alto_teleinfra))+
+  geom_bar(stat = "identity")+ xlab("Alto nivel de infraestructura en telecomunicaciones")+ylab("Porcentaje (%)")
 ```
 
 Revisemos si esta tendencia se mantiene a nivel regional
@@ -109,19 +113,24 @@ Revisemos si esta tendencia se mantiene a nivel regional
 ```{r}
 grafico2 = data %>%
   group_by(Region, Alto_teleinfra) %>% 
-  summarise(Freq=n())
+  summarise(Freq=n()) %>% 
+  mutate(Porcentaje = (Freq/sum(Freq))*100) 
+
 grafico2
 ```
 
 La única región en la que la mayoría de los países cuenta con un nivel alto de infraestructura en telecomunicaciones alto es Europa.
 
 ```{r}
-ggplot(grafico2, aes(x=Alto_teleinfra, y= Freq,fill=Region))+
+ggplot(grafico2, aes(x=Alto_teleinfra, y= Porcentaje,fill=Region))+
   geom_bar(stat = "identity")+ 
   facet_wrap(~Region)+
-  xlab("Alto nivel de infraestructura en telecomunicaciones")+
-  ylab("Frecuencia")
+  xlab("")+
+  ylab("Porcentaje (%)") + 
+  labs(fill = "¿Alto nivel de \n infraestructura \n en comunicaciones?")
 ```
+
+## 2.2 ¿Cuál es el nivel de gobernanza digital de los países? 
 
 -   **E-Government Index**: Variable numérica
 
@@ -144,7 +153,7 @@ data  %>%
 
 -   ¿Hay mucha variabilidad en los datos?
 
-## **Visualización**
+**Visualización**
 
 Histograma de E-Gov
 
@@ -174,7 +183,7 @@ ggplot(data, aes(x=E_gov))+
   theme_light()
 ```
 
-### Analicemos las medidas de posición y grafiquemos
+**Analicemos las medidas de posición y grafiquemos**
 
 Ya sabemos que la mediana es 59
 
@@ -192,6 +201,33 @@ Generemos el gráfico que mejor permite ver estas medidas de posición
   ylab("E-Government Index")+
   theme_classic()
 ```
+
+## 2.3 ¿Cuánto varía el indicador de gobernanza digital según región? 
+
+```{r}
+data  %>% 
+  group_by(Region) %>% 
+  summarise(
+            Q1 = quantile(E_gov, 0.25),
+            Q2 = median(E_gov),
+            Q3 = quantile(E_gov, 0.75))
+```
+
+Podemos afirmar que Europa cuenta unos niveles más altos de gobernanza digital en comparación a los otras regiones. Esto considerando que el 75% de sus datos superiores superan el 78.75. Las américas y Asia también muestran resultados elevados, aunque con mayor dispersión. Caso contrario al de África y Oceanía, en la que la mayoría de países no supera los 50 puntos.
+
+Grafiquemos
+
+```{r}
+ggplot(data, aes(x=Region,y=E_gov, color = Region))+
+  geom_boxplot()+
+  theme_bw()+
+  xlab("Indicador de gobernanza digital")
+
+```
+
+El gráfico facilita la visualización de la dispersión de los datos. En el caso de Europa, se observa poca dispersión debido al pequeño tamaño de la caja, mientras que África presenta una mayor dispersión. Además, se identifican valores atípicos en las Américas, Europa y Oceanía. Estos valores corresponden a casos que se encuentran a más de 1.5 veces el rango intercuartílico (IQR) por encima o por debajo de los límites de la caja.
+
+## 2.4 ¿Cuál es la situación en cuanto gobernanza digital de África?
 
 Practiquemos el uso del comando filter. Recuerda que para usar este comando necesitamos indicar la variable sobre la cual queremos filtrar y la condición. Analizaremos que sucede en África. No olvides que debemos saber de antemano cómo esta escrita la palabra.
 
@@ -218,7 +254,7 @@ data %>%
   ggplot(aes(y=E_gov))+
   geom_boxplot()+
   ylab("E-Government Index")+
-  theme_linedraw()
+  theme_classic()
 ```
 
 ¿Cómo ha cambiado el estado de la gobernanza digital en comparación con los datos de todos los países?
