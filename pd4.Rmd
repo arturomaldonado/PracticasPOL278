@@ -126,7 +126,6 @@ Esto quiere decir que tenemos un 95% de certeza de que, en la población, el por
 
 Recordemos la fórmula para hallar el intervalo de confianza para una media es
 
-
 ```{r,echo=FALSE, out.width="50%",fig.align="center"}
 knitr::include_graphics("ICmedia.png") 
 ```
