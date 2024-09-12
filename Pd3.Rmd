@@ -70,7 +70,7 @@ data=import("egov2022.xlsx")
 ```
 
 | Nombre         | Descripción                                                                          |
-|------------------------|------------------------------------------------|
+|-------------------------|------------------------------------------------|
 | Pais           | Nombre del país                                                                      |
 | E_gov          | Indicador de gobernanza digital (0-100)                                              |
 | E_part         | Transparencia y acceso a la información, participación ciudadana en línea (0 - 100)  |
@@ -150,7 +150,7 @@ La única región en la que la mayoría de los países cuenta con un nivel
 alto de infraestructura en telecomunicaciones alto es Europa.
 
 ```{r}
-ggplot(grafico2, aes(x=Alto_teleinfra, y= Porcentaje,fill=Region))+
+ggplot(grafico2, aes(x=Alto_teleinfra, y= Porcentaje,fill=Alto_teleinfra))+
   geom_bar(stat = "identity")+ 
   facet_wrap(~Region)+
   xlab("")+
