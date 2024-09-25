@@ -148,11 +148,20 @@ La prueba T compara la media de una variable numérica para dos grupos o categor
 
 **Ejemplo práctico:**
 
+¿Existe una diferencia estadísticamente significativa entre el ataque de los pokemon de tipo agua y tipo fuego?
+
 ```{r}
 library(pokemon)
 library(magick)
-url = pokemon %>% filter(pokemon == "bulbasaur") %>% pull(url_image)
-plot(image_read(url))
+url1<- pokemon %>%
+  filter(pokemon == "charmander") %>%
+  pull(url_image)
+
+url2 <- pokemon %>%
+  filter(pokemon == "squirtle") %>%
+  pull(url_image)
+
+plot (image_append(c(image_read(url1), image_read(url2))))
 ```
 
 ```{r}
@@ -172,6 +181,7 @@ poke_filtrado = pokemon %>%
 ```{r}
 str(poke_filtrado$type_1) #confirmo que está en factor
 ```
+Medias de ataque _attack_
 ```{r}
 pokeAttack = poke_filtrado %>%
   group_by(type_1) %>%
@@ -181,15 +191,21 @@ pokeAttack
 ```{r}
 pokeAttack[1,2] - pokeAttack[2,2]
 ```
+
+- La media de ataque de los Pokémon de tipo fuego es 84.25, mientras que la media de ataque de los Pokémon de tipo agua es 74.71.
+- Esto sugiere que, en promedio, los Pokémon de tipo fuego tienden a tener un ataque mayor que los Pokémon de tipo agua.
+
+Profundizamos en el análisis
 ```{r}
 t.test(attack ~ type_1, data = poke_filtrado)
 ```
 
-Como el p-value < 0.05, entonces se rechaza la H0 y se puede afirmar que esa diferencia existe en la población a tal nivel de significancia.
+- Como el p-value es 0.03291, lo que es menor que el nivel de significancia comúnmente utilizado (α = 0.05). Esto indica que existe una diferencia estadísticamente significativa entre las medias de los ataques de los pokemon de tipo fuego y agua.
+- Por lo tanto, podemos *rechazar la hipótesis nula, que sostiene que no* hay diferencia en los ataques entre los dos tipos.
 
-```{r}
-names(pokemon)
-```
+
+Conclusión:
+El análisis muestra que los pokemon de tipo fuego tienen un ataque significativamente mayor que los de tipo agua, con una diferencia promedio que varía entre aproximadamente 0.79 y 18.29 puntos de ataque. Aunque la diferencia es estadísticamente significativa, la magnitud de la diferencia puede no ser extremadamente grande en todos los contextos, por lo que esta diferencia podría o no ser relevante dependiendo de la aplicación práctica (por ejemplo, en batallas competitivas o estrategias específicas). Sin embargo, en términos generales, los pokemon de tipo fuego parecen ser más ofensivos que los de tipo agua.
 
 # **🚙 Dinámicas del uso de los medios de transporte en Lima** 
 
