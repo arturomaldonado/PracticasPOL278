@@ -95,13 +95,15 @@ cats = cats %>%
 str(cats) #corroboro que ya cuento con mi categórica
 ```
 ```{r}
-tablaCats = cats %>%
-  filter(Furbys =="sí" | Furbys == "no") %>%
-  count(Éxito = Furbys, name="N") %>%
-  mutate(total = sum(N), 
+tablaCats <- cats %>%
+  group_by(Furbys) %>%
+  summarise(N = n(), .groups = "drop") %>%
+  mutate(total = sum(N),
          Porcentaje = N / total * 100)
 tablaCats
 ```
+
+
 ```{r}
 prop.test(248,400) #caso de éxito y total
 ```
@@ -191,7 +193,7 @@ Para poder encontrar el intervalo de confianza para la proporción de ciudadanos
 
 ```{r}
 tablaSatis = data %>%
-  filter(satis_transporte =="No satisfecho" | satis_transporte == "Satisfecho") %>%
+  filter(satis_transporte =="No satisfecho" | satis_transporte == "Satisfecho") %>% #para evitar considerar NA y cambién el total
   count(Éxito = satis_transporte, name="N") %>%
   mutate(total = sum(N), 
          Porcentaje = N / total * 100)
