@@ -400,25 +400,31 @@ div.tocify {
 <p><img src="logoPUCP.png" width="30%" /></p>
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
 <div
-id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---2"
 class="section level2">
 <h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
-2024 - 1 <br></h2>
+2024 - 2 <br></h2>
 </div>
 <div id="intervalos-de-confianza" class="section level1">
-<h1><strong>1.Intervalos de confianza</strong></h1>
-<p>Con este tema, comenzaremos a enfocarnos en la estadística
-inferencial. El objetivo de esta es determinar una aproximación del
-parámetro poblacional a partir de la data de una muestra
-representativa.</p>
+<h1><strong>Intervalos de confianza</strong></h1>
+<p>Con este tema, nos adentraremos en el estudio de la estadística
+inferencial, cuyo objetivo es estimar y aproximar los parámetros
+poblacionales basados en los datos obtenidos de una muestra
+representativa. A través de este enfoque, podemos hacer generalizaciones
+válidas sobre una población completa a partir de un subconjunto de
+datos, permitiendo tomar decisiones y formular conclusiones
+fundamentadas.</p>
 <p>Revisemos algunos conceptos:</p>
 <ul>
 <li><p><strong>Estimador puntual:</strong> un número que es nuestra
 predicción del parámetro</p></li>
-<li><p><strong>Intervalo de confianza:</strong> un intervalo de números
-basado en la distribución de la data observada de la muestra dentro de
-la cual se cree que estaría el parámetro poblacional.</p>
-<p><em>IC = estimador puntual +-/margen de error</em></p></li>
+<li><p><strong>Intervalo de confianza (IC):</strong> un intervalo de
+números basado en la distribución de la data observada de la muestra
+dentro de la cual se cree que estaría el parámetro poblacional.</p></li>
+</ul>
+<p><span class="math display">\[IC = \text{estimador puntual} \pm
+\text{margen de error}\]</span></p>
+<ul>
 <li><p><strong>Nivel de confianza:</strong> es la probabilidad de que el
 parámetro se encuentre en ese intervalo.</p></li>
 <li><p><strong>Margen de error:</strong> mide qué tan precisa es la
@@ -448,7 +454,7 @@ de la población.</li>
 </ul>
 </div>
 <div id="sobre-el-nivel-de-confianza" class="section level3">
-<h3>Sobre el nivel de confianza…</h3>
+<h3>Sobre el nivel de confianza</h3>
 <p>Si tenemos un nivel de confianza de 95%, quiere decir que si
 realizamos 100 veces el mismo procedimiento de muestreo y calculamos los
 estadísticos de interés, 95 veces obtendremos los resultados en el
@@ -456,28 +462,10 @@ intervalo calculado. Los mismo ocurriría si realizamos el cálculo con un
 99% de confianza. Al momento de decidir el nivel de confianza debemos
 tener presente una regla: a mayor nivel de confianza, menor será la
 precisión ya que el intervalo es más amplio.</p>
-<p><strong>Aplicación</strong></p>
-<p>Carguemos la data “Limacomovamos-pd4.xlsx”</p>
-<p>Lima como vamos es una encuesta realizada a ciudadanos de Lima y
-Callao con la finalidad de conocer su percepción acerca de la movilidad,
-ambiente, seguridad ciudadana, espacios de recreación, cultura y
-satisfacción con la ciudad. Pueden encontrar más información acerca de
-esta base <a href="https://www.limacomovamos.org/data/">aquí</a>.</p>
-<p>Para esta sesión se usará una versión subseteada de años anteriores
-que contiene a las variables:</p>
-<p><img src="pd4-diccionario.png" width="50%" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>library(rio) #Convocamos el paquete   
-data=import(&quot;Limacomovamos-pd4.xlsx&quot;) </code></pre>
-<p>En esta sesión responderemos a la pregunta:</p>
-</div>
-<div id="cuál-es-el-estado-del-transporte-en-lima-según-sus-residentes"
-class="section level3">
-<h3>¿Cuál es el estado del transporte en Lima según sus residentes?</h3>
-</div>
 </div>
 <div id="intervalos-de-confianza-para-una-proporción"
-class="section level1">
-<h1><strong>1.Intervalos de confianza para una proporción</strong></h1>
+class="section level3">
+<h3><strong>1.Intervalos de confianza para una proporción</strong></h3>
 <p>Tengamos en consideración que para poder hallar el intervalo de
 confianza para una proporción debemos determinar nuestro caso de éxito.
 Asimismo, para hallar el intervalo de confianza para una proporción
@@ -486,39 +474,191 @@ dicotómica; es decir, una variable con solo dos categorías posibles:
 votó/no votó; sí/no, etc.</p>
 <p>Recordemos la fórmula para hallar el intervalo de confianza para una
 proporción</p>
-<p><img src="ICprop.png" width="50%" style="display: block; margin: auto;" /></p>
-<p><em>Hallemos el intervalo de confianza para la proporción de las
-personas que están satisfechas con el transporte público en
-Lima.</em></p>
+<p><img src="ICprop.png" width="70%" style="display: block; margin: auto;" />
+<strong>Ejemplo práctico:</strong></p>
+<p><img src="food.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>Una empresa muy conocida de comida para gatos llamada <em>Furbys</em>
+desea realizar un relanzamiento de marca. Para ello crean el eslogan “8
+de cada 10 gatos prefieren Furbys”. Sin embargo, debido a un reclamo de
+los alumnos del curso de Estadística, esta vez la empresa decide
+realizar el sustento de su eslogan.</p>
+<pre class="r"><code>library(rio)
+cats=import(&quot;cats.xlsx&quot;)
+str(cats)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  3 variables:
+##  $ Furbys: chr  &quot;no&quot; &quot;sí&quot; &quot;sí&quot; &quot;sí&quot; ...
+##  $ Edad  : num  15 14 15 3 13 3 7 2 4 11 ...
+##  $ Color : chr  &quot;Marrón&quot; &quot;Negro&quot; &quot;Negro&quot; &quot;Negro&quot; ...</code></pre>
+<pre class="r"><code>table(cats$Furbys)</code></pre>
+<pre><code>## 
+##  no  sí 
+## 152 248</code></pre>
+<p>Formateo la variable <em>Furbys</em></p>
+<pre class="r"><code>library(dplyr)
+cats = cats %&gt;%
+  mutate(Furbys = factor(Furbys, levels = c(&quot;sí&quot;, &quot;no&quot;)))
+str(cats) #corroboro que ya cuento con mi categórica</code></pre>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  3 variables:
+##  $ Furbys: Factor w/ 2 levels &quot;sí&quot;,&quot;no&quot;: 2 1 1 1 2 1 2 2 1 1 ...
+##  $ Edad  : num  15 14 15 3 13 3 7 2 4 11 ...
+##  $ Color : chr  &quot;Marrón&quot; &quot;Negro&quot; &quot;Negro&quot; &quot;Negro&quot; ...</code></pre>
+<pre class="r"><code>tablaCats = cats %&gt;%
+  filter(Furbys ==&quot;sí&quot; | Furbys == &quot;no&quot;) %&gt;%
+  count(Éxito = Furbys, name=&quot;N&quot;) %&gt;%
+  mutate(total = sum(N), 
+         Porcentaje = N / total * 100)
+tablaCats</code></pre>
+<pre><code>##   Éxito   N total Porcentaje
+## 1    sí 248   400         62
+## 2    no 152   400         38</code></pre>
+<pre class="r"><code>prop.test(248,400) #caso de éxito y total</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  248 out of 400, null probability 0.5
+## X-squared = 22.562, df = 1, p-value = 2.034e-06
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.5702368 0.6674206
+## sample estimates:
+##    p 
+## 0.62</code></pre>
+<p>Con base en los resultados del test de proporciones para una muestra
+de 400 gatos, se estima que la proporción de gatos que prefieren la
+marca de comida <em>Furbys</em> está entre el 57.02% y el 66.74%, con un
+intervalo de confianza del 95%. Esto significa que, si se tomaran
+múltiples muestras aleatorias de la misma población, en aproximadamente
+el 95% de las ocasiones la proporción verdadera de gatos que prefieren
+<em>Furbys</em> caería dentro de este rango.</p>
+<p>La proporción observada en la muestra es del 62%, lo que sugiere que
+6 de cada 10 gatos prefieren <em>Furbys</em>. En consecuencia, se puede
+afirmar con evidencia estadística que una mayoría de gatos prefiere esta
+marca.</p>
+<p>Si se deseara utilizar este resultado como base para una campaña
+publicitaria, una frase como “6 de cada 10 gatos prefieren Furbys” sería
+un eslogan adecuado, sustentado en los datos obtenidos.</p>
+</div>
+<div id="intervalos-de-confianza-para-una-media" class="section level3">
+<h3><strong>2.Intervalos de confianza para una media</strong></h3>
+<p>Recordemos la fórmula para hallar el intervalo de confianza para una
+media es:</p>
+<p><img src="ICmedia.png" width="70%" style="display: block; margin: auto;" />
+- <strong>Puntuación Z:</strong> Se ha considerado 1.96 dado que es lo
+que corresponde al considerar el nivel de confianza de 95% en una
+distribución normal.</p>
+<p><span class="math display">\[IC = \bar{X} \pm 1.96 \times
+\frac{s}{\sqrt{n}}\]</span></p>
+</div>
+<div id="intervalo-de-confianza-de-una-media-según-grupo"
+class="section level3">
+<h3><strong>3.Intervalo de confianza de una media según
+grupo</strong></h3>
+<p>El análisis de medias por grupos mediante intervalos de confianza
+(IC) es una herramienta fundamental en la inferencia estadística, ya que
+permite estimar el rango en el que es probable que se encuentre la media
+poblacional de cada grupo, con un determinado nivel de confianza, como
+el 95%. Este enfoque es útil cuando se quiere comparar subgrupos dentro
+de una población, ya sea por género, nivel socioeconómico, ubicación
+geográfica, entre otros.</p>
+<p>Un aspecto clave del análisis con intervalos de confianza es observar
+si los intervalos de los grupos se solapan o no:</p>
+<ul>
+<li><p>Si los intervalos no se cruzan, se puede inferir que existe una
+diferencia significativa entre las medias de los grupos.</p></li>
+<li><p>Si los intervalos se solapan, no podemos afirmar con certeza que
+las medias sean significativamente diferentes, lo que sugiere que las
+diferencias observadas podrían deberse al azar.</p></li>
+</ul>
+</div>
+</div>
+<div id="prueba-t" class="section level1">
+<h1><strong>Prueba T</strong></h1>
+<p>Generalmente, cuando queremos comparar dos grupos centramos nuestra
+atención en el promedio de cada uno. Sin embargo, el hecho de que los
+promedios sean distintos no supone, necesariamente, que existe una
+diferencia <strong>estadísticamente significativa</strong>.</p>
+<p>Para saber si la diferencia observada entre las medias de dos grupos
+es o no significativa se emplean métodos paramétricos como el de
+Z-scores o la distribución T-student. Estas técnicas calculan los
+intervalos de confianza de cada grupo y concluyen si existe una
+diferencia <em>real</em> entre las medias.</p>
+<p>La prueba T compara la media de una variable numérica para dos grupos
+o categorías de una variable nominal u ordinal. Los grupos que forman la
+variable nominal/ordinal tienen que ser independientes. Es decir, cada
+observación debe pertenecer a un grupo o al otro, pero
+<strong>no</strong> a ambos.</p>
+<p><strong>Ejemplo práctico:</strong></p>
+</div>
+<div id="dinámicas-del-uso-de-los-medios-de-transporte-en-lima"
+class="section level1">
+<h1><strong>🚙 Dinámicas del uso de los medios de transporte en
+Lima</strong></h1>
+<p>El crecimiento acelerado de Lima ha generado una creciente
+preocupación sobre la calidad y eficiencia de los medios de transporte
+en la ciudad. La congestión vehicular, la falta de infraestructura
+adecuada y los largos tiempos de viaje afectan diariamente a millones de
+limeños. En este contexto, el análisis de datos cuantitativos se vuelve
+indispensable para entender el comportamiento de los usuarios,
+identificar áreas críticas y diseñar soluciones efectivas. En ese
+sentido en esta sesión responderemos a la siguiente pregunta:</p>
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+<div class="custom-text">
+<p>¿Cuál es el estado del transporte en Lima según sus residentes?
+🤔</p>
+</div>
+<p>Para acercarnos a responder la pregunta antes planteada se buscó
+información relacionada al uso del transporte público en Lima. Por lo
+tanto se eligió la encuesta de Lima Como Vamos, la cual es realizada a
+ciudadanos de Lima y Callao con la finalidad de conocer su percepción
+acerca de la movilidad, ambiente, seguridad ciudadana, espacios de
+recreación, cultura y satisfacción con la ciudad. Pueden encontrar más
+información acerca de esta base <a
+href="https://www.limacomovamos.org/data/">aquí</a>.</p>
+<p>Para esta sesión se usará una versión <em>subseteada</em> de años
+anteriores que contiene las siguientes variables:</p>
+<p><img src="pd4-diccionario.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>data=import(&quot;Limacomovamos-pd4.xlsx&quot;) </code></pre>
+<hr>
+<hr>
+<h4 style="color: #00688B; text-align: center;">
+<b>¿Cuál es el intervalo de confianza para la proporción de las personas
+que están satisfechas con el transporte público en Lima?</b>
+</h4>
 <p>Para ello trabajaremos con la variable satis_transporte, que tiene
 dos valores posibles: Satisfecho y no satisfecho.</p>
 <p>Para poder encontrar el intervalo de confianza para la proporción de
 ciudadanos de Lima y Callao satisfechos con el sistema de transporte,
 necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del
 total de casos.</p>
-<pre class="r"><code>table(data$satis_transporte)#realizamos una tabla de frecuencias</code></pre>
-<pre><code>## 
-## No satisfecho    Satisfecho 
-##          3544           194</code></pre>
-<pre class="r"><code>x = 194 #almacenamos en &quot;x&quot; la frecuencia de nuestro caso de éxito (satisfecho)
-n = 194 + 3544 #almacenamos en &quot;n&quot; el total de casos</code></pre>
+<pre class="r"><code>tablaSatis = data %&gt;%
+  filter(satis_transporte ==&quot;No satisfecho&quot; | satis_transporte == &quot;Satisfecho&quot;) %&gt;%
+  count(Éxito = satis_transporte, name=&quot;N&quot;) %&gt;%
+  mutate(total = sum(N), 
+         Porcentaje = N / total * 100)
+tablaSatis</code></pre>
+<pre><code>##           Éxito    N total Porcentaje
+## 1 No satisfecho 3544  3738  94.810059
+## 2    Satisfecho  194  3738   5.189941</code></pre>
 <p>Hallamos el invervalo de confianza para una proporción con el comando
 <strong>prop.test</strong></p>
-<pre class="r"><code>ic_prop = prop.test(x,n)
-ic_prop #llamamos a ic_prop para visualizar los resultados</code></pre>
-<p><img src="pd4resultprop.png" width="50%" style="display: block; margin: auto;" /></p>
-<p>Esto quiere decir que tenemos un 95% de certeza de que, en la
-población, el porcentaje de ciudadanos de Lima y Callao satisfechos con
-el sistema de transporte oscila entre el 4.5% y 5.9% .</p>
-</div>
-<div id="intervalos-de-confianza-para-una-media" class="section level1">
-<h1><strong>2.Intervalos de confianza para una media</strong></h1>
-<p>Recordemos la fórmula para hallar el intervalo de confianza para una
-media es</p>
-<p><img src="ICmedia.png" width="50%" style="display: block; margin: auto;" /></p>
-<div id="cuánto-gastan-los-residentes-de-lima-en-transporte"
-class="section level3">
-<h3>¿Cuánto gastan los residentes de Lima en transporte?</h3>
+<pre class="r"><code>prop.test(194,3738) #casos de éxito y el total de casos.</code></pre>
+<img src="pd4resultprop.png" width="70%" style="display: block; margin: auto;" />
+Esto quiere decir que tenemos un 95% de certeza de que, en la población,
+el porcentaje de ciudadanos de Lima y Callao satisfechos con el sistema
+de transporte oscila entre el 4.5% y 5.9% .
+<hr>
+<hr>
+<h4 style="color: #00688B; text-align: center;">
+<b>¿Cuánto gastan los residentes de Lima en transporte?</b>
+</h4>
 <p><em>Hallemos el intervalo de confianza para la media de la variable
 “PE10A”.</em></p>
 <p>El enunciado de la pregunta es indicar “En promedio, ¿cuánto gasta su
@@ -533,25 +673,19 @@ ic_media = ciMean(data$PE10A, na.rm = TRUE) #con el último argumento indicamos 
 ic_media</code></pre>
 <pre><code>##          2.5%  97.5%
 ## [1,] 71.90169 90.764</code></pre>
-</div>
-</div>
-<div id="intervalo-de-confianza-de-una-media-según-grupo"
-class="section level1">
-<h1><strong>3.Intervalo de confianza de una media según
-grupo</strong></h1>
-<div
-id="de-qué-manera-la-zona-de-lima-en-la-que-vive-la-persona-se-relaciona-con-su-gasto-en-transporte"
-class="section level3">
-<h3>¿De qué manera la zona de Lima en la que vive la persona se
-relaciona con su gasto en transporte?</h3>
+<hr>
+<hr>
+<h4 style="color: #00688B; text-align: center;">
+<b>¿De qué manera la zona de Lima en la que vive la persona se relaciona
+con su gasto en transporte?</b>
+</h4>
 <p>Hallemos el intervalo de confianza para el gasto en trasporte en
 promedio (PE10A) según estrato de lima (ESTRATOS_IOP).</p>
 <p>Agreguemos etiquetas a la categórica</p>
-<p><img src="pd4-estratos.png" width="50%" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>library(dplyr)
-data = data %&gt;% 
+<p><img src="pd4-estratos.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>data = data %&gt;% 
   mutate(ESTRATOS_IOP=factor(ESTRATOS_IOP, levels = (1:4), labels = c(&quot;Lima Centro&quot;,&quot;Lima Este&quot;,&quot;Lima Norte&quot;, &quot;Lima Sur&quot;)))</code></pre>
-<p>1. Crearemos una tabla con la media, máximo y mínimo de la variable
+<p>Crearemos una tabla con la media, máximo y mínimo de la variable
 PE10A, en base al grupo de ESTRATOS_IOP.</p>
 <pre class="r"><code>ic_grupo = data %&gt;% 
   dplyr::group_by(ESTRATOS_IOP) %&gt;% 
@@ -571,18 +705,90 @@ de que a nivel poblacional la media del grupo que los residentes de Lima
 Centro y Lima Norte gastan más en transporte que los de Lima Este.</p>
 <p>Grafiquemos nuestros resultados.</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(ic_grupo, aes(x= ESTRATOS_IOP, y =Media)) +
-  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
-   geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab(&quot;Zona de Lima&quot;) + ylab(&quot;Promedio del gasto en transporte&quot;)+
-  ylim(30, 140) #indicamos los límites del eje y</code></pre>
-<p><img src="pd4_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+
+ggplot(ic_grupo, aes(x = ESTRATOS_IOP, y = Media)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;#00688B&quot;, color = &quot;black&quot;) +
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  
+  # Etiquetas de la media
+  geom_text(aes(label = paste(round(Media, 2))), vjust = -1, size = 4) +
+  
+  # Etiquetas de los valores mínimos
+  geom_text(aes(y = min, label = paste(&quot;min:&quot;, round(min, 2))), 
+            vjust = 1.5, hjust = -0.2, size = 3, color = &quot;white&quot;) +
+  
+  # Etiquetas de los valores máximos
+  geom_text(aes(y = max, label = paste(&quot;max:&quot;, round(max, 2))), 
+            vjust = -0.5, hjust = -0.2, size = 3, color = &quot;#00688B&quot;) +
+  
+  xlab(&quot;Zona de Lima&quot;) + 
+  ylab(&quot;Promedio del gasto en transporte&quot;) +
+  ylim(0, 140) +
+  theme_minimal()</code></pre>
+<p><img src="pd4_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra
 interpretación anterior?</p>
+<ul>
+<li>Lima Centro gasta significativamente más que Lima Este y Lima Sur,
+como lo indican los promedios y la falta de superposición considerable
+entre los IC.</li>
+<li>Lima Norte presenta un rango de gasto más amplio, lo que sugiere una
+variabilidad mayor en el gasto de transporte dentro de esa zona.</li>
+<li>Lima Este tiene un gasto más bajo y su intervalo de confianza no se
+superpone con el de Lima Centro, lo que podría indicar diferencias
+estadísticamente significativas entre estas dos zonas.</li>
+</ul>
+<h4 style="color: #00688B; text-align: center;">
+<b>¿Existe una diferencia estadísticamente significativa entre el gasto
+en transporte entre hombres y mujeres?</b>
+</h4>
+<p>Reviso mi df</p>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    3744 obs. of  7 variables:
+##  $ SEXO            : num  2 2 2 1 2 1 1 1 2 2 ...
+##  $ ESTRATOS_IOP    : Factor w/ 4 levels &quot;Lima Centro&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ NSE_IOP         : num  1 3 3 2 3 1 2 3 1 2 ...
+##  $ satis_transporte: chr  &quot;Satisfecho&quot; &quot;No satisfecho&quot; &quot;No satisfecho&quot; &quot;No satisfecho&quot; ...
+##  $ EG2OTRO         : num  NA NA NA NA 2 NA 63 50 NA NA ...
+##  $ PE10A           : num  50 10 8 10 10 10 5 5 15 90 ...
+##  $ Añoslima        : chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>GSexo = data |&gt; 
+  group_by(SEXO) |&gt;
+  summarize(Media = mean(PE10A, na.rm = T))
+GSexo</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##    SEXO Media
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     1  87.1
+## 2     2  76.0</code></pre>
+<pre class="r"><code>GSexo[1,2] - GSexo[2,2]</code></pre>
+<pre><code>##     Media
+## 1 11.0681</code></pre>
+<p>La diferencia es de aprox 11 soles. ¿Puedo afirmar que existe esta
+diferencia en la población?</p>
+<p>Para poder evaluar si existen o no diferencias poblacionales usaremos
+t.test</p>
+<pre class="r"><code>t.test(PE10A ~ SEXO, data = data)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  PE10A by SEXO
+## t = 1.1169, df = 2160.1, p-value = 0.2642
+## alternative hypothesis: true difference in means between group 1 and group 2 is not equal to 0
+## 95 percent confidence interval:
+##  -8.365242 30.501440
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        87.09212        76.02402</code></pre>
+<p>El valor p- value es 0.2642, que es mayor que el nivel típico de
+significancia (generalmente α = 0.05). Un valor p alto sugiere que
+<em>no</em> hay suficiente evidencia para rechazar la hipótesis nula. En
+otras palabras, no podemos concluir que existe una diferencia
+significativa entre las medias de los dos grupos (hombres y mujeres) con
+respecto a la variable PE10A.</p>
 </div>
-</div>
-<div id="ejercicio" class="section level1">
-<h1><strong>Ejercicio</strong></h1>
+<div id="ejercicios-para-casa" class="section level1">
+<h1><strong>Ejercicios para casa</strong></h1>
 <ol style="list-style-type: decimal">
 <li>Calcular el intervalo de confianza de la media para los años que
 llevan viviendo en Lima/Callao los residentes de Lima/Callao (EG2OTRO).
@@ -645,7 +851,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1",
+      selectors: "h1,h2,h3",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
