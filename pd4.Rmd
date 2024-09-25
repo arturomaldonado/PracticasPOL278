@@ -148,16 +148,16 @@ La prueba T compara la media de una variable numérica para dos grupos o categor
 
 **Ejemplo práctico:**
 
-¿Existe una diferencia estadísticamente significativa entre el ataque de los pokemon de tipo agua y tipo fuego?
+¿Existe una diferencia estadísticamente significativa entre el ataque de los pokemon de tipo agua y fuego?
 
 ```{r}
 library(pokemon)
 library(magick)
-url1<- pokemon %>%
+url1= pokemon %>%
   filter(pokemon == "charmander") %>%
   pull(url_image)
 
-url2 <- pokemon %>%
+url2 = pokemon %>%
   filter(pokemon == "squirtle") %>%
   pull(url_image)
 

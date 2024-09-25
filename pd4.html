@@ -591,14 +591,14 @@ observación debe pertenecer a un grupo o al otro, pero
 <strong>no</strong> a ambos.</p>
 <p><strong>Ejemplo práctico:</strong></p>
 <p>¿Existe una diferencia estadísticamente significativa entre el ataque
-de los pokemon de tipo agua y tipo fuego?</p>
+de los pokemon de tipo agua y fuego?</p>
 <pre class="r"><code>library(pokemon)
 library(magick)
-url1&lt;- pokemon %&gt;%
+url1= pokemon %&gt;%
   filter(pokemon == &quot;charmander&quot;) %&gt;%
   pull(url_image)
 
-url2 &lt;- pokemon %&gt;%
+url2 = pokemon %&gt;%
   filter(pokemon == &quot;squirtle&quot;) %&gt;%
   pull(url_image)
 
