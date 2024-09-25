@@ -148,7 +148,48 @@ La prueba T compara la media de una variable numérica para dos grupos o categor
 
 **Ejemplo práctico:**
 
+```{r}
+library(pokemon)
+library(magick)
+url = pokemon %>% filter(pokemon == "bulbasaur") %>% pull(url_image)
+plot(image_read(url))
+```
 
+```{r}
+names(pokemon)
+```
+
+```{r}
+table(pokemon$type_1)
+```
+
+```{r}
+poke_filtrado = pokemon %>%
+  filter(type_1 %in% c("water", "fire")) %>%
+  mutate(type_1 = factor(type_1))
+```
+
+```{r}
+str(poke_filtrado$type_1) #confirmo que está en factor
+```
+```{r}
+pokeAttack = poke_filtrado %>%
+  group_by(type_1) %>%
+  summarize(Media = mean(attack, na.rm = T))
+pokeAttack
+```
+```{r}
+pokeAttack[1,2] - pokeAttack[2,2]
+```
+```{r}
+t.test(attack ~ type_1, data = poke_filtrado)
+```
+
+Como el p-value < 0.05, entonces se rechaza la H0 y se puede afirmar que esa diferencia existe en la población a tal nivel de significancia.
+
+```{r}
+names(pokemon)
+```
 
 # **🚙 Dinámicas del uso de los medios de transporte en Lima** 
 

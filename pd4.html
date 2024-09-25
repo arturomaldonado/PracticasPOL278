@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 4</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -502,15 +502,17 @@ str(cats) #corroboro que ya cuento con mi categórica</code></pre>
 ##  $ Furbys: Factor w/ 2 levels &quot;sí&quot;,&quot;no&quot;: 2 1 1 1 2 1 2 2 1 1 ...
 ##  $ Edad  : num  15 14 15 3 13 3 7 2 4 11 ...
 ##  $ Color : chr  &quot;Marrón&quot; &quot;Negro&quot; &quot;Negro&quot; &quot;Negro&quot; ...</code></pre>
-<pre class="r"><code>tablaCats = cats %&gt;%
-  filter(Furbys ==&quot;sí&quot; | Furbys == &quot;no&quot;) %&gt;%
-  count(Éxito = Furbys, name=&quot;N&quot;) %&gt;%
-  mutate(total = sum(N), 
+<pre class="r"><code>tablaCats &lt;- cats %&gt;%
+  group_by(Furbys) %&gt;%
+  summarise(N = n(), .groups = &quot;drop&quot;) %&gt;%
+  mutate(total = sum(N),
          Porcentaje = N / total * 100)
 tablaCats</code></pre>
-<pre><code>##   Éxito   N total Porcentaje
-## 1    sí 248   400         62
-## 2    no 152   400         38</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   Furbys     N total Porcentaje
+##   &lt;fct&gt;  &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;
+## 1 sí       248   400         62
+## 2 no       152   400         38</code></pre>
 <pre class="r"><code>prop.test(248,400) #caso de éxito y total</code></pre>
 <pre><code>## 
 ##  1-sample proportions test with continuity correction
@@ -588,6 +590,65 @@ variable nominal/ordinal tienen que ser independientes. Es decir, cada
 observación debe pertenecer a un grupo o al otro, pero
 <strong>no</strong> a ambos.</p>
 <p><strong>Ejemplo práctico:</strong></p>
+<pre class="r"><code>library(pokemon)
+library(magick)
+url = pokemon %&gt;% filter(pokemon == &quot;bulbasaur&quot;) %&gt;% pull(url_image)
+plot(image_read(url))</code></pre>
+<p><img src="pd4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>names(pokemon)</code></pre>
+<pre><code>##  [1] &quot;id&quot;              &quot;pokemon&quot;         &quot;species_id&quot;      &quot;height&quot;         
+##  [5] &quot;weight&quot;          &quot;base_experience&quot; &quot;type_1&quot;          &quot;type_2&quot;         
+##  [9] &quot;hp&quot;              &quot;attack&quot;          &quot;defense&quot;         &quot;special_attack&quot; 
+## [13] &quot;special_defense&quot; &quot;speed&quot;           &quot;color_1&quot;         &quot;color_2&quot;        
+## [17] &quot;color_f&quot;         &quot;egg_group_1&quot;     &quot;egg_group_2&quot;     &quot;url_icon&quot;       
+## [21] &quot;generation_id&quot;   &quot;url_image&quot;</code></pre>
+<pre class="r"><code>table(pokemon$type_1)</code></pre>
+<pre><code>## 
+##      bug     dark   dragon electric    fairy fighting     fire   flying 
+##       79       37       39       61       19       31       59        4 
+##    ghost    grass   ground      ice   normal   poison  psychic     rock 
+##       40       84       36       29      111       35       64       65 
+##    steel    water 
+##       30      126</code></pre>
+<pre class="r"><code>poke_filtrado = pokemon %&gt;%
+  filter(type_1 %in% c(&quot;water&quot;, &quot;fire&quot;)) %&gt;%
+  mutate(type_1 = factor(type_1))</code></pre>
+<pre class="r"><code>str(poke_filtrado$type_1) #confirmo que está en factor</code></pre>
+<pre><code>##  Factor w/ 2 levels &quot;fire&quot;,&quot;water&quot;: 1 1 1 2 2 2 1 1 2 2 ...</code></pre>
+<pre class="r"><code>pokeAttack = poke_filtrado %&gt;%
+  group_by(type_1) %&gt;%
+  summarize(Media = mean(attack, na.rm = T))
+pokeAttack</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   type_1 Media
+##   &lt;fct&gt;  &lt;dbl&gt;
+## 1 fire    84.3
+## 2 water   74.7</code></pre>
+<pre class="r"><code>pokeAttack[1,2] - pokeAttack[2,2]</code></pre>
+<pre><code>##      Media
+## 1 9.539952</code></pre>
+<pre class="r"><code>t.test(attack ~ type_1, data = poke_filtrado)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  attack by type_1
+## t = 2.1583, df = 118.99, p-value = 0.03291
+## alternative hypothesis: true difference in means between group fire and group water is not equal to 0
+## 95 percent confidence interval:
+##   0.7877524 18.2921507
+## sample estimates:
+##  mean in group fire mean in group water 
+##            84.25424            74.71429</code></pre>
+<p>Como el p-value &lt; 0.05, entonces se rechaza la H0 y se puede
+afirmar que esa diferencia existe en la población a tal nivel de
+significancia.</p>
+<pre class="r"><code>names(pokemon)</code></pre>
+<pre><code>##  [1] &quot;id&quot;              &quot;pokemon&quot;         &quot;species_id&quot;      &quot;height&quot;         
+##  [5] &quot;weight&quot;          &quot;base_experience&quot; &quot;type_1&quot;          &quot;type_2&quot;         
+##  [9] &quot;hp&quot;              &quot;attack&quot;          &quot;defense&quot;         &quot;special_attack&quot; 
+## [13] &quot;special_defense&quot; &quot;speed&quot;           &quot;color_1&quot;         &quot;color_2&quot;        
+## [17] &quot;color_f&quot;         &quot;egg_group_1&quot;     &quot;egg_group_2&quot;     &quot;url_icon&quot;       
+## [21] &quot;generation_id&quot;   &quot;url_image&quot;</code></pre>
 </div>
 <div id="dinámicas-del-uso-de-los-medios-de-transporte-en-lima"
 class="section level1">
@@ -639,7 +700,7 @@ ciudadanos de Lima y Callao satisfechos con el sistema de transporte,
 necesitamos tener muy claro la frecuencia de nuestro caso de éxito y del
 total de casos.</p>
 <pre class="r"><code>tablaSatis = data %&gt;%
-  filter(satis_transporte ==&quot;No satisfecho&quot; | satis_transporte == &quot;Satisfecho&quot;) %&gt;%
+  filter(satis_transporte ==&quot;No satisfecho&quot; | satis_transporte == &quot;Satisfecho&quot;) %&gt;% #para evitar considerar NA y cambién el total
   count(Éxito = satis_transporte, name=&quot;N&quot;) %&gt;%
   mutate(total = sum(N), 
          Porcentaje = N / total * 100)
@@ -725,7 +786,7 @@ ggplot(ic_grupo, aes(x = ESTRATOS_IOP, y = Media)) +
   ylab(&quot;Promedio del gasto en transporte&quot;) +
   ylim(0, 140) +
   theme_minimal()</code></pre>
-<p><img src="pd4_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="pd4_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra
 interpretación anterior?</p>
 <ul>
