@@ -590,10 +590,19 @@ variable nominal/ordinal tienen que ser independientes. Es decir, cada
 observación debe pertenecer a un grupo o al otro, pero
 <strong>no</strong> a ambos.</p>
 <p><strong>Ejemplo práctico:</strong></p>
+<p>¿Existe una diferencia estadísticamente significativa entre el ataque
+de los pokemon de tipo agua y tipo fuego?</p>
 <pre class="r"><code>library(pokemon)
 library(magick)
-url = pokemon %&gt;% filter(pokemon == &quot;bulbasaur&quot;) %&gt;% pull(url_image)
-plot(image_read(url))</code></pre>
+url1&lt;- pokemon %&gt;%
+  filter(pokemon == &quot;charmander&quot;) %&gt;%
+  pull(url_image)
+
+url2 &lt;- pokemon %&gt;%
+  filter(pokemon == &quot;squirtle&quot;) %&gt;%
+  pull(url_image)
+
+plot (image_append(c(image_read(url1), image_read(url2))))</code></pre>
 <p><img src="pd4_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code>names(pokemon)</code></pre>
 <pre><code>##  [1] &quot;id&quot;              &quot;pokemon&quot;         &quot;species_id&quot;      &quot;height&quot;         
@@ -615,6 +624,7 @@ plot(image_read(url))</code></pre>
   mutate(type_1 = factor(type_1))</code></pre>
 <pre class="r"><code>str(poke_filtrado$type_1) #confirmo que está en factor</code></pre>
 <pre><code>##  Factor w/ 2 levels &quot;fire&quot;,&quot;water&quot;: 1 1 1 2 2 2 1 1 2 2 ...</code></pre>
+<p>Medias de ataque <em>attack</em></p>
 <pre class="r"><code>pokeAttack = poke_filtrado %&gt;%
   group_by(type_1) %&gt;%
   summarize(Media = mean(attack, na.rm = T))
@@ -627,6 +637,13 @@ pokeAttack</code></pre>
 <pre class="r"><code>pokeAttack[1,2] - pokeAttack[2,2]</code></pre>
 <pre><code>##      Media
 ## 1 9.539952</code></pre>
+<ul>
+<li>La media de ataque de los Pokémon de tipo fuego es 84.25, mientras
+que la media de ataque de los Pokémon de tipo agua es 74.71.</li>
+<li>Esto sugiere que, en promedio, los Pokémon de tipo fuego tienden a
+tener un ataque mayor que los Pokémon de tipo agua.</li>
+</ul>
+<p>Profundizamos en el análisis</p>
 <pre class="r"><code>t.test(attack ~ type_1, data = poke_filtrado)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -639,16 +656,24 @@ pokeAttack</code></pre>
 ## sample estimates:
 ##  mean in group fire mean in group water 
 ##            84.25424            74.71429</code></pre>
-<p>Como el p-value &lt; 0.05, entonces se rechaza la H0 y se puede
-afirmar que esa diferencia existe en la población a tal nivel de
-significancia.</p>
-<pre class="r"><code>names(pokemon)</code></pre>
-<pre><code>##  [1] &quot;id&quot;              &quot;pokemon&quot;         &quot;species_id&quot;      &quot;height&quot;         
-##  [5] &quot;weight&quot;          &quot;base_experience&quot; &quot;type_1&quot;          &quot;type_2&quot;         
-##  [9] &quot;hp&quot;              &quot;attack&quot;          &quot;defense&quot;         &quot;special_attack&quot; 
-## [13] &quot;special_defense&quot; &quot;speed&quot;           &quot;color_1&quot;         &quot;color_2&quot;        
-## [17] &quot;color_f&quot;         &quot;egg_group_1&quot;     &quot;egg_group_2&quot;     &quot;url_icon&quot;       
-## [21] &quot;generation_id&quot;   &quot;url_image&quot;</code></pre>
+<ul>
+<li>Como el p-value es 0.03291, lo que es menor que el nivel de
+significancia comúnmente utilizado (α = 0.05). Esto indica que existe
+una diferencia estadísticamente significativa entre las medias de los
+ataques de los pokemon de tipo fuego y agua.</li>
+<li>Por lo tanto, podemos <em>rechazar la hipótesis nula, que sostiene
+que no</em> hay diferencia en los ataques entre los dos tipos.</li>
+</ul>
+<p>Conclusión: El análisis muestra que los pokemon de tipo fuego tienen
+un ataque significativamente mayor que los de tipo agua, con una
+diferencia promedio que varía entre aproximadamente 0.79 y 18.29 puntos
+de ataque. Aunque la diferencia es estadísticamente significativa, la
+magnitud de la diferencia puede no ser extremadamente grande en todos
+los contextos, por lo que esta diferencia podría o no ser relevante
+dependiendo de la aplicación práctica (por ejemplo, en batallas
+competitivas o estrategias específicas). Sin embargo, en términos
+generales, los pokemon de tipo fuego parecen ser más ofensivos que los
+de tipo agua.</p>
 </div>
 <div id="dinámicas-del-uso-de-los-medios-de-transporte-en-lima"
 class="section level1">
@@ -786,7 +811,7 @@ ggplot(ic_grupo, aes(x = ESTRATOS_IOP, y = Media)) +
   ylab(&quot;Promedio del gasto en transporte&quot;) +
   ylim(0, 140) +
   theme_minimal()</code></pre>
-<p><img src="pd4_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="pd4_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>Con lo que muestra el gráfico, ¿cómo podemos complementar nuestra
 interpretación anterior?</p>
 <ul>
