@@ -1,12 +1,15 @@
 ---
 title: "Práctica dirigida 5"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
     collapsed: no
     number_sections: no
-    toc_depth: 3
+    toc_depth: 1
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
@@ -16,311 +19,220 @@ output:
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
-
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
-
 <center><img src=" " width="200"/></center>
 
 ```{r,echo=FALSE, out.width="30%"}
-knitr::include_graphics("logoPUCP.png") 
+#knitr::include_graphics("logoPUCP.png") 
 ```
 
-# **Inseguridad ciudadana**
 
-Dentro de la inestabilidad que se vive en el Perú actualmente una de las preocupaciones principales es la crisis de inseguridad ciudadana. A pesar de que se han realizado diversos intentos por mitigar la criminalidad, esta ha ido calando a todo nivel, desde robos a mano armada, extorsiones, entre otros.
+FACULTAD DE CIENCIAS SOCIALES - PUCP<br>
 
-En tanto, es relevante analizar las percepciones ciudadanas sobre la Policia Nacional del Perú (PNP) y de esa forma focalizar políticas que respondan a las preocupaciones de las personas de acuerdo al estrato y a nivel regional. Para ello se responderá la siguiente pregunta de investigación:
+Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2023 - 2 <br>
 
-```{=html}
-<style>
-.custom-text {
-  color: #00688B;
-  font-family: Helvetica, sans-serif;
-  text-align: center;
-  font-weight: bold;
-  font-size: 22px;
-}
-</style>
-```
-::: custom-text
-¿Existe diferencia de percepciones sobre la calidad del servicio de la PNP en las distintas categorías de estratos sociodemográficos y regiones en el 2023? 🤔
-:::
+## Ejercicios:
 
-```{r,echo=FALSE, out.width="30%",fig.align="center"}
-knitr::include_graphics("pd5_poli.png") 
-```
+Utilizamos la base de datos de la Encuesta Nacional de Programas Presupuestales (ENAPRES) 2021.
+Descargala en: 
+https://www.datosabiertos.gob.pe/dataset/encuesta-nacional-de-programas-presupuestales-enapres-2021-instituto-nacional-de-estad%C3%ADstica
 
-Para poder responder a la pregunta se realizó una búsqueda de base de datos que recolecten información sobre delincuencia. Se optó por la Encuesta Nacional de Programas Presupuestales - ENAPRES [^1].
+El cuestionario, base de datos, diccionario de variables se encuentran en la carpeta de la práctica dirigida.
 
-[^1]: Mayor información en: <http://proyecto.inei.gob.pe/enapres/>
+Para todas las preguntas utilice un gráfico para evidenciar su respuesta y redacte un párrafo donde exprese su respuesta.
 
-ENAPRES se viene ejecutando desde el año 2010 en el área urbana y rural de los 24 Departamentos y la Provincia Constitucional del Callao, como parte de las investigaciones que realiza el Instituto Nacional de Estadística e Informática (INEI) en coordinación con el Ministerio de Economía y Finanzas (MEF) y los diferentes Ministerios y organismos del sector público.
+## Abrimos la base de datos
 
-La Encuesta tiene como propósito fundamental generar información estadística actualizada para la construcción de indicadores que facilite el seguimiento y evaluación de los diferentes Programas Presupuestales desarrollados por el Ministerio de Economía y Finanzas en el sector público en el marco del Presupuesto por Resultados; y de esta manera, contribuir al diseño y orientación de políticas públicas para el mejoramiento de las condiciones de vida de la población
-
-```{r,echo=FALSE, out.width="20%",fig.align="center"}
-knitr::include_graphics("pd5_ena.png") 
-```
-
-Llamemos a los paquetes
+Usamos el paquete *rio* para importar la base de datos.
 
 ```{r}
 library(rio)
+data=import("data_ejercicio.csv")
+```
+
+
+# Para la realización del ejercicio se toman las siguientes variables de la encuesta:
+
+AREA  1 = urbano 2 = rural
+P800A_1_1 EN LOS ÚLTIMOS 12 MESES, ¿USTED VISITÓ ALGÚN: Monumento histórico (Iglesia, Catedral, fortaleza, muralla, casona, centro histórico, mausoleo, etc.)? 
+P800A_2_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Monumento Arqueológico (sitio arqueológico, huaca, ruina, sitios de fósiles)?
+P800A_3_1 EN LOS ÚLTIMOS 12 MESES,¿USTED VISITÓ ALGÚN: Museo?
+P800A_8_1 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de teatro?
+P800A_8_2 ¿USTED ASISTIÓ A UN/UNA: Espectáculo de danza?
+P800A_8_4 ¿USTED ASISTIÓ A UN/UNA: Espectáculo musical (conciertos, festivales,etc.)?
+P800A_8_5 ¿USTED ASISTIÓ A UN/UNA:Función del Cine?
+P800A_8_8 ¿USTED ASISTIÓ A UN/UNA Biblioteca y/o sala de lectura?
+P800A_13_1 ¿USTED OBTUVO O ADQUIRIÓ: Libros?
+P207 SEXO 1 hombre 2 mujer
+P208_A Años cumplidos
+REGIONNATU Región Natural
+ESTRATO ESTRATO SOCIODEMOGRÁFICO
+indicador (indicador aditivo que mide el consumo de cultura)
+
+Para mayor facilidad de entendimiento, se han renombrado las variables:
+
+AREA,
+visita_monumentohistorico=P800A_1_1,
+visita_monumentoarqueologico=P800A_2_1,
+visita_museo=P800A_3_1,
+asistencia_teatro=P800A_8_1,
+asistencia_danza=P800A_8_2,
+asistencia_espectaculomusical=P800A_8_4,
+asistencia_cine=P800A_8_5,
+asistencia_biblioteca=P800A_8_8,
+adquirir_libro=P800A_13_1,
+sexo=P207,
+region_natural=REGIONNATU,
+ESTRATO
+indicador         
+
+
+# Ejercicio 1: Describe la variable
+
+Obtenga estadísticos, grafice y describa el comportamiento de la nueva variable: consumo de cultura (indicador)
+
+Usamos el comando *summarise* para solicitar una tabla resumen con mínimo (*min*), máximo (*max*), media (*mean*), mediana (*median*), desviación (*sd*), cuartiles (*quantile*).
+
+```{r}
+library(dplyr)
+resumen_consumo_cultura = data %>% 
+  dplyr::summarise(minimo = min(indicador,na.rm = TRUE), 
+            media = mean(indicador,na.rm = TRUE), 
+            mediana = median(indicador,na.rm = TRUE),
+            maximo = max(indicador,na.rm = TRUE), 
+            desviacion = sd(indicador,na.rm = TRUE), 
+            iqr25= quantile(indicador,na.rm = TRUE,probs = 0.25),
+            iqr75= quantile(indicador,na.rm = TRUE,probs = 0.75),
+            iqr95= quantile(indicador,na.rm = TRUE,probs = 0.95))
+resumen_consumo_cultura
+```
+
+# Graficando una variable
+
+```{r}
+library(ggplot2)
+ggplot(data, aes(y=indicador))+
+  geom_boxplot()+
+  ylab("Consumo cultura 0 a 10") +
+  scale_y_continuous(limits = c(0, 12))
+```
+
+```{r}
+ggplot(data, aes(x=indicador))+
+  geom_histogram() +
+  xlab("Consumo cultura 0 a 10") 
+```
+
+
+# Ejercicio 2:
+
+Muchos investigadores afirman que existe una brecha entre el **consumo de cultura** según el estrato sociodemográfico **ESTRATO**. 
+¿Es cierto?
+
+## Descriptiva 
+
+```{r}
+table(data$ESTRATO)
+
+data = data %>% 
+  mutate(ESTRATO=factor(ESTRATO,
+                        labels = c("A","B","C","D","E"),
+                        ordered = T))
+
+table(data$ESTRATO)
+class(data$ESTRATO)
+
+```
+
+
+```{r}
+consumocultura_estrato = data  %>%  
+  group_by(ESTRATO) %>% 
+  summarise(media = mean(indicador,na.rm = TRUE), 
+            desviacion = sd(indicador,na.rm = TRUE))
+consumocultura_estrato
+```
+
+```{r}
+ggplot(data, aes(y=indicador, x=ESTRATO))+
+  geom_boxplot() +
+  scale_y_continuous(limits = c(0, 12))+
+  ylab("Consumo cultura 0 a 10")+
+  xlab("Estrato sociodemográfico")+
+  theme_minimal()+
+  coord_flip()
+```
+
+## Inferencial
+
+Ahora, realizaremos pruebas estadísticas para corroborar que efectivamente hay una diferencia por Estrato según el indicador de consumo cultural.
+
+```{r}
 library(lsr)
-library(dplyr)
-library(ggplot2)
+tabla=data%>%
+  group_by(ESTRATO) %>%
+  summarise(Desviacion = sd(indicador, na.rm=T),
+          Media = mean(indicador, na.rm=T),
+            min = ciMean(indicador,conf = 0.95, na.rm=T)[1],
+            max = ciMean(indicador,conf = 0.95, na.rm=T)[2],
+            n=length(indicador)
+            )
+tabla
 ```
-
-Importemos la base de datos
-
-```{r}
-data=import("ENAPRES_2023.xlsx")
-```
-
-| Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:-------------------:|:-------------------------------------------------:|
-|     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
-|   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
-|     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
-|      atencion      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-|     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
-|        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
-|    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-|      ESTRATO       |                                                                 Estrato sociodemográfico 1:A, 2:B, 3:C, 4:D, 5:E                                                                  |
-|     REGIONNATU     |                                                                    Región Natural 1:Costa, 2: Sierra, 3: Selva                                                                    |
-
-```{r}
-summary(data)
-```
-
-Revisemos la bd
-
-```{r, include=TRUE, eval=FALSE}
-str(data)
-names(data)
-```
-
-## 1. ¿Cómo defino calidad del servicio de la PNP?
-
-**Indicador proxy**
-
-Un indicador proxy es una variable que se utiliza para inferir el valor de otra variable que es difícil de medir o observar directamente. En otras palabras, un indicador proxy actúa como un sustituto o un representante indirecto de la variable de interés.
-
-Creamos un indicador aditivo a partir de las siguientes variables:
-
-| Nombre de variable |                                                                                     Etiqueta                                                                                      |
-|:-------------------:|:-------------------------------------------------:|
-|     vigilancia     |                                   ¿Cómo califica usted la vigilancia de la Policía Nacional del Perú? 1:Muy mala, 2:Mala, 3:Buena, 4:Muy buena                                    |
-|   confianza_pnp    |                    En cuanto a la seguridad ciudadana; ¿qué tanta confianza le inspira la Policía Nacional del Perú? 1:Nada, 2:Poca, 3:Suficiente, 4:Bastante                     |
-|     comisaria      |                                    En los últimos 12 meses, ¿cómo califica usted el trabajo que ha realizado la comisaría de su zona o barrio?                                    |
-|      atencion      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: atender prontamente cuando ocurre un delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-|     seguridad      |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: mantener la seguridad y tranquilidad pública? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno      |
-|        info        | ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: informar a la comunidad sobre la prevención del delito? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno |
-|    trato_igual     |      ¿Cómo califica usted el desempeño de la Policía Nacional del Perú en relación a: tratar a las personas sin distinción alguna? 1:Muy malo, 2:Malo, 3:Bueno, 4:Muy bueno       |
-
-### Recordemos los pasos para construir un indicador:
-
-1.  Verificar que las variables correspondan al concepto.
-2.  Revisar el sentido de las categorías en el cuestionario/diccionario
-3.  Si las categorías están en el correcto sentido, proceder a sumarlas; si no lo están, proceder a recodificarlas para luego sumar. **Recuerda que para sumarlas deben ser variables tipo numéricas.**
-4.  Realizar suma de las variables a analizar
-5.  Aplicar la función `rescale` con el rango específico
-
-Ya habíamos revisado previamente que las variables si están como numéricas.
-
-```{r}
-library(tidyverse)
-
-data=data%>% 
-   mutate(suma=(confianza_pnp+comisaria+atencion+seguridad+info+trato_igual+vigilancia))
-```
-
-```{r}
-summary(data$suma)
-```
-
-Creamos el indicador
-
-```{r}
-library(scales)
-data=data%>% 
-  mutate(indicador = rescale(suma, to = c(0, 100)))
-```
-
-```{r}
-summary(data$indicador)
-```
-
-## 2. ¿Cuál es la media de la calidad del servicio de la PNP a una certeza del 95%?
-
-```{r}
-ic_media = ciMean(data$indicador,na.rm = TRUE)
-ic_media
-```
-
-Nuestra media poblacional se encuentra entre 51.19 y 51.50. Esto quiere decir que tenemos una certeza del 95% de que el valor poblacional de la *percepción de la calidad del labor de la PNP* se encuentra entre 51.19 y 51.50. Lo que se encuentra muy cercano al punto medio del indicador.
-
-## 3.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre estratos sociodemográficos?
-
-```{r}
-data = data %>%
- mutate(ESTRATO = factor(ESTRATO, labels = c("A","B","C","D","E"), ordered = TRUE))
-```
-
-```{r}
-icmedia_estrato = data%>%
-  group_by(ESTRATO)%>%
-  summarise(Media = mean(indicador, na.rm=T),
-            min = ciMean(indicador, na.rm=T)[1],
-            max = ciMean(indicador, na.rm=T)[2])
-
-icmedia_estrato
-```
-
 ```{r}
 library(ggplot2)
-ggplot(icmedia_estrato, aes(x = ESTRATO, y=Media)) +
-  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
-   geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Estrato sociodemográfico") + ylab("Promedio de percepción de la \n calidad de la PNP")+
-  ylim(50, 53.5) 
+ggplot(tabla,aes(x=ESTRATO,y=Media))+
+  geom_errorbar(aes(ymin=min,ymax=max))+
+  xlab("Estrato")+ylab("Indicador")+ylim(0,1)
 ```
 
-## 4.¿Existe diferencia de medias en cuanto a la percepción de la calidad de la PNP entre regiones naturales?
+
 
 ```{r}
-data = data %>%
- mutate(REGIONNATU = factor(REGIONNATU, levels = 1:3, labels = c("Costa","Sierra","Selva")))
+anova = aov(indicador~ESTRATO, data =data)
+summary(anova)
+```
+```{r}
+compara=TukeyHSD(anova)
+compara
 ```
 
-```{r}
-icmedia_region = data%>%
-  group_by(REGIONNATU)%>%
-  summarise(Media = mean(indicador, na.rm=T),
-            min = ciMean(indicador, na.rm=T)[1],
-            max = ciMean(indicador, na.rm=T)[2])
-icmedia_region
-```
+_Interpretacion: al 95% de diferencia de medias, si existe una diferencia significativa entre ellas. 
 
 ```{r}
-ggplot(icmedia_region, aes(x = REGIONNATU, y=Media)) +
-  geom_errorbar(aes(ymin=min, ymax=max), width = 0.2)+
-   geom_text(aes(label=paste(round(Media, 2))), size=4)+
-  xlab("Región") + ylab("Promedio de percepción de la \n calidad de la policía")+
-  ylim(50.5, 52.5) 
-```
-
-## 5.¿Cuál es la proporción de personas con mucha confianza en la PNP ?
-
-Para responder a la pregunta calcularemos el *intervalo de confianza para una proporción*. Primero se tiene que definir qué es tener mucha confianza en la PNP, para ello crearemos una variable *dicotómica* a partir de `confianza_pnp`
-
-```{r}
-data = data %>%
-  mutate(
-    confianza_dico = case_when(
-      confianza_pnp==1|confianza_pnp==2 ~ 1,
-      confianza_pnp==3|confianza_pnp==4 ~ 2))
-  
-```
-
-ponemos etiquetas
-
-```{r}
-data = data %>%
-  mutate(confianza_dico = factor(confianza_dico, levels = 1:2, labels = c("Poca","Mucha"), ordered = TRUE))
-table(data$confianza_dico)
-```
-
-Caso de éxito 💥
-
-```{r}
-casos_exi = 6365 #almacenamos en "casos_exi" la frecuencia de nuestro caso de éxito (Mucha confianza)
-total = 6365 + 8625 #almacenamos en "total" el total de casos
+compara.df=as.data.frame(compara[1])
+compara.df$compara=rownames(compara.df)
 ```
 
 ```{r}
-ic_prop = prop.test(casos_exi,total)
-ic_prop #llamamos a ic_prop para visualizar los resultados
+graf = ggplot(compara.df, aes(x=compara, y=ESTRATO.diff))+
+  geom_errorbar(aes(ymin=ESTRATO.lwr, ymax=ESTRATO.upr), width=0.2)+
+  geom_text(aes(label=paste(round(ESTRATO.diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+graf
 ```
 
-# **Solucionario PC1**
+EJERCICIOS PARA CASA:
 
-```{r}
-library(dplyr)
-library(ggplot2)
-library(rio)
 
-data <- import("Renamu-PC1.xlsx")
-```
+# Ejercicio 3
 
-**Pregunta 1**
+¿Es cierto que existe una brecha entre el **consumo de cultura** según el sexo **sexo**? Realiza el análisis descriptivo y luego, realiza la prueba inferencial correspondiente.
 
-1.1 Calcula cuál es la frecuencia de recojo de residuos sólidos (P40_1) más común entre los distritos de Lima y Callao, interpreta los resultados y responde a la pregunta ¿todos los distritos recogen la basura diariamente?
 
-```{r}
-paragrafico <- data %>% 
-  mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c("Diaria","Interdiaria","Dos veces por semana","Una vez por semana"))) %>% 
-  group_by(P40_1) %>% 
-  summarise(Freq=n())
-paragrafico
-```
+# Ejercicio 4
 
-1.2 Usa el gráfico pertinente para visualizar la frecuencia de recojo de residuos sólidos (P40_1)
+¿Es cierto que existe una brecha entre el **consumo de cultura** según la región natural **region_natural**? Realiza el análisis descriptivo y luego, realiza la prueba inferencial correspondiente.
 
-```{r}
-ggplot(paragrafico, aes(x=P40_1,y=Freq))+
-  geom_bar(stat="identity")
-```
 
-*Extra*: Gráfico de barras en %
+# Ejercicio 5
 
-```{r}
+¿Es cierto que existe una brecha entre el **consumo de cultura** según área urbano vs rural **AREA**? Realiza el análisis descriptivo y luego, realiza la prueba inferencial correspondiente.
 
-para_graficoP <- data %>% 
-  mutate(P40_1=factor(P40_1, levels = c(1:4), labels = c("Diaria","Interdiaria","Dos veces por semana","Una vez por semana"))) %>% 
-  group_by(P40_1) %>% 
-  summarise(Freq=n()) %>% 
-mutate(Porcentaje = (Freq / sum(Freq))*100)
-para_graficoP
 
-```
+# Ejercicio 6
+Utiliza las variables que dispones en la base de datos y construye tu propio indicador de consumo cultural de 0 a 100.
 
-```{r}
-ggplot(para_graficoP, aes(x=P40_1,y=Porcentaje,fill=P40_1))+
-  geom_bar(stat="identity")+
-  geom_text(aes(label=paste(round(Porcentaje, 1), "%")), vjust=-1, color="black", size=3)+
-  labs(fill = "Frecuencia de recojo") +
-  theme(panel.background=element_rect(fill = "white", colour = "white"))
-```
 
-**Pregunta 2**
-
-2.1 Calcula los estadísticos descriptivos para la variable que “Cantidad promedio diaria de residuos sólidos (basura) en kilogramos” (P41_1). Interprete los resultados
-
-```{r}
-data %>% 
-  summarise(media = mean(P41_1),
-            mediana = median(P41_1),
-            sd = sd(P41_1),
-            var = var(P41_1),
-            max=max(P41_1),
-            min=min(P41_1),
-            Q1=quantile(P41_1)[2],
-            Q2=quantile(P41_1)[3],
-            Q3=quantile(P41_1)[4])
-```
-
-2.2 Use el gráfico pertinente para visualizar a la variable P41_1, interprete y responda a la pregunta ¿cuál sería la mejor medida de tendencia central para representar a la variable?
-
-```{r}
-ggplot(data,aes(x = P41_1))+
-  geom_histogram()
-```
-
-2.3 Genere un gráfico que muestre los cuartiles de la variable “P41_1” según Zona (Lima, Callao o Lima Provincias). ¿Existen diferencias entre las zonas? Interprete los resultados
-
-```{r}
-ggplot(data, aes(x=Zona, y=P41_1))+
-  geom_boxplot()
-```
