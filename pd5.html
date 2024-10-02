@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Práctica dirigida 5</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Prácticas Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="pd1.html">Práctica 1</a>
+</li>
+<li>
+  <a href="pd2.html">Práctica 2</a>
+</li>
+<li>
+  <a href="pd3.html">Práctica 3</a>
+</li>
+<li>
+  <a href="pd4.html">Práctica 4</a>
+</li>
+<li>
+  <a href="pd5.html">Práctica 5</a>
+</li>
+<li>
+  <a href="pd6.html">Práctica 6</a>
+</li>
+<li>
+  <a href="pd7.html">Práctica 7</a>
+</li>
+<li>
+  <a href="pd8.html">Práctica 8</a>
+</li>
+<li>
+  <a href="pd9.html">Práctica 9</a>
+</li>
+<li>
+  <a href="pd10.html">Práctica 10</a>
+</li>
+<li>
+  <a href="pd11.html">Práctica 11</a>
+</li>
+<li>
+  <a href="pd12.html">Práctica 12</a>
+</li>
+<li>
+  <a href="pd13.html">Práctica 13</a>
+</li>
+<li>
+  <a href="FAQ.html">FAQ</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/PracticasPOL278">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Práctica dirigida 5</h1>
+
+</div>
+
+
+<p><img src="logoPUCP.png" width="30%" /></p>
+<p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
+<div
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+class="section level2">
+<h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
+2024 - 1 <br></h2>
+<hr />
+</div>
+<div id="tablas-de-contingencia-y-prueba-chi2" class="section level1">
+<h1><strong>Tablas de contingencia y prueba Chi2</strong></h1>
+</div>
+<div id="tablas-de-contingencia" class="section level1">
+<h1>Tablas de contingencia</h1>
+<ul>
+<li>Son tablas de doble entrada, en las cuales se cruzan las categorías
+de dos variables de interés.</li>
+<li>En las casillas de la tabla se ubica la frecuencia o el número de
+casos de cada cruce.</li>
+<li>Conceptos importantes: Frecuencias observadas y frecuencias
+esperadas.</li>
+</ul>
+<p><img src="IM1.png" width="500" /></p>
+<div id="frecuencias-observadas-y-esperadas" class="section level3">
+<h3><strong>Frecuencias observadas y esperadas</strong></h3>
+<ul>
+<li><p>Frecuencia esperada: Estas son las frecuencia que deberían darse
+si las variables fueran independientes.</p></li>
+<li><p>Frecuencia observada: Estas son las frecuencias reales que se
+observa en nuestra data.</p></li>
+</ul>
+<p>Ejemplo:</p>
+<p><img src="IM2.png" width="800" /></p>
+</div>
+</div>
+<div id="prueba-chi2" class="section level1">
+<h1>Prueba Chi2</h1>
+<p>Chi2 es una prueba para estimar el grado de asociación entre
+variables categóricas: “Nominal - Nominal”, “Nominal - Ordinal” y
+“Ordinal - Ordinal”. Esto significa que una parte de la variabilidad de
+una variable puede ser explicada por otra variable.</p>
+<p><strong>Supuestos:</strong></p>
+<p>Para analizar asociación se requiere que el número de observaciones
+esperadas en cada celda de la tabla de contingencia debe ser
+suficientemente grande.</p>
+<p>Para fines de este curso, al menos cada celda de la TC de frecuencias
+esperadas debe ser de 5.</p>
+<p>Ten en cuenta que si estas condiciones no se cumplen, entonces la
+prueba podría no funcionar adecuadamente y los resultados de la prueba
+podrían no ser válidos. Si es que encuentran que no se cumple este
+supuesto: Repórtalo!</p>
+<p><strong>Hipótesis:</strong></p>
+<ul>
+<li><p>Hipótesis nula (H0): Las variables son estadísticamente
+independientes (No hay asociación).</p></li>
+<li><p>Hipótesis alternativa (H1): Las variables son estadísticamente
+dependientes (Sí hay asociación).</p></li>
+</ul>
+</div>
+<div id="pregunta-de-investigación" class="section level1">
+<h1>Pregunta de investigación</h1>
+<style>
+.custom-text {
+  color: #00688B;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+</style>
+<div class="custom-text">
+<p>¿Cuál es la percepción de la situación del país a partir de variables
+socioeconómicas ? 🤔</p>
+</div>
+<p>Para poder responder a la anterior pregunta se usará la base de datos
+del Latin American Public Opinion Project (LAPOP<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a>) 2023. Este es un
+estudio de la Universidad de Vanderbilt que realiza encuestas de opinión
+pública en 34 países de América, incluyendo Norte, Centro, Sur y el
+Caribe. LAPOP mide actitudes, evaluaciones y experiencias en diversos
+temas, proporcionando datos comparativos de alta calidad sobre la
+democracia, la gobernabilidad y el desarrollo social en la región.</p>
+<p>Cargamos la data:</p>
+<pre class="r"><code>library(rio)
+library(dplyr)
+lapop=import(&quot;peru2023.sav&quot;)
+str(lapop)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    685 obs. of  11 variables:
+##  $ estratopri   : num  1103 1103 1103 1103 1103 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ ur           : num  1 1 1 1 1 1 1 1 1 1 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ edad         : num  26 44 68 27 53 43 43 29 57 35 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ sexo         : num  2 2 1 1 1 1 2 2 2 1 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ situ_pais    : num  3 3 2 1 3 3 3 3 3 3 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ situ_personal: num  2 2 3 2 3 3 2 2 3 3 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ mejor_sistema: num  1 1 2 1 1 2 1 1 2 1 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ percep_dina  : num  3 2 3 4 3 3 4 3 3 3 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ calid_esc    : num  3 2 3 3 2 4 2 2 2 2 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ serv_medic   : num  3 2 3 3 2 4 2 3 2 2 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;
+##  $ serv_agua    : num  2 2 2 2 4 2 2 3 2 3 ...
+##   ..- attr(*, &quot;format.spss&quot;)= chr &quot;F8.2&quot;</code></pre>
+<p>Diccionario de datos</p>
+<p><img src="diccionarioP7.jpeg" /></p>
+<div
+id="existe-diferencia-sobre-la-percepción-económica-actual-entre-hombres-y-mujeres"
+class="section level2">
+<h2>🔵 ¿Existe diferencia sobre la percepción económica actual entre
+hombres y mujeres?</h2>
+<ul>
+<li>Pregunta en cuestionario LAPOP: <em>¿Considera usted que la
+situación económica del país es mejor, igual o peor que hace doce
+meses?</em></li>
+<li>Situación económica: 1 (Mejor), 2 (Igual), 3 (Peor)</li>
+</ul>
+<p><strong>PASO 0: Revisamos la estructura de las variables que nos
+interesan:</strong></p>
+<pre class="r"><code>lapop = lapop %&gt;%
+  mutate(situ_pais = factor(situ_pais, levels = 1:3, labels = c(&quot;Mejor&quot;, &quot;Igual&quot;, &quot;Peor&quot;)))
+
+str(lapop$situ_pais) #verificamos</code></pre>
+<pre><code>##  Factor w/ 3 levels &quot;Mejor&quot;,&quot;Igual&quot;,..: 3 3 2 1 3 3 3 3 3 3 ...</code></pre>
+<p>A nivel general, ¿qué percibe la mayoría sobre la situación económica
+del país?</p>
+<pre class="r"><code>resultados = lapop %&gt;%
+  count(situ_pais) %&gt;%
+  mutate(percentage = n / sum(n) * 100)
+resultados</code></pre>
+<pre><code>##   situ_pais   n percentage
+## 1     Mejor  31   4.525547
+## 2     Igual 108  15.766423
+## 3      Peor 546  79.708029</code></pre>
+<p>Variable sexo: nominal 1 - Hombre 2 - Mujer</p>
+<pre class="r"><code>str(lapop$sexo)
+table(lapop$sexo)</code></pre>
+<p>Les damos el formato adecuado:</p>
+<pre class="r"><code>lapop$sexo = factor(lapop$sexo, levels = 1:2, labels = c(&quot;Hombre&quot;,&quot;Mujer&quot;))
+table(lapop$sexo)</code></pre>
+<pre><code>## 
+## Hombre  Mujer 
+##    360    325</code></pre>
+<p><strong>PASO 1: Tabla de contingencia</strong></p>
+<p>Los valores observados son los valores de nuestra tabla tal como la
+tenemos en nuestra base.</p>
+<pre class="r"><code>tabla1=table(lapop$situ_pais, lapop$sexo) #tabla simple
+tabla1</code></pre>
+<pre><code>##        
+##         Hombre Mujer
+##   Mejor     24     7
+##   Igual     69    39
+##   Peor     267   279</code></pre>
+<p>Creamos porcentajes por columna, para ello tenemos que agregar
+prop.table al comando anterior. El argumento de prop.table puede ser 1:
+<em>para calcular porcentaje por fil</em>, o 2: <em>para calcular por
+columna</em> ⚠️ Recuerda que es recomendable calcular los porcentajes
+sobre la variable sociodemográfica o aquella que antecede a la otra.</p>
+<pre class="r"><code>tablapor1 = tabla1 %&gt;%
+           prop.table(2) %&gt;%  
+           round(2) #redondear el resultado a 2 decimales
+tablapor1</code></pre>
+<pre><code>##        
+##         Hombre Mujer
+##   Mejor   0.07  0.02
+##   Igual   0.19  0.12
+##   Peor    0.74  0.86</code></pre>
+<blockquote>
+<p>¿Existe diferencia con lo que vemos a nivel de cada subgrupo (hombre
+y mujer) respecto a lo que habíamos visto a nivel de toda la
+muestra?</p>
+</blockquote>
+<p>Otra forma de hacer ambas tablas de manera directa es mediante el
+comando <strong>tbl_summary</strong> del paquete
+<strong>gtsummary</strong>, dentro de este se debe indicar sobre qué
+variable calcular el 100%, para este ejercicio esa variable sería
+sexo</p>
+<pre class="r"><code>library(gtsummary)
+
+lapop %&gt;% 
+  select(situ_pais,sexo) %&gt;% 
+  tbl_summary(by=sexo)</code></pre>
+<div id="jlxnsuxxvb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jlxnsuxxvb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jlxnsuxxvb thead, #jlxnsuxxvb tbody, #jlxnsuxxvb tfoot, #jlxnsuxxvb tr, #jlxnsuxxvb td, #jlxnsuxxvb th {
+  border-style: none;
+}
+
+#jlxnsuxxvb p {
+  margin: 0;
+  padding: 0;
+}
+
+#jlxnsuxxvb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jlxnsuxxvb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jlxnsuxxvb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jlxnsuxxvb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jlxnsuxxvb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jlxnsuxxvb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jlxnsuxxvb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jlxnsuxxvb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jlxnsuxxvb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jlxnsuxxvb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jlxnsuxxvb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jlxnsuxxvb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jlxnsuxxvb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jlxnsuxxvb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jlxnsuxxvb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlxnsuxxvb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jlxnsuxxvb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jlxnsuxxvb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jlxnsuxxvb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlxnsuxxvb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jlxnsuxxvb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlxnsuxxvb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jlxnsuxxvb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlxnsuxxvb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jlxnsuxxvb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlxnsuxxvb .gt_left {
+  text-align: left;
+}
+
+#jlxnsuxxvb .gt_center {
+  text-align: center;
+}
+
+#jlxnsuxxvb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jlxnsuxxvb .gt_font_normal {
+  font-weight: normal;
+}
+
+#jlxnsuxxvb .gt_font_bold {
+  font-weight: bold;
+}
+
+#jlxnsuxxvb .gt_font_italic {
+  font-style: italic;
+}
+
+#jlxnsuxxvb .gt_super {
+  font-size: 65%;
+}
+
+#jlxnsuxxvb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jlxnsuxxvb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jlxnsuxxvb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jlxnsuxxvb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jlxnsuxxvb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jlxnsuxxvb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jlxnsuxxvb .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Hombre&lt;/strong&gt;, N = 360&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>Hombre</strong>, N = 360<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Mujer&lt;/strong&gt;, N = 325&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>Mujer</strong>, N = 325<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">situ_pais</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Mejor</td>
+<td headers="stat_1" class="gt_row gt_center">24 (6.7%)</td>
+<td headers="stat_2" class="gt_row gt_center">7 (2.2%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Igual</td>
+<td headers="stat_1" class="gt_row gt_center">69 (19%)</td>
+<td headers="stat_2" class="gt_row gt_center">39 (12%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Peor</td>
+<td headers="stat_1" class="gt_row gt_center">267 (74%)</td>
+<td headers="stat_2" class="gt_row gt_center">279 (86%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> n (%)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p><strong>PASO 2: Diagrama de barras apiladas</strong></p>
+<pre class="r"><code>toPlot1 = as.data.frame(tablapor1) 
+names(toPlot1) = c(&quot;Categoria&quot;, &quot;Sexo&quot;, &quot;Porcentaje&quot;)</code></pre>
+<p>Generamos el gráfico y lo solicitamos:</p>
+<pre class="r"><code>library(ggplot2)
+
+  ggplot(toPlot1, aes(x=Sexo, y=Porcentaje*100, fill=Categoria)) +
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+ #Stack indica que son barras apiladas
+  geom_text(aes(label=paste0(Porcentaje*100,&quot;%&quot;)), 
+            position = position_stack(), 
+            vjust=1, size = 3)+
+  labs(x=&quot;Sexo&quot;, y=&quot;Porcentaje&quot;, fill=&quot;Situación económica&quot;)+
+  theme_bw()</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<blockquote>
+<p>De forma preliminar, ves diferencias entre la forma cómo se
+distribuye la variable “Situación Económica” en cada subgrupo (hombre y
+mujer)?</p>
+</blockquote>
+<p><strong>PASO 3: Prueba Chi cuadrado</strong></p>
+<ul>
+<li><p>H0: El sexo es estadísticamente independiente de la situación
+económica respecto del año pasado</p></li>
+<li><p>HA: El sexo es estadísticamente dependiente de la situación
+económica respecto del año pasado</p></li>
+</ul>
+<p>Para hacer el test ingresamos la tabla de frecuencias</p>
+<pre class="r"><code>chisq.test(tabla1)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla1
+## X-squared = 16.174, df = 2, p-value = 0.0003076</code></pre>
+<p>De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al
+ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables son
+independientes).</p>
+<p>Por lo tanto, concluimos existe dependencia entre las variables
+escogidas: sexo y situación económica actual. Esto quiere decir que el
+ser hombre o mujer sí se refleja en la percepción de la situación
+económica del país.</p>
+<p><strong>SUPUESTO</strong></p>
+<p>Ten en cuenta que si te piden verificar el supuesto sólo tienes que
+solicitar la tabla de frecuencias esperadas y ver que efectivamente
+todas las celdas tienen un número igual o mayor a 5.</p>
+<pre class="r"><code>chisq.test(tabla1)$expected</code></pre>
+<pre><code>##        
+##            Hombre     Mujer
+##   Mejor  16.29197  14.70803
+##   Igual  56.75912  51.24088
+##   Peor  286.94891 259.05109</code></pre>
+<p>En este caso sí cumple el supuesto! 😎</p>
+</div>
+<div
+id="existe-relación-entre-zona-de-vivienda-y-la-percepción-de-la-gestión-de-boluarte"
+class="section level2">
+<h2>🔵¿Existe relación entre zona de vivienda y la percepción de la
+gestión de Boluarte?</h2>
+<p><em>PASO 0: Revisamos la estructura de las variables que nos
+interesan:</em></p>
+<ul>
+<li>Variable percep_dina: 1 (Muy bueno), 2 (Bueno), 3 (Ni bueno, ni
+malo), 4 (Malo), 5 (Muy malo).</li>
+</ul>
+<p>Para este ejercicio creemos solo tres grupos “Buena” (1/Muy bueno y
+2/Bueno), “Ni buena ni mala” (3/Ni bueno ni malo) y “Mala” (4/Malo,
+5/Muy malo)</p>
+<pre class="r"><code>str(lapop$percep_dina)</code></pre>
+<pre class="r"><code>lapop = lapop %&gt;% 
+  mutate(percep_dina2=case_when(percep_dina&lt;=2 ~ &quot;Buena&quot;,
+                                percep_dina==3 ~ &quot;Ni buena ni mala&quot;,
+                                T ~ &quot;Mala&quot;))
+
+lapop$percep_dina2 = as.factor(lapop$percep_dina2)</code></pre>
+<p>Estrato: 1-Urbano 2-Rural</p>
+<pre class="r"><code>lapop$ur = factor(lapop$ur, 
+                      levels = c(1:2),
+                      labels = c(&quot;Urbano&quot;,&quot;Rural&quot;))
+table(lapop$ur)</code></pre>
+<pre><code>## 
+## Urbano  Rural 
+##    536    149</code></pre>
+<p><strong>PASO 1: Tabla de contingencia</strong></p>
+<p>Los valores observados son los valores de nuestra tabla tal como la
+tenemos en nuestra base</p>
+<pre class="r"><code>tabla2 = table(lapop$percep_dina2, lapop$ur)
+tabla2</code></pre>
+<pre><code>##                   
+##                    Urbano Rural
+##   Buena                39     5
+##   Mala                292   106
+##   Ni buena ni mala    205    38</code></pre>
+<p>Es recomendable calcular los porcentajes sobre la variable
+sociodemográfica o aquella que antecede a la otra. En este caso, esa
+variable sería estrato (urbano/rural), por ello deberíamos calcular el
+porcentaje sobre ella. Esto quiere decir que todas las percepciones
+deben sumar 100% para urbano y 100% para rural.</p>
+<pre class="r"><code>tablapor2 = tabla2 %&gt;%
+  prop.table(2) %&gt;%  # porcentaje por columna, para calcular por fila indicar (1)
+  round(3)
+tablapor2</code></pre>
+<pre><code>##                   
+##                    Urbano Rural
+##   Buena             0.073 0.034
+##   Mala              0.545 0.711
+##   Ni buena ni mala  0.382 0.255</code></pre>
+<p>Podemos hacer ambas tablas con el comando: tbl_summary</p>
+<pre class="r"><code>lapop %&gt;% 
+  select(percep_dina2,ur) %&gt;% 
+  tbl_summary(by=ur)</code></pre>
+<div id="euzqiyfpyd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#euzqiyfpyd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#euzqiyfpyd thead, #euzqiyfpyd tbody, #euzqiyfpyd tfoot, #euzqiyfpyd tr, #euzqiyfpyd td, #euzqiyfpyd th {
+  border-style: none;
+}
+
+#euzqiyfpyd p {
+  margin: 0;
+  padding: 0;
+}
+
+#euzqiyfpyd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#euzqiyfpyd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#euzqiyfpyd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#euzqiyfpyd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#euzqiyfpyd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#euzqiyfpyd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#euzqiyfpyd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#euzqiyfpyd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#euzqiyfpyd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#euzqiyfpyd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#euzqiyfpyd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#euzqiyfpyd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#euzqiyfpyd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#euzqiyfpyd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#euzqiyfpyd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#euzqiyfpyd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#euzqiyfpyd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#euzqiyfpyd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#euzqiyfpyd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#euzqiyfpyd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#euzqiyfpyd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#euzqiyfpyd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#euzqiyfpyd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#euzqiyfpyd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#euzqiyfpyd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#euzqiyfpyd .gt_left {
+  text-align: left;
+}
+
+#euzqiyfpyd .gt_center {
+  text-align: center;
+}
+
+#euzqiyfpyd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#euzqiyfpyd .gt_font_normal {
+  font-weight: normal;
+}
+
+#euzqiyfpyd .gt_font_bold {
+  font-weight: bold;
+}
+
+#euzqiyfpyd .gt_font_italic {
+  font-style: italic;
+}
+
+#euzqiyfpyd .gt_super {
+  font-size: 65%;
+}
+
+#euzqiyfpyd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#euzqiyfpyd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#euzqiyfpyd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#euzqiyfpyd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#euzqiyfpyd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#euzqiyfpyd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#euzqiyfpyd .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Urbano&lt;/strong&gt;, N = 536&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>Urbano</strong>, N = 536<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Rural&lt;/strong&gt;, N = 149&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>Rural</strong>, N = 149<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">percep_dina2</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Buena</td>
+<td headers="stat_1" class="gt_row gt_center">39 (7.3%)</td>
+<td headers="stat_2" class="gt_row gt_center">5 (3.4%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Mala</td>
+<td headers="stat_1" class="gt_row gt_center">292 (54%)</td>
+<td headers="stat_2" class="gt_row gt_center">106 (71%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Ni buena ni mala</td>
+<td headers="stat_1" class="gt_row gt_center">205 (38%)</td>
+<td headers="stat_2" class="gt_row gt_center">38 (26%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> n (%)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p><strong>PASO 2: Diagrama de barras apiladas</strong></p>
+<p>Preparamos la data para graficar:</p>
+<pre class="r"><code>toPlot2 = as.data.frame(tablapor2) 
+names(toPlot2) = c(&quot;Categoria&quot;, &quot;Estrato&quot;, &quot;Porcentaje&quot;)</code></pre>
+<p>Generamos el gráfico y lo solicitamos:</p>
+<pre class="r"><code>  ggplot(toPlot2, aes(x=Estrato, y=Porcentaje*100, fill=Categoria)) +
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(Porcentaje*100,&quot;%&quot;)), 
+            position = position_stack(), 
+            vjust=1, size = 3)+
+  labs(x=&quot;Estrato&quot;, y=&quot;Categoría&quot;, fill=&quot;Confianza&quot;)+
+  theme_bw()</code></pre>
+<p><img src="pd5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><strong>PASO 3: Prueba Chi cuadrado</strong></p>
+<ul>
+<li><p>H0: La percepción de la gestión de Dina es estadísticamente
+independiente del estrato del encuestado</p></li>
+<li><p>HA: La percepción de la gestión de Dina es estadísticamente
+dependiente del estrato del encuestado</p></li>
+</ul>
+<pre class="r"><code>chisq.test(tabla2)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla2
+## X-squared = 13.698, df = 2, p-value = 0.00106</code></pre>
+<p>🗯️ De acuerdo al p-value obtenido en la prueba de hipótesis de Chi2,
+al ser menor de 0.05, podemos rechazar la hipótesis nula (Las variables
+son independientes).</p>
+<p>Por lo tanto, concluimos que la variable percepción de la gestión de
+Dina y el estrato de residencia sí se encuentran asociadas. Una mayor
+proporción de los residentes de las zonas rurales califican como mala a
+la gestión de la presidenta; mientras que, la zona urbana se relaciona
+con una mayor proporción de opiniones neutrales en comparación.</p>
+<p><strong>SUPUESTO</strong></p>
+<p>Ten en cuenta que si te piden verificar el supuesto sólo tienes que
+solicitar la tabla de frecuencias esperadas y ver que efectivamente
+todas las celdas tienen un número igual o mayor a 5.</p>
+<pre class="r"><code>chisq.test(tabla2)$expected</code></pre>
+<pre><code>##                   
+##                      Urbano     Rural
+##   Buena             34.4292  9.570803
+##   Mala             311.4277 86.572263
+##   Ni buena ni mala 190.1431 52.856934</code></pre>
+<p>En este caso también cumple el supuesto!</p>
+</div>
+<div id="ejercicios-en-clase" class="section level2">
+<h2>Ejercicios en clase:</h2>
+<p>1. Analizar si existe asociación entre las variables satisfacción con
+la de situación de las escuelas (calid_esc) y edad (agrupado)<br />
+Para ello debes agrupar edad, de tal manera que las categorías sean:</p>
+<ul>
+<li><p>De 18 a 25</p></li>
+<li><p>De 26 a 40</p></li>
+<li><p>De 40 a 60</p></li>
+<li><p>Más de 60</p></li>
+</ul>
+<p><em>Hint</em>: Usa case_when y establece los intervalos, no olvides
+que la estructura es case_when(condición ~ valor, condicion2 ~
+valor2,…)</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Analizar si existe dependencia entre la variable estrato y
+satisfacción con la situación de servicios médicos (serv_medic)</li>
+</ol>
+</div>
+<div id="ejercicios-para-que-practiques" class="section level2">
+<h2>Ejercicios para que practiques:</h2>
+<ol style="list-style-type: decimal">
+<li><p>Analizar la asociación entre la región (estratropri) (Agrupar y
+obtener Costa/Sierra/Selva/Lima Metropolitana) y la satisfacción con la
+calidad del servicio de agua (serv_agua).</p>
+<p>1101/1102 - Costa</p>
+<p>1103 - Lima Metropolitana</p>
+<p>1104 - Selva</p>
+<p>1105/1106/1107 - Sierra</p></li>
+<li><p>Crea un indice aditivo de la satisfacción con servicios públicos
+que vaya del 0 al 10. Previamente, debes invertir el sentido de las
+variables: calid_esc, serv_medic y serv_agua. Lo que era 4, ahora debe
+ser 1, lo que era 3 ahora 2, lo que era 2 ahora 3 y lo que era 1 ahora
+4. Así, lo que se convierta en 4 medida la satisfacción y no la
+insatisfacción. Luego de ello, lo que supere el valor de en el indicador
+será “Satisfecho con servicios públicos” o 5 o menos será “Insatisfecho
+con los servicios públicos”, esta nueva variable será llamada
+ind_agrupado. Analiza si ind_agrupado se encuentra asociado con el sexo
+del encuestado.</p></li>
+</ol>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p><a
+href="https://www.vanderbilt.edu/lapop/ab2023/AB2023-Pulso-de-la-democracia-final-20240219.pdf"
+class="uri">https://www.vanderbilt.edu/lapop/ab2023/AB2023-Pulso-de-la-democracia-final-20240219.pdf</a><a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

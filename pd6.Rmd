@@ -1,0 +1,32 @@
+---
+title: "Práctica dirigida 6"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 2
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
+
+**FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
+
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 2 <br>
+
+------------------------------------------------------------------------
+
+# **Pregunta de investigación**
+
