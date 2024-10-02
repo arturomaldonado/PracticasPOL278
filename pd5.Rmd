@@ -374,7 +374,7 @@ Para ello debes agrupar edad, de tal manera que las categorías sean:
 
 2.  Analizar si existe dependencia entre la variable estrato y satisfacción con la situación de servicios médicos (serv_medic)
 
-## Ejercicios para que practiques:
+## Ejercicios para casa:
 
 1.  Analizar la asociación entre la región (estratropri) (Agrupar y obtener Costa/Sierra/Selva/Lima Metropolitana) y la satisfacción con la calidad del servicio de agua (serv_agua).
 
