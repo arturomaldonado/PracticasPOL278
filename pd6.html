@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 6</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -402,9 +402,174 @@ class="section level2">
 <h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
 2024 - 2 <br></h2>
 <hr />
+<pre class="r"><code>library(rio)
+library(dplyr)
+library(lsr)
+library(ggplot2)</code></pre>
+<p>Usaremos la Encuesta Nacional de Población Venezolana (ENPOVE) -
+2022.</p>
 </div>
-<div id="pregunta-de-investigación" class="section level1">
-<h1><strong>Pregunta de investigación</strong></h1>
+<div
+id="cuál-es-la-situación-del-empelo-de-la-población-venezolana-en-el-perú"
+class="section level1">
+<h1><strong>¿Cuál es la situación del empelo de la población venezolana
+en el Perú?</strong></h1>
+<pre class="r"><code>data = import(&quot;Repaso.sav&quot;)
+names(data)</code></pre>
+<pre><code>##  [1] &quot;departamento&quot;  &quot;estrato&quot;       &quot;trabajo&quot;       &quot;horas_trabajo&quot;
+##  [5] &quot;modalidad&quot;     &quot;frec_pago&quot;     &quot;ingreso&quot;       &quot;busq_trabajo&quot; 
+##  [9] &quot;tiempo_busc&quot;   &quot;remesas&quot;</code></pre>
+<p>Diccionario de datos</p>
+<p><img src="DicRepaso.png" /></p>
+<div id="análisis-descriptivo" class="section level2">
+<h2><strong>1. Análisis descriptivo</strong></h2>
+<div id="cuál-es-la-proporción-de-venezolanos-con-empleo-trabajo"
+class="section level3">
+<h3>¿Cuál es la proporción de venezolanos con empleo? (trabajo)</h3>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(trabajo =factor(trabajo,labels=c(&quot;Si&quot;,&quot;No&quot;)))</code></pre>
+<pre class="r"><code>tabla1 = data %&gt;% 
+  filter(!is.na(trabajo)) %&gt;% 
+  group_by(trabajo) %&gt;% 
+  summarise(Freq=n()) %&gt;% 
+  mutate(Porcentaje = (Freq/sum(Freq))*100)
+tabla1</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   trabajo  Freq Porcentaje
+##   &lt;fct&gt;   &lt;int&gt;      &lt;dbl&gt;
+## 1 Si       5987       58.5
+## 2 No       4240       41.5</code></pre>
+<p>En la muestra, un 59% de venezolanos que residen en Perú, contaba con
+empleo.</p>
+<pre class="r"><code>ggplot(tabla1, aes(x=trabajo,y=Porcentaje,fill=trabajo))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Porcentaje,1),&quot;%&quot;)),vjust=1.30, color=&quot;black&quot;, size=3)+
+  ggtitle(&quot;Venezolanos en Perú con empleo (%)&quot;)+xlab(&quot;¿La semana pasada tuvo algún trabajo?&quot;)+theme_classic()</code></pre>
+<p><img src="pd6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="cuánto-ganan-los-venezolanos-con-empleo-en-el-perú"
+class="section level3">
+<h3>¿Cuánto ganan los venezolanos con empleo en el Perú?</h3>
+<pre class="r"><code>data %&gt;% 
+  summarise(minimo=min(ingreso,na.rm = T),
+            maximo=max(ingreso,na.rm = T),
+            media=mean(ingreso,na.rm = T),
+            mediana=median(ingreso,na.rm = T),
+            sd=sd(ingreso,na.rm = T),
+            Q1=quantile(ingreso,na.rm = T,0.25),
+            Q3=quantile(ingreso,na.rm = T,0.75))</code></pre>
+<pre><code>##   minimo maximo    media mediana      sd  Q1  Q3
+## 1      0   9500 511.0324     330 620.282 200 600</code></pre>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x = ingreso)) + 
+  geom_histogram(color = &quot;black&quot;, fill = &quot;hotpink1&quot;, bins = 40) +
+  ggtitle(&quot;Salario de la población venezolana en Perú &quot;) +
+  ylab(&quot;Frecuencia&quot;)+xlab(&quot;Salario&quot;)+
+  geom_vline(xintercept =  mean(data$ingreso, na.rm = TRUE), color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la media
+  geom_vline(xintercept = median(data$ingreso, na.rm = TRUE), color = &quot;grey&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la mediana
+  theme_minimal()</code></pre>
+<p><img src="pd6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="intervalo-de-confianza-para-proporción" class="section level2">
+<h2><strong>2. Intervalo de confianza para proporción</strong></h2>
+<p>Encontramos que la proporción de venezolan@s con empleo en el Perú es
+de 59%, calculemos cuanto será este valor en la población.</p>
+<p>Previamente ya habíamos calculado la frecuencia de los que contaban
+con empleo y los que no, ingresemos esos datos en el prop.test</p>
+<pre class="r"><code>tabla1</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   trabajo  Freq Porcentaje
+##   &lt;fct&gt;   &lt;int&gt;      &lt;dbl&gt;
+## 1 Si       5987       58.5
+## 2 No       4240       41.5</code></pre>
+<pre class="r"><code>prop.test(5987,5987+4240)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  5987 out of 5987 + 4240, null probability 0.5
+## X-squared = 298.09, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.5757838 0.5949741
+## sample estimates:
+##         p 
+## 0.5854112</code></pre>
+<p>La proporción de venezolanos/as con empleo en Perú se encuentra entre
+57.5% y 59.4%, a un 95% de confianza.</p>
+</div>
+<div id="intervalo-de-confianza-para-media" class="section level2">
+<h2><strong>3. Intervalo de confianza para media</strong></h2>
+<p>Anteriormente, encontramos que los venezolanos en Perú ganan en
+promedio 511 soles. Calculemos cuanto es este valor en la población.</p>
+<pre class="r"><code>data %&gt;% 
+  summarise(media = mean(ingreso,na.rm=T),
+            Superior = ciMean(ingreso,na.rm=T),
+            Inferior = ciMean(ingreso,na.rm=T))</code></pre>
+<pre><code>##      media Superior.2.5% Superior.97.5% Inferior.2.5% Inferior.97.5%
+## 1 511.0324      492.2745       529.7902      492.2745       529.7902</code></pre>
+<p>A un 95% de confianza podemos concluir que, en promedio, un/a
+venezolan@ que trabaja en Perú gana aproximadamente entre 492.2 y 529.7
+soles. Hay que tener en consideración que este monto es en cada pago,
+que puede ser quincenal, mensual, etc.</p>
+</div>
+<div id="prueba-t" class="section level2">
+<h2><strong>4. Prueba T</strong></h2>
+<div
+id="existe-diferencia-entre-el-monto-percibido-ingreso-entre-los-venezolanos-que-envían-remesas-remesas-y-los-que-no"
+class="section level3">
+<h3>¿Existe diferencia entre el monto percibido (ingreso) entre los
+venezolanos que envían remesas (remesas) y los que no?</h3>
+<pre class="r"><code>data = data %&gt;% mutate(remesas = factor(remesas, labels = c(&quot;Si&quot;,&quot;No&quot;)))</code></pre>
+<pre class="r"><code>grafico = data %&gt;% 
+  filter(!is.na(remesas)) %&gt;% 
+  group_by(remesas) %&gt;% 
+  summarise(media = mean(ingreso,na.rm=T),
+            Superior = ciMean(ingreso,na.rm=T)[1],
+            Inferior = ciMean(ingreso,na.rm=T)[2])
+grafico</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   remesas media Superior Inferior
+##   &lt;fct&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Si       543.     518.     567.
+## 2 No       459.     431.     487.</code></pre>
+<p>En la muestra si existe una diferencia entre los ingresos de los que
+envían remesas y los que no. Siendo el ingreso más alto el de los que sí
+envían. Analicemos si esto se cumple en la población de venezolanos en
+Perú.</p>
+<pre class="r"><code>t.test(ingreso~remesas,data)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ingreso by remesas
+## t = 4.3886, df = 3677.7, p-value = 1.173e-05
+## alternative hypothesis: true difference in means between group Si and group No is not equal to 0
+## 95 percent confidence interval:
+##   46.16303 120.71568
+## sample estimates:
+## mean in group Si mean in group No 
+##         542.5315         459.0921</code></pre>
+<p>H0: No existe diferencia entre los promedios de ingreso de los que
+envían remesas y los que no. /H1: Existe diferencia entre los promedios
+de ingreso de los que envían remesas y los que no.</p>
+<p>Analizando el pvalor, podemos rechazar la hipótesis nula y así
+afirmar que las medias de ingreso de los que envían remesas y los que
+no, no son iguales.</p>
+<p>Constatemos cual es la media más alta con un gráfico:</p>
+<pre class="r"><code>ggplot(grafico,aes(x=remesas,y=media))+
+  geom_errorbar(aes(ymin=Inferior,ymax=Superior),width=0.4)+
+  xlab(&quot;Ingreso&quot;)+
+  ylab(&quot;¿Envía remesa?&quot;)+theme_classic()</code></pre>
+<p><img src="pd6_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+</div>
+<div id="prueba-chi-cuadrado" class="section level2">
+<h2><strong>5. Prueba Chi Cuadrado</strong></h2>
+<p>¿De qué manera se relaciona el estrato con el envío de remesas?</p>
+</div>
+<div id="ejericios-para-casa" class="section level2">
+<h2>Ejericios para casa</h2>
+</div>
 </div>
 
 
