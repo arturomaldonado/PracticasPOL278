@@ -35,10 +35,6 @@ library(lsr)
 library(ggplot2)
 ```
 
-```{r,include=FALSE}
-library(kableExtra)
-```
-
 Usaremos la Encuesta Nacional de Población Venezolana (ENPOVE) - 2022.
 
 # **¿Cuál es la situación del empelo de la población venezolana en el Perú?**

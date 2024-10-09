@@ -445,7 +445,7 @@ empleo.</p>
   geom_bar(stat=&quot;identity&quot;)+
   geom_text(aes(label=paste(round(Porcentaje,1),&quot;%&quot;)),vjust=1.30, color=&quot;black&quot;, size=3)+
   ggtitle(&quot;Venezolanos en Perú con empleo (%)&quot;)+xlab(&quot;¿La semana pasada tuvo algún trabajo?&quot;)+theme_classic()</code></pre>
-<p><img src="pd6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="pd6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="cuánto-ganan-los-venezolanos-con-empleo-en-el-perú"
 class="section level3">
@@ -468,7 +468,7 @@ class="section level3">
   geom_vline(xintercept =  mean(data$ingreso, na.rm = TRUE), color = &quot;red&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la media
   geom_vline(xintercept = median(data$ingreso, na.rm = TRUE), color = &quot;grey&quot;, linetype = &quot;dashed&quot;, size = 1) + # Línea de la mediana
   theme_minimal()</code></pre>
-<p><img src="pd6_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="pd6_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 <div id="intervalo-de-confianza-para-proporción" class="section level2">
@@ -560,15 +560,65 @@ no, no son iguales.</p>
   geom_errorbar(aes(ymin=Inferior,ymax=Superior),width=0.4)+
   xlab(&quot;Ingreso&quot;)+
   ylab(&quot;¿Envía remesa?&quot;)+theme_classic()</code></pre>
-<p><img src="pd6_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="pd6_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 </div>
 <div id="prueba-chi-cuadrado" class="section level2">
 <h2><strong>5. Prueba Chi Cuadrado</strong></h2>
 <p>¿De qué manera se relaciona el estrato con el envío de remesas?</p>
-</div>
-<div id="ejericios-para-casa" class="section level2">
-<h2>Ejericios para casa</h2>
+<pre class="r"><code>data = data %&gt;% 
+  mutate(estrato = factor(estrato,labels=c(&quot;Bajo&quot;,&quot;Medio bajo&quot;,&quot;Medio&quot;,&quot;Medio alto&quot;,&quot;Alto&quot;)))</code></pre>
+<pre class="r"><code>table(data$remesas)</code></pre>
+<pre><code>## 
+##   Si   No 
+## 4443 3867</code></pre>
+<pre class="r"><code>tabla1=table(data$estrato,data$remesas)
+tabla1</code></pre>
+<pre><code>##             
+##                Si   No
+##   Bajo        555  422
+##   Medio bajo 1397 1168
+##   Medio      1557 1400
+##   Medio alto  848  737
+##   Alto         86  140</code></pre>
+<p>Revisemos el supuesto</p>
+<pre class="r"><code>chisq.test(tabla1)$expected</code></pre>
+<pre><code>##             
+##                     Si        No
+##   Bajo        522.3599  454.6401
+##   Medio bajo 1371.3953 1193.6047
+##   Medio      1580.9809 1376.0191
+##   Medio alto  847.4314  737.5686
+##   Alto        120.8325  105.1675</code></pre>
+<p>Si cumple con el mínimo por celda.</p>
+<pre class="r"><code>tablapor1 = tabla1 %&gt;%
+           prop.table(1) %&gt;%  
+           round(2) #redondear el resultado a 2 decimales
+tablapor1</code></pre>
+<pre><code>##             
+##                Si   No
+##   Bajo       0.57 0.43
+##   Medio bajo 0.54 0.46
+##   Medio      0.53 0.47
+##   Medio alto 0.54 0.46
+##   Alto       0.38 0.62</code></pre>
+<pre class="r"><code>toPlot1 = as.data.frame(tablapor1) 
+names(toPlot1) = c(&quot;Estrato&quot;, &quot;Remesa&quot;, &quot;Porcentaje&quot;)</code></pre>
+<pre class="r"><code>  ggplot(toPlot1, aes(x=Estrato, y=Porcentaje*100, fill=Remesa)) +
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+ #Stack indica que son barras apiladas
+  geom_text(aes(label=paste0(Porcentaje*100,&quot;%&quot;)), 
+            position = position_stack(vjust = 0.5), 
+             size = 4,
+             fontface=&quot;bold&quot;)+
+  labs(x=&quot;Estrato&quot;, y=&quot;Porcentaje&quot;, fill=&quot;¿Envía remesa?&quot;)+
+  theme_minimal()</code></pre>
+<p><img src="pd6_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>chisq.test(tabla1)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tabla1
+## X-squared = 27.771, df = 4, p-value = 1.388e-05</code></pre>
 </div>
 </div>
 
