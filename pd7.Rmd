@@ -94,7 +94,7 @@ tabla1 = sri %>%
 tabla1
 ```
 
-Veámoslo enb gráfico
+Veámoslo en gráfico
 ```{r}
 library(ggplot2)
 ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
