@@ -1,5 +1,5 @@
 ---
-title: "Práctica dirigida 5"
+title: "Práctica dirigida 7"
 output:
   html_document:
     toc: yes
@@ -28,5 +28,189 @@ knitr::include_graphics("logoPUCP.png")
 
 ------------------------------------------------------------------------
 
-# **Pregunta de investigación**
+```{r warning=FALSE,message=FALSE}
+library(rio)
+library(dplyr)
+library(lsr)
+library(ggplot2)
+```
 
+## ANOVA
+
+**¿Qué es el Análisis de Varianza (ANOVA)?**
+
+Es una prueba estadística que permite comparar la media (promedio) de **más de 2 grupos**. Es decir, es como una prueba T, pero de más de dos grupos.
+
+Al igual que con la prueba T, en esta oportunidad debemos observar el **p-value** de la prueba. Para ello, se establecen 2 hipótesis:
+
+- H0 (p-value > 0.05): no hay diferencia significativa entre las medias de ningún grupo.
+- H1 (p-value =< 0.05): al menos una media poblacional (de un grupo) es significativamente distinta a las otras
+
+**Estadístico F**
+
+Indica la variablidad entre grupos y dentro de un mismo grupo.
+
+- Si F es grande, hay mucha variabilidad entre grupos y poca variabilidad dentro de un mismo grupo.
+- Si F es pequeño, hay poca variabilidad entre grupos pero mucha variabilidad dentro de un mismo grupo.
+
+**Prueba Tukey**
+
+Prueba "post-hoc" (luego de), realizada para revisar entre qué grupos existe una diferencia significativa.
+
+OJO: como es una prueba complementaria a la ANOVA, **solo resulta necesaria si se rechaza la H0** en ANOVA. Si la H0 no se rechaza en ANOVA, no hay necesidad de hacer prueba Tukey.
+
+Al igual que las otras pruebas estadísticas, se debe ver el **p-value en cada emparejamiento**.
+
+# Fortaleza de los Estados
+
+Usaremos la base de datos del **Índice de resiliencia de los Estados de 2022** (última medición), elaborado por **The Fund for Peace** (https://www.fundforpeace.org/). La BD se ha adaptado para esta sesión.
+
+```{r}
+library(rio)
+sri=import("SRI_2022.xlsx")
+```
+
+
+**¿Existe diferencias en la capacidad del Estado, según la región?**
+
+Realicemos primero un análisis exploratorio y descriptivo.
+```{r}
+#Países analziados por región
+table(sri$Region)
+```
+
+Y veamos ahora la capacidad del Estado por continente con algunos estadísticos descriptivos e inferenciales
+```{r}
+library(tidyverse)
+library(lsr)
+tabla1 = sri %>%
+  group_by(Region) %>%
+  summarise(Media = mean(State_Capacity, na.rm = T),
+            Mediana = median(State_Capacity, na.rm = T),
+            Desviacion = sd(State_Capacity, na.rm = T),
+            Inferior = ciMean(State_Capacity, na.rm = T)[1],
+            Superior = ciMean(State_Capacity, na.rm = T)[2])
+
+tabla1
+```
+
+Veámoslo enb gráfico
+```{r}
+library(ggplot2)
+ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=Inferior, ymax=Superior), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=3)+
+  xlab("Región") + ylab("Capacidad del Estado (promedio)")+
+  ylim(0, 13)
+```
+
+A partir del gráfico, es posible identificar que existe una diferencia significativa entre Europa y otras regiones (menos Oceanía). Corroborémoslo con la prueba ANOVA.
+```{r}
+anova1 = aov(sri$State_Capacity ~ sri$Region)
+summary(anova1)
+```
+
+Observamos que el **p-value es menor a 0.05**, lo que significa que al menos un grupo tiene la media estadísticamente significativa respecto del resto.
+
+Para saber qué media es distinta, aplicamos la **prueba Tukey**.
+```{r}
+comparacion = TukeyHSD(anova1)
+comparacion
+```
+
+Viendo el **p-value (p adj) < 0.05**, podemos ver que existe diferencia significativa entre las siguientes medias:
+
+- América y África
+- Asia y África
+- Europa y África
+- Oceanía y África
+- Europa y América
+- Europa y Asia
+
+Veámoslo en un gráfico
+```{r}
+#Primero debemos convertir la tabla de Tukey en DF
+comparacion.df = as.data.frame(comparacion[1])
+comparacion.df$comparacion = rownames(comparacion.df)
+```
+
+Grafiquemos
+```{r}
+ggplot(comparacion.df, aes(x=comparacion, y=sri.Region.diff))+
+  geom_errorbar(aes(ymin=sri.Region.lwr, ymax=sri.Region.upr), width=0.2)+
+  geom_text(aes(label=paste(round(sri.Region.diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  ylim(-5, 5) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+```
+
+¿Cómo interpretamos el gráfico? Solo hay diferencia significativa en aquellas medias cuya diferencia **no pasa por el 0 (línea roja o del color que ustedes escojan)**
+
+**Ya hemos visto que existe diferencia en la media de capacidad estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la cohesión social?**
+
+Descriptivos e inferenciales
+```{r}
+tabla2 = sri %>%
+  group_by(Region) %>%
+  summarise(Media = mean(Social_Cohesion, na.rm = T),
+            Mediana = median(Social_Cohesion, na.rm = T),
+            Desviacion = sd(Social_Cohesion, na.rm = T),
+            Inferior = ciMean(Social_Cohesion, na.rm = T)[1],
+            Superior = ciMean(Social_Cohesion, na.rm = T)[2])
+
+tabla2
+```
+En gráfico
+```{r}
+library(ggplot2)
+ggplot(tabla2, aes(x=Region, y=Media, fill = Region))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=Inferior, ymax=Superior), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=3)+
+  xlab("Región") + ylab("Cohesión Social (promedio)")+
+  ylim(0, 9)
+```
+
+Y hagamos ANOVA
+```{r}
+anova2 = aov(sri$Social_Cohesion ~ sri$Region)
+summary(anova2)
+```
+
+El **p-value < 0.05**, por lo cual se concluye que al menos una media regional o poblacional es significativamente distinta.
+
+Complementemos con la prueba Tukey
+```{r}
+comparacion2 = TukeyHSD(anova2)
+comparacion2
+```
+Diferencias significativas:
+
+- Europa y África
+
+Grafiquemos ahora
+```{r}
+#Primero debemos convertir la tabla de Tukey en DF
+comparacion2.df = as.data.frame(comparacion2[1])
+comparacion2.df$comparacion2 = rownames(comparacion2.df)
+```
+
+Grafiquemos
+```{r}
+ggplot(comparacion2.df, aes(x=comparacion2, y=sri.Region.diff))+
+  geom_errorbar(aes(ymin=sri.Region.lwr, ymax=sri.Region.upr), width=0.2)+
+  geom_text(aes(label=paste(round(sri.Region.diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  ylim(-5, 5) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+```
+
+Una vez más, se observa que solo la línea Europa-África no pasa por el 0.
+
+**Ejercicio para la casa**
+¿Existe diferencia significativa en el índice de resiliencia estatal total (Variable Capacity), según región?
