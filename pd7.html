@@ -407,8 +407,8 @@ library(dplyr)
 library(lsr)
 library(ggplot2)</code></pre>
 </div>
-<div id="anova" class="section level2">
-<h2>ANOVA</h2>
+<div id="anova" class="section level1">
+<h1>ANOVA</h1>
 <p><strong>¿Qué es el Análisis de Varianza (ANOVA)?</strong></p>
 <p>Es una prueba estadística que permite comparar la media (promedio) de
 <strong>más de 2 grupos</strong>. Es decir, es como una prueba T, pero
@@ -448,8 +448,10 @@ class="uri">https://www.fundforpeace.org/</a>). La BD se ha adaptado
 para esta sesión.</p>
 <pre class="r"><code>library(rio)
 sri=import(&quot;SRI_2022.xlsx&quot;)</code></pre>
-<p><strong>¿Existe diferencias en la capacidad del Estado, según la
-región?</strong></p>
+<div id="existe-diferencias-en-la-capacidad-del-estado-según-la-región"
+class="section level2">
+<h2><strong>¿Existe diferencias en la capacidad del Estado, según la
+región?</strong></h2>
 <p>Realicemos primero un análisis exploratorio y descriptivo.</p>
 <pre class="r"><code>#Países analziados por región
 table(sri$Region)</code></pre>
@@ -501,8 +503,28 @@ ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
   ylim(0, 13)</code></pre>
 <p><img src="pd7_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>A partir del gráfico, es posible identificar que existe una
-diferencia significativa entre Europa y otras regiones (menos Oceanía).
-Corroborémoslo con la prueba ANOVA.</p>
+diferencia significativa entre Europa y otras regiones, menos Oceanía
+(debido a que son muy pocos países en comparación). Para evitar sesgos,
+mejor eliminemos la fila de Oceanía.</p>
+<pre class="r"><code>tabla1=tabla1[-5,]
+tabla1</code></pre>
+<pre><code>## # A tibble: 4 × 6
+##   Region  Media Mediana Desviacion Inferior Superior
+##   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Africa   4.72    4.75      0.982     4.43     5.00
+## 2 America  5.98    5.89      1.08      5.53     6.44
+## 3 Asia     5.72    5.81      1.17      5.36     6.08
+## 4 Europe   7.20    7.53      1.13      6.81     7.59</code></pre>
+<p>Veamos el gráfico ahora</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=Inferior, ymax=Superior), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=3)+
+  xlab(&quot;Región&quot;) + ylab(&quot;Capacidad del Estado (promedio)&quot;)+
+  ylim(0, 8)</code></pre>
+<p><img src="pd7_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Ahora sí, corroboremos el gráfico con la prueba ANOVA.</p>
 <pre class="r"><code>anova1 = aov(sri$State_Capacity ~ sri$Region)
 summary(anova1)</code></pre>
 <pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -557,13 +579,17 @@ comparacion.df$comparacion = rownames(comparacion.df)</code></pre>
   coord_flip() +
   geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
   theme_classic()</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>¿Cómo interpretamos el gráfico? Solo hay diferencia significativa en
 aquellas medias cuya diferencia <strong>no pasa por el 0 (línea roja o
 del color que ustedes escojan)</strong></p>
-<p><strong>Ya hemos visto que existe diferencia en la media de capacidad
-estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la cohesión
-social?</strong></p>
+</div>
+<div
+id="ya-hemos-visto-que-existe-diferencia-en-la-media-de-capacidad-estatal-entre-ciertas-regiones.-ahora-sucede-lo-mismo-con-la-cohesión-social"
+class="section level2">
+<h2><strong>Ya hemos visto que existe diferencia en la media de
+capacidad estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la
+cohesión social?</strong></h2>
 <p>Descriptivos e inferenciales</p>
 <pre class="r"><code>tabla2 = sri %&gt;%
   group_by(Region) %&gt;%
@@ -590,7 +616,7 @@ ggplot(tabla2, aes(x=Region, y=Media, fill = Region))+
   geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=3)+
   xlab(&quot;Región&quot;) + ylab(&quot;Cohesión Social (promedio)&quot;)+
   ylim(0, 9)</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Y hagamos ANOVA</p>
 <pre class="r"><code>anova2 = aov(sri$Social_Cohesion ~ sri$Region)
 summary(anova2)</code></pre>
@@ -639,12 +665,13 @@ comparacion2.df$comparacion2 = rownames(comparacion2.df)</code></pre>
   coord_flip() +
   geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
   theme_classic()</code></pre>
-<p><img src="pd7_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="pd7_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Una vez más, se observa que solo la línea Europa-África no pasa por
 el 0.</p>
 <p><strong>Ejercicio para la casa</strong> ¿Existe diferencia
 significativa en el índice de resiliencia estatal total (Variable
 Capacity), según región?</p>
+</div>
 </div>
 
 

@@ -35,7 +35,7 @@ library(lsr)
 library(ggplot2)
 ```
 
-## ANOVA
+# ANOVA
 
 **¿Qué es el Análisis de Varianza (ANOVA)?**
 
@@ -70,8 +70,7 @@ library(rio)
 sri=import("SRI_2022.xlsx")
 ```
 
-
-**¿Existe diferencias en la capacidad del Estado, según la región?**
+## **¿Existe diferencias en la capacidad del Estado, según la región?**
 
 Realicemos primero un análisis exploratorio y descriptivo.
 ```{r}
@@ -105,7 +104,24 @@ ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
   ylim(0, 13)
 ```
 
-A partir del gráfico, es posible identificar que existe una diferencia significativa entre Europa y otras regiones (menos Oceanía). Corroborémoslo con la prueba ANOVA.
+A partir del gráfico, es posible identificar que existe una diferencia significativa entre Europa y otras regiones, menos Oceanía (debido a que son muy pocos países en comparación). Para evitar sesgos, mejor eliminemos la fila de Oceanía.
+```{r}
+tabla1=tabla1[-5,]
+tabla1
+```
+
+Veamos el gráfico ahora
+```{r}
+library(ggplot2)
+ggplot(tabla1, aes(x=Region, y=Media, fill = Region))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=Inferior, ymax=Superior), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=3)+
+  xlab("Región") + ylab("Capacidad del Estado (promedio)")+
+  ylim(0, 8)
+```
+
+Ahora sí, corroboremos el gráfico con la prueba ANOVA.
 ```{r}
 anova1 = aov(sri$State_Capacity ~ sri$Region)
 summary(anova1)
@@ -149,7 +165,7 @@ ggplot(comparacion.df, aes(x=comparacion, y=sri.Region.diff))+
 
 ¿Cómo interpretamos el gráfico? Solo hay diferencia significativa en aquellas medias cuya diferencia **no pasa por el 0 (línea roja o del color que ustedes escojan)**
 
-**Ya hemos visto que existe diferencia en la media de capacidad estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la cohesión social?**
+## **Ya hemos visto que existe diferencia en la media de capacidad estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la cohesión social?**
 
 Descriptivos e inferenciales
 ```{r}
@@ -187,6 +203,7 @@ Complementemos con la prueba Tukey
 comparacion2 = TukeyHSD(anova2)
 comparacion2
 ```
+
 Diferencias significativas:
 
 - Europa y África
