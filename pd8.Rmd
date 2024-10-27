@@ -26,7 +26,7 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 2 <br>
 
 ------------------------------------------------------------------------
 
@@ -187,13 +187,15 @@ cor.test(data$Democracia, data$c_funcionarios)
 
 **¿Qué nos dice el resultado?** *Recuerda que en la interpretación no debe faltar: (i) intepretación del p-valor y (ii) interpretación del coeficiente de correlación (cor)*
 
-Interpretación: Dado que el p-valor es menor a 0.05, rechazamos la H0.
+**Reporte:** Dado que el p-valor es menor a 0.05, rechazamos la H0.
 Por lo tanto, podemos afirmar que **existe correlación** entre el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción y el indicador de la democracia.
 
 El coeficiente es de -0.30, lo que quiere decir: (i) Se trata de una **correlación negativa**; es decir, relación indirecta (-) y (ii) Según los criterios de Cohen (1988), se trata de una correlación mediana.
 
 En síntesis, se espera que mientras el indicador de democracia sea más alto en un país, menor lo será el porcentaje de personas que opinan que los funcionarios del gobierno están envueltos en corrupción.
 Sin embargo, esta relación es de fuerza media, lo que significa que aunque la tendencia es clara, no es una relación extremadamente fuerte, pero sí lo suficientemente significativa como para ser considerada relevante.
+
+**Interpretación** Esta relación inversa se puede deber a la menor confianza en la institucionalidad democrática, asociándola con actos de corrupción.
 
 ### Ejercicio 2: ¿Existe relación entre el indicador de funcionamiento de gobierno y el porcentaje de personas que creen que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción?
 
@@ -264,12 +266,16 @@ cor.test(data$c_diferencia, data$Fun_gob)
 
 **¿Qué nos dice el resultado?** *Recuerda que en la interpretación no debe faltar: (i) intepretación del p-valor y (ii) interpretación del coeficiente de correlación (cor)*
 
-Interpretación: Dado que el p-valor es menor a 0.05, rechazamos la H0.
+**Reporte:** Dado que el p-valor es menor a 0.05, rechazamos la H0.
 Por lo tanto, podemos afirmar que existe correlación entre el porcentaje de personas opinan que los ciudadanos pueden hacer la diferencia en la lucha contra la corrupción y el indicador de funcionamiento del gobierno.
 
 El coeficiente es de 0.29, por lo tanto se trata de una relación positiva (i), y de fuerza pequeña (ii).
 Esto quiere decir que a medida el indicador de funcionamiento de gobierno aumenta en un país, también lo hará el porcentaje de personas que piensan que la ciudadanía hará la diferencia en la lucha contra la corrupción.
 Sin embargo, esto no sucederá en la misma medida para todos los casos, ya que la fuerza de correlación es pequeña.
+
+**Interpretación:** Esta relación positiva se puede deber a que, cuando las personas observan el sistema responder a demandas y funcionar bien, se sienten con mayor posibilidad de incidir en la toma de decisiones de políticas públicas.
+
+Asimismo, podría indicar que la población no tiene miedo de que existan represalias por parte del gobierno, sintiéndose con mayor libertad al momento de denunciar actos de corrupción.
 
 # Ejercicios en clase
 
