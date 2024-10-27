@@ -163,7 +163,7 @@ ggplot(comparacion.df, aes(x=comparacion, y=sri.Region.diff))+
   theme_classic()
 ```
 
-¿Cómo interpretamos el gráfico? Solo hay diferencia significativa en aquellas medias cuya diferencia **no pasa por el 0 (línea roja o del color que ustedes escojan)**
+¿Cómo reportamos el gráfico? Solo hay diferencia significativa en aquellas medias cuya diferencia **no pasa por el 0 (línea roja o del color que ustedes escojan)**
 
 ## **Ya hemos visto que existe diferencia en la media de capacidad estatal entre ciertas regiones. Ahora, ¿sucede lo mismo con la cohesión social?**
 
