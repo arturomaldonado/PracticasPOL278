@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 9</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -400,22 +400,23 @@ div.tocify {
 <p><img src="logoPUCP.png" width="30%" /></p>
 <p><strong>FACULTAD DE CIENCIAS SOCIALES - PUCP</strong><br></p>
 <div
-id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---1"
+id="curso-pol-278---estadística-para-el-análisis-político-1-semestre-2024---2"
 class="section level2">
 <h2>Curso: POL 278 - Estadística para el análisis político 1 | Semestre
-2024 - 1 <br></h2>
+2024 - 2 <br></h2>
 <hr />
 </div>
-<div id="i.-análisis-de-regresión-simple-ideas-clave"
+<div id="i.-análisis-de-regresión-lineal-simple-rls-ideas-clave"
 class="section level1">
-<h1><strong>I. Análisis de regresión simple: ideas clave</strong></h1>
+<h1><strong>I. Análisis de regresión lineal simple (RLS): ideas
+clave</strong></h1>
 <p>Técnica estadística que predice el valor de una variable con los
 valores de otra. La regresión lineal simple es un método útil para
 predecir una respuesta cuantitativa <strong>Y</strong> partiendo de una
 sola variable predictora <strong>X</strong>, asumiendo que hay una
 relación aproximadamente lineal entre X e Y. Matemáticamente, esta
 relación lineal se representa como</p>
-<p>Y = a + bX + E</p>
+<p><strong>Y = a + bX + E</strong></p>
 <ul>
 <li><p>Y = variable dependiente o explicada. Variable cuyos valores se
 desea predecir o resumir. Un modelo de regresión lineal tiene como
@@ -649,10 +650,13 @@ ecuación.</p>
 <p><strong>Ŷ = 0.49004 - 0.31779 * 0.4</strong></p>
 <p><strong>Ŷ = 0.49004 - 0.12712</strong></p>
 <p><strong>Ŷ = 0.36292</strong></p>
-<p>Por lo tanto, utilizando la ecuación de la recta, cuando el índice de
-democracia participativa es 0.4 , podemos predecir que aproximadamente
-el 36.2% de las personas opinan que la mayoría/todos los funcionarios
-están envueltos en corrupción en ese país.</p>
+<p>Por lo tanto, utilizando la ecuación de la recta, cuando el
+porcentaje de personas que cree que existen funcionarios corruptos es
+40% (0.4) , podemos predecir que el índice de democracia será de,
+aproximadamente, 0.36 puntos.</p>
+<p>Asimismo, se puede afirmar que, de acuerdo al modelo, por cada unidad
+de aumento del % de percepción de corrupción, el índice de democracia se
+reduce en 0.32 puntos.</p>
 <p>Ejercicio 2: Impacto de la percepción de derechos políticos en el
 puntaje del índice de libertad (según Freedom House), por país</p>
 <p>Las variables que utilizaremos serán:</p>
@@ -663,11 +667,10 @@ House</p>
 </div>
 </div>
 </div>
-<div
-id="la-percepción-de-corrupción-en-los-funcionarios-impacta-en-el-puntaje-del-índice-de-la-democracia-1"
+<div id="los-derechos-políticos-impactan-en-el-puntaje-de-libertad"
 class="section level2">
-<h2><strong>¿La percepción de corrupción en los funcionarios impacta en
-el puntaje del índice de la democracia?</strong></h2>
+<h2><strong>¿Los derechos políticos impactan en el puntaje de
+libertad?</strong></h2>
 <div id="gráfico-de-dispersión-1" class="section level3">
 <h3>Gráfico de dispersión:</h3>
 <p>Elaboramos el gráfico de dispersión y la recta</p>

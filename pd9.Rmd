@@ -31,15 +31,15 @@ knitr::include_graphics("logoPUCP.png")
 
 **FACULTAD DE CIENCIAS SOCIALES - PUCP**<br>
 
-## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 1 <br>
+## Curso: POL 278 - Estadística para el análisis político 1 \| Semestre 2024 - 2 <br>
 
 ------------------------------------------------------------------------
 
-# **I. Análisis de regresión simple: ideas clave**
+# **I. Análisis de regresión lineal simple (RLS): ideas clave**
 
 Técnica estadística que predice el valor de una variable con los valores de otra. La regresión lineal simple es un método útil para predecir una respuesta cuantitativa **Y** partiendo de una sola variable predictora **X**, asumiendo que hay una relación aproximadamente lineal entre X e Y. Matemáticamente, esta relación lineal se representa como
 
-Y = a + bX + E
+**Y = a + bX + E**
 
 -   Y = variable dependiente o explicada. Variable cuyos valores se desea predecir o resumir. Un modelo de regresión lineal tiene como variable dependiente una variable numérica
 
@@ -192,7 +192,9 @@ Sustituyendo el valor de "x" en la ecuación, tenemos:
 
 **Ŷ = 0.36292**
 
-Por lo tanto, utilizando la ecuación de la recta, cuando el índice de democracia participativa es 0.4 , podemos predecir que aproximadamente el 36.2% de las personas opinan que la mayoría/todos los funcionarios están envueltos en corrupción en ese país.
+Por lo tanto, utilizando la ecuación de la recta, cuando el porcentaje de personas que cree que existen funcionarios corruptos es 40% (0.4) , podemos predecir que el índice de democracia será de, aproximadamente, 0.36 puntos.
+
+Asimismo, se puede afirmar que, de acuerdo al modelo, por cada unidad de aumento del % de percepción de corrupción, el índice de democracia se reduce en 0.32 puntos.
 
 Ejercicio 2: Impacto de la percepción de derechos políticos en el puntaje del índice de libertad (según Freedom House), por país
 
