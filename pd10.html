@@ -13,7 +13,7 @@
 
 <title>Práctica dirigida 10</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -408,19 +408,20 @@ fenómeno de estudio, hay muchos otros factores que podrían influir en
 aquello que nos interesa explorar. Por ello, necesitamos recurrir al
 <strong>análisis multivariado</strong> y conocer el concepto de
 <strong>control estadístico</strong>.</p>
-<p>El control estadístico nos permite “eliminar” explicaciones
-alternativas, en tanto se aisla el efecto de otras variables. La idea
-es:</p>
+<p>El control estadístico nos permite aislar el efecto de otras
+variables. La idea es:</p>
 <ul>
-<li><p>Evaluar si la asociación entre X - Y permanece si se remueve el
+<li><p>Evaluar si la asociación entre X e Y permanece si se remueve el
 efecto de otra variable, es decir, si se controla por una tercera
 variable.</p></li>
-<li><p>Se analiza la relación entre X - Y para valores similares o
+<li><p>Se analiza la relación entre X e Y para valores similares o
 iguales de una variable Z. De esta manera se elimina la influencia de Z
-en la relación entre X - Y. Es un paso en el establecimiento de X -&gt;
+en la relación entre X e Y. Lo anterior nos ayuda a acercarnos a una
+interpretación causar X -&gt; Y.</p></li>
+<li><p>Si la relación entre X e Y desaparece cuando se controla por Z,
+se dice que la relación era espúrea. En otras palabras, la relación
+dependendia de la influencia de Z y no de una conexión directa entre X e
 Y.</p></li>
-<li><p>Si la relación entre X - Y desaparece cuando se controla por Z,
-se dice que la relación era espúrea.</p></li>
 </ul>
 <p>Sobre la regresión lineal múltiple:</p>
 <p><img src="pd12_diap1.png" width="100%" style="display: block; margin: auto;" /></p>
@@ -509,12 +510,12 @@ summary(modelo1)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>H1: El modelo de regresión es válido (las variables independientes
+aportan al modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 &lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
-rechazar la H0, por lo que concluimos que el modelo sí es válido como
+rechazar la H0, por lo que concluimos que el modelo es válido como
 modelo de predicción.</p>
 </div>
 <div id="qué-tanto-explica-el-modelo" class="section level3">
@@ -641,8 +642,8 @@ summary(modelo2)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>H1: El modelo de regresión es válido (las variables independientes
+aportan al modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 &lt; 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para
@@ -714,14 +715,43 @@ han cambiado.</p>
 <div id="predicción" class="section level3">
 <h3><strong>Predicción</strong></h3>
 <p>Si el puntaje en CapitalHumano es 0.8, de telecomunicaciones e
-infraestructura es 0.6, de proceso electoral de 9 y de Usuarios de
-internet es de 56.</p>
-<p><strong>Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) +
+infraestructura es 0.6, de proceso electoral y cultura política de 9 y
+de Usuarios de internet es de 56.</p>
+<p><strong>Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) + 0.01 (9) +
 0.002(56)</strong></p>
-<p><strong>Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.112</strong></p>
-<p><strong>Y = 0.524</strong></p>
+<p><strong>Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.09 + 0.112</strong></p>
+<p><strong>Y = 0.614</strong></p>
+<pre class="r"><code>predict(modelo2, data.frame(Capital_Humano = 0.8, Telecommunicacion_Infrastructura = 0.6, ProcesoElectoral = 9, Policulture = 9, UsuariosInternet = 56))</code></pre>
+<pre><code>##         1 
+## 0.6135074</code></pre>
 <p>En este caso, el índice de acceso a la información es de
-<strong>0.524</strong> puntos.</p>
+<strong>0.614</strong> puntos.</p>
+</div>
+<div id="qué-variable-aporta-más" class="section level3">
+<h3><strong>¿Qué variable aporta más?</strong></h3>
+<p>Para interpretar cómo cada variable independiente contribuye a la
+variabilidad de la variable dependiente (accesoInformacion), podemos
+usar los coeficientes estandarizados. Estos coeficientes nos ayudan a
+comparar, en una misma escala, el impacto que tiene cada variable
+independiente sobre la variable dependiente, permitiéndonos identificar
+cuáles tienen un efecto más fuerte.</p>
+<pre class="r"><code>library(lm.beta)
+lm.beta(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = accesoInformacion ~ Capital_Humano + Telecommunicacion_Infrastructura + 
+##     ProcesoElectoral + Policulture + UsuariosInternet, data = Egov)
+## 
+## Standardized Coefficients::
+##                      (Intercept)                   Capital_Humano 
+##                               NA                        0.2730293 
+## Telecommunicacion_Infrastructura                 ProcesoElectoral 
+##                        0.3735152                        0.1205541 
+##                      Policulture                 UsuariosInternet 
+##                        0.1076564                        0.2168544</code></pre>
+<p>Los resultados anteriores nos demuestran que las variables con mayor
+impacto son Telecommunicacion_Infrastructura (0.37) y Capital_Humano
+(0.27).</p>
 </div>
 </div>
 <div
@@ -738,40 +768,39 @@ principales preocupaciones era la calidad del sueño del personal de
 salud, pues podía repercutir directamente en la calidad de atención de
 los pacientes.</p>
 <ul>
-<li>Q1: Edad</li>
-<li>Q2: Género (0 = “Mujer”, 1 = “Hombre”)</li>
-<li>Q7: ¿Se encentra en la primera línea de atención del Covid-19? (0 =
-“No”, 1 = “Si”)</li>
-<li>Q8: ¿Trabaja desde casa? (0 = “No”, 1 = “Si”)</li>
-<li>Q11: ¿Tiene niños en casa? (0 = “No”, 1 = “Si”)</li>
-<li>Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?</li>
+<li>edad</li>
+<li>genero: 0 = “Mujer”, 1 = “Hombre”</li>
+<li>primera_linea: ¿Se encentra en la primera línea de atención del
+Covid-19? (0 = “No”, 1 = “Si”)</li>
+<li>trabajo_casa: ¿Trabaja desde casa? (0 = “No”, 1 = “Si”)</li>
+<li>niños_casa: ¿Tiene niños en casa? (0 = “No”, 1 = “Si”)</li>
+<li>promedio_sueño: ¿Cuantas horas ha dormido en promedio la semana
+pasada?</li>
 </ul>
-<pre class="r"><code>Covid=import(&quot;covid_pd12.csv&quot;)
-names(Covid)</code></pre>
-<pre><code>## [1] &quot;V1&quot;  &quot;Q1&quot;  &quot;Q2&quot;  &quot;Q7&quot;  &quot;Q8&quot;  &quot;Q11&quot; &quot;Q13&quot;</code></pre>
+<pre class="r"><code>Covid=import(&quot;data_covid.csv&quot;)</code></pre>
 <pre class="r"><code>str(Covid)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    321 obs. of  7 variables:
-##  $ V1 : int  419 420 421 423 424 425 426 427 428 429 ...
-##  $ Q1 : int  46 28 44 57 65 30 37 43 37 40 ...
-##  $ Q2 : int  1 0 0 0 0 0 0 0 0 0 ...
-##  $ Q7 : int  1 0 1 0 0 0 0 0 0 0 ...
-##  $ Q8 : int  0 1 0 1 1 1 1 1 1 0 ...
-##  $ Q11: int  1 0 0 0 0 0 0 1 0 1 ...
-##  $ Q13: int  4 5 10 8 8 8 7 8 7 5 ...</code></pre>
-<p>Reviso las variables dicotómicas Q2,Q7,Q8 y Q11</p>
-<pre class="r"><code>table(Covid$Q2)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    321 obs. of  6 variables:
+##  $ edad          : int  46 28 44 57 65 30 37 43 37 40 ...
+##  $ genero        : int  1 0 0 0 0 0 0 0 0 0 ...
+##  $ primera_linea : int  1 0 1 0 0 0 0 0 0 0 ...
+##  $ trabajo_casa  : int  0 1 0 1 1 1 1 1 1 0 ...
+##  $ niños_casa    : int  1 0 0 0 0 0 0 1 0 1 ...
+##  $ promedio_sueño: int  4 5 10 8 8 8 7 8 7 5 ...</code></pre>
+<p>Reviso las variables dicotómicas genero, primera_linea, trabajo_casa
+y niños_casa</p>
+<pre class="r"><code>table(Covid$genero)</code></pre>
 <pre><code>## 
 ##   0   1 
 ## 258  63</code></pre>
-<pre class="r"><code>table(Covid$Q7)</code></pre>
+<pre class="r"><code>table(Covid$primera_linea)</code></pre>
 <pre><code>## 
 ##   0   1 
 ## 240  81</code></pre>
-<pre class="r"><code>table(Covid$Q8)</code></pre>
+<pre class="r"><code>table(Covid$trabajo_casa)</code></pre>
 <pre><code>## 
 ##   0   1 
 ## 148 173</code></pre>
-<pre class="r"><code>table(Covid$Q11)</code></pre>
+<pre class="r"><code>table(Covid$niños_casa)</code></pre>
 <pre><code>## 
 ##   0   1 
 ## 183 138</code></pre>
@@ -794,24 +823,25 @@ estimado por 1. Si no los tiene, se multiplica por 0.</p></li>
 <h2><strong>Modelo 3</strong></h2>
 <p>Hacemos uso de todas las variables de la base de datos. Veamos los
 resultados.</p>
-<pre class="r"><code>modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
+<pre class="r"><code>modelo3 = lm(promedio_sueño ~ edad + genero + primera_linea + trabajo_casa + niños_casa, data=Covid)
 summary(modelo3)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Q13 ~ Q1 + Q2 + Q7 + Q8 + Q11, data = Covid)
+## lm(formula = promedio_sueño ~ edad + genero + primera_linea + 
+##     trabajo_casa + niños_casa, data = Covid)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
 ## -4.4698 -0.8146  0.1175  0.7244 10.6064 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  7.2635032  0.3870248  18.768  &lt; 2e-16 ***
-## Q1           0.0002082  0.0072750   0.029   0.9772    
-## Q2           0.1165666  0.2214669   0.526   0.5990    
-## Q7          -0.9295386  0.2287652  -4.063 6.11e-05 ***
-## Q8           0.0813975  0.1946472   0.418   0.6761    
-## Q11         -0.5411523  0.1775847  -3.047   0.0025 ** 
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    7.2635032  0.3870248  18.768  &lt; 2e-16 ***
+## edad           0.0002082  0.0072750   0.029   0.9772    
+## genero         0.1165666  0.2214669   0.526   0.5990    
+## primera_linea -0.9295386  0.2287652  -4.063 6.11e-05 ***
+## trabajo_casa   0.0813975  0.1946472   0.418   0.6761    
+## niños_casa    -0.5411523  0.1775847  -3.047   0.0025 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -826,8 +856,8 @@ summary(modelo3)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>H1: El modelo de regresión es válido (variables independientes
+aportan al modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 7.486e-07, entonces podemos afirmar que hay suficiente evidencia para
@@ -852,7 +882,7 @@ independiente.</p>
 <ul>
 <li>Esperamos obtener un p-value &lt;0.05.</li>
 <li>Esta vez las variables que <strong>sí aportan</strong> al modelo
-son: Q7 (primera línea contra Covid) y Q11 (Ttiene niños en casa)</li>
+son: primera línea contra Covid y Tiene niños en casa.</li>
 </ul>
 </div>
 <div id="cuáles-son-los-coeficientes-de-la-ecuación-2"
@@ -860,25 +890,25 @@ class="section level3">
 <h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
 <p>Coeficientes:</p>
 <pre class="r"><code>modelo3$coefficients</code></pre>
-<pre><code>##   (Intercept)            Q1            Q2            Q7            Q8 
+<pre><code>##   (Intercept)          edad        genero primera_linea  trabajo_casa 
 ##  7.2635031668  0.0002081714  0.1165666305 -0.9295386165  0.0813975254 
-##           Q11 
+##    niños_casa 
 ## -0.5411522614</code></pre>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
-Y = 7.2635 + \text{Edad} \times (-0.0002) + \text{Genero} \times
-(0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde
-casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
+Y = 7.2635 + \text{Edad} \times (0.0002) + \text{Genero} \times (0.1167)
++ \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa}
+\times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
 \]</span></p>
 <p>¿Cómo interpretamos los coeficientes en este caso?</p>
 <ul>
 <li><p>Por cada año adicional de edad, el tiempo de sueño
-<strong>disminuye en 0.0002 horas</strong> (relación inversa).</p></li>
+<strong>aumenta en 0.0002 horas</strong> (relación directa).</p></li>
 <li><p>Si la persona es hombre, su tiempo de sueño <strong>aumenta en
 0.1167 horas</strong> (relación directa).</p></li>
 <li><p>Si la persona ha estado en primera línea en la lucha contra la
 pandemia de Covid, su tiempo de sueño <strong>disminuye en 0.9295 horas
-de sueño</strong> (relacuón inversa).</p></li>
+de sueño</strong> (relación inversa).</p></li>
 <li><p>Si la persona trabaja desde casa, su tiempo de sueño
 <strong>aumenta en 0.0814 horas</strong> (relación directa).</p></li>
 <li><p>Si la persona tiene niños en su casa, su tiempo de sueño
@@ -892,21 +922,21 @@ modelo?</strong> Hagamos un siguiente modelo.</p>
 <h2><strong>Modelo 4</strong></h2>
 <p>Aplicamos el <strong>principio de parsimonia</strong> para crear un
 nuevo modelo solo con las variables que aportan.</p>
-<pre class="r"><code>modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
+<pre class="r"><code>modelo4 = lm(promedio_sueño ~ primera_linea + niños_casa ,data=Covid)
 summary(modelo4)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Q13 ~ Q7 + Q11, data = Covid)
+## lm(formula = promedio_sueño ~ primera_linea + niños_casa, data = Covid)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
 ## -4.3490 -0.8403  0.1597  0.6510 10.6510 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   7.3490     0.1205  61.009  &lt; 2e-16 ***
-## Q7           -0.9678     0.2011  -4.813 2.31e-06 ***
-## Q11          -0.5409     0.1764  -3.066  0.00236 ** 
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     7.3490     0.1205  61.009  &lt; 2e-16 ***
+## primera_linea  -0.9678     0.2011  -4.813 2.31e-06 ***
+## niños_casa     -0.5409     0.1764  -3.066  0.00236 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -921,8 +951,8 @@ summary(modelo4)</code></pre>
 <p>Establezcamos nuestras hipótesis:</p>
 <ul>
 <li>H0: El modelo de regresión no es válido</li>
-<li>H1: El modelo de regresión es válido (variable X aporta al
-modelo)</li>
+<li>H1: El modelo de regresión es válido (variables independientes
+aportan al modelo)</li>
 </ul>
 <p>Luego nos fijamos en el <strong>p-value</strong> Como el p valor es
 1.375e-08 entonces podemos afirmar que hay suficiente evidencia para
@@ -953,8 +983,8 @@ independiente.</p>
 class="section level3">
 <h3><strong>¿Cuáles son los coeficientes de la ecuación?</strong></h3>
 <pre class="r"><code>modelo4$coefficients</code></pre>
-<pre><code>## (Intercept)          Q7         Q11 
-##   7.3490240  -0.9677539  -0.5409321</code></pre>
+<pre><code>##   (Intercept) primera_linea    niños_casa 
+##     7.3490240    -0.9677539    -0.5409321</code></pre>
 <p>De esa manera puedo hallar la ecuación:</p>
 <p><span class="math display">\[
 Y = 7.35  + \text{Primera linea} \times (-0.97) +  \text{Tiene niños en
@@ -981,11 +1011,30 @@ personas.</p>
 <p><strong>Y = 7. 35 - 0.97(0) - 0.54(1)</strong></p>
 <p><strong>Y = 7.35 - 0.54</strong></p>
 <p><strong>Y = 6.81</strong></p>
-<p>Se interpreta que, si alguien no es de primera línea y sí tiene niños
-en casa, sus horas de sueño serán, aproximadamente, <strong>6.81
-horas</strong>.</p>
+<pre class="r"><code>predict(modelo4,data.frame(primera_linea=0,niños_casa=1))</code></pre>
+<pre><code>##        1 
+## 6.808092</code></pre>
+<p>Se interpreta de la siguiente manera: si alguien no es de primera
+línea y sí tiene niños en casa, sus horas de sueño serán,
+aproximadamente, <strong>6.81 horas</strong>.</p>
 </div>
 </div>
+</div>
+<div id="ejercicio" class="section level1">
+<h1>Ejercicio</h1>
+<p>Utiliza la base fsi_democracy.xlsx y crea un modelo de regresión
+múltiple para analizar el impacto de las distintas variables en la
+Fragilidad del Estado (Total).</p>
+<p>En este caso, las variables independientes que usaremos para predecir
+la Fragilidad del Estado serán: Aparato_seguridad Economia
+Servicios_publicos Intervencion_externa</p>
+<p>Además, crea una variable dicotómica a partir de la columna
+Tipo_regimen, que indique si el Estado es autoritario o no: - Si el
+Estado es autoritario, asigna el valor 1. - Si el Estado no es
+autoritario, asigna el valor 0.</p>
+<p>Predice la Fragilidad de un Estado que tiene 5 en aparato de
+seguridad, 8 en economía, 7 en servicios públicos, 4 en intervención
+externa y que NO es un regimen autoritario</p>
 </div>
 
 

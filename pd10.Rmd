@@ -1,6 +1,9 @@
 ---
 title: "Práctica dirigida 10"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
@@ -10,9 +13,6 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
 editor_options: 
   markdown: 
     wrap: sentence
@@ -32,13 +32,13 @@ knitr::include_graphics("logoPUCP.png")
 
 Hasta el momento, nos hemos encontrado en el campo del análisis bivariado. Sin embargo, en el mundo social, difícilmente se pueden explicar los fenómenos de interés con una sola variable. Incluso si nos interesa evaluar el efecto de un a variable en específico sobre un fenómeno de estudio, hay muchos otros factores que podrían influir en aquello que nos interesa explorar. Por ello, necesitamos recurrir al **análisis multivariado** y conocer el concepto de **control estadístico**. 
 
-El control estadístico nos permite “eliminar” explicaciones alternativas, en tanto se aisla el efecto de otras variables. La idea es:
+El control estadístico nos permite aislar el efecto de otras variables. La idea es:
 
-* Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.
+* Evaluar si la asociación entre X e Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.
 
-* Se analiza la relación entre X - Y para valores similares o iguales de una variable Z. De esta manera se elimina la influencia de Z en la relación entre X - Y. Es un paso en el establecimiento de X -> Y.
+* Se analiza la relación entre X e Y para valores similares o iguales de una variable Z. De esta manera se elimina la influencia de Z en la relación entre X e Y. Lo anterior nos ayuda a acercarnos a una interpretación causar X -> Y.
 
-* Si la relación entre X - Y desaparece cuando se controla por Z, se dice que la relación era espúrea.
+* Si la relación entre X e Y desaparece cuando se controla por Z, se dice que la relación era espúrea. En otras palabras, la relación dependendia de la influencia de Z y no de una conexión directa entre X e Y.  
 
 Sobre la regresión lineal múltiple: 
 
@@ -98,15 +98,15 @@ summary(modelo1)
 Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
+-   H1: El modelo de regresión es válido (las variables independientes aportan al modelo)
 
-Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
+Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo es válido como modelo de predicción.
 
 ### **¿Qué tanto explica el modelo?**
 
 Observamos el **R2 ajustado**.
 
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamos el R2 (Adjusted R-squared, por ser un modelo lineal múltiple).
+Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamos el R2 (Adjusted R-squared, por ser un modelo lineal múltiple). 
 
 En nuestro modelo, este arrojó el valor de 0.9217, por lo que podemos concluir que el modelo explica aproximadamente el 92.2% (0.9217\*100) de la variabilidad en el acceso a la información (variable dependiente). En otras palabras, este valor alto de R cuadrado ajustado indica que el modelo se ajusta muy bien a los datos y hace un buen trabajo al explicar la relación entre las variables independientes y la variable dependiente. Sin embargo, el valor del R cuadrado ajustado no te dice nada sobre la significancia estadística de las variables individuales, ni sobre la causalidad. Por ello analizaremos también las variables de forma independiente en el siguiente paso.
 
@@ -172,7 +172,7 @@ summary(modelo2)
 Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
+-   H1: El modelo de regresión es válido (las variables independientes aportan al modelo)
 
 Luego nos fijamos en el **p-value** Como el p valor es \< 2.2e-16 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
 
@@ -222,48 +222,61 @@ También es importante notar que los coeficientes estimados de las VI han cambia
 
 ### **Predicción**
 
-Si el puntaje en CapitalHumano es 0.8, de telecomunicaciones e infraestructura es 0.6, de proceso electoral de 9 y de Usuarios de internet es de 56.
+Si el puntaje en CapitalHumano es 0.8, de telecomunicaciones e infraestructura es 0.6, de proceso electoral y cultura política de 9 y de Usuarios de internet es de 56.
 
-**Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) + 0.002(56)**
+**Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) + 0.01 (9) + 0.002(56)**
 
-**Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.112**
+**Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.09 + 0.112**
 
-**Y = 0.524**
+**Y = 0.614**
 
-En este caso, el índice de acceso a la información es de **0.524** puntos.
+```{r}
+predict(modelo2, data.frame(Capital_Humano = 0.8, Telecommunicacion_Infrastructura = 0.6, ProcesoElectoral = 9, Policulture = 9, UsuariosInternet = 56))
+```
+
+En este caso, el índice de acceso a la información es de **0.614** puntos.
+
+### **¿Qué variable aporta más?**
+
+Para interpretar cómo cada variable independiente contribuye a la variabilidad de la variable dependiente (accesoInformacion), podemos usar los coeficientes estandarizados. Estos coeficientes nos ayudan a comparar, en una misma escala, el impacto que tiene cada variable independiente sobre la variable dependiente, permitiéndonos identificar cuáles tienen un efecto más fuerte.
+
+```{r}
+library(lm.beta)
+lm.beta(modelo2)
+```
+Los resultados anteriores nos demuestran que las variables con mayor impacto son Telecommunicacion_Infrastructura (0.37) y Capital_Humano (0.27).
 
 ## **Qué factores determinan la calidad de sueño del personal de salud en pandemia**
 
 La pandemia de COVID-19 tuvo una repercusión significativa en el personal de salud en todo el mundo. Los trabajadores de la salud estuvieron en la primera línea de batalla, enfrentando desafíos sin precedentes. Además de los riesgos físicos, el personal de salud enfrentó una carga emocional y psicológica abrumadora. Una de las principales preocupaciones era la calidad del sueño del personal de salud, pues podía repercutir directamente en la calidad de atención de los pacientes. 
 
--   Q1: Edad
--   Q2: Género (0 = "Mujer", 1 = "Hombre")
--   Q7: ¿Se encentra en la primera línea de atención del Covid-19? (0 = "No", 1 = "Si")
--   Q8: ¿Trabaja desde casa? (0 = "No", 1 = "Si")
--   Q11: ¿Tiene niños en casa? (0 = "No", 1 = "Si")
--   Q13: ¿Cuantas horas ha dormido en promedio la semana pasada?
+-   edad
+-   genero: 0 = "Mujer", 1 = "Hombre"
+-   primera_linea: ¿Se encentra en la primera línea de atención del Covid-19? (0 = "No", 1 = "Si")
+-   trabajo_casa: ¿Trabaja desde casa? (0 = "No", 1 = "Si")
+-   niños_casa: ¿Tiene niños en casa? (0 = "No", 1 = "Si")
+-   promedio_sueño: ¿Cuantas horas ha dormido en promedio la semana pasada?
 
 ```{r}
-Covid=import("covid_pd12.csv")
-names(Covid)
+Covid=import("data_covid.csv")
 ```
 
 ```{r}
 str(Covid)
 ```
 
-Reviso las variables dicotómicas Q2,Q7,Q8 y Q11
+Reviso las variables dicotómicas genero, primera_linea, trabajo_casa y niños_casa
 
 ```{r}
-table(Covid$Q2)
-table(Covid$Q7)
-table(Covid$Q8)
-table(Covid$Q11)
+table(Covid$genero)
+table(Covid$primera_linea)
+table(Covid$trabajo_casa)
+table(Covid$niños_casa)
 ```
 
 **OJO: como esta vez las variables son dicotómicas tratadas como numéricas, la interpretamos de la siguiente manera:**
 
-- Si alguien es hombre, se multiplica el coeficiente por 1. Si se es mujer, se multiplica dicho coeficiente por 0.
+- Si alguien es hombre, se multiplica el coeficiente por 1. Si se es mujer, se multiplica dicho coeficiente por 0. 
 
 - Si alguien perteneció a primera línea, se multiplica dicho coeficiente estimado por 1. Si no ha sido de primera línea, se multiplica por 0.
 
@@ -276,7 +289,7 @@ table(Covid$Q11)
 Hacemos uso de todas las variables de la base de datos. Veamos los resultados.
 
 ```{r}
-modelo3 = lm(Q13 ~Q1+Q2+Q7+Q8+Q11  ,data=Covid)
+modelo3 = lm(promedio_sueño ~ edad + genero + primera_linea + trabajo_casa + niños_casa, data=Covid)
 summary(modelo3)
 ```
 
@@ -287,7 +300,7 @@ summary(modelo3)
 Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
+-   H1: El modelo de regresión es válido (variables independientes aportan al modelo)
 
 Luego nos fijamos en el **p-value** Como el p valor es 7.486e-07, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción.
 
@@ -304,7 +317,7 @@ En nuestro modelo, este arrojó el valor de 0.09483 , por lo que podemos conclui
 Revisamos **p-value** por cada variable independiente.
 
 -   Esperamos obtener un p-value \<0.05.
--   Esta vez las variables que **sí aportan** al modelo son: Q7 (primera línea contra Covid) y Q11 (Ttiene niños en casa)
+-   Esta vez las variables que **sí aportan** al modelo son: primera línea contra Covid y Tiene niños en casa.
 
 ### **¿Cuáles son los coeficientes de la ecuación?**
 
@@ -317,16 +330,16 @@ modelo3$coefficients
 De esa manera puedo hallar la ecuación:
 
 $$
-Y = 7.2635 + \text{Edad} \times (-0.0002) + \text{Genero} \times (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
+Y = 7.2635 + \text{Edad} \times (0.0002) + \text{Genero} \times (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
 $$ 
 
 ¿Cómo interpretamos los coeficientes en este caso?
 
-- Por cada año adicional de edad, el tiempo de sueño **disminuye en 0.0002 horas** (relación inversa).
+- Por cada año adicional de edad, el tiempo de sueño **aumenta en 0.0002 horas** (relación directa).
 
 - Si la persona es hombre, su tiempo de sueño **aumenta en 0.1167 horas** (relación directa).
 
-- Si la persona ha estado en primera línea en la lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.9295 horas de sueño** (relacuón inversa).
+- Si la persona ha estado en primera línea en la lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.9295 horas de sueño** (relación inversa).
 
 - Si la persona trabaja desde casa, su tiempo de sueño **aumenta en 0.0814 horas** (relación directa).
 
@@ -339,7 +352,7 @@ $$
 Aplicamos el **principio de parsimonia** para crear un nuevo modelo solo con las variables que aportan.
 
 ```{r}
-modelo4 = lm(Q13 ~Q7+Q11 ,data=Covid)
+modelo4 = lm(promedio_sueño ~ primera_linea + niños_casa ,data=Covid)
 summary(modelo4)
 ```
 
@@ -350,7 +363,7 @@ summary(modelo4)
 Establezcamos nuestras hipótesis:
 
 -   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variable X aporta al modelo)
+-   H1: El modelo de regresión es válido (variables independientes aportan al modelo)
 
 Luego nos fijamos en el **p-value** Como el p valor es 1.375e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
 
@@ -401,4 +414,26 @@ Supondiendo que alguien **NO es de primera línea** y **SI tiene niños en casa*
 
 **Y = 6.81**
 
-Se interpreta que, si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño serán, aproximadamente, **6.81 horas**.
+```{r}
+predict(modelo4,data.frame(primera_linea=0,niños_casa=1))
+```
+
+Se interpreta de la siguiente manera: si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño serán, aproximadamente, **6.81 horas**.
+
+# Ejercicio
+
+Utiliza la base fsi_democracy.xlsx y crea un modelo de regresión múltiple para analizar el impacto de las distintas variables en la Fragilidad del Estado (Total). 
+
+En este caso, las variables independientes que usaremos para predecir la Fragilidad del Estado serán:
+Aparato_seguridad 
+Economia
+Servicios_publicos
+Intervencion_externa
+
+Además, crea una variable dicotómica a partir de la columna Tipo_regimen, que indique si el Estado es autoritario o no:
+- Si el Estado es autoritario, asigna el valor 1.
+- Si el Estado no es autoritario, asigna el valor 0.
+
+Predice la Fragilidad de un Estado que tiene 5 en aparato de seguridad, 8 en economía, 7 en servicios públicos, 4 en intervención externa y que NO es un regimen autoritario
+
+
