@@ -1,9 +1,6 @@
 ---
 title: "Práctica dirigida 10"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '1'
   html_document:
     toc: yes
     toc_float: yes
@@ -13,6 +10,9 @@ output:
     theme: cosmo
     highlight: textmate
     always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 editor_options: 
   markdown: 
     wrap: sentence
@@ -222,205 +222,68 @@ También es importante notar que los coeficientes estimados de las VI han cambia
 
 ### **Predicción**
 
-Si el puntaje en CapitalHumano es 0.8, de telecomunicaciones e infraestructura es 0.6, de proceso electoral y cultura política de 9 y de Usuarios de internet es de 56.
-
-**Y = -0.12 + 0.29(0.8) + 0.35(0.6) + 0.01 (9) + 0.01 (9) + 0.002(56)**
-
-**Y = -0.12 + 0.232 + 0.21 + 0.09 + 0.09 + 0.112**
-
-**Y = 0.614**
+¿Cuál sería el índice de acceso a la información si reemplazamos el puntaje de cada variable independiente con su respectivo promedio? 
 
 ```{r}
-predict(modelo2, data.frame(Capital_Humano = 0.8, Telecommunicacion_Infrastructura = 0.6, ProcesoElectoral = 9, Policulture = 9, UsuariosInternet = 56))
+Egov %>%
+  summarise(mean(Capital_Humano, na.rm=T), mean(Telecommunicacion_Infrastructura, na.rm=T), 
+            mean(ProcesoElectoral, na.rm=T), mean(Policulture, na.rm=T), mean(UsuariosInternet, na.rm=T))
 ```
 
-En este caso, el índice de acceso a la información es de **0.614** puntos.
+
+**Y = -0.12 + 0.29(0.64) + 0.35(0.38) + 0.01 (6.17) + 0.01 (5.73) + 0.002(49.65)**
+
+**Y = -0.12 + 0.186 + 0.133 + 0.062 + 0.057 + 0.099**
+
+**Y = 0.417**
+
+```{r}
+predict(modelo2, data.frame(Capital_Humano = 0.64, Telecommunicacion_Infrastructura = 0.38, ProcesoElectoral = 6.17, Policulture = 5.73, UsuariosInternet = 49.65))
+```
+
+En conclusión, para valores promedio de las variables independientes, el índice de acceso a la información es de **0.41** puntos.
+
+¿Qué pasa si queremos predecir el índice de acceso a la información para diferentes valores de una variable independiente?
+
+En este caso, se puede reemplazar dejando las otras variables en el promedio. Por ejemplo, se quiere calcular el índice de acceso a la información para diferentes valores de la telecomunicación e infraestuctura. Lo primero es calcular los valores a reemplazar. En este caso usaremos el mínimo, la mediana y el máximo.
+
+```{r}
+Egov %>%
+  summarise(min(Telecommunicacion_Infrastructura, na.rm=T), 
+            median(Telecommunicacion_Infrastructura, na.rm=T), max(Telecommunicacion_Infrastructura, na.rm=T))
+```
+Luego, podemos reemplazar estos diferentes valores de telecomunicaciones e infraestructura, dejando las otras dos variables constantes en el promedio.
+
+Usando el mínimo:
+```{r}
+predict(modelo2, data.frame(Capital_Humano = 0.64, Telecommunicacion_Infrastructura = 0, ProcesoElectoral = 6.17, Policulture = 5.73, UsuariosInternet = 49.65))
+```
+
+Usando la mediana:
+```{r}
+predict(modelo2, data.frame(Capital_Humano = 0.64, Telecommunicacion_Infrastructura = 0.35, ProcesoElectoral = 6.17, Policulture = 5.73, UsuariosInternet = 49.65))
+```
+
+Usando el máximo:
+```{r}
+predict(modelo2, data.frame(Capital_Humano = 0.64, Telecommunicacion_Infrastructura = 0.84, ProcesoElectoral = 6.17, Policulture = 5.73, UsuariosInternet = 49.65))
+```
 
 ### **¿Qué variable aporta más?**
 
 Para interpretar cómo cada variable independiente contribuye a la variabilidad de la variable dependiente (accesoInformacion), podemos usar los coeficientes estandarizados. Estos coeficientes nos ayudan a comparar, en una misma escala, el impacto que tiene cada variable independiente sobre la variable dependiente, permitiéndonos identificar cuáles tienen un efecto más fuerte.
 
 ```{r}
-library(lm.beta)
-lm.beta(modelo2)
+library(jtools)
+summ(modelo2, scale=T)
 ```
-Los resultados anteriores nos demuestran que las variables con mayor impacto son Telecommunicacion_Infrastructura (0.37) y Capital_Humano (0.27).
-
-## **Qué factores determinan la calidad de sueño del personal de salud en pandemia**
-
-La pandemia de COVID-19 tuvo una repercusión significativa en el personal de salud en todo el mundo. Los trabajadores de la salud estuvieron en la primera línea de batalla, enfrentando desafíos sin precedentes. Además de los riesgos físicos, el personal de salud enfrentó una carga emocional y psicológica abrumadora. Una de las principales preocupaciones era la calidad del sueño del personal de salud, pues podía repercutir directamente en la calidad de atención de los pacientes. 
-
--   edad
--   genero: 0 = "Mujer", 1 = "Hombre"
--   primera_linea: ¿Se encentra en la primera línea de atención del Covid-19? (0 = "No", 1 = "Si")
--   trabajo_casa: ¿Trabaja desde casa? (0 = "No", 1 = "Si")
--   niños_casa: ¿Tiene niños en casa? (0 = "No", 1 = "Si")
--   promedio_sueño: ¿Cuantas horas ha dormido en promedio la semana pasada?
+Los resultados anteriores nos demuestran que las variables con mayor impacto son Telecommunicacion_Infrastructura (0.08) y Capital_Humano (0.06)
 
 ```{r}
-Covid=import("data_covid.csv")
+plot_summs(modelo2, scale = T)
 ```
 
-```{r}
-str(Covid)
-```
-
-Reviso las variables dicotómicas genero, primera_linea, trabajo_casa y niños_casa
-
-```{r}
-table(Covid$genero)
-table(Covid$primera_linea)
-table(Covid$trabajo_casa)
-table(Covid$niños_casa)
-```
-
-**OJO: como esta vez las variables son dicotómicas tratadas como numéricas, la interpretamos de la siguiente manera:**
-
-- Si alguien es hombre, se multiplica el coeficiente por 1. Si se es mujer, se multiplica dicho coeficiente por 0. 
-
-- Si alguien perteneció a primera línea, se multiplica dicho coeficiente estimado por 1. Si no ha sido de primera línea, se multiplica por 0.
-
-- Si alguien trabaja desde casa, se multiplica dicho coeficiente estimado por 1. Si no ha trabajado desde casa, se multiplica por 0.
-
-- Si alguien tiene hijos en casa, se multiplica dicho coeficiente estimado por 1. Si no los tiene, se multiplica por 0.
-
-## **Modelo 3**
-
-Hacemos uso de todas las variables de la base de datos. Veamos los resultados.
-
-```{r}
-modelo3 = lm(promedio_sueño ~ edad + genero + primera_linea + trabajo_casa + niños_casa, data=Covid)
-summary(modelo3)
-```
-
-## **Interpretamos 😎**
-
-### **¿El modelo es válido?**
-
-Establezcamos nuestras hipótesis:
-
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variables independientes aportan al modelo)
-
-Luego nos fijamos en el **p-value** Como el p valor es 7.486e-07, entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción.
-
-### **¿Qué tanto explica el modelo?**
-
-Observamos el **R2 ajustado**.
-
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Adjusted R-squared).
-
-En nuestro modelo, este arrojó el valor de 0.09483 , por lo que podemos concluir el modelo explica aproximadamente el 9.48% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente).
-
-### **¿Las variables aportan al modelo?**
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   Esta vez las variables que **sí aportan** al modelo son: primera línea contra Covid y Tiene niños en casa.
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
-Coeficientes:
-
-```{r}
-modelo3$coefficients
-```
-
-De esa manera puedo hallar la ecuación:
-
-$$
-Y = 7.2635 + \text{Edad} \times (0.0002) + \text{Genero} \times (0.1167) + \text{Primera línea} \times (-0.9295) + \text{Trabaja desde casa} \times (0.0814) + \text{Tiene niños en casa} \times (-0.5412)
-$$ 
-
-¿Cómo interpretamos los coeficientes en este caso?
-
-- Por cada año adicional de edad, el tiempo de sueño **aumenta en 0.0002 horas** (relación directa).
-
-- Si la persona es hombre, su tiempo de sueño **aumenta en 0.1167 horas** (relación directa).
-
-- Si la persona ha estado en primera línea en la lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.9295 horas de sueño** (relación inversa).
-
-- Si la persona trabaja desde casa, su tiempo de sueño **aumenta en 0.0814 horas** (relación directa).
-
-- Si la persona tiene niños en su casa, su tiempo de sueño **disminuye en 0.5412 horas** (relación inversa).
-
-**¿Qué sucede si retiramos aquellas variables que no aportan al modelo?** Hagamos un siguiente modelo.
-
-## **Modelo 4**
-
-Aplicamos el **principio de parsimonia** para crear un nuevo modelo solo con las variables que aportan.
-
-```{r}
-modelo4 = lm(promedio_sueño ~ primera_linea + niños_casa ,data=Covid)
-summary(modelo4)
-```
-
-## **Interpretamos 😎**
-
-### **¿El modelo es válido?**
-
-Establezcamos nuestras hipótesis:
-
--   H0: El modelo de regresión no es válido
--   H1: El modelo de regresión es válido (variables independientes aportan al modelo)
-
-Luego nos fijamos en el **p-value** Como el p valor es 1.375e-08 entonces podemos afirmar que hay suficiente evidencia para rechazar la H0, por lo que concluimos que el modelo sí es válido como modelo de predicción. 
-
-### **¿Qué tanto explica el modelo?**
-
-Observamos el **R2 ajustado**.
-
-Analizar cuánto de la variabilidad de la variable dependiente (y) es explicada por las variables independientes elegidas, para ello revisamor el R2 (Adjusted R-squared).
-
-En nuestro modelo, este arrojó el valor de 0.102 , por lo que podemos concluir mi modelo explica aproximadamente el 10.2% de la variabilidad en el promedio de las horas de sueño del personal de salud (variable dependiente). 
-
-### **¿Las variables aportan al modelo?** 🤔
-
-Revisamos **p-value** por cada variable independiente.
-
--   Esperamos obtener un p-value \<0.05.
--   Todas las variables *aportan* al modelo.
-
-### **¿Cuáles son los coeficientes de la ecuación?**
-
-```{r}
-modelo4$coefficients
-```
-
-De esa manera puedo hallar la ecuación:
-
-$$
-Y = 7.35  + \text{Primera linea} \times (-0.97) +  \text{Tiene niños en casa} \times (-0.54)
-$$ 
-
-En este caso, los coeficientes se interpretan de la siguiente manera:
-
-- Si la persona perteneció a la primera línea de lucha contra la pandemia de Covid, su tiempo de sueño **disminuye en 0.97 horas** (relación inversa).
-
-- Si la persona tiene niños en casa, su tiempo de sueño **disminuye en 0.54 horas** (relación inversa).
-
-¿Mi modelo ha mejorado?
-
-Ligeramente: el R2 ajustado, de 0.0948 (9.48%), subió a 0.102 (10.2%) al momento de explicar la variabilidad de horas de sueño de las personas.
-
-### **Predicción**
-
-Supondiendo que alguien **NO es de primera línea** y **SI tiene niños en casa**:
-
-**Y = 7. 35 - 0.97(0) - 0.54(1)**
-
-**Y = 7.35 - 0.54**
-
-**Y = 6.81**
-
-```{r}
-predict(modelo4,data.frame(primera_linea=0,niños_casa=1))
-```
-
-Se interpreta de la siguiente manera: si alguien no es de primera línea y sí tiene niños en casa, sus horas de sueño serán, aproximadamente, **6.81 horas**.
-
-# Ejercicio
+# Ejercicio para clase
 
 Utiliza la base fsi_democracy.xlsx y crea un modelo de regresión múltiple para analizar el impacto de las distintas variables en la Fragilidad del Estado (Total). 
 
@@ -430,10 +293,4 @@ Economia
 Servicios_publicos
 Intervencion_externa
 
-Además, crea una variable dicotómica a partir de la columna Tipo_regimen, que indique si el Estado es autoritario o no:
-- Si el Estado es autoritario, asigna el valor 1.
-- Si el Estado no es autoritario, asigna el valor 0.
-
-Predice la Fragilidad de un Estado que tiene 5 en aparato de seguridad, 8 en economía, 7 en servicios públicos, 4 en intervención externa y que NO es un regimen autoritario
-
-
+Predice la Fragilidad de un Estado que usando valores significativos para cada variable independiente. 
