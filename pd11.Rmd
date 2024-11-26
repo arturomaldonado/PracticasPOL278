@@ -1,250 +1,329 @@
 ---
-title: "Práctica dirigida 11"
-output:
-  html_document:
-    toc: yes
-    toc_float: yes
-    collapsed: no
-    number_sections: no
-    toc_depth: 1
-    theme: cosmo
-    highlight: textmate
-    always_allow_html: true
+title: "LCV"
+output: html_document
+date: "2024-06-26"
 ---
 
-<center><img src=" " width="200"/></center>
-
-```{r,echo=FALSE, out.width="30%"}
-knitr::include_graphics("logoPUCP.png") 
-```
-
-Cargamos la base de datos:
-
-```{r,warning=FALSE}
+```{r}
 library(rio)
-data=import("LCV1819-1.sav")
-```
-
-# **REPASO**
-
-# CHI CUADRADO Y PRUEBAS DE ASOCIACIÓN
-
-Recordemos que chi cuadrado es una prueba para probar si existe asociación entre variables categóricas.
-
-H0: Las variables son estadísticamente independientes/no hay dependencia H1: Las variables son estadísticamente dependientes.
-
-OJO: Recuerden que hablar de asociación no implica causalidad.
-
-## Ejercicio 1:
-Queremos saber si existe asociación entre el gasto en el trasporte agrupado y otras variables, en específico, queremos saber si
-
-¿Existe asociación entre el gasto en transporte agrupado y la edad agrupada (EDAD)?
-
-La variable gasto en trasporte (PEA10A) es numérica. Ante ello, tenemos que separar esta variable en 3 grupos, nos guiaremos de los cuartiles para crear los grupos: Bajo(menos de 20) , medio (de 20 a 70) , Alto (más de 70). La nueva variable se llamará “GASTO_T”.
-
-```{r}
-summary(data$PE10A)
-```
-
-```{r,warning=FALSE}
+library(haven)
 library(tidyverse)
-data = data %>%
-  mutate(GASTO_T=case_when(PE10A<20 ~ "1.BAJO",
-                             PE10A>=20 & EG2OTRO<=70 ~ "2.MEDIO",
-                             PE10A>70 ~ "3.ALTO"))
-
-data$GASTO_T= factor(data$GASTO_T)
-```
-
-```{r}
-data$EDAD=factor(data$EDAD, levels = c(1:3),labels = c("18 a 29",
-                                                        "30 a 44",
-                                                         "más de 45"))
-```
-
-Creemos nuestra tabla de contingencia
-
-```{r,warning=FALSE}
-tabla=table(data$GASTO_T,data$EDAD)
-tabla #con esta realizamos la prueba
-```
-
-En porcentajes: calculamos el 100% sobre "EDAD"
-
-```{r,warning=FALSE}
-tabla_p= tabla %>%
-  prop.table(2)%>% #porcentaje por columna
-  round(2)*100
-tabla_p
-```
-
-Grafiquemos:
-
-```{r,warning=FALSE}
-toPlot = as.data.frame(tabla_p) 
-names(toPlot) = c("Gasto", "Edad", "Porcentaje")
-
-ggplot(toPlot, aes(fill=Gasto, y=Porcentaje, x=Edad)) + 
-    geom_bar(stat="identity") + 
-    labs( y = 'Porcentaje (%)', x = ' ')+
-    ggtitle('Gasto en transporte según grupo etario')+
-    theme_bw()
-```
-
-El grafico y la tabla muestran que en los 3 grupos etarios la mayoría tiene un gasto bajo en transporte. Sin embargo, se puede observar que en comparación, el porcentaje que tiene un gasto alto entre los más jóvenes es mayor que dentro de los otros grupos etarios.
-
-```{r,warning}
-chisq.test(tabla)$expected
-```
-
-Podemos proceder con la prueba
-
-```{r,warning=FALSE}
-chisq.test(tabla)
-```
-
-De acuerdo al p–value obtenido en la prueba de hipótesis de Chi2, al ser menor de 0.05, podemos rechazar la hipótesis nula. Por lo tanto, concluimos que existe dependencia entre el gasto en transporte (bajo/medio/alto) y el grupo etario.
-
-# CORRELACIÓN
-
-Esta es una medida de relación entre dos variables cuantitativas o numéricas.
-
-H0 = No existe correlación las variables 
-H1 = Sí existe correlación entre las variables
-
-En esta prueba, no es suficiente analizar el pvalue, también debemos interpretar el coeficiente de correlación de pearson. Este nos indica la fuerza y la dirección de la relación entre las variables.
-
-## Ejercicio 2:
-
-Ahora queremos explorar si existe relación entre el gasto en educación (PE10D) y la edad (ANIOS)
-
-```{r}
-str(data$EG2OTRO)
-```
-
-Previo a la prueba, realicemos un gráfico de dispersión para hacernos una idea inicial
-
-```{r,warning=FALSE}
-ggplot(data,aes(x=ANIOS, y=data$PE10D)) +
-  geom_point(colour="darkblue") +  xlab("Edad") +  ylab("Gasto en educación") +
-  ggtitle("Relación entre el gasto en educación y la edad") +
-  xlim(18,80)+ylim(0,1000)+
-  theme_light() + 
-  geom_smooth(method="lm", se = F)
-```
-
-Podemos ver bastante dispersión, no parece haber correlación entre las variables.
-
-
-```{r,warning=FALSE}
-cor.test(data$ANIOS,data$PE10D)
-```
-
-Siendo el p-valor menor a 0.05, podemos rechazar la hipótesis nula y concluir que existe relación entre la edad y el gasto en educación. Adicionalmente, podemos determinar que esta relación es inversa y no relevante (r = 0.06). 
-
-# REGRESIÓN SIMPLE
-
-Recordemos que con la regresión predecimos el valor de una variable con los valores de otra. La regresión lineal simple es un método útil para predecir una respuesta cuantitativa Y partiendo de una sola variable predictora X, asumiendo que hay una relación aproximadamente lineal entre X e Y.
-
-## Pasos para la regresión lineal simple
-
--   Paso 1: Analizar la asociación entre las variables de insumo: Diagrama de dispersión y correlación bivariada, en caso de variables numéricas
-
--   Paso 2: Conocer qué tanto explica el modelo: COEFICIENTE DE DETERMINACIÓN -- R2
-
--   Paso 3: Conocer los parámetros del modelo: TABLA DE COEFICIENTES
-
--   Paso 4: Construir la ecuación y predecir
-
-## Ejercicio 3:
-
-Queremos analizar posibles modelos que expliquen la percepción de los limeños acerca del transporte público informal (buses, cousters y combis, y mototaxis). Para esto calcularemos un indice aditivo de la calificación de los servicios de buses (MT7A), de cousters y combis (MT7B) y de mototaxis (MT7D), que varíe de 0 a 100.
-
-Pero, ¿qué puede influir en la percepción de los limeños acerca del transporte público? Para este ejercicio emplearemos dos variables:
-
-Creación del índice:
-```{r,warning=FALSE}
-data$evaluacion_ti = ((data$MT7A + data$MT7B + data$MT7D)-3)/12*100
-summary(data$evaluacion_ti)
-```
-
-Paso 1: Diagrama de dispersión y correlación bivariada
-
-```{r,warning=FALSE}
+library(scales)
 library(ggplot2)
-ggplot(data, aes(x=EG2OTRO, y=evaluacion_ti)) +
-  geom_point(colour="lightsteelblue4") +  
-  xlab("Tiempo en Lima") +  
-  ylab("Indice de percepción sobre el transporte")+ theme_light() + 
-  geom_smooth(method="lm", se = T, colour="grey5")
+library(fastDummies)
+library(jtools)
+library(lsr)
 ```
 
-Correlación:
+# **Repaso**
+
+Para la sesión de hoy haremos un repaso de todos los temas que hemos visto luego del parcial, siendo estos:
+
+1. Anova
+2. Correlación
+3. Regresión simple
+4. Regresión múltiple
+
+En esta oportunidad usaremos la información proveniente de la encuesta realizada por Lima Cómo Vamos, de la cual podemos obtener evidencia sobre la calidad de vida en Lima y Callao. 
+
+# Aplicación práctica
+```{r}
+data = import("BD_LimaComoVamos2021.sav")
+```
+
+## Anova
+
+*¿Existe diferencia entre los promedios de la satisfacción con aspectos que influyen en la calidad de vida en la ciudad (indicador creado con las variables de la P3_1 a la P3_8) según el nivel socioeconómico de una persona (NSE)?*
+
+Para responder a la pregunta, primero se deben identificar las variables: 
+variable 1: inclusión (indicador -> numérica)
+variable 2: nivel socioeconómico (categórica politómica)
+
+Prueba a realizar: Anova
+
+1. Preparar las variables (creación del indicador / configuración de las etiquetas)
+
+a. Creación del indicador
+```{r}
+str(data$P3_1)
+table(data$P3_1)
+
+str(data$P3_2)
+table(data$P3_2)
+
+str(data$P3_3)
+table(data$P3_3)
+
+str(data$P3_4)
+table(data$P3_4)
+
+str(data$P3_5)
+table(data$P3_5)
+
+str(data$P3_6)
+table(data$P3_6)
+
+str(data$P3_7)
+table(data$P3_7)
+
+str(data$P3_8)
+table(data$P3_8)
+```
 
 ```{r}
-cor.test(data$evaluacion_ti, data$EG2OTRO)
+data = data %>%
+  mutate(
+    suma = P3_1 + P3_2 + P3_3 + P3_4 + P3_5 + P3_6 + P3_7 + P3_8,
+    satisfaccion = rescale(suma, to = c(0,100))
+  )
 ```
 
-Podemos observar que existe correlación entre ambas variables (p valor = 0,012) y que la correlación es negativa y que no es relevante (r = -0.08).
+b. Etiquetas para el nivel socioeconómico
+```{r}
+data = data %>%
+  mutate(
+    NSE = factor(NSE, labels=c("NSE A", "NSE B", "NSE C", "NSE D", "NSE E"))
+  )
+```
 
+2. Análisis descriptivo
+```{r}
+tabla1 = data %>%
+  group_by(NSE) %>%
+  summarise(Media = mean(satisfaccion, na.rm = T),
+            Mediana = median(satisfaccion, na.rm = T),
+            Desviacion = sd(satisfaccion, na.rm = T),
+            Inferior = ciMean(satisfaccion, na.rm = T)[1],
+            Superior = ciMean(satisfaccion, na.rm = T)[2])
 
-```{r,warning=FALSE}
-modelo1 = lm(data$evaluacion_ti ~ data$EG2OTRO)
+tabla1
+```
+3. Realización de la prueba
+
+*Recuerda redactar tus hipótesis
+
+H0: No existe diferencia en el promedio de satisfacción con aspectos que influyen en la calidad de vida de ningún nivel socioeconómico
+
+H1: Al menos un nivel socioeconómico tiene un promedio de satisfacción con aspectos que influyen en la calidad de vida diferente al resto
+```{r}
+anova = aov(data$satisfaccion ~ data$NSE)
+summary(anova)
+```
+Siendo el p-valor menor a 0.05, es posible afirmar que al menos un grupo tiene un promedio de satisfacción con aspectos que influyen en la calidad de vida diferente al resto, pero todavía no podemos saber cuál. Para averiguar esto último debemos realizar la prueba Tukey, pero antes observaremos un poco los resultados obtenidos hasta el momento.
+
+```{r}
+ggplot(tabla1,aes(x=NSE,y=Media))+
+  geom_errorbar(aes(ymin=Inferior,ymax=Superior),width=0.4)+
+  xlab("Nivel socioeconómico")+
+  ylab("Percepción sobre la satisfacción")+theme_classic()
+```
+
+El gráfico anterior permite observar que, por lo general, los niveles soecioeconómicos más bajos tienen menor satisfacción con aspectos que influyen en la calidad de vida de la ciudad. 
+
+4. Prueba post-hoc
+```{r}
+comparacion = TukeyHSD(anova)
+comparacion
+```
+
+Luego de realizar la prueba Tukey, es posible observar que existen diferencias significativas en el promedio de satisfacción con aspectos que influyen en la calidad de vida de distintos grupos, siendo estos:
+
+- NSE D y NSE A
+- NSE E y NSE A
+- NSE D y NSE B
+- NSE D y NSE C
+
+*Recuerda que para graficar los resultados de la prueba Tukey debes seguir estos pasos:
+
+1. Creación de la tabla
+```{r}
+comparacion.df = as.data.frame(comparacion[1])
+comparacion.df$comparacion = rownames(comparacion.df)
+```
+
+2. Graficar
+```{r}
+ggplot(comparacion.df, aes(x=comparacion, y=data.NSE.diff))+
+  geom_errorbar(aes(ymin=data.NSE.lwr, ymax=data.NSE.upr), width=0.2)+
+  geom_text(aes(label=paste(round(data.NSE.diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+```
+
+*Ten presente que para interpretar el gráfico debemos obsevar las agrupaciones que no traslapen al interpceto 0.
+
+## Correlación
+
+*¿Existe relación entre la satisfacción con aspectos que influyen en la calidad de vida y la edad (DC2)?*
+
+Para responder a la pregunta, primero se deben identificar las variables: 
+variable 1: satisfacción (indicador -> numérica)
+variable 2: edad (numérica)
+
+Prueba a realizar: Correlación
+
+1. Exploración de variables
+```{r}
+data %>%
+ summarize(Min = min(satisfaccion, na.rm = TRUE),
+           Media = mean(satisfaccion, na.rm = TRUE),
+           Mediana = median(satisfaccion, na.rm = TRUE),
+           Max = max(satisfaccion, na.rm = TRUE))
+```
+
+```{r}
+data %>%
+ summarize(Min = min(DC2, na.rm = TRUE),
+           Media = mean(DC2, na.rm = TRUE),
+           Mediana = median(DC2, na.rm = TRUE),
+           Max = max(DC2, na.rm = TRUE))
+```
+
+2. Prueba de correlación
+
+H0: No existe relación entre la satisfacción con aspectos que influyen en la calidad de vida en la ciudad y la edad
+
+H1: Sí existe relación entre la satisfacción con aspectos que influyen en la calidad de vida en la ciudad y la edad
+
+```{r}
+cor.test(x=data$satisfaccion, y=data$DC2, method="pearson")
+```
+Siendo el p-valor menor a 0.05 se rechaza la H0, por tanto, es posible afirmar que la satisfacción con aspectos que influyen en la vida de la ciudad y la edad de una persona están relacionadas. Adicionalmente, debe mencionarse que esta relación es negativa y pequeña. Lo anterior se refiere a que a medida que una persona tiene más edad, puede también sentir una menor satisfacción con aspectos que influyen en la calidad de vida en la ciudad. Sin embargo, la debilidad de esta correlación indica que la edad no es el único factor determinante y que cambios en la edad no necesariamente llevan a cambios significativos en la satisfacción con los aspectos considerados.
+
+*¿Qué pasa si sale mayor a 0.05?
+En este escenario no se rechaza la hipótesis nula y por tanto, no se puede afirmar que exista relación entre las variables ni tampoco lo contrario. Por tanto, no debe interpretarse ni la fuerza ni el sentido (no sabemos si esa relación existe).
+
+**Interpretación del cor
+Con el signo se ve el sentido de la relación. Es decir, si es directa o inversa (si el signo es positivo o negativo). 
+Con el valor se ve la fuerza de la relación. Es decir, si es no relevante (0.0 a menos de 0.1), pequeña (de 0.1 a menos de 0.3), mediana (de 0.3 a menos de 0.5) o grande (de 0.5 a 1)
+
+3. Gráfico de dispersión
+```{r}
+ggplot(data, aes(x=DC2, y=satisfaccion))+
+  geom_point(colour="skyblue")+
+  labs(x="Edad", 
+       y="Satisfacción con aspectos que influyen \n en la calidad de vida") + 
+  ggtitle("Relación entre la satisfacción con aspectos que \n influyen en la calidad de vida y la edad") +
+  theme_light()+ geom_smooth(method=lm,se=F)
+  theme_light()
+```
+
+Es posible observar que la relación entre ambas variables es negativa y pequeña. Esto debido a que la recta se posiciona de manera descendente y por la gran dispersión de los puntos.
+
+## Regresión simple
+
+*Crea un modelo para predecir los valores de la satisfacción con aspectos que influyen en la calidad de vida en la ciudad según la satisfacción que se tiene conaspectos relacionados al cuidado del medio ambiente*
+
+Para lo anterior, primero tendremos que crear otro indicador, siendo este:
+```{r}
+data = data %>%
+  mutate(
+    suma2 = I_1_P13 + I_2_P13 + I_3_P13 + I_4_P13 + I_5_P13 + I_6_P13 + I_7_P13 + I_8_P13,
+    sostenibilidad = rescale(suma2, to = c(0,100))
+  )
+```
+
+1. Crear el modelo 
+```{r}
+modelo1 = lm(satisfaccion ~ sostenibilidad, data = data)
 summary(modelo1)
 ```
+2. Interpretamos 
 
-Ahora, debemos responder las siguientes preguntas:
+A. Validez del modelo: debido a que el p-valor es menor a 0.05, se puede afirmar que el modelo tiene validez. 
 
-+ ¿Qué tanto explica el modelo?
+*Al ser esta una regresión simple. Se puede afirmar que la variable X (indicador de satisfacción con aspectos relacionados al medio ambiente) usada para predecir la variable Y (indicador de satisfacción con aspectos que influyen en la calidad de vida en la ciudad) están relacionadas.
 
-Con un valor de 0,006, podemos afirmar que el **0,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima.
+B. Explicación del modelo: el modelo indica que aproximadamente el 39.97% (Multiple R-squared) de la variabilidad en la satisfacción con aspectos que influyen en la calidad de la ciudad puede ser explicada por la satisfacción con aspectos relacionados con el medio ambiente. 
 
-+ ¿La variable aporta al modelo?
+*Recuerda que lo anterior representa la cantidad de variabilidad en los valores de Y que es capturada por el modelo de regresión. En ese contexto, cuanto más cercano esté el valor a 1, mayor será la proporción de la variabilidad explicada por el modelo.
 
-H0: La variable X no tiene un efecto estadísticamente significativo en la variable Y. H1: La variable X tiene un efecto estadísticamente significativo en la variable Y.
+C. Identificación e interpretación de la constante/intersección y la pendiente/coeficiente: 
+- Constante/ intersección: 12.74739
+- Pendiente/ coeficiente: 0.58760 
 
-Con un **p valor < 0,05** podemos afirmar que la variable “tiempo que una persona vive en Lima” aporta al modelo de regresión.
+De ese modo, es posible afirmar que si la satisfacción con aspectos relacionados con el medio ambiente es 0, el valor de la satisfacción con aspectos que influyen en la calidad de vida es 12.74739, mientras que por cada punto adicional en el indicador de sostenibilidad, el valor del indicador de satisfacción con aspectos que influyen en la calidad de vida en la ciudad aumenta en 0.58760. 
 
-Paso 5: Construir la ecuación y predecir
+D. Ecuación de la recta:
+
+Y = 12.74739 + 0.58760 (X)
+
+E. Predecir
+*¿Cuál será la satisfacción con aspectos que influyen en la calidad de vida de la ciudad si se consideran estadísticos significativos?*
 ```{r}
-modelo1$coefficients
+data %>%
+  summarise(mean(sostenibilidad, na.rm=T))
 ```
- 
- **Y = 50.84202 - 0.0861(EG2OTRO)** 
 
-Realizar el ejercicio con otra variable explicativa: Gasto en transporte (PE10A) 
+```{r}
+predict(modelo1,data.frame(sostenibilidad=35.97215))
+```
 
-# REGRESIÓN MÚLTIPLE
 
-De manera independiente, vemos que cada modelo explica de manera diferente nuestra variable de interés, ahora probemos combinando algunas de estas variables y busquemos alguna diferencia en el porcentaje de predicción. 
+## Regresión múltiple
 
-## Ejercicio 5:
+*Crea un modelo para predecir la satisfacción con aspectos que influyen en la calidad de vida considerando la satisfacción con aspectos del medio ambiente y la pertenencia al NSE C (NSE)?*
 
-VD = Evaluación del transporte informal (evaluacion_ti)
-VI = Gasto de su hogar en transporte (PE10A) + Tiempo que vive en la ciudad de Lima (EG2OTRO)+ sexo del encuestado (Hombre = 1; Mujer = "2")
 
-```{r,warning=FALSE}
-modelo2 = lm(data$evaluacion_ti ~ data$EG2OTRO + data$PE10A + data$SEXO)
+1. Fastdummies
+```{r}
+data = dummy_cols(data, select_columns = "NSE")
+
+#Cambia el nombre de la columna de interés para mayor facilidad
+data = rename(data,c("NSE_C"=`NSE_NSE C`)) 
+```
+
+2. Realizar el modelo
+```{r}
+modelo2 = lm(satisfaccion ~ sostenibilidad + NSE_C, data = data)
 summary(modelo2)
 ```
+3. Interpretamos 
 
-Ahora, debemos responder las siguientes preguntas:
+A. Validez del modelo: siendo el p-valor menor a 0.05, es posible afirmar que el modelo es válido.
 
-+ ¿El modelo es válido?
+B. Aporte de las variables independientes al modelo: Puede observarse que tanto la satisfacción con aspectos relacionados al medio ambiente como la pertenencia al NSE C de una persona contribuyen a la explicación de la variabilidad con la satisfacción de los aspectos que influyen en la calidad de vida de la ciudad. 
 
-Con un **p valor < 0,05** podemos rechazar la hipótesis nula. Es decir, rechazamos que el modelo no sea válido.
+C. Explicación del modelo: el modelo indica que aproximadamente el 40.17% (Adjusted R-squared) de la variabilidad en la satisfacción con aspectos que influyen en la calidad de vida de la ciudad puede ser explicada por la satisfacción que tiene con aspectos relacionados al medio ambiente y la pertenecia al NSE C.
 
-+ ¿Qué tanto explica el modelo?
+*Representa la cantidad de variabilidad en los valores de Y que es capturada por el modelo de regresión. Cuanto más cercano esté el valor a 1, mayor será la proporción de la variabilidad explicada por el modelo.
 
-Con un valor de **0,016**, podemos afirmar que el **1,6%** de la variabilidad del índice aditivo de la calificación del transporte es explicada por el tiempo que una persona vive en Lima, por el gasto que emplea su hogar en transporte y por el sexo de la persona.
+D. Identificación e interpretación de la constante/intersección y la pendiente/coeficiente: 
+- Constante/ intersección: 11.6918
+- Pendiente/ coeficiente de la variable sostenibilidad: 0.5889
+- Pendiente/ coeficiente de NSE C: 2.0370
 
-+ ¿Las variable aporta al modelo?
+De ese modo, es posible afirmar que si la satisfación con aspectos del medio ambiente es 0 y el NSE no es C, el valor de la satisfación con aspectos que influyen en la calidad de vida es 11.6918, mientras que por cada punto adicional en el indicador de sostenibilidad, la satisfacción con aspectos que influyen en la calidad de vida aumenta en 0.5889.
 
-Con un **p valor < 0,05** podemos afirmar que las variables que aportan al modelo de regresión son: tiempo de persona viviendo en Lima (variable EG2OTRO) y gasto del hogar en transporte (variable PE10A). Asimismo, la variable "sexo" no aporta al modelo de regresión.
+Adicionalmente, el pertenecer al NSE C está asociado con un aumento en indicador de satisfacción con aspectos que influyen en la calidad de vida en 2.0370 a comparación con aquellos que no pertenezcan a este nivel socioeconómico.
 
-Paso 5: Construir la ecuación y predecir
+E. Ecuación de la recta:
+
+Y = 11.6918 + 0.5889(X1) + 2.0370(X2)
+
+F. Predecir
+*¿Cuál será la satisfacción con aspectos que influyen en la calidad de vida de la ciudad si se consideran estadísticos significativos y la no pertenencia al NSE C?*
 ```{r}
-modelo2$coefficients
+data %>%
+  summarise(mean(sostenibilidad, na.rm=T))
 ```
 
-**Y = 51.41 - 0.08(EG2OTRO) - 0.01(PE10A) + 0.96(Sexo)**
+
+```{r}
+predict(modelo2, data.frame(sostenibilidad = 35.97215, NSE_C = 0))
+```
+
+G. ¿Qué variable aporta más?
+```{r}
+summ(modelo2, scale=T)
+```
+Se puede observar que el indicador de satisfacción con aspectos relacionados con el medio ambiente tiene un mayor impacto que la pertenecia al nivel socioeconómico C
+
+```{r}
+plot_summs(modelo2, scale = T)
+```
+
+
+
