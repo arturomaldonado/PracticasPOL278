@@ -1,8 +1,32 @@
 ---
-title: "LCV"
-output: html_document
-date: "2024-06-26"
+title: "Práctica dirigida 11"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
+    toc_depth: 1
+    theme: cosmo
+    highlight: textmate
+    always_allow_html: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+<center><img src=" " width="200"/></center>
+
+```{r,echo=FALSE, out.width="30%"}
+knitr::include_graphics("logoPUCP.png") 
+```
 
 ```{r}
 library(rio)
