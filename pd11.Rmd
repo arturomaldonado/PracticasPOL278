@@ -230,7 +230,7 @@ ggplot(data, aes(x=DC2, y=satisfaccion))+
   labs(x="Edad", 
        y="Satisfacción con aspectos que influyen \n en la calidad de vida") + 
   ggtitle("Relación entre la satisfacción con aspectos que \n influyen en la calidad de vida y la edad") +
-  theme_light()+ geom_smooth(method=lm,se=F)
+  theme_light()+ geom_smooth(method=lm,se=F) +
   theme_light()
 ```
 
